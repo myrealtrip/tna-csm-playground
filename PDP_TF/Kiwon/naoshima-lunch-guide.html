@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<title>나오시마 자유여행 필수 정보 | 마이리얼트립</title>
+
+<!-- OGP 미리보기 -->
+<meta property="og:title" content="나오시마 자유여행 필수 정보">
+<meta property="og:description" content="마이리얼트립 나오시마 워킹투어 — 미술관, 페리, 버스, 점심 완벽 가이드">
+<meta property="og:image" content="https://nowikoes.github.io/naoshima-lunch/images/og-guide.png">
+<meta property="og:url" content="https://nowikoes.github.io/naoshima-lunch/guide/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+/* ─────────────────────────────────────────────
+   PBrain Design System — 인라인 (standalone)
+   Reference: apple.com — Clean & Minimal
+   ───────────────────────────────────────────── */
+
+/* ── 디자인 토큰 */
+:root {
+  /* 텍스트 */
+  --color-text:          #18181B;
+  --color-text-sub:      #52525B;
+  --color-text-muted:    #A1A1AA;
+
+  /* 배경/서피스 */
+  --color-bg:            #FAFAFA;
+  --color-surface:       #FFFFFF;
+  --color-surface-raised:#F4F4F5;
+
+  /* 선 */
+  --color-border:        #E4E4E7;
+  --color-border-strong: #D4D4D8;
+
+  /* 포인트 — 단 1색 */
+  --color-accent:        #2563EB;
+  --color-accent-sub:    #3B82F6;
+  --color-accent-bg:     #EFF6FF;
+
+  /* 경고 */
+  --color-warn:          #D97706;
+  --color-warn-bg:       #FFFBEB;
+
+  /* 성공 */
+  --color-ok:            #16A34A;
+  --color-ok-bg:         #F0FDF4;
+  --color-ok-border:     #BBF7D0;
+
+  /* 오류 */
+  --color-error:         #DC2626;
+  --color-error-bg:      #FEF2F2;
+
+  /* 헤더 */
+  --color-header:        #0F172A;
+
+  /* 간격 */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 형태 */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow:    0 2px 8px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+
+  /* 타이포그래피 */
+  --font-display:  800 28px/1.2 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+  --font-title:    700 20px/1.3 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+  --font-heading:  700 16px/1.4 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+  --font-body:     400 15px/1.65 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+  --font-caption:  500 13px/1.6 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+  --font-micro:    600 11.5px/1.4 -apple-system,BlinkMacSystemFont,'Pretendard Variable',Pretendard,system-ui,sans-serif;
+}
+
+/* ── 리셋 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 레이아웃 */
+.pb-wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  min-height: 100vh;
+  padding-bottom: calc(var(--space-8) + env(safe-area-inset-bottom));
+}
+
+/* ── 헤더 */
+.pb-header {
+  background: var(--color-header);
+  padding: calc(var(--space-8) + env(safe-area-inset-top)) var(--space-6) var(--space-6);
+  color: white;
+}
+.pb-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font: var(--font-micro);
+  color: rgba(255,255,255,.8);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.01em;
+}
+.pb-header h1 {
+  font: var(--font-display);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2);
+}
+.pb-subtitle {
+  font: var(--font-caption);
+  color: var(--color-text-sub);
+}
+.pb-header .pb-subtitle {
+  color: rgba(255,255,255,.6);
+}
+
+/* ── 요약 chip row */
+.pb-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+.pb-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-surface-raised);
+  color: var(--color-text-sub);
+  border: 1px solid var(--color-border);
+}
+
+/* ── 섹션 */
+.pb-section {
+  padding: var(--space-6) var(--space-5) 0;
+}
+.pb-section + .pb-section {
+  padding-top: var(--space-5);
+}
+.pb-section-title {
+  font: var(--font-heading);
+  color: var(--color-text);
+  letter-spacing: -0.015em;
+  margin-bottom: var(--space-3);
+}
+
+/* ── 카드 */
+.pb-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-3);
+}
+.pb-card--ok {
+  background: var(--color-ok-bg);
+  border-color: var(--color-ok-border);
+}
+
+/* ── 정보 행 */
+.pb-info-row {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-surface-raised);
+  font: var(--font-caption);
+  align-items: flex-start;
+}
+.pb-info-row:first-of-type { padding-top: 0; }
+.pb-info-row:last-of-type  { border-bottom: none; padding-bottom: 0; }
+.pb-info-label {
+  font-weight: 600;
+  color: var(--color-text-sub);
+  white-space: nowrap;
+  min-width: 60px;
+  padding-top: 1px;
+}
+
+/* ── 배지/태그 */
+.pb-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font: var(--font-micro);
+  white-space: nowrap;
+}
+.pb-tag--accent  { background: var(--color-accent-bg);  color: var(--color-accent); }
+.pb-tag--warn    { background: var(--color-warn-bg);    color: var(--color-warn); }
+.pb-tag--ok      { background: var(--color-ok-bg);      color: var(--color-ok); }
+.pb-tag--error   { background: var(--color-error-bg);   color: var(--color-error); }
+.pb-tag--neutral { background: var(--color-surface-raised); color: var(--color-text-sub); }
+
+/* ── 알림 박스 */
+.pb-alert {
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font: var(--font-caption);
+  line-height: 1.65;
+  margin-bottom: var(--space-3);
+}
+.pb-alert--accent {
+  background: var(--color-accent-bg);
+  border-left: 3px solid var(--color-accent);
+  color: #1E3A8A;
+}
+.pb-alert--warn {
+  background: var(--color-warn-bg);
+  border-left: 3px solid var(--color-warn);
+  color: #78350F;
+}
+.pb-alert--ok {
+  background: var(--color-ok-bg);
+  border-left: 3px solid var(--color-ok);
+  color: #14532D;
+}
+
+/* ── 버튼 */
+.pb-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  min-height: 52px;
+  margin-top: var(--space-3);
+  font: var(--font-body);
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity .15s, transform .1s;
+  cursor: pointer;
+  border: none;
+}
+.pb-btn:active { opacity: .75; transform: scale(.98); }
+
+.pb-btn--primary {
+  background: var(--color-accent);
+  color: white;
+}
+.pb-btn--secondary {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+.pb-btn-left { display: flex; flex-direction: column; gap: 2px; }
+.pb-btn-sub  { font-size: 11.5px; font-weight: 400; color: rgba(255,255,255,.6); }
+.pb-btn--secondary .pb-btn-sub { color: var(--color-text-muted); }
+.pb-btn-arrow {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.pb-btn--secondary .pb-btn-arrow {
+  background: var(--color-border);
+  color: var(--color-text-sub);
+}
+
+/* ── 구분선 */
+.pb-divider { height: var(--space-2); background: var(--color-bg); }
+
+/* ── 노트 */
+.pb-note {
+  font: var(--font-micro);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+/* ── 버스 카드 */
+.pb-bus-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-text);
+}
+.pb-bus-body {
+  font: var(--font-caption);
+  color: var(--color-text-sub);
+  line-height: 1.65;
+}
+.pb-bus-body strong { color: var(--color-text); }
+
+/* ── 식당 그리드 */
+.rest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.rest-cell {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 13px 13px 11px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+.rest-num  { font-size: 11px; font-weight: 700; color: var(--color-accent); margin-bottom: 4px; }
+.rest-name { font-size: 13.5px; font-weight: 700; color: var(--color-text); line-height: 1.3; }
+.rest-info { font-size: 12px; color: var(--color-text-sub); margin-top: 3px; line-height: 1.5; }
+.rest-tags { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* ── 식당 지도 CTA (featured 버튼) */
+.pb-btn--featured {
+  min-height: 64px;
+  margin-top: var(--space-4);
+}
+.pb-btn--featured .pb-btn-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 3px;
+}
+.pb-btn--featured .pb-btn-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+.pb-btn--featured .pb-btn-arrow {
+  width: 38px;
+  height: 38px;
+  font-size: 18px;
+}
+
+/* ── 푸터 */
+.pb-footer {
+  padding: 32px 20px calc(20px + env(safe-area-inset-bottom));
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 14px;
+  line-height: 1.8;
+  border-top: 1px solid var(--color-border);
+  margin-top: 32px;
+}
+.pb-footer-stars {
+  font-size: 18px;
+  color: #FCD34D;
+  display: block;
+  margin: 10px 0;
+  letter-spacing: 3px;
+}
+.pb-footer strong { color: var(--color-text); }
+.pb-footer-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="pb-wrap">
+
+  <div class="pb-header">
+    <div class="pb-header-badge">🏝️ 마이리얼트립 나오시마 워킹투어</div>
+    <h1>나오시마<br>자유여행 필수 정보</h1>
+    <p class="pb-subtitle">이번엔 함께하지 못했지만,<br>나오시마를 알차게 즐길 수 있도록 준비했어요 😊</p>
+  </div>
+
+  <div class="pb-summary-row">
+    <span class="pb-chip">지중미술관 사전예약 필수</span>
+    <span class="pb-chip">페리 현장 현금만</span>
+    <span class="pb-chip">버스 100엔 균일</span>
+    <span class="pb-chip">나머지 미술관 당일 OK</span>
+  </div>
+
+  <div class="pb-section">
+    <div class="pb-alert pb-alert--warn">
+      ⚠️ 나오시마에서 유일하게 사전예약이 꼭 필요한 곳 → 지중미술관
+    </div>
+  </div>
+
+  <div class="pb-section">
+    <div class="pb-section-title">지중미술관 예약</div>
+    <div class="pb-alert pb-alert--accent">
+      <strong>왜 미리 예약해야 하나요?</strong><br>
+      시간대별로 입장 인원을 엄격하게 제한해요. 예약 없이 가시면 잔여석이 없을 경우 입장이 어려울 수 있답니다!
+    </div>
+    <div class="pb-card">
+      <div class="pb-info-row">
+        <span class="pb-info-label">예약 방법</span>
+        <span>공식 사이트에서 날짜·시간대 선택 후 결제</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">사전 준비</span>
+        <span>회원가입 + 결제수단 등록 <span class="pb-tag pb-tag--warn">VISA/Mastercard 권장</span></span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">나머지 관</span>
+        <span>이우환·이에프로젝트·신미술관은 당일 방문 OK — 온라인 구매 시 할인 + QR 즉시 발급</span>
+      </div>
+      <a class="pb-btn pb-btn--primary" href="https://benesse-artsite.jp/en/">
+        <div class="pb-btn-left">
+          <span>지중미술관 예약 바로가기</span>
+          <span class="pb-btn-sub">benesse-artsite.jp/en/</span>
+        </div>
+        <div class="pb-btn-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="pb-section">
+    <div class="pb-section-title">페리 · 다카마쓰 ↔ 나오시마</div>
+    <div class="pb-card">
+      <div class="pb-info-row">
+        <span class="pb-info-label">운항사</span>
+        <span>四国汽船 (시코쿠 기센)</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">구매</span>
+        <span><span class="pb-tag pb-tag--error">현장 현금만</span>&nbsp;사전예약·카드 불가해요</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">소요시간</span>
+        <span>다카마쓰 → 나오시마 약 50~60분</span>
+      </div>
+      <div class="pb-alert pb-alert--warn">
+        운항편 간격이 길어요. 미리 시간표를 확인하고 일정을 짜세요. 마지막 배편 시간 꼭 체크!
+      </div>
+      <a class="pb-btn pb-btn--secondary" href="https://www.shikokukisen.com/en/instant/#route01">
+        <div class="pb-btn-left">
+          <span>페리 시간표 확인하기</span>
+          <span class="pb-btn-sub">다카마쓰 ↔ 미야노우라</span>
+        </div>
+        <div class="pb-btn-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <div class="pb-section">
+    <div class="pb-section-title">섬 내 이동</div>
+    <div class="pb-card">
+      <div class="pb-bus-title"><span class="pb-tag pb-tag--accent">시내버스</span>&nbsp;100엔 균일</div>
+      <div class="pb-bus-body">
+        미야노우라항 ↔ 혼무라 ↔ 쓰쓰지소(지중·베네세) 구역 연결<br>
+        <strong>내릴 때</strong> 요금을 내요. 잔돈을 미리 준비해두시면 편해요 😊
+      </div>
+      <div style="height:1px;background:var(--color-border);margin:var(--space-4) 0"></div>
+      <div class="pb-bus-title"><span class="pb-tag pb-tag--ok">베네세 무료 셔틀</span>&nbsp;무료</div>
+      <div class="pb-bus-body">
+        쓰쓰지소 ↔ 지중미술관, 베네세 하우스 뮤지엄 등 무료 운행
+      </div>
+      <a class="pb-btn pb-btn--secondary" href="https://naoshima.net/wp-content/uploads/2015/11/4f996173445a22bb5f1902e6987e97dc.pdf">
+        <div class="pb-btn-left">
+          <span>버스 시간표 PDF 보기</span>
+          <span class="pb-btn-sub">출발지↓ · 도착지→ 교차 시각 확인</span>
+        </div>
+        <div class="pb-btn-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <div class="pb-section">
+    <div class="pb-section-title">식사 추천</div>
+    <div class="rest-grid">
+      <div class="rest-cell">
+        <div class="rest-num">01</div>
+        <div class="rest-name">콘니치와</div>
+        <div class="rest-info">카레라이스, 도리아<br>종일 운영, 뷰 좋아요</div>
+      </div>
+      <div class="rest-cell">
+        <div class="rest-num">02</div>
+        <div class="rest-name">창작요리 토시</div>
+        <div class="rest-info">계절 정식 ¥3,000<br>평점 4.9, 제철 정갈한 정식</div>
+        <div class="rest-tags"><span class="pb-tag pb-tag--warn">수·목 정기휴무</span></div>
+      </div>
+      <div class="rest-cell">
+        <div class="rest-num">03</div>
+        <div class="rest-name">사라장</div>
+        <div class="rest-info">갈레뜨, 크레페<br>관람 중간 쉬어가기</div>
+        <div class="rest-tags"><span class="pb-tag pb-tag--warn">월 정기휴무</span></div>
+      </div>
+      <div class="rest-cell">
+        <div class="rest-num">04</div>
+        <div class="rest-name">루크스 피자&amp;그릴</div>
+        <div class="rest-info">화덕 피자, 파스타<br>든든하게 드시고 싶을 때</div>
+        <div class="rest-tags"><span class="pb-tag pb-tag--warn">월·화 정기휴무</span></div>
+      </div>
+      <div class="rest-cell">
+        <div class="rest-num">05</div>
+        <div class="rest-name">카페 살롱 나카오쿠</div>
+        <div class="rest-info">오므라이스<br>594건 4.5점 대표 맛집</div>
+        <div class="rest-tags"><span class="pb-tag pb-tag--warn">월·화 정기휴무</span></div>
+      </div>
+      <div class="rest-cell">
+        <div class="rest-num">06</div>
+        <div class="rest-name">APRON CAFE</div>
+        <div class="rest-info">함박스테이크 정식<br>혼무라 가정식</div>
+        <div class="rest-tags"><span class="pb-tag pb-tag--error">현금만</span> <span class="pb-tag pb-tag--warn">월 정기휴무</span></div>
+      </div>
+    </div>
+    <p class="pb-note">1인 ¥2,000~3,000 내외 · 정기휴무일은 변동될 수 있으니 방문 전 꼭 확인해보세요</p>
+    <a class="pb-btn pb-btn--primary pb-btn--featured" href="https://nowikoes.github.io/naoshima-lunch/">
+      <div class="pb-btn-left">
+        <span class="pb-btn-label">📍 지도 + 메뉴 + 사진 한눈에 보기</span>
+        <span class="pb-btn-title">식당 지도 바로가기</span>
+      </div>
+      <div class="pb-btn-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <div class="pb-section">
+    <div class="pb-section-title">후기 남기는 법</div>
+    <div class="pb-alert pb-alert--accent">
+      여행이 즐거우셨다면, 앱스토어에서 마이리얼트립 앱 리뷰로 응원해주세요!
+    </div>
+    <div class="pb-card">
+      <div class="pb-bus-title"><span class="pb-tag pb-tag--neutral">iPhone</span></div>
+      <div class="pb-bus-body">
+        App Store → <strong>마이리얼트립</strong> 검색 → 앱 탭 → 앱 페이지 하단 <strong>평가 및 리뷰</strong> → <strong>리뷰 작성</strong>
+      </div>
+      <div style="height:1px;background:var(--color-border);margin:var(--space-4) 0"></div>
+      <div class="pb-bus-title"><span class="pb-tag pb-tag--neutral">Android</span></div>
+      <div class="pb-bus-body">
+        Play 스토어 → <strong>마이리얼트립</strong> 검색 → 앱 탭 → 앱 페이지 하단 <strong>평점 및 리뷰</strong> → <strong>리뷰 작성</strong>
+      </div>
+    </div>
+    <p class="pb-note">키워드 '나오시마 워킹투어', '마이리얼트립 상담 만족' 등을 넣어주시면 더 좋아요 🙏</p>
+  </div>
+
+  <div class="pb-footer">
+    <p>이번엔 함께하지 못했지만, 다음 여행에서 꼭 만나요 😊</p>
+    <p class="pb-footer-sub">마이리얼트립 나오시마 워킹투어</p>
+  </div>
+
+</div>
+</body>
+</html>
