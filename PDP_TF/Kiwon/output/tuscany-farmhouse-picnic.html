@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>15세기 토스카나 농가저택 피크닉 투어 — PB Exclusive</title>
+<meta name="description" content="피렌체 근교, 15세기 토스카나 키안티 농가저택에서 올리브밭과 포도밭을 배경으로 즐기는 프라이빗 피크닉 투어.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418;
+    --c-gray-850: #212529; --c-gray-800: #343A40; --c-gray-700: #495056;
+    --c-gray-600: #636363; --c-gray-550: #595959; --c-gray-500: #848C94;
+    --c-gray-400: #ADB5BD; --c-gray-200: #DEE2E6; --c-gray-100: #E5E5E5;
+    --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7;
+    --c-blue-600: #1583DB; --c-blue-80: #E7F4FD;
+    --c-red-500: #EC4937;
+    --c-yellow-200:#FFF2C6; --c-yellow-100:#FBFFE7; --c-yellow-50:#FDF1B5; --c-yellow-warm:#FFE390;
+    --c-white: #FFFFFF; --c-black: #000000;
+    --pdp-text-primary: var(--c-gray-1000); --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500); --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white); --pdp-bg-sub: var(--c-gray-80); --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600); --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px; --pdp-section-pb: 24px; --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px; --pdp-card-padding: 20px; --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px; --pdp-img-section-h: 232px; --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px; --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px; --pdp-img-radius-lg: 24px;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px; --content-w: 350px; --content-inset: 342px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: #E8E8E8; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .img-placeholder { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+  .img-placeholder .label { background: rgba(0,0,0,0.45); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; pointer-events: none; backdrop-filter: blur(2px); }
+
+  .exclusive-header { width: 390px; height: 102px; background: var(--c-gray-900); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; }
+  .exclusive-header .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%); pointer-events: none; }
+  .exclusive-header .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1; }
+  .exclusive-header .tagline { font-size: 15px; font-weight: 700; color: var(--c-white); letter-spacing: -0.3px; position: relative; z-index: 1; }
+  .exclusive-header .subtitle { font-size: 12px; font-weight: 400; color: var(--c-gray-400); letter-spacing: -0.24px; position: relative; z-index: 1; }
+
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+
+  .intro-section { padding: 60px 20px 23px; text-align: center; }
+  .intro-section .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .intro-section h1 { font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.44; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+
+  .pain-point-cards { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .pain-card { background: var(--c-gray-50); border-radius: 12px; padding: 20px 30px; text-align: center; font-size: 16px; font-weight: 500; color: var(--c-gray-850); letter-spacing: -0.32px; line-height: 1.35; }
+
+  .guide-profile { padding: 32px 20px 24px; }
+  .guide-profile .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .guide-profile .photo { width: 350px; height: 170px; border-radius: 12px; margin-bottom: 16px; }
+  .guide-profile .role { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 4px; }
+  .guide-profile .name { font-size: 18px; font-weight: 700; color: var(--c-gray-1000); margin-bottom: 8px; }
+  .guide-profile .bio { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; margin-bottom: 8px; }
+  .guide-profile .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 20px; border-top: 1px solid var(--c-gray-100); padding-top: 16px; }
+  .guide-profile .stat { text-align: center; }
+  .guide-profile .stat + .stat { border-left: 1px solid var(--c-gray-100); }
+  .guide-profile .stat-value { font-size: 15px; font-weight: 700; color: var(--c-black); margin-bottom: 4px; }
+  .guide-profile .stat-label { font-size: 11px; font-weight: 500; color: var(--c-gray-700); }
+
+  .recommend-box { padding: 0 20px 24px; }
+  .recommend-box .box { background: var(--c-gray-50); border-radius: 10px; padding: 10px; }
+  .recommend-box .box-inner { padding: 10px 12px; }
+  .recommend-box .box-title { font-size: 14px; font-weight: 700; color: var(--c-black); margin-bottom: 8px; }
+  .recommend-box .check-item { font-size: 14px; font-weight: 500; color: var(--c-black); line-height: 1.72; padding-left: 20px; position: relative; }
+  .recommend-box .check-item::before { content: '\2713'; position: absolute; left: 0; color: var(--c-blue-600); font-weight: 700; }
+
+  .section-header { padding: 50px 20px 33px; text-align: center; }
+  .section-header .tag { display: inline-block; background: var(--c-gray-900); color: var(--c-white); font-size: 13px; font-weight: 600; letter-spacing: -0.13px; padding: 2px 4px; border-radius: 6px; margin-bottom: 18px; }
+  .section-header h2 { font-size: 26px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.52px; line-height: 1.24; }
+
+  .program-card { padding: 0 24px 32px; }
+  .program-card .card-image { width: 342px; height: 254px; border-radius: 24px; margin-bottom: 16px; }
+  .program-card h3 { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; }
+  .program-card .duration { font-size: 15px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.15px; }
+  .program-card .desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; margin-top: 10px; }
+
+  .highlight-callout { margin: 0 24px 24px; width: 342px; height: 76px; border-radius: 8px; background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390); padding: 19px 15px; display: flex; flex-direction: column; justify-content: center; }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.13px; }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+
+  .section-image { padding: 0 20px 24px; }
+  .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-img-wrap .img-placeholder { width: 100%; height: 100%; }
+  .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 32px; }
+  .timeline-item { margin-bottom: 50px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image { width: 350px; height: 170px; border-radius: 10px; margin-bottom: 15px; }
+  .timeline-item .tl-image .img-placeholder { width: 100%; height: 100%; }
+  .timeline-item .badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--c-gray-900); padding: 2.5px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .tl-title { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 10px; }
+  .timeline-item .tl-desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; }
+
+  .numbered-list { padding: 32px 20px 24px; }
+  .numbered-list .list-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .numbered-list .list-subtitle { font-size: 15px; font-weight: 700; color: var(--c-gray-900); margin-bottom: 12px; }
+  .numbered-list .list-subtitle.excluded { margin-top: 24px; }
+  .num-list { display: flex; flex-direction: column; gap: 24px; }
+  .num-item { display: flex; flex-direction: column; }
+  .num-item-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .num-item .num { font-size: 13px; font-weight: 700; color: var(--c-blue-600); flex-shrink: 0; min-width: 18px; }
+  .num-item .num.excluded { color: var(--c-gray-500); }
+  .num-item .num-title { font-size: 14px; font-weight: 600; color: var(--c-gray-800); line-height: 1.52; }
+  .list-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .list-item .num { font-size: 13px; font-weight: 700; color: var(--c-gray-500); flex-shrink: 0; min-width: 18px; }
+  .list-item .item-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; }
+
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  .trust-points { width: 390px; min-height: 496px; background: var(--c-gray-900); position: relative; overflow: hidden; padding: 63px 20px 43px; text-align: center; }
+  .trust-points .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%); pointer-events: none; }
+  .trust-points .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; position: relative; z-index: 1; }
+  .trust-points .headline { font-size: 26px; font-weight: 700; color: var(--c-white); letter-spacing: -0.52px; line-height: 1.24; margin-bottom: 55px; position: relative; z-index: 1; }
+  .trust-item { text-align: center; margin-bottom: 27px; position: relative; z-index: 1; }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon { width: 40px; height: 40px; margin: 0 auto 12px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .trust-item .trust-title { font-size: 18px; font-weight: 700; color: var(--c-white); line-height: 1.35; margin-bottom: 5px; }
+  .trust-item .trust-desc { font-size: 14px; font-weight: 500; color: var(--c-gray-400); letter-spacing: -0.28px; line-height: 1.34; }
+
+  .block-section { position: relative; }
+  .block-section::before { content: attr(data-block) ' \2014 ' attr(data-mode); position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10; letter-spacing: 0.5px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after { content: attr(data-output); position: absolute; bottom: 2px; right: 2px; background: rgba(21,131,219,0.8); color: #fff; font-size: 9px; font-weight: 600; padding: 1px 4px; border-radius: 3px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+  .poc-legend { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 11px; padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px); }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">토스카나의 숨겨진 농가에서 즐기는 피크닉</p>
+    <p class="subtitle" data-output="html">피렌체 근교 · 15세기 농가저택 · 소수 프라이빗</p>
+  </section>
+
+  <!-- ═══ 2. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/wALb/ThAJ3Vuvse.jpeg');">
+    </div>
+  </section>
+
+  <!-- ═══ 3. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <h1 data-output="html">15세기 토스카나 농가저택에서의<br>유니크한 피크닉 투어</h1>
+    <p class="body" data-output="html">키안티 중심부의 시골 농장 체르바이야. 올리브밭과 포도밭이 물결치는 이곳에서, 다빈치 작품의 배경 같은 풍경을 바라보며 피크닉을 즐겨보세요. 일반 여행객은 갈 수 없는 현지인만의 장소입니다.</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/2zvx/yV4e98SSxU.jpg');"></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">"피렌체 근교 토스카나를 가고 싶은데<br>렌터카 없이는 어떻게 가지?"</div>
+    <div class="pain-card" data-output="html">"와이너리 투어 말고<br>토스카나 시골 풍경을 여유롭게 즐기고 싶어"</div>
+    <div class="pain-card" data-output="html">"관광객 없는 진짜 현지인 장소에서<br>특별한 시간을 보내고 싶어"</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">함께하는 가이드</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/06/17/4vJA/K6S8Q9DjfZ.png');"></div>
+    <p class="role" data-output="html">피렌체 공인 가이드</p>
+    <p class="name" data-output="html">피렌체투어 · 최영인</p>
+    <p class="bio" data-output="html">피렌체 공인 가이드 자격을 갖춘 전문가들로 구성된 미술관·박물관 전문 투어팀. 회화, 조각, 복원, 미술사 등 각 분야 전공자들이 2008년부터 18년째 피렌체에서 깊이 있는 투어를 이어가고 있습니다.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">18년</div>
+        <div class="stat-label" data-output="html">피렌체 활동</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">공인</div>
+        <div class="stat-label" data-output="html">가이드 자격</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">한국어</div>
+        <div class="stat-label" data-output="html">진행 언어</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 딱 맞는 투어</p>
+        <p class="check-item" data-output="html">토스카나 시골 풍경을 여유롭게 즐기고 싶은 분</p>
+        <p class="check-item" data-output="html">관광객 없는 현지인 장소에서 특별한 경험을 원하는 분</p>
+        <p class="check-item" data-output="html">가족, 연인과 프라이빗한 피크닉을 즐기고 싶은 분</p>
+        <p class="check-item" data-output="html">렌터카 없이 피렌체 근교를 방문하고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">PROGRAM</span>
+    <h2 data-output="html">영화 속 토스카나에서<br>당신만의 피크닉을</h2>
+  </section>
+
+  <!-- ═══ 8. programCard ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/wHu8/i2XY2kniJf.JPG');"></div>
+    <h3 data-output="html">15세기 농가저택 정원에서<br>토스카나 피크닉</h3>
+    <span class="duration" data-output="html">약 3시간</span>
+    <p class="desc" data-output="html">피크닉 바구니와 담요가 준비된 농가 정원에서, 파니노 세트와 키안티 와인 한 잔을 곁들여 여유로운 오후를 보냅니다. 올리브밭과 포도밭을 배경으로 사진도 찍어보세요.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">일반 여행객은 갈 수 없는 현지인만의 장소</p>
+    <p class="hl-subtitle" data-output="html">18년 피렌체 거주 가이드의 프라이빗 네트워크로만 방문 가능</p>
+  </div>
+
+  <!-- ═══ 9-1. sectionImage ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/fP4F/s22u3WsooR.jpg');"></div>
+    </div>
+    <p class="section-img-caption" data-output="html">토스카나 키안티 지역의 올리브밭과 포도밭</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">투어 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/Vvgk/C2yfiooWVo.JPG');"></div>
+      </div>
+      <span class="badge pm" data-output="html">12:30 (40분 이동)</span>
+      <h4 class="tl-title" data-output="html">피렌체 국립도서관 미팅 → 토스카나 이동</h4>
+      <p class="tl-desc" data-output="html">피렌체 국립도서관 앞에서 미팅 후, 차량으로 토스카나 체르바이야까지 약 40분 이동합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/1dYz/smo2EjQqSx.jpg');"></div>
+      </div>
+      <span class="badge pm" data-output="html">13:10 ~ 16:10 (3시간)</span>
+      <h4 class="tl-title" data-output="html">15세기 농가저택 정원 피크닉</h4>
+      <p class="tl-desc" data-output="html">농가 저택 정원에서 피크닉 바구니, 담요, 파니노 세트, 와인 1잔, 물 1병과 함께 여유로운 시간을 보냅니다. 올리브밭과 포도밭을 산책하고 사진을 찍으며 토스카나의 평화를 만끽하세요.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/01/22/rtOC/m42rmfqb88.jpg');"></div>
+      </div>
+      <span class="badge pm" data-output="html">16:10 ~ 16:50 (40분 이동)</span>
+      <h4 class="tl-title" data-output="html">피렌체로 복귀</h4>
+      <p class="tl-desc" data-output="html">투어를 마치고 차량으로 피렌체 시내로 돌아갑니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함</h2>
+
+    <p class="list-subtitle" data-output="html">포함 사항</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">가이드비</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">02</span>
+          <p class="num-title" data-output="html">피렌체-토스카나 왕복 차량 운행비</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">03</span>
+          <p class="num-title" data-output="html">피크닉 바구니 + 담요 대여</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">04</span>
+          <p class="num-title" data-output="html">파니노 세트 (빵, 살라미, 프로슈토)</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">05</span>
+          <p class="num-title" data-output="html">와인 1잔 + 물 1병</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함 사항</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">개인 경비</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">02</span>
+      <p class="item-text" data-output="html">여행자 보험</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">03</span>
+      <p class="item-text" data-output="html">추가 와인 (1잔당 5유로)</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>출발시간(12:30)</strong>이 되면 별도 연락 없이 바로 출발합니다. 5분 전까지 미팅장소에 나와주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">지각 또는 본인 실수로 불참 시 <strong>노쇼 처리</strong>됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">차량: Mercedes Benz B / Jeep Renegade (운전자 외 4인). <strong>캐리어 탑승 불가, 카시트 미제공.</strong></p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">야외 프로그램으로 <strong>우천 시 취소</strong>됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>최소 인원 4명.</strong> 미달 시 4인 가격 지불로 진행 가능.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">선글라스, 모자 착용을 권장합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>취소 규정:</strong> 7일 전 전액 환불 / 6~3일 전 50% 공제 / 2일 전~당일 환불 불가</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">왜 PB Exclusive인가요?</h2>
+    <div class="trust-item">
+      <div class="icon">&#x1F3E0;</div>
+      <p class="trust-title" data-output="html">비공개 현지인 장소</p>
+      <p class="trust-desc" data-output="html">15세기 토스카나 농가저택, 일반 관광으로는<br>방문할 수 없는 프라이빗 장소</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F3C6;</div>
+      <p class="trust-title" data-output="html">18년 경력 공인 가이드</p>
+      <p class="trust-desc" data-output="html">피렌체 공인 자격 보유, 미술사 전공<br>전문가 팀이 함께합니다</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F377;</div>
+      <p class="trust-title" data-output="html">올인원 피크닉 패키지</p>
+      <p class="trust-desc" data-output="html">차량, 피크닉 세트, 와인까지<br>준비 없이 즐기는 토스카나 오후</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">토스카나의 숨겨진 농가에서 즐기는 피크닉</p>
+    <p class="subtitle" data-output="html">피렌체 근교 · 15세기 농가저택 · 소수 프라이빗</p>
+  </section>
+
+</main>
+
+</body>
+</html>

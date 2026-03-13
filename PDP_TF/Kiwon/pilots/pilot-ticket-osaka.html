@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>오사카 주유패스 1일권/2일권 — PDP Pilot (TICKET)</title>
+<meta name="description" content="오사카 주유패스로 50개 이상 관광지 무료 입장 + 교통 무제한. 하루 관광지 2곳만 가도 본전.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "오사카 주유패스 1일권/2일권",
+  "description": "50개 이상 관광지 무료 입장 + 오사카 지하철·버스 무제한 이용",
+  "brand": { "@type": "Brand", "name": "오사카 관광국" },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "1204"
+  }
+}
+</script>
+
+<style>
+  /* ── Design Tokens (from pdp-tokens.json) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719; /* Figma T&A 기본 title 색상 */
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* ── Hero Header (TICKET 전용: heroImage 하단 타이틀 영역) ── */
+  .hero-header {
+    padding: 20px 20px 14px;
+  }
+  .hero-category {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-blue-600);
+    background: var(--c-blue-80);
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .hero-title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.24;
+    color: var(--c-gray-1000);
+    letter-spacing: -0.48px;
+  }
+  .hero-subtitle {
+    margin-top: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.44;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 32px 20px 24px;
+  }
+  .intro-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    line-height: 1.24;
+    margin-bottom: 14px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.65;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .intro-visual .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList (with step images)
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .num-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 4px;
+    line-height: 1.38;
+  }
+  .num-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .num-step-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 0 20px 24px;
+  }
+  .recommend-box .box {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .recommend-box .box-inner {
+    padding: 10px 12px;
+  }
+  .recommend-box .box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 8px;
+  }
+  .recommend-box .check-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-black);
+    line-height: 1.72;
+    padding-left: 20px;
+    position: relative;
+  }
+  .recommend-box .check-item::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--c-blue-600);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: imageGrid (horizontal scroll)
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .image-grid {
+    padding: 32px 0 24px;
+  }
+  .image-grid .grid-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+  .spot-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px;
+    scrollbar-width: none;
+  }
+  .spot-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .spot-card {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
+  }
+  .spot-thumb {
+    width: 240px;
+    height: 160px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .spot-thumb .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .spot-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-gray-1000);
+    margin-bottom: 3px;
+    line-height: 1.38;
+  }
+  .spot-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.55;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 24px 24px;
+    width: 342px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .highlight-callout .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    letter-spacing: -0.13px;
+  }
+  .highlight-callout .hl-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList (포함/불포함)
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .include-exclude {
+    padding: 32px 20px 24px;
+  }
+  .include-exclude .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .include-exclude .list-subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    margin-bottom: 12px;
+  }
+  .include-exclude .list-subtitle.excluded {
+    margin-top: 24px;
+  }
+  .list-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: baseline;
+  }
+  .list-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .list-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .list-item .item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionImage (full-width mid-content)
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-image .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-image .section-img-wrap .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .section-image .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong {
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: customerReview
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .customer-review {
+    padding: 32px 20px 24px;
+  }
+  .customer-review .review-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .review-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .review-stars {
+    color: #F5A623;
+    font-size: 16px;
+  }
+  .review-count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+  }
+  .review-card {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .review-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 6px;
+  }
+  .review-date {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-gray-500);
+    margin-left: 8px;
+  }
+  .review-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay: renderMode / output 태그
+     ══════════════════════════════════════════ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC 범례 ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. heroImage (image) ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background: linear-gradient(180deg, #E8913A 0%, #C4531A 50%, #8B2E0F 100%);">
+      <span class="label">osaka-castle-dotonbori.jpg · 390x458</span>
+    </div>
+  </section>
+
+  <!-- ── Hero Header (heroImage 하단) ── -->
+  <section class="hero-header block-section" data-block="heroImage" data-mode="structured">
+    <div class="hero-category" data-output="html">TICKET · 오사카</div>
+    <h1 class="hero-title" data-output="html">오사카 주유패스</h1>
+    <p class="hero-subtitle" data-output="html">50개 이상 관광지 무료 입장 + 교통 무제한</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 2. introSection (structured) ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">주유패스 하나로<br>오사카 관광 끝</h2>
+    <p class="body" data-output="html">
+      오사카성, 우메다 스카이빌딩, 도톤보리 크루즈 등 50개 이상 관광지를 무료로 입장할 수 있어요. 지하철과 버스도 무제한이라 관광지마다 따로 교통비를 낼 필요가 없습니다.
+    </p>
+    <p class="body" data-output="html" style="margin-top: 12px;">
+      하루에 2~3곳만 돌아도 패스 가격 이상을 뽑을 수 있어요.
+    </p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2C3E50 0%, #3498DB 50%, #1ABC9C 100%);">
+        <span class="label">osaka-pass-overview.jpg · 350x200 (패스 실물 + 주요 관광지 콜라주)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. recommendBox (structured) ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분들에게 좋아요</p>
+        <p class="check-item" data-output="html">하루에 관광지 3곳 이상 가실 분</p>
+        <p class="check-item" data-output="html">교통비 신경 쓰기 싫은 분</p>
+        <p class="check-item" data-output="html">처음 오사카 여행하는 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 4. numberedList (hybrid) — 이용 방법 (단계별 이미지 포함) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">이용 방법</h2>
+
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">1</div>
+          <div>
+            <p class="num-title" data-output="html">온라인 구매</p>
+            <p class="num-desc" data-output="html">마이리얼트립에서 1일권 또는 2일권을 선택해 구매해요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #1583DB 0%, #0D5A9E 100%);">
+            <span class="label">step1-purchase-screen.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">2</div>
+          <div>
+            <p class="num-title" data-output="html">이메일 바우처 수령</p>
+            <p class="num-desc" data-output="html">구매 완료 후 이메일로 교환 바우처(QR코드)를 받아요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #6B8F71 0%, #4A6B4F 100%);">
+            <span class="label">step2-voucher-qr.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">3</div>
+          <div>
+            <p class="num-title" data-output="html">현지 교환소에서 실물 패스 교환</p>
+            <p class="num-desc" data-output="html">난바, 우메다 등 지정 교환소에서 바우처를 보여주고 실물 패스로 교환해요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #E8913A 0%, #C4531A 100%);">
+            <span class="label">step3-exchange-counter.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">4</div>
+          <div>
+            <p class="num-title" data-output="html">지하철/버스 자유이용 + 관광지 입장</p>
+            <p class="num-desc" data-output="html">개찰구에 패스를 넣으면 교통 이용, 관광지 입구에서 보여주면 무료 입장이에요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #8E44AD 0%, #6C3483 100%);">
+            <span class="label">step4-gate-entry.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. imageGrid (hybrid) — 인기 무료 입장 관광지 (가로 스크롤) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">인기 무료 입장 관광지</h2>
+
+    <div class="spot-scroll">
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #5B8C3E 0%, #3D6B2E 100%);"><span class="label">osaka-castle.jpg</span></div></div>
+        <p class="spot-name" data-output="html">오사카성 천수각</p>
+        <p class="spot-desc" data-output="html">전망대에서 시내 한눈에</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #4A7FB5 0%, #2C5F8A 100%);"><span class="label">umeda-sky.jpg</span></div></div>
+        <p class="spot-name" data-output="html">우메다 스카이빌딩</p>
+        <p class="spot-desc" data-output="html">공중정원 360도 야경</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2878A8 0%, #1A5276 100%);"><span class="label">dotonbori-cruise.jpg</span></div></div>
+        <p class="spot-name" data-output="html">도톤보리 크루즈</p>
+        <p class="spot-desc" data-output="html">배 위에서 네온사인 야경</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #C0392B 0%, #962D22 100%);"><span class="label">tsutenkaku.jpg</span></div></div>
+        <p class="spot-name" data-output="html">통천각</p>
+        <p class="spot-desc" data-output="html">신세카이 랜드마크</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #5DADE2 0%, #2E86C1 100%);"><span class="label">spaworld.jpg</span></div></div>
+        <p class="spot-name" data-output="html">스파월드</p>
+        <p class="spot-desc" data-output="html">세계 테마 온천</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #F39C12 0%, #D68910 100%);"><span class="label">tempozan-wheel.jpg</span></div></div>
+        <p class="spot-name" data-output="html">덴포잔 대관람차</p>
+        <p class="spot-desc" data-output="html">오사카 항구 전경</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #1ABC9C 0%, #148F77 100%);"><span class="label">aqua-liner.jpg</span></div></div>
+        <p class="spot-name" data-output="html">오사카 수상버스</p>
+        <p class="spot-desc" data-output="html">시내 강변 유람</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb"><div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);"><span class="label">hep-five.jpg</span></div></div>
+        <p class="spot-name" data-output="html">HEP FIVE 관람차</p>
+        <p class="spot-desc" data-output="html">우메다 빨간 관람차</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. highlightCallout (structured) ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">관광지 2곳만 가도 본전!</p>
+    <p class="hl-subtitle" data-output="html">오사카성 600엔 + 우메다 스카이빌딩 1,500엔 + 크루즈 1,000엔 = 3,100엔</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. numberedList (structured) — 포함/불포함 ═══ -->
+  <section class="include-exclude block-section" data-block="numberedList" data-mode="structured">
+    <h2 class="list-title" data-output="html">포함 / 불포함</h2>
+
+    <p class="list-subtitle" data-output="html">포함 사항</p>
+    <div class="list-item">
+      <span class="num" data-output="html">01</span>
+      <p class="item-text" data-output="html">50개 이상 관광지 무료 입장</p>
+    </div>
+    <div class="list-item">
+      <span class="num" data-output="html">02</span>
+      <p class="item-text" data-output="html">오사카 지하철/버스 무제한</p>
+    </div>
+    <div class="list-item">
+      <span class="num" data-output="html">03</span>
+      <p class="item-text" data-output="html">관광 쿠폰북</p>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함 사항</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">JR 노선</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">02</span>
+      <p class="item-text" data-output="html">난카이 공항특급</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">03</span>
+      <p class="item-text" data-output="html">식비</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 8. sectionImage (image) — 추천 1일 코스 ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image" style="padding-top: 32px;">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2C3E50 0%, #E74C3C 30%, #F39C12 60%, #1ABC9C 100%);">
+        <span class="label">osaka-1day-course-map.jpg · 350x232 (추천 1일 코스 인포그래픽)</span>
+      </div>
+    </div>
+    <p class="section-img-caption" data-output="html">추천 1일 코스: 오사카성 → 도톤보리 크루즈 → 우메다 스카이빌딩</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 9. notice (structured) ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">유의사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>여권 지참 필수</strong>입니다. 외국인 전용 패스이므로 여권 확인이 필요합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>사용 시작일로부터 연속 사용</strong>해야 합니다. 2일권은 연속 2일간 유효합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">일부 시설은 <strong>정기 휴관일</strong>이 있습니다. 방문 전 반드시 확인해 주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>분실 시 재발급 불가</strong>합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">전자 패스는 <strong>별도 교환소에서 실물 교환</strong>이 필요합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 9. customerReview (structured) ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="review-title" data-output="html">이용 후기</h2>
+
+    <div class="review-summary">
+      <span class="review-score" data-output="html">4.7</span>
+      <span class="review-stars" data-output="css">★★★★★</span>
+      <span class="review-count" data-output="html">1,204건</span>
+    </div>
+
+    <div class="review-card">
+      <p class="review-author" data-output="html">김지수 <span class="review-date">2026.02</span></p>
+      <p class="review-text" data-output="html">2일권으로 오사카성, 우메다, 크루즈까지 다 돌았는데 교통비 따로 안 내니까 진짜 편해요. 본전은 첫날에 이미 뽑았어요.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">박준혁 <span class="review-date">2026.01</span></p>
+      <p class="review-text" data-output="html">1일권으로 3곳 돌았는데 입장료만 합쳐도 패스 가격 넘었어요. 난바역 교환소도 찾기 쉬웠고요.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">이하은 <span class="review-date">2025.12</span></p>
+      <p class="review-text" data-output="html">스파월드가 무료인 줄 모르고 갔다가 완전 득템한 기분. 다음에도 무조건 살 거예요.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>우전 수향마을 투어 — PDP Pilot (TOUR)</title>
+<meta name="description" content="고즈넉한 물의 도시 우전에서 만나는 상하이의 매력. 동책·서책 코스, 운하 뱃놀이, 야경 감상. 차이나스토리 가이드.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  /* ── Design Tokens (inline :root) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+    position: relative;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .hero-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--c-blue-600);
+    color: var(--c-white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .hero-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.24;
+    letter-spacing: -0.52px;
+    color: var(--c-white);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 32px 20px 24px;
+  }
+  .intro-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    line-height: 1.24;
+    margin-bottom: 14px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.65;
+  }
+  .intro-section .body + .body {
+    margin-top: 10px;
+  }
+  .partner-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--c-gray-80);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 16px;
+  }
+  .partner-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--c-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .partner-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+  .partner-desc {
+    font-size: 12px;
+    color: var(--c-gray-500);
+    margin-top: 2px;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .intro-visual .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .num-step-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .num-title {
+    font-weight: 600;
+  }
+  .schedule-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .schedule-content { padding-top: 1px; flex: 1; }
+  .schedule-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-blue-600);
+    margin-bottom: 2px;
+  }
+  .schedule-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.38;
+    margin-bottom: 4px;
+  }
+  .schedule-desc {
+    font-size: 13px;
+    color: var(--c-gray-700);
+    line-height: 1.65;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: imageGrid
+     renderMode: hybrid (horizontal scroll)
+     ══════════════════════════════════════════ */
+  .image-grid {
+    padding: 32px 20px 24px;
+  }
+  .image-grid .grid-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 16px;
+  }
+  .image-grid-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .image-grid-scroll::-webkit-scrollbar { display: none; }
+  .grid-card {
+    flex: 0 0 240px;
+    height: 160px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+  }
+  .grid-card .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .grid-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 24px 12px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.38;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 32px 20px 24px;
+  }
+  .recommend-box .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .recommend-card {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .recommend-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .recommend-check {
+    color: var(--c-blue-600);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .recommend-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: guideIntro
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .guide-intro {
+    padding: 32px 20px 24px;
+  }
+  .guide-intro .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .guide-profile-card {
+    background: var(--c-gray-80);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .guide-profile-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .guide-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--c-blue-600);
+    color: var(--c-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .guide-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .guide-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-600);
+    margin-top: 2px;
+  }
+  .guide-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .guide-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .guide-feature-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-blue-80);
+    color: var(--c-blue-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .guide-feature-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 20px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .highlight-callout .callout-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.5;
+  }
+  .highlight-callout .callout-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    margin-top: 6px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong { color: var(--c-gray-900); }
+
+  /* ══════════════════════════════════════════
+     BLOCK: customerReview
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .customer-review {
+    padding: 32px 20px 40px;
+  }
+  .customer-review .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .review-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .review-stars {
+    color: #F5A623;
+    font-size: 16px;
+  }
+  .review-count {
+    font-size: 13px;
+    color: var(--c-gray-500);
+  }
+  .review-card {
+    background: var(--c-gray-80);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 6px;
+  }
+  .review-date {
+    font-size: 12px;
+    color: var(--c-gray-500);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+  .review-text {
+    font-size: 14px;
+    color: var(--c-gray-700);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-img-wrap .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay: renderMode / output tags
+     ══════════════════════════════════════════ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC Legend ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC Legend -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247255_original_1719476635.jpg');">
+      <span class="label">우전 수향마을 히어로 이미지 390x458</span>
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-badge" data-output="html">TOUR &middot; 상하이</span>
+      <h1 class="hero-title" data-output="html">고즈넉한 물의 도시 우전에서<br>만나는 상하이의 매력</h1>
+      <p class="hero-sub" data-output="html">우전 수향마을 투어 &middot; 차이나스토리</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 2. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">수향마을은 어떤 곳인가요?</h2>
+    <p class="body" data-output="html">수향마을은 '물가에 있는 마을'이라는 뜻이에요. 마을이 마치 물 위에 떠 있는 것 같은, 중국 양쯔강 이남 지역의 마을들을 '강남 수향'이라고 해요. 우전을 비롯해 주가각, 저우좡, 퉁리 등 다양한 수향마을이 있어요.</p>
+    <p class="body" data-output="html">그 중에서도 우전 수향마을은 아름다운 야경과 따뜻한 기후, 동책과 서책의 서로 다른 매력적인 풍경으로 알려져 있어요. 1,300년의 역사를 가진 우전에서 강남의 고풍스러운 다리, 흐르는 물을 느껴보세요.</p>
+
+    <!-- 파트너 소개 -->
+    <div class="partner-badge">
+      <div class="partner-icon" data-output="html">🏮</div>
+      <div>
+        <div class="partner-name" data-output="html">차이나스토리</div>
+        <div class="partner-desc" data-output="html">2017년부터 마이리얼트립, 총 708개 후기 (2025.01 기준)</div>
+      </div>
+    </div>
+
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247257_original_1719476635.jpg');">
+        <span class="label">suyang-village-overview.jpg &middot; 350x200 (수향마을 전경)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 3. numberedList (투어 일정) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">자세한 투어 코스는 다음과 같아요.</h2>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">1</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">13:00</div>
+            <p class="schedule-title num-title" data-output="html">가이드 미팅 및 출발</p>
+            <p class="schedule-desc" data-output="html">신세계성 백화점 맞은 편에서 가이드와 미팅하여 우전으로 출발합니다. (약 90분 소요)</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247258_original_1719476635.jpg');">
+            <span class="label">step1-meeting-point.jpg &middot; 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">2</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">약 90분 소요</div>
+            <p class="schedule-title num-title" data-output="html">우전 동책코스 (운하유람선 포함)</p>
+            <p class="schedule-desc" data-output="html">1,000년의 역사를 그대로 만나볼 수 있는 동책의 각종 박물관을 관람하고, 운하에서 뱃놀이 체험을 하실 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247259_original_1719476635.jpg');">
+            <span class="label">step2-dongce-canal.jpg &middot; 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">3</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">약 180분 소요</div>
+            <p class="schedule-title num-title" data-output="html">우전 서책코스 (자유 시간)</p>
+            <p class="schedule-desc" data-output="html">매력적이고 화려한 야경으로 유명한 서책에서 자유시간을 즐기실 수 있습니다. 자유롭게 돌아다니면서 서책 곳곳의 낭만적인 야경을 감상해보세요! (식사는 코스에 포함되지 않습니다.)</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247256_original_1719476635.jpg');">
+            <span class="label">step3-xice-nightview.jpg &middot; 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">4</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">20:00</div>
+            <p class="schedule-title num-title" data-output="html">집결 후 상하이 도심으로 귀환</p>
+            <p class="schedule-desc" data-output="html">계절에 따라 야경 관람 시간이 달라져 집결 시간이 변동될 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">5</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">22:00</div>
+            <p class="schedule-title num-title" data-output="html">해산</p>
+            <p class="schedule-desc" data-output="html">신세계백화점 앞에서 해산합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 4. imageGrid (동책/서책 하이라이트) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">우전 수향마을 투어를 소개합니다!</h2>
+    <div class="image-grid-scroll">
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247256_original_1719476635.jpg');">
+          <span class="label">동책 전통 거리</span>
+        </div>
+        <div class="grid-caption" data-output="html">동책 코스<br>전통 거리 산책</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247259_original_1719476635.jpg');">
+          <span class="label">운하 뱃놀이</span>
+        </div>
+        <div class="grid-caption" data-output="html">운하 뱃놀이<br>유람선 체험</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247257_original_1719476635.jpg');">
+          <span class="label">서책 야경</span>
+        </div>
+        <div class="grid-caption" data-output="html">서책 야경<br>낭만적인 밤</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247255_original_1719476635.jpg');">
+          <span class="label">수향마을 먹거리</span>
+        </div>
+        <div class="grid-caption" data-output="html">수향마을 먹거리<br>취두부 &middot; 케이크</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 5. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <h2 class="section-title" data-output="html">이런 분들께 우전 수향마을 투어를 추천해요!</h2>
+    <div class="recommend-card">
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">상하이 여행자들에게 가장 인기 있는 투어를 알려주세요!</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">중국만의 전통적인 분위기를 느끼고 싶어요!</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">볼거리와 먹거리가 넘쳐나면서도, 힐링할 수 있는 투어는 없을까요?</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">상하이의 숨겨진 매력을 발견하고 싶어요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 6. guideIntro ═══ -->
+  <section class="guide-intro block-section" data-block="guideIntro" data-mode="structured">
+    <h2 class="section-title" data-output="html">투어를 책임지실 가이드를 소개합니다!</h2>
+    <div class="guide-profile-card">
+      <div class="guide-profile-top">
+        <div class="guide-avatar" data-output="html">🏮</div>
+        <div>
+          <div class="guide-name" data-output="html">차이나스토리</div>
+          <div class="guide-sub" data-output="html">2017년부터 마이리얼트립 파트너</div>
+        </div>
+      </div>
+      <div class="guide-features">
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">총 708개 후기, 5.0 만점 (2025.01 기준)</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">상하이 현지 전문 한국어 가이드</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">편안한 전용 차량으로 왕복 이동</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">재미있는 상하이 이야기와 친근한 안내</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 7. highlightCallout ═══ -->
+  <section class="block-section" data-block="highlightCallout" data-mode="structured" style="padding: 24px 0;">
+    <div class="highlight-callout">
+      <p class="callout-text" data-output="html">5.0 만점 &middot; 후기 708개!<br>상하이 우전 수향마을 투어</p>
+      <p class="callout-sub" data-output="html">마이리얼트립 상하이 투어 인기 상품</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ sectionImage (미팅 장소 지도) ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background-image: url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/157510/247258_original_1719476635.jpg');">
+        <span class="label">meeting-point-map.jpg &middot; 350x232 (미팅 장소 안내)</span>
+      </div>
+    </div>
+    <p class="section-img-caption" data-output="html">미팅 장소: 신세계성 백화점 맞은 편 (南京西路 新世界城)</p>
+  </section>
+
+  <!-- ═══ 8. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 안내 사항</h2>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>여권 필수 지참.</strong> 여권을 반드시 지참해주세요!</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>미팅 장소 확인.</strong> 택시: 南京西路2-68号 (新世界城) / 지하철: 1·2·8호선 인민광장역</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>시간 변동 안내.</strong> 계절에 따라 야경 관람 시간이 달라져 집결 시간이 변동될 수 있습니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>문의 채널.</strong> 궁금하신 사항은 마이리얼트립 메시지함을 이용해주세요.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>가격:</strong> 성인 &#8361;49,000 / 소인(만 3-12세) &#8361;39,000 / 유아(만 2세 이하) 무료</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 9. customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="section-title" data-output="html">후기로 증명된 우전 수향마을 투어의 매력!</h2>
+    <div class="review-summary">
+      <span class="review-score" data-output="html">5.0</span>
+      <div>
+        <div class="review-stars" data-output="css">★★★★★</div>
+        <span class="review-count" data-output="html">후기 708개</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">안*애<span class="review-date">2024.12</span></p>
+      <p class="review-text" data-output="html">상해 여행 중 가장 좋았던 순간이 언젠지 생각해보면 우전마을에서 배타고 나오던 그 때에요. 운이 좋게 관광객이 많지 않았던 날이라고 말씀해 주셨는데 그 때문인지 조용한 물길에 우리배만 살랑살랑 흘러나오는게 마치 환상같았어요.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">최*민<span class="review-date">2024.01</span></p>
+      <p class="review-text" data-output="html">가이드님이 해주시는 과거 상하이 이야기랑 넝담처럼 해주시는 말씀이 친근하고 너무 재미있었어요. 운전도 너무 부드럽고 좋았어서 올때갈때 2시간동안 기절 ㅎㅎ 상하이에서 우전이 멀어서 거진 하루를 써야했기에 갈까말까 고민했는데 너무 잘 다녀온 것 같아요.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">장*은<span class="review-date">2024.10</span></p>
+      <p class="review-text" data-output="html">진반용 가이드님 정말 즐거운 여행이었습니다. 친절하시고 재미있게 가이드해주셨어요. 버스도 편안하고 화장실, 먹거리, 꿀팁같은 설명도 주셔서 상해여행 고민이던 선물도 살 수 있어서 최고였습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

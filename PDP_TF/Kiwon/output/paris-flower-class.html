@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>프렌치 플라워 클래스 — PB Exclusive</title>
+<meta name="description" content="파리 현지 플로리스트와 함께 프렌치 스타일 부케를 직접 만들어보세요. 파리 스냅 촬영용 부케부터 핸드타이드까지.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418;
+    --c-gray-850: #212529; --c-gray-800: #343A40; --c-gray-700: #495056;
+    --c-gray-600: #636363; --c-gray-500: #848C94; --c-gray-400: #ADB5BD;
+    --c-gray-200: #DEE2E6; --c-gray-100: #E5E5E5; --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7;
+    --c-blue-600: #1583DB; --c-blue-80: #E7F4FD; --c-red-500: #EC4937;
+    --c-yellow-200:#FFF2C6; --c-yellow-100:#FBFFE7; --c-yellow-50:#FDF1B5; --c-yellow-warm:#FFE390;
+    --c-white: #FFFFFF; --c-black: #000000;
+    --pdp-text-primary: var(--c-gray-1000); --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500); --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white); --pdp-bg-sub: var(--c-gray-80); --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600); --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px; --pdp-section-pb: 24px; --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px; --pdp-card-padding: 20px; --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px; --pdp-img-section-h: 232px; --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px; --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px; --pdp-img-radius-lg: 24px;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px; --content-w: 350px; --content-inset: 342px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: #E8E8E8; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .img-placeholder { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+
+  .exclusive-header { width: 390px; height: 102px; background: var(--c-gray-900); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; }
+  .exclusive-header .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%); pointer-events: none; }
+  .exclusive-header .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1; }
+  .exclusive-header .tagline { font-size: 15px; font-weight: 700; color: var(--c-white); letter-spacing: -0.3px; position: relative; z-index: 1; }
+  .exclusive-header .subtitle { font-size: 12px; font-weight: 400; color: var(--c-gray-400); letter-spacing: -0.24px; position: relative; z-index: 1; }
+
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+
+  .intro-section { padding: 60px 20px 23px; text-align: center; }
+  .intro-section .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .intro-section h1 { font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.44; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .intro-visual .img-placeholder { width: 100%; height: 100%; }
+
+  .pain-point-cards { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .pain-card { background: var(--c-gray-50); border-radius: 12px; padding: 20px 30px; text-align: center; font-size: 16px; font-weight: 500; color: var(--c-gray-850); letter-spacing: -0.32px; line-height: 1.35; }
+
+  .guide-profile { padding: 32px 20px 24px; }
+  .guide-profile .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .guide-profile .photo { width: 350px; height: 170px; border-radius: 12px; margin-bottom: 16px; }
+  .guide-profile .photo .img-placeholder { width: 100%; height: 100%; }
+  .guide-profile .role { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 4px; }
+  .guide-profile .name { font-size: 18px; font-weight: 700; color: var(--c-gray-1000); margin-bottom: 8px; }
+  .guide-profile .bio { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; margin-bottom: 8px; }
+  .guide-profile .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 20px; border-top: 1px solid var(--c-gray-100); padding-top: 16px; }
+  .guide-profile .stat { text-align: center; }
+  .guide-profile .stat + .stat { border-left: 1px solid var(--c-gray-100); }
+  .guide-profile .stat-value { font-size: 15px; font-weight: 700; color: var(--c-black); margin-bottom: 4px; }
+  .guide-profile .stat-label { font-size: 11px; font-weight: 500; color: var(--c-gray-700); }
+
+  .recommend-box { padding: 0 20px 24px; }
+  .recommend-box .box { background: var(--c-gray-50); border-radius: 10px; padding: 10px; }
+  .recommend-box .box-inner { padding: 10px 12px; }
+  .recommend-box .box-title { font-size: 14px; font-weight: 700; color: var(--c-black); margin-bottom: 8px; }
+  .recommend-box .check-item { font-size: 14px; font-weight: 500; color: var(--c-black); line-height: 1.72; padding-left: 20px; position: relative; }
+  .recommend-box .check-item::before { content: '\2713'; position: absolute; left: 0; color: var(--c-blue-600); font-weight: 700; }
+
+  .section-header { padding: 50px 20px 33px; text-align: center; }
+  .section-header .tag { display: inline-block; background: var(--c-gray-900); color: var(--c-white); font-size: 13px; font-weight: 600; letter-spacing: -0.13px; padding: 2px 4px; border-radius: 6px; margin-bottom: 18px; }
+  .section-header h2 { font-size: 26px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.52px; line-height: 1.24; }
+
+  .program-card { padding: 0 24px 32px; }
+  .program-card .card-image { width: 342px; height: 254px; border-radius: 24px; margin-bottom: 16px; }
+  .program-card .card-image .img-placeholder { width: 100%; height: 100%; }
+  .program-card h3 { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; }
+  .program-card .duration { font-size: 15px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.15px; }
+  .program-card .desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; margin-top: 10px; }
+
+  .highlight-callout { margin: 0 24px 24px; width: 342px; height: 76px; border-radius: 8px; background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390); padding: 19px 15px; display: flex; flex-direction: column; justify-content: center; }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.13px; }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+
+  .section-image { padding: 0 20px 24px; }
+  .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-img-wrap .img-placeholder { width: 100%; height: 100%; }
+  .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 32px; }
+  .timeline-item { margin-bottom: 50px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image { width: 350px; height: 170px; border-radius: 10px; margin-bottom: 15px; }
+  .timeline-item .tl-image .img-placeholder { width: 100%; height: 100%; }
+  .timeline-item .badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--c-gray-900); padding: 2.5px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .tl-title { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 10px; }
+  .timeline-item .tl-desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; }
+
+  .numbered-list { padding: 32px 20px 24px; }
+  .numbered-list .list-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .numbered-list .list-subtitle { font-size: 15px; font-weight: 700; color: var(--c-gray-900); margin-bottom: 12px; }
+  .numbered-list .list-subtitle.excluded { margin-top: 24px; }
+  .num-list { display: flex; flex-direction: column; gap: 24px; }
+  .num-item { display: flex; flex-direction: column; }
+  .num-item-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .num-item .num { font-size: 13px; font-weight: 700; color: var(--c-blue-600); flex-shrink: 0; min-width: 18px; }
+  .list-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .list-item .num { font-size: 13px; font-weight: 700; color: var(--c-gray-500); flex-shrink: 0; min-width: 18px; }
+  .list-item .item-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; }
+  .num-item .num-title { font-size: 14px; font-weight: 600; color: var(--c-gray-800); line-height: 1.52; }
+
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  .trust-points { width: 390px; min-height: 496px; background: var(--c-gray-900); position: relative; overflow: hidden; padding: 63px 20px 43px; text-align: center; }
+  .trust-points .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%); pointer-events: none; }
+  .trust-points .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; position: relative; z-index: 1; }
+  .trust-points .headline { font-size: 26px; font-weight: 700; color: var(--c-white); letter-spacing: -0.52px; line-height: 1.24; margin-bottom: 55px; position: relative; z-index: 1; }
+  .trust-item { text-align: center; margin-bottom: 27px; position: relative; z-index: 1; }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon { width: 40px; height: 40px; margin: 0 auto 12px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .trust-item .trust-title { font-size: 18px; font-weight: 700; color: var(--c-white); line-height: 1.35; margin-bottom: 5px; }
+  .trust-item .trust-desc { font-size: 14px; font-weight: 500; color: var(--c-gray-400); letter-spacing: -0.28px; line-height: 1.34; }
+
+  .block-section { position: relative; }
+  .block-section::before { content: attr(data-block) ' \2014 ' attr(data-mode); position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10; letter-spacing: 0.5px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after { content: attr(data-output); position: absolute; bottom: 2px; right: 2px; background: rgba(21,131,219,0.8); color: #fff; font-size: 9px; font-weight: 600; padding: 1px 4px; border-radius: 3px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+  .poc-legend { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 11px; padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px); }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">나만의 프렌치 부케를 직접 만들다</p>
+    <p class="subtitle" data-output="html">파리 · 플라워 클래스 · 스냅 촬영용 부케</p>
+  </section>
+
+  <!-- ═══ 2. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/5sOD/rkI7m498vF.jpg');"></div>
+  </section>
+
+  <!-- ═══ 3. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <h1 data-output="html">꽃다발부터 화관까지<br>파리 스냅의 필수품</h1>
+    <p class="body" data-output="html">파리 스냅사진에 꽃이 있는 것과 없는 것은 정말 큰 차이. 프랑스 플라워 에꼴을 졸업하고 파리에서 활동 중인 플로리스트와 함께, 프렌치 스타일 부케를 직접 만들어보세요. 내가 만든 부케로 스냅을 찍는다면, 평생 잊지 못할 추억이 됩니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/cTj6/VEPQDgxZW0.jpg');"></div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. painPointCards ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">"파리 스냅 찍는데<br>꽃다발은 어디서 구하지?"</div>
+    <div class="pain-card" data-output="html">"프랑스 꽃집에서<br>부케 주문은 어떻게 하지?"</div>
+    <div class="pain-card" data-output="html">"그냥 사는 것보다<br>직접 만들어보고 싶은데..."</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">함께하는 플로리스트</h2>
+    <div class="photo">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/05/06/Xq9d/JHV2hkroOA.JPG');"></div>
+    </div>
+    <p class="role" data-output="html">파리 현지 플로리스트</p>
+    <p class="name" data-output="html">포에티끄 파리 · 송미영</p>
+    <p class="bio" data-output="html">프랑스 플라워 에꼴을 졸업하고 파리에서 플로리스트로 경력을 쌓은 뒤, 현재 플라워 디자이너 프리랜서로 활동 중. 프랑스 국가공인 디플로마를 보유하고 있으며, 파리의 여러 플라워 부티크에서 근무한 경험이 있습니다.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">10년+</div>
+        <div class="stat-label" data-output="html">파리 활동</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">공인</div>
+        <div class="stat-label" data-output="html">프랑스 디플로마</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">한·불·영</div>
+        <div class="stat-label" data-output="html">진행 언어</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 딱 맞는 클래스</p>
+        <p class="check-item" data-output="html">파리 스냅 촬영용 부케가 필요한 분</p>
+        <p class="check-item" data-output="html">프렌치 스타일 플라워를 배워보고 싶은 분</p>
+        <p class="check-item" data-output="html">여행 중 꽃으로 힐링하고 싶은 분</p>
+        <p class="check-item" data-output="html">특별한 기념일에 직접 만든 부케를 선물하고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">CLASS</span>
+    <h2 data-output="html">파리의 플로리스트에게<br>프렌치 부케를 배우다</h2>
+  </section>
+
+  <!-- ═══ 8. programCard ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/i7SE/wIa9NhQWgX.jpg');"></div>
+    </div>
+    <h3 data-output="html">프렌치 스타일 핸드타이드<br>플라워 클래스</h3>
+    <span class="duration" data-output="html">약 2시간</span>
+    <p class="desc" data-output="html">프랑스 정통 플라워 테크닉을 이론부터 실전까지 배웁니다. 다양한 생화 소재로 나만의 프렌치 부케를 완성하고, 스냅 촬영 당일까지 보존되도록 포장해드립니다.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">완성한 부케는 스냅 촬영 소품으로 바로 활용!</p>
+    <p class="hl-subtitle" data-output="html">웨딩 부케처럼 리본 처리 + 촬영일까지 보존 포장</p>
+  </div>
+
+  <!-- ═══ 9-1. sectionImage ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/FWmg/mkLX7duykv.jpg');"></div>
+    </div>
+    <p class="section-img-caption" data-output="html">프렌치 스타일로 완성된 핸드타이드 부케</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">클래스 진행 순서</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154364/242720_original_1716645055.jpg?1716645055');"></div>
+      </div>
+      <span class="badge am" data-output="html">11:00 (20분)</span>
+      <h4 class="tl-title" data-output="html">수업 내용 소개</h4>
+      <p class="tl-desc" data-output="html">차 한잔과 함께 오늘의 수업 내용에 대해 간단하게 설명하는 시간을 가집니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154364/242721_original_1716900029.jpg?1716900029');"></div>
+      </div>
+      <span class="badge am" data-output="html">11:20 (20분)</span>
+      <h4 class="tl-title" data-output="html">플라워 소재 &amp; 이론 설명</h4>
+      <p class="tl-desc" data-output="html">부케에 사용될 생화 소재들의 이름과 프렌치 부케에 대한 이론 및 테크닉을 배웁니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154364/242722_original_1716645055.jpg?1716645055');"></div>
+      </div>
+      <span class="badge am" data-output="html">11:40 (80분)</span>
+      <h4 class="tl-title" data-output="html">실전 메이킹</h4>
+      <p class="tl-desc" data-output="html">셰프의 데몬스트레이션을 본 후, 직접 프렌치 부케를 만들어봅니다. 하나하나 가이드해드려요.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154364/242723_original_1716645056.jpg?1716645056');"></div>
+      </div>
+      <span class="badge pm" data-output="html">13:00 (10분)</span>
+      <h4 class="tl-title" data-output="html">부케 완성 &amp; 포장</h4>
+      <p class="tl-desc" data-output="html">완성된 부케를 마무리합니다. 스냅용 부케는 웨딩 부케처럼 리본 처리하고, 촬영일까지 보존되도록 포장해드립니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함</h2>
+
+    <p class="list-subtitle" data-output="html">포함 사항</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">부케 만들기에 필요한 모든 준비물 (꽃가위, 생화, 리본, 포장지 등)</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">02</span>
+          <p class="num-title" data-output="html">완성한 부케 1개 (중간 사이즈)</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">03</span>
+          <p class="num-title" data-output="html">간단한 차 &amp; 커피</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함 사항</p>
+    <div class="list-item">
+      <span class="num" style="color:var(--c-gray-500);" data-output="html">01</span>
+      <p class="item-text" data-output="html">별도 준비물 없음 (여행자 보험 가입 권장)</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">예약 확정 후 <strong>원하시는 컬러</strong>를 메시지로 알려주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">원데이 클래스 동안 <strong>한 작품을 완성</strong>합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>만나는 시간: 오전 11:00</strong> (개인/그룹 스케줄에 따라 조율 가능)</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>만나는 장소:</strong> 지하철 4호선 Porte d'Orléans역 도보 3분, 30 Rue Beaunier</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">여행자 보험 가입을 권장합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>취소 규정:</strong> 7일 전 전액 환불 / 6~3일 전 50% 공제 / 2일 전~당일 환불 불가</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">왜 PB Exclusive인가요?</h2>
+    <div class="trust-item">
+      <div class="icon">&#x1F33C;</div>
+      <p class="trust-title" data-output="html">프랑스 공인 플로리스트</p>
+      <p class="trust-desc" data-output="html">플라워 에꼴 졸업, 국가공인 디플로마 보유<br>파리 현지 부티크 경력 10년+</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F4F8;</div>
+      <p class="trust-title" data-output="html">스냅 촬영 최적화</p>
+      <p class="trust-desc" data-output="html">웨딩 부케 스타일 리본 처리<br>촬영일까지 보존 포장 제공</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x2728;</div>
+      <p class="trust-title" data-output="html">나만의 작품을 가져가는 체험</p>
+      <p class="trust-desc" data-output="html">이론부터 실전까지 프렌치 테크닉을<br>소수정예로 배우는 원데이 클래스</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">나만의 프렌치 부케를 직접 만들다</p>
+    <p class="subtitle" data-output="html">파리 · 플라워 클래스 · 스냅 촬영용 부케</p>
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>헬리콥터 타고 시드니 하늘 날기 — PDP (ACTIVITY v2)</title>
+<meta name="description" content="하늘에서 시드니의 오페라 하우스, 하버브릿지, 본다이 비치를 조망하는 20분 헬리콥터 투어. 시드니 시티 픽업 포함, 최소 2인 출발.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "헬리콥터 타고 시드니 하늘 날기",
+  "description": "시드니 공항 출발, 오페라 하우스·하버브릿지·본다이비치 조망 20분 헬리콥터 투어",
+  "brand": { "@type": "Brand", "name": "완벽한 하루 (투어트리스)" },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "56"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "276877",
+    "priceCurrency": "KRW",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .zone-divider { height: 12px; background: var(--c-gray-80); }
+
+  .img-placeholder {
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+  }
+
+  /* ══ ZONE 1 ══ */
+
+  .hero-image { width: 390px; height: 458px; position: relative; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+  .hero-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%); color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block; background: var(--c-blue-600); color: var(--c-white);
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px; margin-bottom: 12px; letter-spacing: 0.3px;
+  }
+  .hero-title {
+    font-size: 26px; font-weight: 700; line-height: 1.24; letter-spacing: -0.52px;
+    color: var(--c-white); text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .hero-sub { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85); margin-top: 8px; line-height: 1.4; }
+
+  .intro-section { padding: 32px 20px 24px; text-align: center; }
+  .intro-section h2 {
+    font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px;
+  }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.65; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .intro-section.text-only { padding-bottom: 28px; }
+
+  .image-grid { padding: 32px 20px 24px; }
+  .image-grid .grid-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .grid-vertical { display: flex; flex-direction: column; gap: 8px; }
+  .grid-vertical .grid-row-2 { display: flex; gap: 8px; }
+  .grid-vertical .grid-row-2 .grid-item { flex: 1; }
+  .grid-item { border-radius: 10px; overflow: hidden; }
+  .grid-item .img-placeholder { width: 100%; height: 100%; }
+  .grid-item-full { height: 200px; }
+  .grid-item-half { height: 170px; }
+
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .timeline-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .timeline-items { display: flex; flex-direction: column; gap: 32px; }
+  .timeline-img { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+  .timeline-img .img-placeholder { width: 100%; height: 100%; }
+  .timeline-badge {
+    display: inline-block; font-size: 13px; font-weight: 600; color: var(--c-gray-900);
+    padding: 3px 10px; border-radius: 5px; margin-bottom: 8px; letter-spacing: -0.13px;
+  }
+  .timeline-badge.am { background: var(--c-blue-80); }
+  .timeline-badge.pm { background: var(--c-yellow-200); }
+  .timeline-item-title { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 6px; }
+  .timeline-item-desc { font-size: 15px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.15px; line-height: 1.55; }
+
+  .highlight-callout {
+    margin: 0 20px; padding: 20px 24px;
+    background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%);
+    border-radius: 14px;
+  }
+  .highlight-callout .callout-title { font-size: 17px; font-weight: 700; color: var(--c-gray-900); line-height: 1.4; letter-spacing: -0.17px; margin-bottom: 12px; }
+  .highlight-callout .callout-item {
+    font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; padding-left: 20px; position: relative; margin-bottom: 4px;
+  }
+  .highlight-callout .callout-item::before { content: '\2714'; position: absolute; left: 0; font-size: 13px; }
+  .highlight-callout .callout-item:last-child { margin-bottom: 0; }
+
+  .section-image { padding: 0 20px 24px; }
+  .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  /* ══ ZONE 2 ══ */
+
+  .operation-table { padding: 32px 20px 24px; }
+  .operation-table .op-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .op-grid { border: 1px solid var(--c-gray-200); border-radius: 10px; overflow: hidden; }
+  .op-row { display: flex; border-bottom: 1px solid var(--c-gray-200); }
+  .op-row:last-child { border-bottom: none; }
+  .op-label {
+    width: 110px; flex-shrink: 0; padding: 14px 16px;
+    background: var(--c-gray-50); font-size: 13px; font-weight: 600; color: var(--c-gray-700);
+    display: flex; align-items: center;
+  }
+  .op-value { flex: 1; padding: 14px 16px; font-size: 14px; font-weight: 500; color: var(--c-gray-900); line-height: 1.5; }
+
+  .recommend-box { padding: 32px 20px 24px; }
+  .recommend-box .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .recommend-box .box { background: var(--c-gray-50); border-radius: 10px; padding: 10px; }
+  .recommend-box .box-inner { padding: 10px 12px; }
+  .recommend-box .box-title { font-size: 14px; font-weight: 700; color: var(--c-black); margin-bottom: 8px; }
+  .recommend-box .check-item {
+    font-size: 14px; font-weight: 500; color: var(--c-black); line-height: 1.72; padding-left: 20px; position: relative;
+  }
+  .recommend-box .check-item::before { content: '\2713'; position: absolute; left: 0; color: var(--c-blue-600); font-weight: 700; }
+
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-group { margin-bottom: 20px; }
+  .notice-group:last-child { margin-bottom: 0; }
+  .notice-group-title { font-size: 14px; font-weight: 700; color: var(--c-gray-900); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 8px; }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .notice-item .dot.include { background: var(--c-blue-600); }
+  .notice-item .dot.exclude { background: var(--c-red-500); }
+  .notice-item .dot.caution { background: var(--c-red-500); }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  .customer-review { padding: 32px 20px 24px; }
+  .customer-review .review-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .review-summary { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .review-score { font-size: 17px; font-weight: 700; color: var(--c-gray-900); }
+  .review-stars { color: #F5A623; font-size: 16px; }
+  .review-count { font-size: 13px; font-weight: 500; color: var(--c-gray-500); }
+  .review-card { background: var(--c-gray-50); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 6px; }
+  .review-date { font-size: 12px; font-weight: 400; color: var(--c-gray-500); margin-left: 8px; }
+  .review-text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+
+  .block-section { position: relative; }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff;
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px;
+    z-index: 10; letter-spacing: 0.5px; pointer-events: none; opacity: 0; transition: opacity 0.2s;
+  }
+  .block-section:hover::before { opacity: 1; }
+</style>
+</head>
+<body>
+
+<main class="pdp-canvas">
+
+  <!-- ═══════════════════════════════════════
+       ZONE 1 — 욕망 영역
+       ═══════════════════════════════════════ -->
+
+  <!-- ═══ 1. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" style="width:100%;height:100%; background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/BOZY/Xj4dZ5oKWU.jpg');"></div>
+    <div class="hero-overlay">
+      <span class="hero-badge">SKY ACTIVITY</span>
+      <h1 class="hero-title">시드니 하늘 위,<br>20분의 버킷리스트</h1>
+      <p class="hero-sub">오페라 하우스 &middot; 하버브릿지 &middot; 본다이 비치를 하늘에서</p>
+    </div>
+  </section>
+
+  <!-- ═══ 2. introSection #1 — 핵심 매력 ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2>시드니를 가장 완벽하게<br>보는 방법</h2>
+    <p class="body">시드니 공항에서 출발하는 헬리콥터 투어로<br>오페라 하우스, 하버브릿지, 본다이 비치까지<br>시드니의 아이코닉한 랜드마크를 하늘에서 조망하세요.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" style="width:100%;height:100%; background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/wmJO/nqSSJm4WNW.jpg');"></div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. introSection #2 — 두 번째 감성 훅 ═══ -->
+  <section class="intro-section text-only block-section" data-block="introSection" data-mode="structured">
+    <h2>BOSE 헤드셋으로 듣는<br>하늘 위 해설</h2>
+    <p class="body">파일럿이 들려주는 시드니 이야기를 들으며<br>도시의 역사와 지형을 새로운 시각으로 만나보세요.<br>기념 사진 촬영도 포함되어 있어요.</p>
+  </section>
+
+  <!-- ═══ 4. imageGrid — 체험 분위기 사진 ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title">하늘에서 본 시드니</h2>
+    <div class="grid-vertical">
+      <div class="grid-item grid-item-full">
+        <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/12/d3mm/MhFlnFEDCH.jpeg');"></div>
+      </div>
+      <div class="grid-row-2">
+        <div class="grid-item grid-item-half">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/hvp2/EK0F1RJHmw.jpg');"></div>
+        </div>
+        <div class="grid-item grid-item-half">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/XCJa/ZBs0Mykqz0.jpg');"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. visualTimeline — 체험 시뮬레이션 ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="timeline-title">코스 소개</h2>
+    <div class="timeline-items">
+
+      <div class="timeline-item">
+        <div class="timeline-img">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/12/pGM1/EPk0Kyc3SV.jpeg');"></div>
+        </div>
+        <span class="timeline-badge am">Step 1</span>
+        <p class="timeline-item-title">시드니 시티 호텔 픽업</p>
+        <p class="timeline-item-desc">지정 호텔에서 차량으로 픽업 후 시드니 공항 헬리포트로 이동합니다. 자가 운전 시 무료 주차 가능.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-img">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/12/CVfQ/aNBqpCcP2W.jpeg');"></div>
+        </div>
+        <span class="timeline-badge am">Step 2</span>
+        <p class="timeline-item-title">안전 교육 & 탑승</p>
+        <p class="timeline-item-desc">헬리포트 도착 후 안전 브리핑을 받고, BOSE 노이즈캔슬링 헤드셋을 착용합니다.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-img">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/iLIz/JhRpicEtAF.jpg');"></div>
+        </div>
+        <span class="timeline-badge am">Step 3</span>
+        <p class="timeline-item-title">20분 하늘 비행!</p>
+        <p class="timeline-item-desc">오페라 하우스, 하버브릿지, 본다이 비치, 맨리 비치 등 시드니 핵심 랜드마크를 하늘에서 조망합니다. 파일럿의 실시간 해설이 함께해요.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-img">
+          <div class="img-placeholder" style="background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/12/lMZN/uc83KtstrT.jpeg');"></div>
+        </div>
+        <span class="timeline-badge pm">Step 4</span>
+        <p class="timeline-item-title">착륙 & 기념 촬영</p>
+        <p class="timeline-item-desc">헬리포트 착륙 후 헬리콥터 앞에서 기념 사진을 촬영합니다. 이후 호텔까지 드롭오프.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 6. highlightCallout — 왜 이 상품? ═══ -->
+  <section class="block-section" data-block="highlightCallout" data-mode="structured" style="padding: 24px 0;">
+    <div class="highlight-callout">
+      <p class="callout-title">왜 이 상품인가요?</p>
+      <p class="callout-item">시드니 시티 호텔 무료 픽업 & 드롭</p>
+      <p class="callout-item">BOSE 헤드셋 실시간 해설 포함</p>
+      <p class="callout-item">기념 촬영 서비스 제공</p>
+      <p class="callout-item">최소 2인 출발, 3시간 소요</p>
+    </div>
+  </section>
+
+  <!-- ═══ 7. sectionImage — 마무리 감성 ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" style="width:100%;height:100%; background-image: url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/12/MY1A/Me33NSc37x.jpeg');"></div>
+    </div>
+    <p class="section-img-caption">시드니 공항 헬리포트에서 출발하는 특별한 비행</p>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════
+       ZONE 2 — 확인 영역
+       ═══════════════════════════════════════ -->
+
+  <div class="zone-divider"></div>
+
+  <!-- ═══ 8. operationTable ═══ -->
+  <section class="operation-table block-section" data-block="operationTable" data-mode="structured">
+    <h2 class="op-title">투어 진행 사항</h2>
+    <div class="op-grid">
+      <div class="op-row">
+        <div class="op-label">만나는 시간</div>
+        <div class="op-value">예약 시 선택<br>(오전/오후 가능)</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">소요시간</div>
+        <div class="op-value">약 3시간 (픽업 포함)<br>비행시간 20분</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">진행 언어</div>
+        <div class="op-value">영어</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">최소 인원</div>
+        <div class="op-value">2명</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">만나는 장소</div>
+        <div class="op-value">시드니 시티 호텔 픽업 또는<br>472 Ross Smith Ave, Mascot</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 9. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <h2 class="section-title">이런 분께 추천합니다</h2>
+    <div class="box">
+      <div class="box-inner">
+        <p class="check-item">체류 시간은 짧지만 시드니를 한눈에 보고 싶은 분</p>
+        <p class="check-item">신혼여행으로 특별한 경험을 원하는 분</p>
+        <p class="check-item">체력 부담 없이 럭셔리한 일정을 원하는 분</p>
+        <p class="check-item">헬리콥터를 타보는 게 버킷리스트인 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title">안내 사항</h2>
+
+    <div class="notice-group">
+      <p class="notice-group-title">&#9675; 포함 사항</p>
+      <div class="notice-item"><span class="dot include"></span><p class="text">헬리콥터 투어 (20분 비행)</p></div>
+      <div class="notice-item"><span class="dot include"></span><p class="text">지정 도심 호텔 무료 픽업/드롭</p></div>
+      <div class="notice-item"><span class="dot include"></span><p class="text">자가 운전 시 무료 주차</p></div>
+      <div class="notice-item"><span class="dot include"></span><p class="text">BOSE 헤드셋 해설 + 기념 촬영</p></div>
+    </div>
+
+    <div class="notice-group">
+      <p class="notice-group-title">&#10005; 불포함 사항</p>
+      <div class="notice-item"><span class="dot exclude"></span><p class="text">여행자 보험 (개인 가입 권장)</p></div>
+      <div class="notice-item"><span class="dot exclude"></span><p class="text">개인 식사 비용</p></div>
+    </div>
+
+    <div class="notice-group">
+      <p class="notice-group-title">&#9888; 주의사항</p>
+      <div class="notice-item"><span class="dot caution"></span><p class="text"><strong>예약 시 영문 성함과 몸무게(kg)</strong>를 알려주세요.</p></div>
+      <div class="notice-item"><span class="dot caution"></span><p class="text"><strong>카카오톡 아이디</strong>를 함께 남겨주세요. 현지 연락용.</p></div>
+      <div class="notice-item"><span class="dot caution"></span><p class="text"><strong>2세 이상</strong> 이용 가능. 아이도 동일 요금 적용.</p></div>
+      <div class="notice-item"><span class="dot caution"></span><p class="text"><strong>110kg 이상</strong> 시 별도 문의. 심장질환/고소공포증 사전 안내 필수.</p></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="review-title">고객 후기</h2>
+    <div class="review-summary">
+      <span class="review-score">4.9</span>
+      <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span class="review-count">56건</span>
+    </div>
+    <div class="review-card">
+      <p class="review-author">후기 데이터 <span class="review-date">미수집</span></p>
+      <p class="review-text">개별 후기 텍스트는 크롤링에서 추출되지 않았습니다. MRT 후기 API 또는 수동 입력이 필요합니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

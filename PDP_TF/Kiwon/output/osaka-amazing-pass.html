@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>오사카 주유패스 1일권 & 2일권 — PDP (TICKET)</title>
+<meta name="description" content="오사카의 인기 명소 30곳 무료 입장 + 버스·전철 무제한 이용. 1일권/2일권 선택 가능한 오사카 여행 필수 시티패스.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<!-- schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "오사카 주유패스 1일권 & 2일권(즉시확정/e패스)",
+  "description": "오사카의 인기 명소 30곳 무료 입장 + 버스·전철 무제한 이용. 1일권/2일권 선택 가능한 오사카 여행 필수 시티패스.",
+  "brand": { "@type": "Brand", "name": "BeMyGuest" },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "20"
+  }
+}
+</script>
+
+<style>
+  /* ── Design Tokens ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    /* v3 Semantic Tokens */
+    --pdp-text-primary: var(--c-gray-1000);
+    --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500);
+    --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white);
+    --pdp-bg-sub: var(--c-gray-80);
+    --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600);
+    --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px;
+    --pdp-section-pb: 24px;
+    --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px;
+    --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px;
+    --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px;
+    --pdp-img-radius-lg: 24px;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══ heroImage ══ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* ── Hero Header (TICKET: title below hero image) ── */
+  .hero-header {
+    padding: 20px 20px 14px;
+  }
+  .hero-category {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-blue-600);
+    background: var(--c-blue-80);
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .hero-title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.24;
+    color: var(--c-gray-1000);
+    letter-spacing: -0.48px;
+  }
+  .hero-subtitle {
+    margin-top: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.44;
+  }
+
+  /* ══ introSection ══ */
+  .intro-section {
+    padding: 32px 20px 24px;
+  }
+  .intro-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    line-height: 1.24;
+    margin-bottom: 14px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.65;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .intro-visual .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══ recommendBox ══ */
+  .recommend-box {
+    padding: 0 20px 24px;
+  }
+  .recommend-box .box {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .recommend-box .box-inner {
+    padding: 10px 12px;
+  }
+  .recommend-box .box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 8px;
+  }
+  .recommend-box .check-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-black);
+    line-height: 1.72;
+    padding-left: 20px;
+    position: relative;
+  }
+  .recommend-box .check-item::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--c-blue-600);
+    font-weight: 700;
+  }
+
+  /* ══ numberedList (with step images) ══ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .num-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 4px;
+    line-height: 1.38;
+  }
+  .num-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .num-step-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══ imageGrid (horizontal scroll) ══ */
+  .image-grid {
+    padding: 32px 0 24px;
+  }
+  .image-grid .grid-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+  .spot-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px;
+    scrollbar-width: none;
+  }
+  .spot-scroll::-webkit-scrollbar { display: none; }
+  .spot-card {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
+  }
+  .spot-thumb {
+    width: 240px;
+    height: 160px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .spot-thumb .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .spot-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-gray-1000);
+    margin-bottom: 3px;
+    line-height: 1.38;
+  }
+  .spot-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.55;
+  }
+
+  /* ══ highlightCallout ══ */
+  .highlight-callout {
+    margin: 0 24px 24px;
+    width: 342px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .highlight-callout .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    letter-spacing: -0.13px;
+  }
+  .highlight-callout .hl-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    margin-top: 4px;
+  }
+
+  /* ══ include/exclude list ══ */
+  .include-exclude {
+    padding: 32px 20px 24px;
+  }
+  .include-exclude .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .include-exclude .list-subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    margin-bottom: 12px;
+  }
+  .include-exclude .list-subtitle.excluded {
+    margin-top: 24px;
+  }
+  .list-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: baseline;
+  }
+  .list-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .list-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .list-item .item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══ notice ══ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong {
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+
+  /* ══ customerReview ══ */
+  .customer-review {
+    padding: 32px 20px 24px;
+  }
+  .customer-review .review-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .review-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .review-stars {
+    color: #F5A623;
+    font-size: 16px;
+  }
+  .review-count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+  }
+  .review-card {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 6px;
+  }
+  .review-date {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-gray-500);
+    margin-left: 8px;
+  }
+  .review-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ══ PoC Overlay ══ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px; right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover for output tags</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/O4V0/PK6XzDwFbM.jpg');">
+    </div>
+  </section>
+
+  <!-- ── Hero Header (TICKET: below hero) ── -->
+  <section class="hero-header block-section" data-block="heroImage" data-mode="structured">
+    <div class="hero-category" data-output="html">시티패스</div>
+    <h1 class="hero-title" data-output="html">오사카 주유패스 1일권 & 2일권</h1>
+    <p class="hero-subtitle" data-output="html">일본 · 오사카 · 즉시확정 · e패스</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">오사카 인기 명소 30곳,<br>하나의 패스로 전부 즐기세요</h2>
+    <p class="body" data-output="html">오사카 주유패스 하나면 텐노지 동물원, 오사카성 박물관, 츠텐카쿠 타워, 돔보리 강 유람선 등 30개 인기 명소에 무료 입장할 수 있어요. 버스와 전철도 무제한 이용 가능하고, 40곳 이상의 상점·레스토랑에서 특별 할인까지 받을 수 있습니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/gjsI/eraLbCh71K.jpg');">
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 추천해요</p>
+        <p class="check-item" data-output="html">오사카 명소를 알뜰하게 돌아보고 싶은 분</p>
+        <p class="check-item" data-output="html">교통비 걱정 없이 자유롭게 이동하고 싶은 분</p>
+        <p class="check-item" data-output="html">e패스로 줄 서지 않고 바로 입장하고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ numberedList (usage steps) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">이용 방법</h2>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">1</div>
+          <div>
+            <p class="num-title" data-output="html">옵션 선택 후 결제</p>
+            <p class="num-desc" data-output="html">1일권 또는 2일권을 선택하고 마이리얼트립에서 바로 결제하세요. 즉시 확정됩니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/09/24/4VqD/pXoU9EfhpF.jpeg');">
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">2</div>
+          <div>
+            <p class="num-title" data-output="html">바우처 확인</p>
+            <p class="num-desc" data-output="html">예약 확정 후 마이리얼트립 앱 '내 여행'에서 바우처를 확인하세요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/cafh/5aCUNQnZ47.jpg');">
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">3</div>
+          <div>
+            <p class="num-title" data-output="html">패스 활성화</p>
+            <p class="num-desc" data-output="html">바우처 상단 링크를 클릭하면 패스가 활성화됩니다. 사용할 때 클릭하세요 (클릭 즉시 유효기간 시작).</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/knHq/qTQyVjwYcp.jpg');">
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="num-circle" data-output="css">4</div>
+          <div>
+            <p class="num-title" data-output="html">모바일 티켓으로 입장</p>
+            <p class="num-desc" data-output="html">명소 입구에서 모바일 디지털 티켓을 제시하면 바로 입장할 수 있어요. 스크린샷은 인정되지 않으니 인터넷 연결을 확인하세요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/09/24/xCwI/WDDWzG5vX7.jpeg');">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ imageGrid (horizontal scroll) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">무료 입장 가능한 인기 명소</h2>
+    <div class="spot-scroll">
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/BPQg/tgxgz4ZUPY.jpg');">
+          </div>
+        </div>
+        <p class="spot-name" data-output="html">오사카성 천수각</p>
+        <p class="spot-desc" data-output="html">오사카의 상징, 전망대에서 시내 전경 감상</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/9d3Y/Sepguhol51.jpg');">
+          </div>
+        </div>
+        <p class="spot-name" data-output="html">츠텐카쿠 타워</p>
+        <p class="spot-desc" data-output="html">신세카이의 랜드마크, 빌리켄 상과 함께</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/09/24/jQ9P/g177JKhsH0.jpeg');">
+          </div>
+        </div>
+        <p class="spot-name" data-output="html">돔보리 강 유람선</p>
+        <p class="spot-desc" data-output="html">도톤보리 야경을 배 위에서 감상</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2026/03/03/j9YE/bhZWyvemUs.jpg');">
+          </div>
+        </div>
+        <p class="spot-name" data-output="html">텐노지 동물원</p>
+        <p class="spot-desc" data-output="html">100년 역사의 오사카 대표 동물원</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">&#x1F4A1; 1일권과 2일권, 어떤 걸 고를까?</p>
+    <p class="hl-subtitle" data-output="html">명소 3곳 이상이면 1일권, 5곳 이상이면 2일권이 이득이에요. 교통비까지 합산하면 더 절약!</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ includeExclude ═══ -->
+  <section class="include-exclude block-section" data-block="includeExclude" data-mode="structured">
+    <h2 class="list-title" data-output="html">포함 · 불포함 사항</h2>
+    <p class="list-subtitle" data-output="html">포함되어 있어요</p>
+    <div class="list-item">
+      <span class="num" data-output="html">&#x2713;</span>
+      <p class="item-text" data-output="html">오사카 주유패스 입장권 (30개+ 명소 무료 입장)</p>
+    </div>
+    <div class="list-item">
+      <span class="num" data-output="html">&#x2713;</span>
+      <p class="item-text" data-output="html">오사카 지하철 · 버스 · 신트램 무제한 승차</p>
+    </div>
+    <div class="list-item">
+      <span class="num" data-output="html">&#x2713;</span>
+      <p class="item-text" data-output="html">40개+ 상점 · 레스토랑 · 공연장 특별 할인</p>
+    </div>
+    <div class="list-item">
+      <span class="num" data-output="html">&#x2713;</span>
+      <p class="item-text" data-output="html">주요 전철 노선 무제한 (한큐, 한신, 게이한, 긴테쓰, 난카이)</p>
+    </div>
+    <p class="list-subtitle excluded" data-output="html">불포함되어 있어요</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">&#x2717;</span>
+      <p class="item-text" data-output="html">개인 경비 및 식비</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">&#x2717;</span>
+      <p class="item-text" data-output="html">간사이 공항 난카이선 최초 이용 구간</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>패스 활성화 주의</strong> — 바우처 상단 링크를 클릭하면 유효기간이 즉시 시작됩니다. 사용할 날에 클릭하세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>유효 시간</strong> — 패스는 오전 3시에 시작하여 다음 날 오전 2시 59분에 종료됩니다. 자정 이후 최초 사용 시 해당 시간부터 하루로 간주됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>인터넷 필수</strong> — 디지털 티켓 사용 시 휴대폰이 인터넷에 연결되어 있어야 합니다. 스크린샷은 인정되지 않습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>간사이 공항 제한</strong> — 간사이 공항역에서 난카이선을 처음 이용할 때는 패스를 사용할 수 없습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>동행 조건</strong> — 최대 4명까지 예약 가능하나 반드시 동행해야 하며, 승차권을 중간에 분배할 수 없습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>취소 규정</strong> — 예약 확정 후 취소 및 환불이 불가합니다. 옵션별 상세 정책을 확인해주세요.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="review-title" data-output="html">이용자 후기</h2>
+    <div class="review-summary">
+      <span class="review-score" data-output="html">4.7</span>
+      <span class="review-stars" data-output="css">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      <span class="review-count" data-output="html">후기 20개</span>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">여행자 A <span class="review-date">2026.02</span></p>
+      <p class="review-text" data-output="html">오사카 여행에서 주유패스 정말 유용했어요. 명소 입장료만으로도 패스값을 뽑을 수 있었고, 지하철까지 무제한이라 교통비 걱정 없이 다녔습니다.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">여행자 B <span class="review-date">2026.01</span></p>
+      <p class="review-text" data-output="html">e패스라 바로 사용할 수 있어서 편했어요. 오사카성이랑 츠텐카쿠, 유람선까지 하루에 알차게 돌았습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

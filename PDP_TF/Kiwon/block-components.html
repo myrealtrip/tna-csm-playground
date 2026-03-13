@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <title>PDP 블록 컴포넌트 라이브러리 v2.1 — PB Exclusive</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <style>
+    /* ── 디자인 토큰 (pdp-tokens.json v2.0.0 동기화) ── */
+    :root {
+      /* Primitive */
+      --c-dark:       #101418;
+      --c-dark-text:  #141719;
+      --c-body:       #212529;
+      --c-sub:        #343A40;
+      --c-dim:        #495056;
+      --c-muted:      #636363;
+      --c-caption:    #848C94;
+      --c-border:     #ADB5BD;
+      --c-border-lt:  #DEE2E6;
+      --c-bg-sub:     #F1F3F5;
+      --c-bg-card:    #F5F6F7;
+      --c-white:      #FFFFFF;
+      --c-caution:    #EC4937;
+      --c-badge-am:   #E7F4FD;
+      --c-badge-pm:   #FFF2C6;
+      --c-callout-1:  #FDF1B5;
+      --c-callout-2:  #FBFFE7;
+      --c-callout-3:  #FFE390;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f0f2f5;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── PDP 캔버스 (390px 모바일) ── */
+    .pdp {
+      max-width: 390px;
+      margin: 0 auto;
+      background: var(--c-white);
+    }
+
+    .divider { height: 8px; background: var(--c-bg-sub); }
+
+    /* ── 이미지 플레이스홀더 ── */
+    .img-ph {
+      width: 100%;
+      background: var(--c-bg-sub);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-caption);
+      font-size: 11px;
+      font-family: 'SF Mono', ui-monospace, monospace;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .img-ph .output-tag {
+      font-size: 9px;
+      background: rgba(0,0,0,0.08);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--c-muted);
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 1: Exclusive Header (hybrid)
+       ═══════════════════════════════════════════ */
+    .exclusive-header {
+      width: 390px;
+      height: 102px;
+      background: var(--c-dark);
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 50%);
+      padding: 23px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .exclusive-header::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 200px; height: 102px;
+      background: radial-gradient(ellipse at top right, rgba(255,227,144,0.08), transparent 70%);
+    }
+    .exclusive-header .logo {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--c-white);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.9;
+    }
+    .exclusive-header .tagline {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--c-white);
+      letter-spacing: -0.3px;
+      line-height: 1.4;
+    }
+    .exclusive-header .subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--c-border);
+      letter-spacing: -0.24px;
+      margin-top: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 2: Hero Image (image)
+       ═══════════════════════════════════════════ */
+    .hero-image {
+      width: 390px;
+      height: 458px;
+      overflow: hidden;
+    }
+    .hero-image img,
+    .hero-image .img-ph {
+      width: 100%;
+      height: 458px;
+      object-fit: cover;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 3: Intro Section (structured)
+       ═══════════════════════════════════════════ */
+    .intro-section {
+      padding: 60px 20px 23px;
+      text-align: center;
+      background: var(--c-white);
+    }
+    .intro-section .logo {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--c-caption);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .intro-section h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: -0.56px;
+      line-height: 1.24;
+      margin-bottom: 16px;
+    }
+    .intro-section .body {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--c-dim);
+      letter-spacing: -0.3px;
+      line-height: 1.44;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 4: Pain Point Cards (structured)
+       ═══════════════════════════════════════════ */
+    .pain-cards {
+      padding: 0 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pain-card {
+      background: var(--c-bg-card);
+      border-radius: 12px;
+      padding: 20px 30px;
+      text-align: center;
+    }
+    .pain-card p {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--c-body);
+      letter-spacing: -0.32px;
+      line-height: 1.35;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 5: Guide Profile (hybrid)
+       ═══════════════════════════════════════════ */
+    .guide-profile {
+      padding: 32px 20px 24px;
+    }
+    .guide-profile h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: -0.48px;
+      margin-bottom: 20px;
+    }
+    .guide-photo {
+      width: 350px;
+      height: 170px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .guide-photo img,
+    .guide-photo .img-ph {
+      width: 100%; height: 170px; object-fit: cover;
+    }
+    .guide-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-caption);
+      margin-bottom: 4px;
+    }
+    .guide-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .guide-bio {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--c-sub);
+      line-height: 1.52;
+      margin-bottom: 4px;
+    }
+    .guide-instagram {
+      font-size: 13px;
+      color: #1583DB;
+      text-decoration: none;
+    }
+    .guide-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--c-border-lt);
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+    .guide-stat { text-align: center; }
+    .guide-stat-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .guide-stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--c-dim);
+    }
+
+    /* Dual variant (구마모토형) */
+    .guide-dual {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--c-border-lt);
+      margin-bottom: 16px;
+    }
+    .guide-dual:last-of-type { border-bottom: none; margin-bottom: 0; }
+    .guide-dual .guide-photo-sm {
+      width: 110px; height: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .guide-dual .guide-photo-sm img,
+    .guide-dual .guide-photo-sm .img-ph {
+      width: 110px; height: 80px; object-fit: cover;
+    }
+    .guide-dual .guide-name { font-size: 16px; }
+    .guide-dual .guide-bio { font-size: 13px; line-height: 1.35; }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 6: Recommend Box (structured)
+       ═══════════════════════════════════════════ */
+    .recommend-box {
+      margin: 0 20px 24px;
+      background: var(--c-bg-card);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .recommend-box-inner {
+      padding: 10px 12px;
+    }
+    .recommend-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .recommend-box li {
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
+      line-height: 1.72;
+      list-style: none;
+      padding-left: 18px;
+      position: relative;
+    }
+    .recommend-box li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--c-caption);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 7: Section Header + Tag (structured)
+       ═══════════════════════════════════════════ */
+    .section-header {
+      width: 390px;
+      height: 207px;
+      background: var(--c-white);
+      padding: 50px 20px 33px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-white);
+      background: var(--c-dark);
+      padding: 2px 4px;
+      border-radius: 6px;
+      letter-spacing: -0.13px;
+      margin-bottom: 18px;
+    }
+    .section-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--c-dark);
+      letter-spacing: -0.52px;
+      line-height: 1.24;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 8: Program Card (hybrid) ⭐
+       ═══════════════════════════════════════════ */
+    .program-card {
+      padding: 0 24px 32px;
+    }
+    .program-card-img {
+      width: 342px;
+      height: 254px;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .program-card-img img,
+    .program-card-img .img-ph {
+      width: 342px; height: 254px; object-fit: cover;
+    }
+    .program-card h3 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--c-dark-text);
+      letter-spacing: -0.19px;
+      line-height: 1.38;
+    }
+    .program-card .duration {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--c-caption);
+      letter-spacing: -0.15px;
+    }
+    .program-card .desc {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--c-sub);
+      letter-spacing: -0.16px;
+      line-height: 1.38;
+      margin-top: 10px;
+    }
+    /* withNote variant */
+    .program-note {
+      background: var(--c-bg-card);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #595959;
+      letter-spacing: -0.13px;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 9: Visual Timeline (hybrid)
+       ═══════════════════════════════════════════ */
+    .visual-timeline {
+      padding: 32px 20px 24px;
+    }
+    .visual-timeline h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: -0.48px;
+      margin-bottom: 24px;
+    }
+    .timeline-items { display: flex; flex-direction: column; gap: 50px; }
+    .timeline-item { position: relative; }
+    .timeline-item-img {
+      width: 350px;
+      height: 170px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .timeline-item-img img,
+    .timeline-item-img .img-ph {
+      width: 350px; height: 170px; object-fit: cover;
+    }
+    .time-badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-dark);
+      padding: 2.5px 8px;
+      border-radius: 5px;
+      letter-spacing: -0.13px;
+      margin-bottom: 10px;
+    }
+    .time-badge.am { background: var(--c-badge-am); }
+    .time-badge.pm { background: var(--c-badge-pm); }
+    .timeline-item h4 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--c-dark-text);
+      letter-spacing: -0.19px;
+      line-height: 1.38;
+      margin-bottom: 10px;
+    }
+    .timeline-item .desc {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--c-sub);
+      letter-spacing: -0.16px;
+      line-height: 1.38;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 10: Highlight Callout (structured)
+       ═══════════════════════════════════════════ */
+    .highlight-callout {
+      width: 342px;
+      height: 76px;
+      margin: 0 24px 24px;
+      border-radius: 8px;
+      padding: 19px 15px;
+      background: linear-gradient(135deg, var(--c-callout-1), var(--c-callout-2), var(--c-callout-3));
+    }
+    .highlight-callout .title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-dark);
+      letter-spacing: -0.13px;
+      margin-bottom: 4px;
+    }
+    .highlight-callout .subtitle {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--c-body);
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 11: Trust Points (hybrid)
+       ═══════════════════════════════════════════ */
+    .trust-points {
+      width: 390px;
+      min-height: 496px;
+      background: var(--c-dark);
+      background-image: linear-gradient(180deg, rgba(255,227,144,0.05) 0%, transparent 40%);
+      padding: 63px 20px 43px;
+      text-align: center;
+    }
+    .trust-points .logo {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--c-white);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+    .trust-points .headline {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--c-white);
+      letter-spacing: -0.52px;
+      line-height: 1.24;
+      margin-bottom: 55px;
+    }
+    .trust-items { display: flex; flex-direction: column; gap: 27px; text-align: left; }
+    .trust-item { display: flex; gap: 16px; align-items: flex-start; }
+    .trust-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+    .trust-item h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--c-white);
+      line-height: 1.35;
+      margin-bottom: 5px;
+    }
+    .trust-item .desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--c-border);
+      letter-spacing: -0.28px;
+      line-height: 1.34;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 12: Numbered List (structured)
+       ═══════════════════════════════════════════ */
+    .num-section { padding: 32px 20px 24px; }
+    .num-section h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--c-dark-text);
+      margin-bottom: 16px;
+    }
+    .num-list { display: flex; flex-direction: column; gap: 18px; }
+    .num-item { display: flex; gap: 12px; align-items: flex-start; }
+    .num-circle {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--c-dark);
+      color: var(--c-white);
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .num-title {
+      font-size: 15px; font-weight: 500; color: var(--c-dark);
+      line-height: 1.38; margin-bottom: 4px;
+    }
+    .num-desc {
+      font-size: 13px; font-weight: 500; color: var(--c-sub); line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 13: Notice / Caution (structured)
+       ═══════════════════════════════════════════ */
+    .notice-section { padding: 32px 20px 24px; }
+    .notice-section h2 {
+      font-size: 20px; font-weight: 600;
+      color: var(--c-dark-text); margin-bottom: 16px;
+    }
+    .notice-list { display: flex; flex-direction: column; gap: 10px; }
+    .notice-item { display: flex; gap: 8px; align-items: flex-start; }
+    .notice-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--c-caution);
+      flex-shrink: 0; margin-top: 7px;
+    }
+    .notice-text {
+      font-size: 13px; font-weight: 500;
+      color: var(--c-sub); line-height: 1.65;
+    }
+    .notice-text strong { color: var(--c-dark); font-weight: 600; }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 14: Price Table (structured)
+       ═══════════════════════════════════════════ */
+    .price-section { padding: 32px 20px 24px; }
+    .price-section h2 {
+      font-size: 20px; font-weight: 600;
+      color: var(--c-dark-text); margin-bottom: 16px;
+    }
+    .price-table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+    }
+    .price-table th {
+      background: var(--c-bg-sub);
+      font-size: 12px; font-weight: 600; color: var(--c-sub);
+      padding: 8px 12px; text-align: left;
+      border-bottom: 1px solid var(--c-border-lt);
+    }
+    .price-table td {
+      padding: 10px 12px; color: var(--c-dark);
+      border-bottom: 1px solid var(--c-border-lt); font-weight: 500;
+    }
+    .price-table tr:last-child td { border-bottom: none; }
+    .price-table .price {
+      font-weight: 600; color: var(--c-dark-text); text-align: right;
+    }
+
+    /* ═══════════════════════════════════════════
+       BLOCK 15: Image Grid (hybrid)
+       ═══════════════════════════════════════════ */
+    .grid-section { padding: 32px 20px 24px; }
+    .grid-section h2 {
+      font-size: 20px; font-weight: 600;
+      color: var(--c-dark-text); margin-bottom: 16px;
+    }
+    .img-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .img-grid-thumb {
+      aspect-ratio: 4/3; border-radius: 6px;
+      overflow: hidden; margin-bottom: 7px;
+    }
+    .img-grid-thumb img, .img-grid-thumb .img-ph {
+      aspect-ratio: 4/3; width: 100%; object-fit: cover;
+    }
+    .img-grid-name {
+      font-size: 13px; font-weight: 600; color: var(--c-dark-text);
+      margin-bottom: 3px;
+    }
+    .img-grid-desc {
+      font-size: 13px; font-weight: 500; color: var(--c-sub); line-height: 1.55;
+    }
+
+    /* ── 뷰어 레이아웃 ── */
+    .viewer-wrap { max-width: 960px; margin: 0 auto; padding: 0 24px 60px; }
+    .viewer-hero {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--c-border-lt);
+      margin-bottom: 48px;
+    }
+    .viewer-hero h1 {
+      font-size: 28px; font-weight: 700; color: var(--c-dark);
+      letter-spacing: -0.5px; margin-bottom: 8px;
+    }
+    .viewer-hero p { font-size: 15px; color: var(--c-dim); line-height: 1.5; }
+    .viewer-hero .meta {
+      display: flex; gap: 16px; margin-top: 12px;
+      font-size: 12px; color: var(--c-caption);
+    }
+    .viewer-hero .meta span {
+      background: var(--c-bg-card); padding: 3px 8px; border-radius: 4px;
+    }
+    .viewer-section { margin-bottom: 56px; }
+    .viewer-label {
+      font-size: 11px; font-weight: 700; color: var(--c-caption);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px;
+    }
+    .viewer-title {
+      font-size: 18px; font-weight: 700; color: var(--c-dark); margin-bottom: 4px;
+    }
+    .viewer-desc {
+      font-size: 13px; color: var(--c-sub); line-height: 1.5; margin-bottom: 4px;
+    }
+    .viewer-tags { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .viewer-tag {
+      font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 4px; border: 1px solid var(--c-border-lt);
+    }
+    .viewer-tag.hybrid { background: #E7F4FD; color: #1583DB; border-color: #1583DB; }
+    .viewer-tag.structured { background: #E8F5E9; color: #2E7D32; border-color: #2E7D32; }
+    .viewer-tag.image { background: #FFF3E0; color: #E65100; border-color: #E65100; }
+    .viewer-tag.exclusive { background: var(--c-dark); color: var(--c-white); border-color: var(--c-dark); }
+    .viewer-tag.generic { background: var(--c-bg-card); color: var(--c-dim); }
+    .viewer-row {
+      display: grid; grid-template-columns: 390px 1fr; gap: 24px;
+      align-items: flex-start;
+    }
+    @media (max-width: 800px) { .viewer-row { grid-template-columns: 1fr; } }
+    .viewer-canvas {
+      background: #fff; border: 1px solid var(--c-border-lt);
+      border-radius: 12px; overflow: hidden;
+    }
+    .viewer-spec { padding: 0; }
+    .viewer-spec h4 {
+      font-size: 12px; font-weight: 700; color: var(--c-caption);
+      text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 10px;
+    }
+    .viewer-spec table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .viewer-spec th {
+      background: var(--c-bg-sub); padding: 6px 8px; text-align: left;
+      font-weight: 600; color: var(--c-sub); border-bottom: 1px solid var(--c-border-lt);
+    }
+    .viewer-spec td {
+      padding: 6px 8px; color: var(--c-dark);
+      border-bottom: 1px solid var(--c-border-lt);
+    }
+    .viewer-spec tr:last-child td { border-bottom: none; }
+    .viewer-spec code {
+      font-size: 11px; background: var(--c-bg-sub);
+      padding: 1px 4px; border-radius: 3px;
+      font-family: 'SF Mono', ui-monospace, monospace;
+    }
+    .viewer-divider { height: 1px; background: var(--c-border-lt); margin: 56px 0; }
+
+    /* Nav */
+    .block-nav {
+      position: sticky; top: 0; background: rgba(240,242,245,0.95);
+      backdrop-filter: blur(8px); z-index: 100;
+      padding: 12px 0; border-bottom: 1px solid var(--c-border-lt);
+      margin-bottom: 24px;
+    }
+    .block-nav-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 8px; overflow-x: auto; flex-wrap: nowrap;
+    }
+    .block-nav a {
+      font-size: 12px; font-weight: 600; color: var(--c-dim);
+      text-decoration: none; white-space: nowrap;
+      padding: 4px 10px; border-radius: 6px;
+      border: 1px solid var(--c-border-lt);
+      transition: all 0.15s;
+    }
+    .block-nav a:hover { background: var(--c-white); color: var(--c-dark); }
+    .block-nav a.exc { border-color: var(--c-dark); color: var(--c-dark); }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Navigation ═══ -->
+<nav class="block-nav">
+  <div class="block-nav-inner">
+    <a href="#exclusiveHeader" class="exc">1. Exclusive Header</a>
+    <a href="#heroImage" class="exc">2. Hero Image</a>
+    <a href="#introSection" class="exc">3. Intro Section</a>
+    <a href="#painPointCards" class="exc">4. Pain Point Cards</a>
+    <a href="#guideProfile" class="exc">5. Guide Profile</a>
+    <a href="#recommendBox" class="exc">6. Recommend Box</a>
+    <a href="#sectionHeader" class="exc">7. Section Header</a>
+    <a href="#programCard" class="exc">8. Program Card</a>
+    <a href="#visualTimeline" class="exc">9. Visual Timeline</a>
+    <a href="#highlightCallout" class="exc">10. Highlight Callout</a>
+    <a href="#trustPoints" class="exc">11. Trust Points</a>
+    <a href="#numberedList">12. Numbered List</a>
+    <a href="#notice">13. Notice</a>
+    <a href="#priceTable">14. Price Table</a>
+    <a href="#imageGrid">15. Image Grid</a>
+    <a href="#customerReview">16. Customer Review</a>
+    <a href="#guideIntro">17. Guide Intro</a>
+    <a href="#fullAssembly" style="background:var(--c-dark);color:var(--c-white);border-color:var(--c-dark);">Full Assembly</a>
+  </div>
+</nav>
+
+<div class="viewer-wrap">
+
+  <!-- ═══ Hero ═══ -->
+  <div class="viewer-hero">
+    <h1>PDP 블록 컴포넌트 라이브러리</h1>
+    <p>pdp-blocks.json v2.1.0 기반 · 17개 블록 · 하이브리드/구조형 HTML 프리뷰</p>
+    <div class="meta">
+      <span>Exclusive 11개</span>
+      <span>Generic 6개</span>
+      <span>Structured 9개 · Hybrid 7개 · Image 1개</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ BLOCK 1: Exclusive Header ═══ -->
+  <div class="viewer-section" id="exclusiveHeader">
+    <div class="viewer-label">Block 1 of 15</div>
+    <div class="viewer-title">Exclusive Header</div>
+    <div class="viewer-desc">어두운 배경 + My Exclusive 로고 + 태그라인. PDP 최상단 브랜딩 영역.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="exclusive-header">
+          <div class="logo">My Exclusive</div>
+          <div class="tagline">실패 없는 여행의 기준, 마이 익스클루시브</div>
+          <div class="subtitle">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>backgroundGraphic</td><td><code>image</code></td><td>CSS background-image</td></tr>
+          <tr><td>logo</td><td><code>svg</code></td><td>SVG inline</td></tr>
+          <tr><td>tagline</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+          <tr><td>subtitle</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 2: Hero Image ═══ -->
+  <div class="viewer-section" id="heroImage">
+    <div class="viewer-label">Block 2 of 15</div>
+    <div class="viewer-title">Hero Image</div>
+    <div class="viewer-desc">풀블리드 대형 히어로 이미지. 텍스트 없음.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag image">image</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="hero-image">
+          <div class="img-ph" style="height:458px">390 × 458<br><span class="output-tag">output: image</span></div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>설명</th></tr>
+          <tr><td>image</td><td><code>image</code></td><td>alt에 상품명 삽입 (SEO 보완)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 3: Intro Section ═══ -->
+  <div class="viewer-section" id="introSection">
+    <div class="viewer-label">Block 3 of 15</div>
+    <div class="viewer-title">Intro Section</div>
+    <div class="viewer-desc">중앙 정렬 대형 제목 + 본문. Exclusive 로고 포함. SEO 핵심 영역.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="intro-section">
+          <div class="logo">My Exclusive</div>
+          <h1>예술의 섬, 나오시마를<br>제대로 느끼는 법</h1>
+          <p class="body">일본 현지 도슨트가 동행하며<br>나오시마의 예술과 풍경을 안내합니다</p>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>logo</td><td><code>svg</code></td><td>SVG inline</td></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h1&gt; (SEO)</td></tr>
+          <tr><td>body</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 4: Pain Point Cards ═══ -->
+  <div class="viewer-section" id="painPointCards">
+    <div class="viewer-label">Block 4 of 15</div>
+    <div class="viewer-title">Pain Point Cards</div>
+    <div class="viewer-desc">회색 라운드 카드로 고객 공감 포인트 나열.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="pain-cards" style="padding-top:24px">
+          <div class="pain-card"><p>나오시마 여행, 대중교통 타이밍 맞추기 너무 어려웠어요</p></div>
+          <div class="pain-card"><p>미술관 예약은 어렵고, 동선 짜는 건 더 막막했어요</p></div>
+          <div class="pain-card"><p>작품 해설 없이 보면 감동이 반감될 것 같아요</p></div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>items[].text</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 5: Guide Profile ═══ -->
+  <div class="viewer-section" id="guideProfile">
+    <div class="viewer-label">Block 5 of 15</div>
+    <div class="viewer-title">Guide Profile</div>
+    <div class="viewer-desc">가이드 사진 + 이름 + 소개 + 3열 스탯 그리드. single/dual 변형.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="guide-profile">
+          <h2>가이드 소개</h2>
+          <div class="guide-photo">
+            <div class="img-ph" style="height:170px">350 × 170<br><span class="output-tag">output: image</span></div>
+          </div>
+          <div class="guide-role">한국인 도슨트</div>
+          <div class="guide-name">김가이드</div>
+          <div class="guide-bio">시각디자인 전공, 나오시마에서 3년째 거주하며 예술과 건축을 안내하고 있습니다.</div>
+          <a href="#" class="guide-instagram">@naoshima_guide</a>
+          <div class="guide-stats">
+            <div class="guide-stat">
+              <div class="guide-stat-value">시각디자인</div>
+              <div class="guide-stat-label">전문 분야</div>
+            </div>
+            <div class="guide-stat">
+              <div class="guide-stat-value">3년 거주</div>
+              <div class="guide-stat-label">경험</div>
+            </div>
+            <div class="guide-stat">
+              <div class="guide-stat-value">한국어 원어민</div>
+              <div class="guide-stat-label">언어</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>sectionTitle</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>photo</td><td><code>image</code></td><td>&lt;img&gt;</td></tr>
+          <tr><td>role, name, bio</td><td><code>html</code></td><td>&lt;span&gt;, &lt;p&gt;</td></tr>
+          <tr><td>instagram</td><td><code>html</code></td><td>&lt;a&gt; (클릭 추적)</td></tr>
+          <tr><td>stats</td><td><code>html</code></td><td>CSS grid 3열</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 6: Recommend Box ═══ -->
+  <div class="viewer-section" id="recommendBox">
+    <div class="viewer-label">Block 6 of 15</div>
+    <div class="viewer-title">Recommend Box</div>
+    <div class="viewer-desc">회색 박스 안 추천 대상 리스트.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div style="padding-top:24px">
+          <div class="recommend-box">
+            <div class="recommend-box-inner">
+              <h3>이런 분에게 추천해요</h3>
+              <ul>
+                <li>예술을 좋아하지만 혼자 보기엔 어려운 분</li>
+                <li>나오시마를 처음 방문하는 분</li>
+                <li>효율적인 동선으로 하루를 알차게 보내고 싶은 분</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h3&gt;</td></tr>
+          <tr><td>items[].text</td><td><code>html</code></td><td>&lt;li&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 7: Section Header ═══ -->
+  <div class="viewer-section" id="sectionHeader">
+    <div class="viewer-label">Block 7 of 15</div>
+    <div class="viewer-title">Section Header + Tag</div>
+    <div class="viewer-desc">검정 태그 배지 + 중앙 정렬 대형 제목. 프로그램 섹션의 헤더.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="section-header">
+          <span class="section-tag">Highlight 1</span>
+          <h2>걸어서 만나는<br>나오시마의 예술</h2>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>tag</td><td><code>html</code></td><td>&lt;span&gt; + CSS badge</td></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt; (SEO)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 8: Program Card ⭐ ═══ -->
+  <div class="viewer-section" id="programCard">
+    <div class="viewer-label">Block 8 of 15 ⭐ 핵심 블록</div>
+    <div class="viewer-title">Program Card</div>
+    <div class="viewer-desc">큰 라운드 이미지 + 제목 + 소요시간 + 설명. PDP에서 8~10회 반복. SEO 최우선.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="program-card" style="padding-top:24px">
+          <div class="program-card-img">
+            <div class="img-ph" style="height:254px;border-radius:24px">342 × 254 · radius: 24px<br><span class="output-tag">output: image</span></div>
+          </div>
+          <h3>이우환 미술관</h3>
+          <span class="duration">30분</span>
+          <p class="desc">안도 다다오와 이우환의 협업으로 탄생한 공간. 자연과 건축, 예술이 하나가 됩니다.</p>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>image</td><td><code>image</code></td><td>&lt;img&gt; + border-radius: 24px</td></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h3&gt; (SEO 핵심 — 스팟명)</td></tr>
+          <tr><td>duration</td><td><code>html</code></td><td>&lt;span&gt; (schema.org duration)</td></tr>
+          <tr><td>description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 9: Visual Timeline ═══ -->
+  <div class="viewer-section" id="visualTimeline">
+    <div class="viewer-label">Block 9 of 15</div>
+    <div class="viewer-title">Visual Timeline</div>
+    <div class="viewer-desc">이미지 + 시간 배지(오전 파랑/오후 노랑) + 제목 + 설명.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="visual-timeline">
+          <h2>나오시마 상세 일정</h2>
+          <div class="timeline-items">
+            <div class="timeline-item">
+              <div class="timeline-item-img">
+                <div class="img-ph" style="height:170px">350 × 170<br><span class="output-tag">output: image</span></div>
+              </div>
+              <span class="time-badge am">오전 코스 | 9:00 - 10:00</span>
+              <h4>다카마쓰항 출발 → 나오시마 도착</h4>
+              <p class="desc">페리 안에서 나오시마의 역사와 예술에 대한 사전 해설을 들으며 이동합니다.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-item-img">
+                <div class="img-ph" style="height:170px">350 × 170<br><span class="output-tag">output: image</span></div>
+              </div>
+              <span class="time-badge pm">오후 코스 | 14:00 - 15:30</span>
+              <h4>지중미술관</h4>
+              <p class="desc">안도 다다오가 설계한 지하 미술관. 모네의 수련 연작을 자연광 아래에서 감상합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>sectionTitle</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>items[].image</td><td><code>image</code></td><td>&lt;img&gt;</td></tr>
+          <tr><td>items[].timeBadge</td><td><code>html</code></td><td>&lt;span class="am|pm"&gt;</td></tr>
+          <tr><td>items[].title</td><td><code>html</code></td><td>&lt;h4&gt;</td></tr>
+          <tr><td>items[].description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 10: Highlight Callout ═══ -->
+  <div class="viewer-section" id="highlightCallout">
+    <div class="viewer-label">Block 10 of 15</div>
+    <div class="viewer-title">Highlight Callout</div>
+    <div class="viewer-desc">그래디언트 배경 팁 박스. CSS gradient로 완전 구현.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div style="padding:24px 0">
+          <div class="highlight-callout">
+            <div class="title">💡 이우환 미술관은 월요일 휴관입니다</div>
+            <div class="subtitle">휴관일에는 베네세 하우스 뮤지엄으로 대체 진행됩니다</div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>background</td><td><code>css</code></td><td>CSS linear-gradient</td></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+          <tr><td>subtitle</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 11: Trust Points ═══ -->
+  <div class="viewer-section" id="trustPoints">
+    <div class="viewer-label">Block 11 of 15</div>
+    <div class="viewer-title">Trust Points</div>
+    <div class="viewer-desc">어두운 배경 + Exclusive 로고 + 아이콘 리스트. PDP 최하단 마무리.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">Exclusive</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="trust-points">
+          <div class="logo">My Exclusive</div>
+          <div class="headline">실패 없는 여행의 기준,<br>마이 익스클루시브</div>
+          <div class="trust-items">
+            <div class="trust-item">
+              <div class="trust-icon">🎯</div>
+              <div>
+                <h3>혼자라도 괜찮아요, 무조건 출발</h3>
+                <p class="desc">취소될까 봐 마음 졸이지 마세요. 예약 즉시 출발이 확정됩니다</p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">✅</div>
+              <div>
+                <h3>번거로운 예약 걱정은 NO!</h3>
+                <p class="desc">교통, 입장권까지 준비해드려요. 오직 여행에만 집중하세요</p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">💰</div>
+              <div>
+                <h3>만족하지 못하셨다면 투어비는 0원</h3>
+                <p class="desc">퀄리티 보장 상품으로 결제 금액 그대로 돌려드려요</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>backgroundGraphic</td><td><code>image</code></td><td>CSS background-image</td></tr>
+          <tr><td>logo</td><td><code>svg</code></td><td>SVG inline</td></tr>
+          <tr><td>headline</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>items[].icon</td><td><code>svg</code></td><td>SVG 40×40</td></tr>
+          <tr><td>items[].title</td><td><code>html</code></td><td>&lt;h3&gt;</td></tr>
+          <tr><td>items[].description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 12: Numbered List ═══ -->
+  <div class="viewer-section" id="numberedList">
+    <div class="viewer-label">Block 12 of 15</div>
+    <div class="viewer-title">Numbered List</div>
+    <div class="viewer-desc">번호형 어필 포인트, 이용 팁, 추천 이유.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="num-section">
+          <h2>이 투어를 추천하는 이유</h2>
+          <div class="num-list">
+            <div class="num-item">
+              <span class="num-circle">1</span>
+              <div>
+                <div class="num-title">미술관 예약부터 페리까지 올인원</div>
+                <div class="num-desc">지중미술관 사전 예약, 왕복 페리, 시내버스까지 모두 포함되어 있어요.</div>
+              </div>
+            </div>
+            <div class="num-item">
+              <span class="num-circle">2</span>
+              <div>
+                <div class="num-title">현지 거주 한국인 도슨트 동행</div>
+                <div class="num-desc">나오시마에서 3년째 거주 중인 전문 도슨트가 작품 해설을 해드려요.</div>
+              </div>
+            </div>
+            <div class="num-item">
+              <span class="num-circle">3</span>
+              <div>
+                <div class="num-title">1명이어도 무조건 출발</div>
+                <div class="num-desc">최소 인원 조건 없이 예약 확정 즉시 출발합니다.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>items[].title</td><td><code>html</code></td><td>&lt;h3&gt;</td></tr>
+          <tr><td>items[].description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 13: Notice ═══ -->
+  <div class="viewer-section" id="notice">
+    <div class="viewer-label">Block 13 of 15</div>
+    <div class="viewer-title">Notice / Caution</div>
+    <div class="viewer-desc">주의사항, 유효기간, 취소 정책 등 경고성 안내.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="notice-section">
+          <h2>필수 확인 사항</h2>
+          <div class="notice-list">
+            <div class="notice-item">
+              <span class="notice-dot"></span>
+              <p class="notice-text">현지 상황에 따라 <strong>일부 코스가 변경</strong>될 수 있습니다.</p>
+            </div>
+            <div class="notice-item">
+              <span class="notice-dot"></span>
+              <p class="notice-text"><strong>페리 미운항 시</strong> 투어가 취소되며, 전액 환불됩니다.</p>
+            </div>
+            <div class="notice-item">
+              <span class="notice-dot"></span>
+              <p class="notice-text">점심 식사 비용은 포함되어 있지 않습니다. (예산 2,000~3,000엔)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>items[].text</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+          <tr><td>items[].bold</td><td><code>html</code></td><td>&lt;strong&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 14: Price Table ═══ -->
+  <div class="viewer-section" id="priceTable">
+    <div class="viewer-label">Block 14 of 15</div>
+    <div class="viewer-title">Price Table</div>
+    <div class="viewer-desc">옵션 × 가격 비교표. schema.org/Offer 마크업 가능.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag structured">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="price-section">
+          <h2>요금 안내</h2>
+          <table class="price-table">
+            <thead>
+              <tr><th>옵션</th><th style="text-align:right">가격</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>성인 (만 13세 이상)</td><td class="price">129,000원</td></tr>
+              <tr><td>아동 (만 7~12세)</td><td class="price">109,000원</td></tr>
+              <tr><td>유아 (만 3~6세)</td><td class="price">79,000원</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>columns[].label</td><td><code>html</code></td><td>&lt;th&gt;</td></tr>
+          <tr><td>rows[].cells[].text</td><td><code>html</code></td><td>&lt;td&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ BLOCK 15: Image Grid ═══ -->
+  <div class="viewer-section" id="imageGrid">
+    <div class="viewer-label">Block 15 of 15</div>
+    <div class="viewer-title">Image Grid</div>
+    <div class="viewer-desc">2열 이미지 그리드. 장소, 시설, 분위기 전달.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div class="grid-section">
+          <h2>주요 방문지</h2>
+          <div class="img-grid">
+            <div>
+              <div class="img-grid-thumb">
+                <div class="img-ph" style="aspect-ratio:4/3"><span class="output-tag">image</span></div>
+              </div>
+              <div class="img-grid-name">지중미술관</div>
+              <div class="img-grid-desc">안도 다다오 설계, 모네 수련 전시</div>
+            </div>
+            <div>
+              <div class="img-grid-thumb">
+                <div class="img-ph" style="aspect-ratio:4/3"><span class="output-tag">image</span></div>
+              </div>
+              <div class="img-grid-name">이우환 미술관</div>
+              <div class="img-grid-desc">자연과 예술의 만남</div>
+            </div>
+            <div>
+              <div class="img-grid-thumb">
+                <div class="img-ph" style="aspect-ratio:4/3"><span class="output-tag">image</span></div>
+              </div>
+              <div class="img-grid-name">빨간 호박</div>
+              <div class="img-grid-desc">쿠사마 야요이의 대표작</div>
+            </div>
+            <div>
+              <div class="img-grid-thumb">
+                <div class="img-ph" style="aspect-ratio:4/3"><span class="output-tag">image</span></div>
+              </div>
+              <div class="img-grid-name">나오시마 목욕탕</div>
+              <div class="img-grid-desc">아라카와 슈사쿠의 예술 목욕탕</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>items[].image</td><td><code>image</code></td><td>&lt;img&gt;</td></tr>
+          <tr><td>items[].name</td><td><code>html</code></td><td>&lt;h3&gt;</td></tr>
+          <tr><td>items[].description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ Block 16: Customer Review ═══ -->
+  <div class="viewer-section" id="customerReview">
+    <div class="viewer-label">Block 16 of 17</div>
+    <div class="viewer-title">Customer Review</div>
+    <div class="viewer-desc">고객 리뷰 요약. 별점, 리뷰 수, 최근 리뷰 카드. schema.org AggregateRating 지원.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag structured" style="background:rgba(21,131,219,0.08);color:#1583DB;border-color:rgba(21,131,219,0.2);">structured</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div style="padding: 32px 20px 24px;">
+          <h2 style="font-size:20px;font-weight:600;color:#141619;margin-bottom:20px;">고객 리뷰</h2>
+          <!-- Rating Summary -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:16px;background:#F5F6F7;border-radius:10px;">
+            <div style="font-size:32px;font-weight:700;color:#141619;">4.9</div>
+            <div>
+              <div style="font-size:14px;color:#FFE390;letter-spacing:-1px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <div style="font-size:12px;color:#848C94;">128건의 리뷰</div>
+            </div>
+          </div>
+          <!-- Review Cards -->
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="background:#F5F6F7;border-radius:10px;padding:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:13px;font-weight:600;color:#343A40;">김지영</span>
+                <span style="font-size:11px;color:#848C94;">2026.02.15</span>
+              </div>
+              <p style="font-size:14px;color:#495056;line-height:1.52;display:-webkit-box;line-clamp:3;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">가이드님이 정말 친절하시고 설명도 자세해서 나오시마를 깊이 이해할 수 있었어요. 이우환 미술관 앞에서의 해설이 특히 인상적이었습니다.</p>
+            </div>
+            <div style="background:#F5F6F7;border-radius:10px;padding:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:13px;font-weight:600;color:#343A40;">박준혁</span>
+                <span style="font-size:11px;color:#848C94;">2026.02.08</span>
+              </div>
+              <p style="font-size:14px;color:#495056;line-height:1.52;display:-webkit-box;line-clamp:3;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">혼자 갔으면 절대 모를 포인트들을 알려주셔서 감동이었어요. 점심 추천해주신 곳도 맛있었고, 6시간이 순삭!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>rating</td><td><code>html</code></td><td>&lt;span&gt; (1–5)</td></tr>
+          <tr><td>reviewCount</td><td><code>html</code></td><td>&lt;span&gt;</td></tr>
+          <tr><td>items[].author</td><td><code>html</code></td><td>&lt;span&gt;</td></tr>
+          <tr><td>items[].date</td><td><code>html</code></td><td>&lt;span&gt;</td></tr>
+          <tr><td>items[].text</td><td><code>html</code></td><td>&lt;p&gt; (3-line clamp)</td></tr>
+        </table>
+        <h4 style="margin-top:16px;">schema.org</h4>
+        <table>
+          <tr><td colspan="3" style="font-size:11px;color:#848C94;font-family:monospace;">AggregateRating { ratingValue, reviewCount }</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ Block 17: Guide Intro ═══ -->
+  <div class="viewer-section" id="guideIntro">
+    <div class="viewer-label">Block 17 of 17</div>
+    <div class="viewer-title">Guide Intro</div>
+    <div class="viewer-desc">간략한 가이드 소개. 2열 그리드, 아바타 48x48. guideProfile의 경량 대안 (일반 투어용).</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag generic">Generic</span>
+      <span class="viewer-tag hybrid">hybrid</span>
+    </div>
+    <div class="viewer-row">
+      <div class="viewer-canvas">
+        <div style="padding: 32px 20px 24px;">
+          <h2 style="font-size:20px;font-weight:600;color:#141619;margin-bottom:20px;">가이드 소개</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <!-- Guide 1 -->
+            <div style="text-align:center;padding:20px 12px;background:#F5F6F7;border-radius:10px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#DEE2E6,#ADB5BD);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+                <span class="output-tag" style="position:static;font-size:8px;">image</span>
+              </div>
+              <div style="font-size:14px;font-weight:600;color:#212529;margin-bottom:4px;">박지현</div>
+              <div style="font-size:12px;color:#848C94;line-height:1.4;">구마모토 거주 5년차<br>한국인 가이드</div>
+            </div>
+            <!-- Guide 2 -->
+            <div style="text-align:center;padding:20px 12px;background:#F5F6F7;border-radius:10px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#DEE2E6,#ADB5BD);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+                <span class="output-tag" style="position:static;font-size:8px;">image</span>
+              </div>
+              <div style="font-size:14px;font-weight:600;color:#212529;margin-bottom:4px;">다나카 유미</div>
+              <div style="font-size:12px;color:#848C94;line-height:1.4;">구마모토 출신<br>한국어 6급</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="viewer-spec">
+        <h4>Props & Output</h4>
+        <table>
+          <tr><th>Prop</th><th>Output</th><th>HTML 태그</th></tr>
+          <tr><td>title</td><td><code>html</code></td><td>&lt;h2&gt;</td></tr>
+          <tr><td>guides[].avatar</td><td><code>image</code></td><td>&lt;img&gt; 48x48</td></tr>
+          <tr><td>guides[].name</td><td><code>html</code></td><td>&lt;h3&gt;</td></tr>
+          <tr><td>guides[].description</td><td><code>html</code></td><td>&lt;p&gt;</td></tr>
+        </table>
+        <h4 style="margin-top:16px;">vs guideProfile</h4>
+        <table>
+          <tr><td style="font-size:11px;color:#848C94;">guideProfile: 풀 프로필 (PB 전용)<br>guideIntro: 간략 소개 (일반 투어용)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="viewer-divider"></div>
+
+  <!-- ═══ FULL ASSEMBLY PREVIEW ═══ -->
+  <div class="viewer-section" id="fullAssembly">
+    <div class="viewer-label">Full Assembly Preview</div>
+    <div class="viewer-title">PB_TOUR 전체 조합 프리뷰</div>
+    <div class="viewer-desc">나오시마 워킹투어 기준. pdp-assembly.json의 PB_TOUR recommendedOrder 순서대로 배치.</div>
+    <div class="viewer-tags">
+      <span class="viewer-tag exclusive">PB_TOUR Category</span>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="viewer-canvas">
+        <div class="pdp">
+          <!-- 1. Exclusive Header -->
+          <div class="exclusive-header">
+            <div class="logo">My Exclusive</div>
+            <div class="tagline">실패 없는 여행의 기준, 마이 익스클루시브</div>
+            <div class="subtitle">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</div>
+          </div>
+
+          <!-- 2. Hero Image (no divider) -->
+          <div class="hero-image">
+            <div class="img-ph" style="height:458px">Hero Image · 390 × 458</div>
+          </div>
+
+          <!-- 3. Intro Section (no divider) -->
+          <div class="intro-section">
+            <div class="logo">My Exclusive</div>
+            <h1>예술의 섬, 나오시마를<br>제대로 느끼는 법</h1>
+            <p class="body">일본 현지 도슨트가 동행하며<br>나오시마의 예술과 풍경을 안내합니다</p>
+          </div>
+
+          <!-- 4. Pain Point Cards -->
+          <div class="pain-cards">
+            <div class="pain-card"><p>나오시마 여행, 대중교통 타이밍 맞추기 너무 어려웠어요</p></div>
+            <div class="pain-card"><p>미술관 예약은 어렵고, 동선 짜는 건 더 막막했어요</p></div>
+            <div class="pain-card"><p>작품 해설 없이 보면 감동이 반감될 것 같아요</p></div>
+          </div>
+
+          <!-- 5. Guide Profile -->
+          <div class="guide-profile">
+            <h2>가이드 소개</h2>
+            <div class="guide-photo">
+              <div class="img-ph" style="height:170px">가이드 사진 · 350 × 170</div>
+            </div>
+            <div class="guide-role">한국인 도슨트</div>
+            <div class="guide-name">김가이드</div>
+            <div class="guide-bio">시각디자인 전공, 나오시마에서 3년째 거주하며 예술과 건축을 안내합니다.</div>
+            <div class="guide-stats">
+              <div class="guide-stat"><div class="guide-stat-value">시각디자인</div><div class="guide-stat-label">전문 분야</div></div>
+              <div class="guide-stat"><div class="guide-stat-value">3년 거주</div><div class="guide-stat-label">경험</div></div>
+              <div class="guide-stat"><div class="guide-stat-value">한국어 원어민</div><div class="guide-stat-label">언어</div></div>
+            </div>
+          </div>
+
+          <!-- 6. Recommend Box -->
+          <div class="recommend-box">
+            <div class="recommend-box-inner">
+              <h3>이런 분에게 추천해요</h3>
+              <ul>
+                <li>예술을 좋아하지만 혼자 보기엔 어려운 분</li>
+                <li>나오시마를 처음 방문하는 분</li>
+                <li>효율적인 동선으로 하루를 알차게 보내고 싶은 분</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- 7. Section Header -->
+          <div class="section-header">
+            <span class="section-tag">Highlight 1</span>
+            <h2>걸어서 만나는<br>나오시마의 예술</h2>
+          </div>
+
+          <!-- 8. Program Card ×3 -->
+          <div class="program-card">
+            <div class="program-card-img">
+              <div class="img-ph" style="height:254px;border-radius:24px">이우환 미술관</div>
+            </div>
+            <h3>이우환 미술관</h3>
+            <span class="duration">30분</span>
+            <p class="desc">안도 다다오와 이우환의 협업으로 탄생한 공간.</p>
+          </div>
+          <div class="program-card">
+            <div class="program-card-img">
+              <div class="img-ph" style="height:254px;border-radius:24px">베네세 하우스</div>
+            </div>
+            <h3>베네세 하우스 뮤지엄</h3>
+            <span class="duration">45분</span>
+            <p class="desc">바다가 내려다보이는 미술관에서 현대미술 컬렉션을 감상합니다.</p>
+          </div>
+
+          <!-- 10. Highlight Callout -->
+          <div class="highlight-callout">
+            <div class="title">💡 이우환 미술관은 월요일 휴관입니다</div>
+            <div class="subtitle">휴관일에는 베네세 하우스 뮤지엄으로 대체 진행됩니다</div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- 9. Visual Timeline (요약) -->
+          <div class="visual-timeline">
+            <h2>나오시마 상세 일정</h2>
+            <div class="timeline-items">
+              <div class="timeline-item">
+                <div class="timeline-item-img">
+                  <div class="img-ph" style="height:170px">페리 출발</div>
+                </div>
+                <span class="time-badge am">오전 코스 | 9:00 - 10:00</span>
+                <h4>다카마쓰항 출발 → 나오시마 도착</h4>
+                <p class="desc">페리 안에서 사전 해설을 들으며 이동합니다.</p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-item-img">
+                  <div class="img-ph" style="height:170px">지중미술관</div>
+                </div>
+                <span class="time-badge pm">오후 코스 | 14:00 - 15:30</span>
+                <h4>지중미술관</h4>
+                <p class="desc">모네의 수련 연작을 자연광 아래에서 감상합니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider"></div>
+
+          <!-- 13. Notice -->
+          <div class="notice-section">
+            <h2>필수 확인 사항</h2>
+            <div class="notice-list">
+              <div class="notice-item">
+                <span class="notice-dot"></span>
+                <p class="notice-text">현지 상황에 따라 <strong>일부 코스가 변경</strong>될 수 있습니다.</p>
+              </div>
+              <div class="notice-item">
+                <span class="notice-dot"></span>
+                <p class="notice-text"><strong>페리 미운항 시</strong> 투어가 취소되며, 전액 환불됩니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. Trust Points -->
+          <div class="trust-points">
+            <div class="logo">My Exclusive</div>
+            <div class="headline">실패 없는 여행의 기준,<br>마이 익스클루시브</div>
+            <div class="trust-items">
+              <div class="trust-item">
+                <div class="trust-icon">🎯</div>
+                <div>
+                  <h3>혼자라도 괜찮아요, 무조건 출발</h3>
+                  <p class="desc">예약 즉시 출발이 확정됩니다</p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon">✅</div>
+                <div>
+                  <h3>번거로운 예약 걱정은 NO!</h3>
+                  <p class="desc">교통, 입장권까지 준비해드려요</p>
+                </div>
+              </div>
+              <div class="trust-item">
+                <div class="trust-icon">💰</div>
+                <div>
+                  <h3>만족하지 못하셨다면 투어비는 0원</h3>
+                  <p class="desc">퀄리티 보장 상품으로 결제 금액 그대로 돌려드려요</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exclusive Header (하단 북엔드) -->
+          <div class="exclusive-header">
+            <div class="logo">My Exclusive</div>
+            <div class="tagline">실패 없는 여행의 기준, 마이 익스클루시브</div>
+            <div class="subtitle">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

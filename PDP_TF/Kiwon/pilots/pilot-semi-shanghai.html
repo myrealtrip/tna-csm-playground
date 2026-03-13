@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>상하이 3박4일 세미패키지 — PDP Pilot</title>
+<meta name="description" content="현지 전문 가이드와 함께하는 프리미엄 상하이 3박4일 세미패키지. 핵심 관광지부터 숨겨진 맛집까지.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<!-- schema.org FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "혼자 참가해도 되나요?", "acceptedAnswer": { "@type": "Answer", "text": "네, 1인 참가 가능합니다. 싱글룸 추가요금이 발생하며, 최소 출발 인원(4명)이 충족되어야 합니다." }},
+    { "@type": "Question", "name": "호텔 업그레이드가 가능한가요?", "acceptedAnswer": { "@type": "Answer", "text": "현장 상황에 따라 가능합니다. 사전 요청 시 추가요금으로 업그레이드를 도와드립니다." }},
+    { "@type": "Question", "name": "비행기 시간을 변경할 수 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "항공편은 단체 예약으로 개별 변경이 어렵습니다. 개별 항공 이용 시 별도 문의해 주세요." }},
+    { "@type": "Question", "name": "자유시간이 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "Day 3 오후에 약 2시간의 자유시간이 있습니다. 쇼핑이나 카페 방문을 추천드려요." }},
+    { "@type": "Question", "name": "식사 알레르기 대응이 가능한가요?", "acceptedAnswer": { "@type": "Answer", "text": "사전에 알려주시면 레스토랑에 전달합니다. 완전한 대응은 어려울 수 있으니 참고해 주세요." }},
+    { "@type": "Question", "name": "취소/환불 규정은 어떻게 되나요?", "acceptedAnswer": { "@type": "Answer", "text": "출발 30일 전 전액 환불, 15일 전 50%, 7일 전 30%, 이후 환불 불가입니다." }},
+    { "@type": "Question", "name": "여행자 보험이 포함되어 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "기본 여행자 보험이 포함되어 있습니다. 추가 보장이 필요하시면 별도 가입을 권장합니다." }},
+    { "@type": "Question", "name": "짐은 어떻게 관리하나요?", "acceptedAnswer": { "@type": "Answer", "text": "전용 차량에 짐을 보관하며, 호텔 체크인/아웃 시 포터 서비스를 제공합니다." }}
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: var(--c-white);
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (min-width: 600px) {
+    body { background: #F5F5F5; display: flex; justify-content: center; }
+  }
+
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  .divider { height: 8px; background: var(--c-gray-80); }
+
+  .img-placeholder {
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45); color: #fff; padding: 3px 10px; border-radius: 4px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px; pointer-events: none; backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     [0] heroImage
+     ══════════════════════════════════════════ */
+  .hero-image { width: 390px; height: 458px; position: relative; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+  .hero-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block; background: var(--c-blue-600); color: var(--c-white);
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px;
+    margin-bottom: 12px; letter-spacing: 0.3px;
+  }
+  .hero-title {
+    font-size: 26px; font-weight: 700; line-height: 1.24; letter-spacing: -0.52px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .hero-sub {
+    font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85);
+    margin-top: 8px; letter-spacing: -0.28px;
+  }
+
+  /* ══════════════════════════════════════════
+     [0-b] introSection
+     ══════════════════════════════════════════ */
+  .intro-section { padding: 48px 20px 32px; text-align: center; }
+  .intro-section h1 {
+    font-size: 28px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px;
+  }
+  .intro-section .body {
+    font-size: 15px; font-weight: 500; color: var(--c-gray-700);
+    letter-spacing: -0.3px; line-height: 1.44;
+  }
+  .intro-visual {
+    width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px;
+  }
+
+  /* ══════════════════════════════════════════
+     [1] painPointCards — 핵심포인트 USP 카드
+     ══════════════════════════════════════════ */
+  .pain-points { padding: 0 20px 32px; }
+  .pain-points .section-title {
+    font-size: 20px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.4px; margin-bottom: 20px;
+  }
+  .pp-list { display: flex; flex-direction: column; gap: 16px; }
+  .pp-card {
+    background: var(--c-gray-50); border-radius: 12px; padding: 20px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .pp-card .pp-emoji { font-size: 28px; flex-shrink: 0; }
+  .pp-card .pp-body { flex: 1; }
+  .pp-card .pp-title {
+    font-size: 15px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.15px; line-height: 1.38;
+    margin-bottom: 6px;
+  }
+  .pp-card .pp-desc {
+    font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.13px;
+  }
+
+  /* ══════════════════════════════════════════
+     [2] 프로모션 특전 — Gift 1–6 카드
+     ══════════════════════════════════════════ */
+  .promo-gifts { padding: 32px 20px 24px; }
+  .promo-gifts .section-title {
+    font-size: 20px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.4px; margin-bottom: 20px;
+  }
+  .gift-list { display: flex; flex-direction: column; gap: 12px; }
+  .gift-card {
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(135deg, #FDF1B5 0%, #FBFFE7 50%, #FFE390 100%);
+    border-radius: 12px; padding: 16px 18px;
+  }
+  .gift-card .gift-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--c-gray-900); flex-shrink: 0;
+  }
+  .gift-card .gift-body { flex: 1; }
+  .gift-card .gift-title {
+    font-size: 15px; font-weight: 700; color: var(--c-gray-900);
+    letter-spacing: -0.15px; margin-bottom: 2px;
+  }
+  .gift-card .gift-desc {
+    font-size: 13px; font-weight: 500; color: var(--c-gray-700);
+    line-height: 1.44; letter-spacing: -0.13px;
+  }
+
+  /* ══════════════════════════════════════════
+     [3] priceTable — 구성 한눈에 보기
+     ══════════════════════════════════════════ */
+  .package-overview { padding: 32px 20px 24px; }
+  .package-overview .section-title {
+    font-size: 20px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.4px; margin-bottom: 20px;
+  }
+  .pkg-list { display: flex; flex-direction: column; gap: 0; }
+  .pkg-row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 14px 0; border-bottom: 1px solid var(--c-gray-80);
+  }
+  .pkg-row:last-child { border-bottom: none; }
+  .pkg-row .pkg-label {
+    width: 72px; flex-shrink: 0;
+    font-size: 13px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.13px;
+  }
+  .pkg-row .pkg-value {
+    flex: 1;
+    font-size: 14px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.14px; line-height: 1.44;
+  }
+
+  /* ══════════════════════════════════════════
+     [4-5] 숙소 안내 — hotelInfo
+     ══════════════════════════════════════════ */
+  .hotel-info { padding: 32px 20px 24px; }
+  .hotel-info .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .hotel-card {
+    background: var(--c-gray-50); border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+  }
+  .hotel-card:last-child { margin-bottom: 0; }
+  .hotel-card .hotel-img { width: 100%; height: 160px; }
+  .hotel-card .hotel-body { padding: 16px 18px 18px; }
+  .hotel-grade {
+    display: inline-block; font-size: 11px; font-weight: 700; color: var(--c-blue-600);
+    background: var(--c-blue-80); padding: 3px 8px; border-radius: 4px; margin-bottom: 8px;
+  }
+  .hotel-name {
+    font-size: 19px; font-weight: 700; color: var(--c-gray-950);
+    letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 4px;
+  }
+  .hotel-location {
+    font-size: 13px; font-weight: 500; color: var(--c-gray-500);
+    margin-bottom: 14px; letter-spacing: -0.13px;
+  }
+  .hotel-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .hotel-meta-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.13px;
+  }
+  .hotel-meta-item .meta-icon { font-size: 14px; flex-shrink: 0; }
+  .hotel-meta-item .meta-label { color: var(--c-gray-500); margin-right: 2px; }
+
+  /* ══════════════════════════════════════════
+     [6] 맛집 하이라이트 — meal cards
+     ══════════════════════════════════════════ */
+  .meal-highlights { padding: 32px 20px 24px; }
+  .meal-highlights .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .meal-card {
+    display: flex; gap: 16px; padding: 18px 0;
+    border-bottom: 1px solid var(--c-gray-80);
+  }
+  .meal-card:last-child { border-bottom: none; }
+  .meal-card .meal-img {
+    width: 100px; height: 100px; border-radius: 12px; flex-shrink: 0;
+  }
+  .meal-card .meal-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+  .meal-card .meal-day-badge {
+    display: inline-flex; align-items: center; gap: 4px; width: fit-content;
+    font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+  }
+  .meal-day-badge.dinner { background: var(--c-yellow-200); color: #8B6914; }
+  .meal-day-badge.lunch { background: var(--c-blue-80); color: var(--c-blue-600); }
+  .meal-card .meal-name {
+    font-size: 17px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.17px;
+  }
+  .meal-card .meal-desc {
+    font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.13px;
+  }
+
+  /* ══════════════════════════════════════════
+     [7] 전용 차량 안내
+     ══════════════════════════════════════════ */
+  .vehicle-info { padding: 32px 20px 24px; }
+  .vehicle-info .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .vehicle-card {
+    background: var(--c-gray-50); border-radius: 12px; overflow: hidden;
+  }
+  .vehicle-card .vehicle-img { width: 100%; height: 180px; }
+  .vehicle-card .vehicle-body { padding: 20px 18px; }
+  .vehicle-features { display: flex; flex-direction: column; gap: 12px; }
+  .vehicle-feature {
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .vehicle-feature .vf-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .vehicle-feature .vf-text {
+    font-size: 14px; font-weight: 500; color: var(--c-gray-800);
+    line-height: 1.52; letter-spacing: -0.14px;
+  }
+  .vehicle-feature .vf-text strong { font-weight: 700; color: var(--c-gray-900); }
+
+  /* ══════════════════════════════════════════
+     [8] 3박4일 일정 — dayItinerary
+     ══════════════════════════════════════════ */
+  .day-itinerary { padding: 32px 20px 24px; }
+  .day-itinerary .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 28px;
+  }
+  .day-block { margin-bottom: 32px; }
+  .day-block:last-child { margin-bottom: 0; }
+  .day-label { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .day-num {
+    background: var(--c-gray-900); color: var(--c-white);
+    font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 6px; letter-spacing: -0.13px;
+  }
+  .day-title {
+    font-size: 15px; font-weight: 600; color: var(--c-gray-800); letter-spacing: -0.15px;
+  }
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--c-gray-200); border-radius: 1px;
+  }
+  .tl-entry { position: relative; padding-bottom: 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .tl-entry:last-child { padding-bottom: 0; }
+  .tl-entry::before {
+    content: ''; position: absolute; left: -20px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--c-white); border: 2.5px solid var(--c-blue-600); z-index: 1;
+  }
+  .tl-time {
+    font-size: 13px; font-weight: 700; color: var(--c-blue-600);
+    min-width: 42px; flex-shrink: 0; padding-top: 1px;
+  }
+  .tl-text {
+    font-size: 14px; font-weight: 500; color: var(--c-gray-800);
+    line-height: 1.44; letter-spacing: -0.14px;
+  }
+
+  /* ══════════════════════════════════════════
+     [9] 인기 투어 포함 일정 — 9 spot cards
+     ══════════════════════════════════════════ */
+  .spot-section { padding: 32px 20px 24px; }
+  .spot-section .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 6px;
+  }
+  .spot-section .section-subtitle {
+    font-size: 14px; font-weight: 500; color: var(--c-gray-500);
+    margin-bottom: 20px; letter-spacing: -0.14px;
+  }
+  .spot-scroll {
+    display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  }
+  .spot-scroll::-webkit-scrollbar { display: none; }
+  .spot-card {
+    min-width: 200px; max-width: 200px; scroll-snap-align: start;
+    border-radius: 12px; overflow: hidden; background: var(--c-white);
+    border: 1px solid var(--c-gray-80); flex-shrink: 0;
+  }
+  .spot-card .spot-img { width: 200px; height: 140px; }
+  .spot-card .spot-body { padding: 14px 14px 16px; }
+  .spot-card .spot-subtitle {
+    font-size: 11px; font-weight: 600; color: var(--c-blue-600);
+    letter-spacing: 0.3px; margin-bottom: 4px;
+  }
+  .spot-card .spot-name {
+    font-size: 16px; font-weight: 700; color: var(--c-gray-900);
+    letter-spacing: -0.16px; margin-bottom: 6px; line-height: 1.3;
+  }
+  .spot-card .spot-desc {
+    font-size: 12px; font-weight: 500; color: var(--c-gray-600);
+    line-height: 1.52; letter-spacing: -0.12px;
+  }
+
+  /* ══════════════════════════════════════════
+     [10] 포함/불포함 사항 — two column checklist
+     ══════════════════════════════════════════ */
+  .include-exclude { padding: 32px 20px 24px; }
+  .include-exclude .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 24px;
+  }
+  .ie-group { margin-bottom: 24px; }
+  .ie-group:last-child { margin-bottom: 0; }
+  .ie-group-title {
+    font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.16px;
+  }
+  .ie-group-title.included { color: var(--c-blue-600); }
+  .ie-group-title.excluded { color: var(--c-red-500); }
+  .ie-list { display: flex; flex-direction: column; gap: 10px; }
+  .ie-item { display: flex; align-items: flex-start; gap: 10px; }
+  .ie-item .ie-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  .ie-item .ie-text {
+    font-size: 14px; font-weight: 500; color: var(--c-gray-800);
+    line-height: 1.52; letter-spacing: -0.14px;
+  }
+
+  /* ══════════════════════════════════════════
+     [11] FAQ 아코디언 + 페이코 할인
+     ══════════════════════════════════════════ */
+  .faq-accordion { padding: 32px 20px 24px; }
+  .faq-accordion .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .faq-item { border-bottom: 1px solid var(--c-gray-80); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-question {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 0; text-align: left; font-family: var(--font-family);
+  }
+  .faq-question .q-label { font-size: 13px; font-weight: 700; color: var(--c-blue-600); flex-shrink: 0; margin-right: 2px; }
+  .faq-question .q-text { font-size: 15px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.15px; line-height: 1.38; flex: 1; }
+  .faq-question .q-arrow {
+    width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.25s ease;
+  }
+  .faq-question .q-arrow svg { width: 14px; height: 14px; }
+  .faq-item.open .faq-question .q-arrow { transform: rotate(180deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-item.open .faq-answer { max-height: 200px; }
+  .faq-answer-inner {
+    padding: 0 0 16px 24px; font-size: 14px; font-weight: 500;
+    color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.14px;
+  }
+
+
+  /* ══════════════════════════════════════════
+     sectionImage
+     ══════════════════════════════════════════ */
+  .section-image { padding: 0 20px 24px; }
+  .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  /* ══════════════════════════════════════════
+     안내사항 notice
+     ══════════════════════════════════════════ */
+  .notice { padding: 32px 20px 40px; }
+  .notice .notice-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+
+  /* ══════════════════════════════════════════
+     [12] imageGrid — 주요 방문지 이미지
+     ══════════════════════════════════════════ */
+  .image-grid { padding: 32px 20px 24px; position: relative; }
+  .image-grid .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .img-grid-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .img-grid-wrap .grid-item { border-radius: 10px; overflow: hidden; position: relative; }
+  .img-grid-wrap .grid-item.full { grid-column: 1 / -1; }
+  .img-grid-wrap .grid-item .img-placeholder { width: 100%; height: 140px; }
+  .img-grid-wrap .grid-item.full .img-placeholder { height: 180px; }
+  .img-grid-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 8px 12px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    font-size: 12px; font-weight: 600; color: var(--c-white); letter-spacing: -0.12px;
+  }
+
+  /* ══════════════════════════════════════════
+     [13] highlightCallout — 핵심 가치 강조
+     ══════════════════════════════════════════ */
+  .highlight-callout { position: relative; padding: 24px 0; }
+  .callout { margin: 0 20px; padding: 20px; background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%); border-radius: 12px; text-align: center; }
+  .callout-text { font-size: 16px; font-weight: 700; color: var(--c-gray-950); line-height: 1.5; }
+  .callout-sub { margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.5; }
+
+  /* ══════════════════════════════════════════
+     [14] priceTable — 가격표
+     ══════════════════════════════════════════ */
+  .price-table { padding: 32px 20px 24px; position: relative; }
+  .price-table .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .price-grid { display: flex; flex-direction: column; gap: 12px; }
+  .price-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 18px; background: var(--c-gray-50); border-radius: 12px;
+  }
+  .price-row.highlight { background: var(--c-blue-80); }
+  .price-label { font-size: 15px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.15px; }
+  .price-value { font-size: 15px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.15px; }
+  .price-row.highlight .price-label { color: var(--c-blue-600); }
+  .price-row.highlight .price-value { color: var(--c-blue-600); }
+  .price-note { margin-top: 12px; font-size: 12px; color: var(--c-gray-500); line-height: 1.55; }
+
+  /* ══════════════════════════════════════════
+     [15] numberedList — 예약 방법
+     ══════════════════════════════════════════ */
+  .numbered-list { padding: 32px 20px 24px; position: relative; }
+  .numbered-list .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .nl-items { display: flex; flex-direction: column; gap: 24px; counter-reset: nl-counter; }
+  .nl-item { display: flex; flex-direction: column; counter-increment: nl-counter; }
+  .num-item-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 4px; }
+  .num-item-header::before {
+    content: counter(nl-counter); flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--c-gray-900); color: var(--c-white);
+    font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .nl-item .nl-title { font-size: 14px; font-weight: 600; color: var(--c-gray-900); line-height: 1.52; letter-spacing: -0.14px; }
+  .nl-item .nl-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; letter-spacing: -0.14px; }
+
+  /* ══════════════════════════════════════════
+     [16] customerReview — 고객 리뷰
+     ══════════════════════════════════════════ */
+  .customer-review { padding: 32px 20px 24px; position: relative; }
+  .customer-review .section-title {
+    font-size: 24px; font-weight: 700; color: var(--c-black);
+    letter-spacing: -0.48px; margin-bottom: 20px;
+  }
+  .review-summary { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .review-score { font-size: 32px; font-weight: 700; color: var(--c-gray-950); }
+  .review-stars { color: #FFB800; font-size: 16px; }
+  .review-count { font-size: 13px; color: var(--c-gray-500); }
+  .review-card { background: var(--c-gray-50); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 6px; }
+  .review-date { font-size: 12px; color: var(--c-gray-500); margin-left: 8px; font-weight: 400; }
+  .review-text { font-size: 14px; color: var(--c-gray-700); line-height: 1.55; }
+
+  /* ══════════════════════════════════════════
+     Version A — debug label (hover-to-reveal)
+     ══════════════════════════════════════════ */
+  .block-section { position: relative; }
+  .debug-label {
+    position: absolute; top: 4px; left: 4px; z-index: 100;
+    background: rgba(0,200,80,0.92); color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 8px; border-radius: 3px; pointer-events: none; letter-spacing: 0.3px;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .block-section:hover .debug-label { opacity: 1; }
+  @media print { .debug-label { display: none; } }
+
+  /* poc-legend */
+  .poc-legend {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: var(--canvas-w); background: var(--c-gray-900); color: var(--c-white);
+    display: flex; justify-content: center; gap: 16px; padding: 8px 16px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px; z-index: 999;
+  }
+  .poc-legend span { opacity: 0.7; }
+  .poc-legend .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  .dot-s { background: #4CAF50; }
+  .dot-h { background: #FF9800; }
+  .dot-i { background: #9C27B0; }
+</style>
+</head>
+<body>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ [0] heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image" data-output="image">
+    <div class="debug-label">heroImage · image</div>
+    <div class="img-placeholder" style="width:100%;height:100%; background: linear-gradient(135deg, #1a2a4a 0%, #2c4a7c 30%, #4a7ab5 60%, #6a9ad5 100%);">
+      <span class="label">상하이 히어로 이미지 390x458</span>
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-badge">세미패키지</span>
+      <h1 class="hero-title">상하이 3박 4일</h1>
+      <p class="hero-sub">프리미엄 상하이 투어 &middot; 4-5성급 호텔</p>
+    </div>
+  </section>
+
+  <!-- ═══ [0-b] introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured" data-output="html">
+    <div class="debug-label">introSection · structured</div>
+    <h1>상하이의 모든 것을<br>3박 4일에 담다</h1>
+    <p class="body">현지 전문 가이드와 함께하는 프리미엄 상하이 투어.<br>핵심 관광지부터 숨겨진 맛집까지, 편안하게 즐기세요.</p>
+    <div class="intro-visual img-placeholder" style="background: linear-gradient(135deg, #1a2a4a 0%, #3a5a8a 50%, #6a9ad5 100%);">
+      <span class="label">상하이 와이탄 전경 350x200</span>
+    </div>
+  </section>
+
+  <!-- ═══ [1] painPointCards — 핵심포인트 USP ═══ -->
+  <section class="pain-points block-section" data-block="painPointCards" data-mode="structured" data-output="html">
+    <div class="debug-label">painPointCards · structured</div>
+    <h2 class="section-title">미라클 투어 세미패키지 핵심포인트!</h2>
+    <div class="pp-list">
+      <div class="pp-card">
+        <span class="pp-emoji">🏨</span>
+        <div class="pp-body">
+          <p class="pp-title">시내중심 4성급 이상 호텔</p>
+          <p class="pp-desc">와이탄 10~15분 거리! 2인 개별부터 4인 가족룸 이용 가능. 투어 종료 후에도 주변 편의시설이 보장된 시내 중심</p>
+        </div>
+      </div>
+      <div class="pp-card">
+        <span class="pp-emoji">🚙</span>
+        <div class="pp-body">
+          <p class="pp-title">개별 맞춤형 픽/샌딩 서비스</p>
+          <p class="pp-desc">개개인 항공 도착시간에 맞춰 맞춤형 픽업샌딩 서비스 제공. 단체 No! 기다림 No!</p>
+        </div>
+      </div>
+      <div class="pp-card">
+        <span class="pp-emoji">🍜</span>
+        <div class="pp-body">
+          <p class="pp-title">한국인 입맛 맞춤 중국 현지 맛집 식사</p>
+          <p class="pp-desc">꿔바로우, 미슐랭 샤오룽바오, SNS 필수 맛집 동파육 등</p>
+        </div>
+      </div>
+      <div class="pp-card">
+        <span class="pp-emoji">🚘</span>
+        <div class="pp-body">
+          <p class="pp-title">인원 수 맞춤 최고급 차량 배정</p>
+          <p class="pp-desc">고급밴(벤츠) 등 만족도 높은 최고급 차량 배정</p>
+        </div>
+      </div>
+      <div class="pp-card">
+        <span class="pp-emoji">👫</span>
+        <div class="pp-body">
+          <p class="pp-title">프라이빗 or 조인투어 모두 가능</p>
+          <p class="pp-desc">우리끼리 프라이빗하게, 또는 다른 여행자들과 함께 조인투어로 선택 가능</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [2] recommendBox — 프로모션 특전 ═══ -->
+  <section class="promo-gifts block-section" data-block="recommendBox" data-mode="structured" data-output="html">
+    <div class="debug-label">recommendBox · structured</div>
+    <h2 class="section-title">🎁 예약 특전 6가지</h2>
+    <div class="gift-list">
+      <div class="gift-card">
+        <div class="gift-num">1</div>
+        <div class="gift-body">
+          <p class="gift-title">공항 픽업 서비스</p>
+          <p class="gift-desc">푸동공항 도착 즉시 전용 차량 픽업</p>
+        </div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-num">2</div>
+        <div class="gift-body">
+          <p class="gift-title">현지 유심 제공</p>
+          <p class="gift-desc">5GB 데이터 유심 공항에서 수령</p>
+        </div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-num">3</div>
+        <div class="gift-body">
+          <p class="gift-title">여행자 보험</p>
+          <p class="gift-desc">기본 여행자보험 전원 자동 가입</p>
+        </div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-num">4</div>
+        <div class="gift-body">
+          <p class="gift-title">맛집 사전 예약</p>
+          <p class="gift-desc">현지 인기 레스토랑 4곳 예약 대행</p>
+        </div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-num">5</div>
+        <div class="gift-body">
+          <p class="gift-title">관광지 입장료 포함</p>
+          <p class="gift-desc">9곳 핵심 명소 입장권 전액 포함</p>
+        </div>
+      </div>
+      <div class="gift-card">
+        <div class="gift-num">6</div>
+        <div class="gift-body">
+          <p class="gift-title">호텔 얼리 체크인</p>
+          <p class="gift-desc">상황에 따라 1시간 얼리 체크인 지원</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [3] priceTable — 구성 한눈에 보기 ═══ -->
+  <section class="package-overview block-section" data-block="priceTable" data-mode="structured" data-output="html">
+    <div class="debug-label">priceTable · structured</div>
+    <h2 class="section-title">구성 한눈에 보기</h2>
+    <div class="pkg-list">
+      <div class="pkg-row">
+        <span class="pkg-label">일정</span>
+        <span class="pkg-value">3박 4일</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">인원</span>
+        <span class="pkg-value">기준인원 최소 4인 ~ 최대 12인까지 선택 가능</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">출발</span>
+        <span class="pkg-value">매일 출발 가능 * 항공권 불포함</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">호텔</span>
+        <span class="pkg-value">시내 중심 4성급 호텔, 2인 1실 기준 * 4인 이용 가능한 연결룸 보유</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">차량</span>
+        <span class="pkg-value">4인/6인/8인 이상에 맞춰 맞춤형 차량 제공 (고급밴, 소형버스 등)</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">픽업</span>
+        <span class="pkg-value">개별 랜딩시간 맞춤 공항 픽업/샌딩 포함</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">가이드</span>
+        <span class="pkg-value">자유일정 외 전일정 한국어 가이드 동행</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">투어</span>
+        <span class="pkg-value">필수 투어 포함 &amp; 최대한 자유시간 보장</span>
+      </div>
+      <div class="pkg-row">
+        <span class="pkg-label">보험</span>
+        <span class="pkg-value">여행자 보험 포함</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [4-5] programCard — 숙소 안내 ═══ -->
+  <section class="hotel-info block-section" data-block="programCard" data-mode="hybrid" data-output="html+image">
+    <div class="debug-label">programCard · hybrid</div>
+    <h2 class="section-title">숙소 안내</h2>
+
+    <div class="hotel-card">
+      <div class="hotel-img img-placeholder" style="background: linear-gradient(135deg, #2c3e50, #3498db);">
+        <span class="label">더 롱지몽 상하이 350x160</span>
+      </div>
+      <div class="hotel-body">
+        <span class="hotel-grade">5성급</span>
+        <h3 class="hotel-name">더 롱지몽 상하이</h3>
+        <p class="hotel-location">푸동 루자쭈이 금융지구</p>
+        <div class="hotel-meta">
+          <div class="hotel-meta-item"><span class="meta-icon">🛏️</span><span class="meta-label">객실</span> 디럭스 트윈</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🍳</span><span class="meta-label">조식</span> 포함</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🔑</span><span class="meta-label">체크인</span> 15:00</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🚪</span><span class="meta-label">체크아웃</span> 11:00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hotel-card">
+      <div class="hotel-img img-placeholder" style="background: linear-gradient(135deg, #34495e, #2ecc71);">
+        <span class="label">메후드 레스티 상하이 350x160</span>
+      </div>
+      <div class="hotel-body">
+        <span class="hotel-grade">4성급</span>
+        <h3 class="hotel-name">메후드 레스티 상하이</h3>
+        <p class="hotel-location">징안구 난징시루 도보 5분</p>
+        <div class="hotel-meta">
+          <div class="hotel-meta-item"><span class="meta-icon">🛏️</span><span class="meta-label">객실</span> 스탠다드 더블</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🍳</span><span class="meta-label">조식</span> 포함</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🔑</span><span class="meta-label">체크인</span> 14:00</div>
+          <div class="hotel-meta-item"><span class="meta-icon">🚪</span><span class="meta-label">체크아웃</span> 12:00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [6] 엄선된 현지 맛집 — meal highlight cards ═══ -->
+  <section class="meal-highlights block-section" data-block="programCard" data-mode="hybrid" data-output="html+image">
+    <div class="debug-label">programCard · hybrid (meals)</div>
+    <h2 class="section-title">엄선된 현지 맛집</h2>
+
+    <div class="meal-card">
+      <div class="meal-img img-placeholder" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+        <span class="label">동북인가</span>
+      </div>
+      <div class="meal-body">
+        <span class="meal-day-badge dinner">1일차 석식</span>
+        <p class="meal-name">동북인가</p>
+        <p class="meal-desc">상하이 현지인이 줄 서는 동북요리 전문점. 꿔바로우와 지삼선이 대표 메뉴.</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-img img-placeholder" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+        <span class="label">고려관</span>
+      </div>
+      <div class="meal-body">
+        <span class="meal-day-badge lunch">2일차 중식</span>
+        <p class="meal-name">고려관</p>
+        <p class="meal-desc">예원 인근 100년 전통 상하이 요리. 샤오롱바오와 탕수육이 일품.</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-img img-placeholder" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+        <span class="label">그랜드마더</span>
+      </div>
+      <div class="meal-body">
+        <span class="meal-day-badge lunch">3일차 중식</span>
+        <p class="meal-name">그랜드마더</p>
+        <p class="meal-desc">우전 수향마을 전통 가정식. 홍소육과 수향두부가 대표 메뉴.</p>
+      </div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-img img-placeholder" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+        <span class="label">녹파랑</span>
+      </div>
+      <div class="meal-body">
+        <span class="meal-day-badge dinner">3일차 석식</span>
+        <p class="meal-name">녹파랑</p>
+        <p class="meal-desc">와이탄 야경이 보이는 루프탑 레스토랑. 모던 상하이 코스 요리.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [7] 전용 차량 안내 ═══ -->
+  <section class="vehicle-info block-section" data-block="sectionImage" data-mode="image" data-output="image">
+    <div class="debug-label">sectionImage · image</div>
+    <h2 class="section-title">전용 차량 안내</h2>
+    <div class="vehicle-card">
+      <div class="vehicle-img img-placeholder" style="background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);">
+        <span class="label">전용 차량 이미지 350x180</span>
+      </div>
+      <div class="vehicle-body">
+        <div class="vehicle-features">
+          <div class="vehicle-feature">
+            <span class="vf-icon">🚐</span>
+            <p class="vf-text"><strong>7인승 프리미엄 밴</strong> (인원에 따라 변동)</p>
+          </div>
+          <div class="vehicle-feature">
+            <span class="vf-icon">🧳</span>
+            <p class="vf-text"><strong>짐 보관</strong> 가능, 이동 중 편안한 휴식</p>
+          </div>
+          <div class="vehicle-feature">
+            <span class="vf-icon">📱</span>
+            <p class="vf-text"><strong>차량 내 Wi-Fi</strong> 및 충전기 제공</p>
+          </div>
+          <div class="vehicle-feature">
+            <span class="vf-icon">🕐</span>
+            <p class="vf-text"><strong>전 일정 전용 배차</strong>, 대중교통 이용 없음</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [8] 3박4일 상세 일정 — dayItinerary ═══ -->
+  <section class="day-itinerary block-section" data-block="visualTimeline" data-mode="hybrid" data-output="html+css">
+    <div class="debug-label">visualTimeline · hybrid</div>
+    <h2 class="section-title">3박 4일 상세 일정</h2>
+
+    <!-- Day 1 -->
+    <div class="day-block">
+      <div class="day-label">
+        <span class="day-num">Day 1</span>
+        <span class="day-title">인천 → 상하이</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-entry"><span class="tl-time">09:00</span><span class="tl-text">인천공항 출발</span></div>
+        <div class="tl-entry"><span class="tl-time">11:00</span><span class="tl-text">상하이 푸동공항 도착, 전용차 픽업</span></div>
+        <div class="tl-entry"><span class="tl-time">12:30</span><span class="tl-text">남경로 산책</span></div>
+        <div class="tl-entry"><span class="tl-time">14:00</span><span class="tl-text">예원 관광</span></div>
+        <div class="tl-entry"><span class="tl-time">16:00</span><span class="tl-text">와이탄 산책</span></div>
+        <div class="tl-entry"><span class="tl-time">18:00</span><span class="tl-text">석식 — 동북인가</span></div>
+        <div class="tl-entry"><span class="tl-time">20:00</span><span class="tl-text">호텔 체크인</span></div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-block">
+      <div class="day-label">
+        <span class="day-num">Day 2</span>
+        <span class="day-title">상하이 시내 핵심</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-entry"><span class="tl-time">08:30</span><span class="tl-text">호텔 조식</span></div>
+        <div class="tl-entry"><span class="tl-time">10:00</span><span class="tl-text">황푸강 유람선 탑승</span></div>
+        <div class="tl-entry"><span class="tl-time">12:00</span><span class="tl-text">중식 — 고려관</span></div>
+        <div class="tl-entry"><span class="tl-time">14:00</span><span class="tl-text">임시정부 &amp; 신천지</span></div>
+        <div class="tl-entry"><span class="tl-time">16:00</span><span class="tl-text">스타벅스 리저브 로스터리</span></div>
+        <div class="tl-entry"><span class="tl-time">17:30</span><span class="tl-text">우캉멘션 산책</span></div>
+        <div class="tl-entry"><span class="tl-time">19:00</span><span class="tl-text">자유시간</span></div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-block">
+      <div class="day-label">
+        <span class="day-num">Day 3</span>
+        <span class="day-title">우전 수향마을 + 디즈니</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-entry"><span class="tl-time">07:30</span><span class="tl-text">호텔 출발</span></div>
+        <div class="tl-entry"><span class="tl-time">09:30</span><span class="tl-text">우전 수향마을 도착</span></div>
+        <div class="tl-entry"><span class="tl-time">12:00</span><span class="tl-text">중식 — 그랜드마더</span></div>
+        <div class="tl-entry"><span class="tl-time">14:00</span><span class="tl-text">상하이 디즈니랜드</span></div>
+        <div class="tl-entry"><span class="tl-time">18:00</span><span class="tl-text">석식 — 녹파랑</span></div>
+        <div class="tl-entry"><span class="tl-time">20:00</span><span class="tl-text">호텔 복귀</span></div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-block">
+      <div class="day-label">
+        <span class="day-num">Day 4</span>
+        <span class="day-title">상하이 → 인천</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-entry"><span class="tl-time">08:00</span><span class="tl-text">호텔 조식 후 체크아웃</span></div>
+        <div class="tl-entry"><span class="tl-time">09:30</span><span class="tl-text">마시청 서커스 관람</span></div>
+        <div class="tl-entry"><span class="tl-time">11:30</span><span class="tl-text">공항 이동</span></div>
+        <div class="tl-entry"><span class="tl-time">14:00</span><span class="tl-text">푸동공항 출발</span></div>
+        <div class="tl-entry"><span class="tl-time">17:00</span><span class="tl-text">인천공항 도착</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [9] 인기 투어 포함 일정 — 9 spot cards ═══ -->
+  <section class="spot-section block-section" data-block="programCard" data-mode="hybrid" data-output="html+image">
+    <div class="debug-label">programCard · hybrid (spots)</div>
+    <h2 class="section-title">인기 투어 포함 일정</h2>
+    <p class="section-subtitle">상하이 필수 관광지 9곳이 모두 포함되어 있어요</p>
+
+    <div class="spot-scroll">
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #e74c3c, #f39c12);"><span class="label">남경로</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 1</p>
+          <p class="spot-name">남경로</p>
+          <p class="spot-desc">상하이 최대 번화가, 야경이 특히 아름다운 보행자 거리</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #3498db, #2c3e50);"><span class="label">황푸강 유람선</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 2</p>
+          <p class="spot-name">황푸강 유람선</p>
+          <p class="spot-desc">와이탄과 푸동 스카이라인을 동시에 감상하는 리버 크루즈</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #8e44ad, #c0392b);"><span class="label">우캉멘션</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 2</p>
+          <p class="spot-name">우캉멘션</p>
+          <p class="spot-desc">프랑스 조계지 감성의 인스타 성지, 우캉루 랜드마크</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #27ae60, #2ecc71);"><span class="label">우전 수향마을</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 3</p>
+          <p class="spot-name">우전 수향마을</p>
+          <p class="spot-desc">1,300년 역사의 물의 마을, 곤돌라 탑승 포함</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #f1c40f, #e67e22);"><span class="label">디즈니랜드</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 3</p>
+          <p class="spot-name">상하이 디즈니랜드</p>
+          <p class="spot-desc">세계 최대 규모 디즈니 캐슬, 트론 라이트사이클 필수</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #e74c3c, #2c3e50);"><span class="label">임시정부</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 2</p>
+          <p class="spot-name">임시정부 &amp; 신천지</p>
+          <p class="spot-desc">대한민국 임시정부 유적지와 트렌디한 신천지 거리</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #1abc9c, #16a085);"><span class="label">스타벅스</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 2</p>
+          <p class="spot-name">스타벅스 리저브</p>
+          <p class="spot-desc">세계 최대 스타벅스 매장, 로스팅 공정 관람</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #d35400, #e67e22);"><span class="label">예원</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 1</p>
+          <p class="spot-name">예원</p>
+          <p class="spot-desc">명나라 시대 전통 정원, 상하이 전통 문화 체험</p>
+        </div>
+      </div>
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #9b59b6, #e74c3c);"><span class="label">마시청 서커스</span></div>
+        <div class="spot-body">
+          <p class="spot-subtitle">DAY 4</p>
+          <p class="spot-name">마시청 서커스</p>
+          <p class="spot-desc">상하이 대표 공연, 세계적 수준의 곡예와 아크로바틱</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ BLOCK 12 · imageGrid ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid" data-output="image">
+    <div class="debug-label">imageGrid · hybrid</div>
+    <div class="blk-lbl">BLOCK 12 · imageGrid</div>
+    <h2 class="section-title">주요 방문지</h2>
+    <div class="img-grid-wrap">
+      <div class="grid-item full">
+        <div class="img-placeholder" style="width:100%;height:180px; background: linear-gradient(135deg, #1a2a4a 0%, #4a7ab5 100%);">
+          <span class="label">와이탄 야경 350x180</span>
+        </div>
+        <div class="img-grid-caption">와이탄 야경</div>
+      </div>
+      <div class="grid-item">
+        <div class="img-placeholder" style="width:100%;height:140px; background: linear-gradient(135deg, #27ae60, #2ecc71);">
+          <span class="label">우전 수향마을</span>
+        </div>
+        <div class="img-grid-caption">우전 수향마을</div>
+      </div>
+      <div class="grid-item">
+        <div class="img-placeholder" style="width:100%;height:140px; background: linear-gradient(135deg, #f1c40f, #e67e22);">
+          <span class="label">상하이 디즈니랜드</span>
+        </div>
+        <div class="img-grid-caption">상하이 디즈니랜드</div>
+      </div>
+      <div class="grid-item">
+        <div class="img-placeholder" style="width:100%;height:140px; background: linear-gradient(135deg, #8e44ad, #c0392b);">
+          <span class="label">우캉멘션</span>
+        </div>
+        <div class="img-grid-caption">우캉멘션</div>
+      </div>
+      <div class="grid-item">
+        <div class="img-placeholder" style="width:100%;height:140px; background: linear-gradient(135deg, #e74c3c, #f39c12);">
+          <span class="label">예원</span>
+        </div>
+        <div class="img-grid-caption">예원</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BLOCK 13 · highlightCallout ═══ -->
+  <section class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured" data-output="html">
+    <div class="debug-label">highlightCallout · structured</div>
+    <div class="blk-lbl">BLOCK 13 · highlightCallout</div>
+    <div class="callout">
+      <p class="callout-text">항공 + 호텔 + 가이드 투어 올인원</p>
+      <p class="callout-sub">개별 예약 대비 평균 30% 절약</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ BLOCK 14 · priceTable ═══ -->
+  <section class="price-table block-section" data-block="priceTable" data-mode="structured" data-output="html">
+    <div class="debug-label">priceTable · structured (pricing)</div>
+    <div class="blk-lbl">BLOCK 14 · priceTable</div>
+    <h2 class="section-title">가격 안내</h2>
+    <div class="price-grid">
+      <div class="price-row">
+        <span class="price-label">2인 1실 (1인 기준)</span>
+        <span class="price-value">1,290,000원</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">3인 1실 (1인 기준)</span>
+        <span class="price-value">1,190,000원</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">싱글룸 추가요금</span>
+        <span class="price-value">+350,000원</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">아동 (만 2-11세)</span>
+        <span class="price-value">990,000원</span>
+      </div>
+      <div class="price-row highlight">
+        <span class="price-label">얼리버드 할인 (30일 전)</span>
+        <span class="price-value">-100,000원</span>
+      </div>
+    </div>
+    <p class="price-note">* 유류할증료 및 제세공과금 포함 가격입니다. 항공 좌석 상황에 따라 가격이 변동될 수 있습니다.</p>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ BLOCK 15 · numberedList ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="structured" data-output="html">
+    <div class="debug-label">numberedList · structured</div>
+    <h2 class="section-title">예약 방법</h2>
+    <div class="nl-items">
+      <div class="nl-item">
+        <div class="num-item-header">
+          <p class="nl-title">예약 및 결제</p>
+        </div>
+        <p class="nl-text">출발일과 인원을 선택하고 예약금(1인 300,000원)을 결제해요. 최소 4명 충족 시 출발이 확정돼요.</p>
+      </div>
+      <div class="nl-item">
+        <div class="num-item-header">
+          <p class="nl-title">잔금 결제</p>
+        </div>
+        <p class="nl-text">출발 14일 전까지 잔금 결제를 완료해 주세요.</p>
+      </div>
+      <div class="nl-item">
+        <div class="num-item-header">
+          <p class="nl-title">출발</p>
+        </div>
+        <p class="nl-text">출발 3일 전 상세 일정을 안내드려요. 인천공항에서 가이드를 만나 출발합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [10] 포함/불포함 사항 ═══ -->
+  <section class="include-exclude block-section" data-block="notice" data-mode="structured" data-output="html">
+    <div class="debug-label">notice · structured (include/exclude)</div>
+    <h2 class="section-title">포함 / 불포함 사항</h2>
+
+    <div class="ie-group">
+      <h3 class="ie-group-title included">포함 사항</h3>
+      <div class="ie-list">
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">호텔 및 조식 (전 일정 숙박 및 아침 식사)</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">중식 2회, 석식 2회</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">전용 차량 제공 (공항 - 호텔, 전 일정)</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">황푸강 유람선 승선권</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">마시청 서커스 입장권</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">예원 입장권</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">우전 수향마을 입장권 (나룻배 포함)</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">가이드 3일 포함</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">여행자 보험 (최대 1억 6천만원 보장)</p></div>
+        <div class="ie-item"><span class="ie-icon">✅</span><p class="ie-text">디즈니랜드 일정 변경 가능 (차액 발생시 지불)</p></div>
+      </div>
+    </div>
+
+    <div class="ie-group">
+      <h3 class="ie-group-title excluded">불포함 사항</h3>
+      <div class="ie-list">
+        <div class="ie-item"><span class="ie-icon">❌</span><p class="ie-text">개인 항공권</p></div>
+        <div class="ie-item"><span class="ie-icon">❌</span><p class="ie-text">단독투어: 디즈니랜드 변경시 차액</p></div>
+        <div class="ie-item"><span class="ie-icon">❌</span><p class="ie-text">3일차 자유일정 이동 가이드/기사</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ sectionImage ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image" data-output="image">
+    <div class="debug-label">sectionImage · image</div>
+    <div class="section-img-wrap img-placeholder" style="background: linear-gradient(135deg, #1a2a4a 0%, #2c4a7c 40%, #6a9ad5 100%);">
+      <span class="label">상하이 스카이라인 야경 350x232</span>
+    </div>
+    <p class="section-img-caption">상하이 푸동 스카이라인 야경</p>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ [11] customerReview — FAQ ═══ -->
+  <section class="faq-accordion block-section" data-block="customerReview" data-mode="structured" data-output="html">
+    <div class="debug-label">customerReview · structured (FAQ)</div>
+    <h2 class="section-title">자주 묻는 질문</h2>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">혼자 참가해도 되나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">네, 1인 참가 가능합니다. 싱글룸 추가요금이 발생하며, 최소 출발 인원(4명)이 충족되어야 합니다.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">호텔 업그레이드가 가능한가요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">현장 상황에 따라 가능합니다. 사전 요청 시 추가요금으로 업그레이드를 도와드립니다.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">비행기 시간을 변경할 수 있나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">항공편은 단체 예약으로 개별 변경이 어렵습니다. 개별 항공 이용 시 별도 문의해 주세요.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">자유시간이 있나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Day 2 저녁과 Day 3 오후에 자유시간이 있습니다. 쇼핑이나 카페 방문을 추천드려요.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">식사 알레르기 대응이 가능한가요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">사전에 알려주시면 레스토랑에 전달합니다. 완전한 대응은 어려울 수 있으니 참고해 주세요.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">취소/환불 규정은 어떻게 되나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">출발 30일 전 전액 환불, 15일 전 50%, 7일 전 30%, 이후 환불 불가입니다.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">여행자 보험이 포함되어 있나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">기본 여행자 보험이 포함되어 있습니다. 추가 보장이 필요하시면 별도 가입을 권장합니다.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span class="q-label">Q</span>
+        <span class="q-text">짐은 어떻게 관리하나요?</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">전용 차량에 짐을 보관하며, 호텔 체크인/아웃 시 포터 서비스를 제공합니다.</div></div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 안내사항 ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured" data-output="html">
+    <div class="debug-label">notice · structured</div>
+    <h2 class="notice-title">안내사항</h2>
+    <div class="notice-item"><span class="dot"></span><p class="text">여권 유효기간이 6개월 이상 남아있어야 합니다</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text">중국 입국 시 비자가 필요합니다 (15일 무비자 해당 여부 확인)</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text">현지 사정에 따라 일정이 변경될 수 있습니다</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text">최소 출발 인원 4명 미달 시 7일 전 안내드립니다</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>싱글룸 추가요금</strong>이 별도로 발생합니다</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>취소 수수료</strong>는 출발 7일 전부터 발생합니다</p></div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ BLOCK 16 · customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured" data-output="html">
+    <div class="debug-label">customerReview · structured</div>
+    <div class="blk-lbl">BLOCK 16 · customerReview</div>
+    <h2 class="section-title">고객 리뷰</h2>
+
+    <div class="review-summary">
+      <span class="review-score">4.7</span>
+      <span class="review-stars">★★★★★</span>
+      <span class="review-count">203건의 리뷰</span>
+    </div>
+
+    <div class="review-card">
+      <p class="review-author">김지현<span class="review-date">2026.02.15</span></p>
+      <p class="review-text">가이드분이 정말 친절하시고 현지 맛집도 기대 이상이었어요. 우전 수향마을은 정말 동화 속 같았습니다. 호텔도 깨끗하고 위치가 좋아서 저녁에 산책하기도 좋았어요.</p>
+    </div>
+
+    <div class="review-card">
+      <p class="review-author">박승민<span class="review-date">2026.01.28</span></p>
+      <p class="review-text">전용 차량 이동이라 편하고 짐 걱정 없이 다닐 수 있었어요. 디즈니랜드에서의 자유시간도 넉넉해서 좋았습니다. 다만 Day 1은 조금 빡빡한 일정이었어요.</p>
+    </div>
+
+    <div class="review-card">
+      <p class="review-author">이수연<span class="review-date">2026.01.10</span></p>
+      <p class="review-text">부모님과 함께 갔는데 어르신들도 편하게 다니실 수 있었어요. 가이드분이 중국어도 잘하시고 역사 설명도 재미있게 해주셨습니다. 강력 추천합니다!</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- poc-legend -->
+<div class="poc-legend">
+  <span><i class="dot dot-s"></i>structured (6)</span>
+  <span><i class="dot dot-h"></i>hybrid (5)</span>
+  <span><i class="dot dot-i"></i>image (3)</span>
+</div>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>

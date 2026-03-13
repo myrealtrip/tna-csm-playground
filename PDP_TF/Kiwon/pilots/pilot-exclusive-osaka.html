@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>오사카 주유패스 PB Exclusive — Hybrid PDP PoC</title>
+<meta name="description" content="오사카 주유패스를 PB가 직접 기획한 최적 동선 가이드와 함께. 50개 이상 관광지 무료 입장 + 교통 무제한.">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "오사카 주유패스 PB Exclusive 큐레이션",
+  "description": "오사카 주유패스 + PB 큐레이션 가이드 + 최적 동선 콤보. 50개 이상 관광지 무료 입장과 교통 무제한.",
+  "touristType": ["City Tour", "Sightseeing", "Cultural Tour"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 5,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "오사카성 천수각",
+          "description": "오사카의 상징. 주유패스로 무료 입장. 8층 전망대에서 오사카 시내 360도 파노라마.",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.6873, "longitude": 135.5262 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "우메다 스카이빌딩 공중정원",
+          "description": "173m 높이 공중정원에서 오사카 야경 감상. 주유패스로 1,500엔 절약.",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.7052, "longitude": 135.4906 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "도톤보리 크루즈",
+          "description": "도톤보리 수로를 배로 유람. 글리코 간판을 배 위에서 감상하는 특별 체험.",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.6687, "longitude": 135.5013 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "덴포잔 대관람차",
+          "description": "높이 112.5m. 오사카항과 USJ가 한눈에. 야간 일루미네이션이 특히 아름다움.",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.6554, "longitude": 135.4321 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "통천각",
+          "description": "신세카이의 랜드마크. 빌리켄 동상과 복고풍 거리까지 도보 탐방.",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.6524, "longitude": 135.5064 }
+        }
+      }
+    ]
+  },
+  "duration": "P2D",
+  "maximumAttendeeCapacity": null
+}
+</script>
+
+<style>
+  /* ── Design Tokens (from pdp-tokens.json) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+    --content-inset: 342px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System: 파일 있으면 표시, 없으면 컬러 플레이스홀더 ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: exclusiveHeader
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .exclusive-header {
+    width: 390px;
+    height: 102px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .exclusive-header .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .exclusive-header .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .tagline {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.3px;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-gray-400);
+    letter-spacing: -0.24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 60px 20px 23px;
+    text-align: center;
+  }
+  .intro-section .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .intro-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.56px;
+    line-height: 1.24;
+    margin-bottom: 16px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.44;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: painPointCards
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .pain-point-cards {
+    padding: 0 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pain-card {
+    background: var(--c-gray-50);
+    border-radius: 12px;
+    padding: 20px 30px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    letter-spacing: -0.32px;
+    line-height: 1.35;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: guideProfile (curator variant)
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .guide-profile {
+    padding: 32px 20px 24px;
+  }
+  .guide-profile .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 24px;
+  }
+  .guide-profile .photo {
+    width: 350px;
+    height: 170px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .guide-profile .role {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 4px;
+  }
+  .guide-profile .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-1000);
+    margin-bottom: 8px;
+  }
+  .guide-profile .bio {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+    margin-bottom: 8px;
+  }
+  .guide-profile .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 20px;
+    border-top: 1px solid var(--c-gray-100);
+    padding-top: 16px;
+  }
+  .guide-profile .stat {
+    text-align: center;
+  }
+  .guide-profile .stat + .stat {
+    border-left: 1px solid var(--c-gray-100);
+  }
+  .guide-profile .stat-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 4px;
+  }
+  .guide-profile .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 0 20px 24px;
+  }
+  .recommend-box .box {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .recommend-box .box-inner {
+    padding: 10px 12px;
+  }
+  .recommend-box .box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 8px;
+  }
+  .recommend-box .check-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-black);
+    line-height: 1.72;
+    padding-left: 20px;
+    position: relative;
+  }
+  .recommend-box .check-item::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--c-blue-600);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionHeader
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .section-header {
+    padding: 50px 20px 33px;
+    text-align: center;
+  }
+  .section-header .tag {
+    display: inline-block;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.13px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: programCard
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .program-card {
+    padding: 0 24px 32px;
+  }
+  .program-card .card-image {
+    width: 342px;
+    height: 254px;
+    border-radius: 24px;
+    margin-bottom: 16px;
+  }
+  .program-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+  }
+  .program-card .duration {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-500);
+    letter-spacing: -0.15px;
+  }
+  .program-card .desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+    margin-top: 10px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 24px 24px;
+    width: 342px;
+    height: 76px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .highlight-callout .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    letter-spacing: -0.13px;
+  }
+  .highlight-callout .hl-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: visualTimeline
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .visual-timeline {
+    padding: 32px 20px 24px;
+  }
+  .visual-timeline .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 32px;
+  }
+  .timeline-item {
+    margin-bottom: 50px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image {
+    width: 350px;
+    height: 170px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .timeline-item .badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    padding: 2.5px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .badge.ev { background: #F3E8FF; }
+  .timeline-item .tl-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+    margin-bottom: 10px;
+  }
+  .timeline-item .tl-desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList (포함/불포함)
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .numbered-list .list-subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    margin-bottom: 12px;
+  }
+  .numbered-list .list-subtitle.excluded {
+    margin-top: 24px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .num-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .num-item .num-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  /* legacy flat list-item (excluded items) */
+  .list-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: baseline;
+  }
+  .list-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .list-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .list-item .item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong {
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: trustPoints
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .trust-points {
+    width: 390px;
+    min-height: 496px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    padding: 63px 20px 43px;
+    text-align: center;
+  }
+  .trust-points .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .trust-points .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-points .headline {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+    margin-bottom: 55px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item {
+    text-align: center;
+    margin-bottom: 27px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .trust-item .trust-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-white);
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+  .trust-item .trust-desc {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-400);
+    letter-spacing: -0.28px;
+    line-height: 1.34;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay: renderMode / output 태그
+     ══════════════════════════════════════════ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC 범례 ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader (hybrid) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <p class="tagline" data-output="html">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle" data-output="html">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+  <!-- ═══ 2. heroImage (image) — no divider ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #e94560 100%);">
+      <span class="label">osaka-castle-night.jpg · 390x458</span>
+    </div>
+  </section>
+
+  <!-- ═══ 3. introSection (hybrid) — no divider ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <h1 data-output="html">오사카 주유패스,<br>이렇게 써야 본전이다</h1>
+    <p class="body" data-output="html">50개 이상 관광지 무료 입장과 교통 무제한 —<br>PB가 설계한 최적 동선으로 주유패스의 가치를 200% 끌어올립니다</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2A4A7F 0%, #5B7BA3 50%, #C8A882 100%);"><span class="label">osaka-pass-overview.jpg · 350x200</span></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards (structured) ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">주유패스 샀는데 어디부터 가야 할지 모르겠어요</div>
+    <div class="pain-card" data-output="html">무료 입장 관광지가 너무 많아서 고르기 힘들어요</div>
+    <div class="pain-card" data-output="html">동선이 비효율적이면 하루가 금방 끝나요</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile — curator variant (hybrid) ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">큐레이터 소개</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-color:#4A6FA5;"><span class="label">curator-team.jpg · 350x170</span></div>
+    <p class="role" data-output="html">PB 오사카 전문 큐레이터</p>
+    <p class="name" data-output="html">오사카 PB팀</p>
+    <p class="bio" data-output="html">오사카를 200회 이상 방문하며 검증한 코스를 한국어 가이드와 함께 제공합니다. 주유패스 최적 동선 설계 전문.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">오사카 전문</div>
+        <div class="stat-label" data-output="html">특화 도시</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">200+</div>
+        <div class="stat-label" data-output="html">검증 코스</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">한국어 가이드</div>
+        <div class="stat-label" data-output="html">언어</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox (structured) ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분에게 추천해요</p>
+        <p class="check-item" data-output="html">오사카 처음 가는 분</p>
+        <p class="check-item" data-output="html">알뜰하게 관광지 많이 가고 싶은 분</p>
+        <p class="check-item" data-output="html">효율적인 동선을 원하는 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader (structured) ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">Highlight 1</span>
+    <h2 data-output="html">주유패스<br>필수 코스 5선</h2>
+  </section>
+
+  <!-- ═══ 8. programCard x5 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#8B7355;"><span class="label">osaka-castle.jpg</span></div>
+    <h3 data-output="html">오사카성 천수각</h3>
+    <span class="duration" data-output="html">40분</span>
+    <p class="desc" data-output="html">오사카의 상징. 주유패스로 무료 입장. 8층 전망대에서 오사카 시내 360도 파노라마.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#5B7BA3;"><span class="label">umeda-sky.jpg</span></div>
+    <h3 data-output="html">우메다 스카이빌딩 공중정원</h3>
+    <span class="duration" data-output="html">30분</span>
+    <p class="desc" data-output="html">173m 높이 공중정원에서 오사카 야경 감상. 주유패스로 1,500엔 절약.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#6B8CA8;"><span class="label">dotonbori-cruise.jpg</span></div>
+    <h3 data-output="html">도톤보리 크루즈</h3>
+    <span class="duration" data-output="html">25분</span>
+    <p class="desc" data-output="html">도톤보리 수로를 배로 유람. 글리코 간판을 배 위에서 감상하는 특별 체험.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#A08060;"><span class="label">tempozan-wheel.jpg</span></div>
+    <h3 data-output="html">덴포잔 대관람차</h3>
+    <span class="duration" data-output="html">15분</span>
+    <p class="desc" data-output="html">높이 112.5m. 오사카항과 USJ가 한눈에. 야간 일루미네이션이 특히 아름다움.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#C0A878;"><span class="label">tsutenkaku.jpg</span></div>
+    <h3 data-output="html">통천각</h3>
+    <span class="duration" data-output="html">20분</span>
+    <p class="desc" data-output="html">신세카이의 랜드마크. 빌리켄 동상과 복고풍 거리까지 도보 탐방.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout (structured) ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">2일권이면 하루 평균 19,500원!</p>
+    <p class="hl-subtitle" data-output="html">위 5곳만 가도 7,000엔 이상 절약</p>
+  </div>
+
+  <!-- ═══ 9-1. sectionImage (image) ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap img-placeholder" data-output="image" style="background: linear-gradient(180deg, #1a1a2e 0%, #0f3460 50%, #e94560 100%);"><span class="label">osaka-night-panorama.jpg · 350x232</span></div>
+    <p class="section-img-caption" data-output="html">오사카 야경 파노라마 — 우메다 스카이빌딩에서 바라본 도심</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline (hybrid) ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">추천 1일 코스</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#8B7355;"><span class="label">tl-01-castle.jpg</span></div>
+      <span class="badge am" data-output="html">오전 | 9:00 - 10:00</span>
+      <h4 class="tl-title" data-output="html">오사카성 천수각 관람</h4>
+      <p class="tl-desc" data-output="html">아침 일찍 방문하면 한적하게 관람 가능. 천수각 전망대에서 오사카 전경을 감상합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#6B8CA8;"><span class="label">tl-02-aquabus.jpg</span></div>
+      <span class="badge am" data-output="html">오전 | 10:30 - 11:00</span>
+      <h4 class="tl-title" data-output="html">오사카 수상버스 유람</h4>
+      <p class="tl-desc" data-output="html">오사카성 근처 선착장에서 수상버스 탑승. 도심 수로를 따라 이동하며 풍경 감상.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#C8A882;"><span class="label">tl-03-dotonbori-lunch.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 | 12:00 - 13:00</span>
+      <h4 class="tl-title" data-output="html">도톤보리 산책 + 점심</h4>
+      <p class="tl-desc" data-output="html">오사카의 먹거리 거리를 자유롭게 산책하며 점심 식사. 타코야키, 오코노미야키 추천.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#5A7A9A;"><span class="label">tl-04-cruise.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 | 14:00 - 14:30</span>
+      <h4 class="tl-title" data-output="html">도톤보리 크루즈</h4>
+      <p class="tl-desc" data-output="html">도톤보리 수로를 배로 유람. 글리코 간판과 네온사인을 수면 위에서 감상.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#C0A878;"><span class="label">tl-05-tsutenkaku.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 | 15:00 - 15:30</span>
+      <h4 class="tl-title" data-output="html">통천각 + 신세카이 산책</h4>
+      <p class="tl-desc" data-output="html">레트로 감성의 신세카이 거리와 통천각 전망대. 빌리켄 동상도 만나보세요.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#3A5A7A;"><span class="label">tl-06-umeda-sunset.jpg</span></div>
+      <span class="badge ev" data-output="html">저녁 | 17:00 - 17:30</span>
+      <h4 class="tl-title" data-output="html">우메다 스카이빌딩 일몰 감상</h4>
+      <p class="tl-desc" data-output="html">173m 높이 공중정원에서 오사카의 일몰과 야경이 교차하는 순간을 감상.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#2A3A5A;"><span class="label">tl-07-tempozan-night.jpg</span></div>
+      <span class="badge ev" data-output="html">저녁 | 18:00 - 18:15</span>
+      <h4 class="tl-title" data-output="html">덴포잔 대관람차 야경</h4>
+      <p class="tl-desc" data-output="html">오사카항의 야경을 대관람차에서 감상. 일루미네이션이 빛나는 오사카만 파노라마.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. numberedList (hybrid) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 / 불포함</h2>
+
+    <p class="list-subtitle" data-output="html">포함 사항</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">50개 이상 관광지 무료 입장</p>
+        </div>
+        <div class="num-step-img img-placeholder" data-output="image" style="background-color:#8B7355;"><span class="label">included-attractions.jpg · 350x180</span></div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">02</span>
+          <p class="num-title" data-output="html">오사카 지하철/버스 무제한</p>
+        </div>
+        <div class="num-step-img img-placeholder" data-output="image" style="background-color:#4A6FA5;"><span class="label">included-transport.jpg · 350x180</span></div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">03</span>
+          <p class="num-title" data-output="html">관광 쿠폰북</p>
+        </div>
+        <div class="num-step-img img-placeholder" data-output="image" style="background-color:#6B8F71;"><span class="label">included-coupon.jpg · 350x180</span></div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">04</span>
+          <p class="num-title" data-output="html">PB 큐레이션 코스 가이드 (PDF)</p>
+        </div>
+        <div class="num-step-img img-placeholder" data-output="image" style="background-color:#5B7BA3;"><span class="label">included-guide-pdf.jpg · 350x180</span></div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함 사항</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">JR 노선</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">02</span>
+      <p class="item-text" data-output="html">난카이 공항특급</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">03</span>
+      <p class="item-text" data-output="html">식비</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">04</span>
+      <p class="item-text" data-output="html">USJ 입장료</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice (structured) ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>여권 지참 필수</strong>입니다. 외국인 전용 패스이므로 여권 확인이 필요합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>사용 시작일로부터 연속 사용</strong>해야 합니다. 2일권은 연속 2일간 유효합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">일부 시설은 <strong>정기 휴관일</strong>이 있습니다. 방문 전 반드시 확인해 주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>분실 시 재발급 불가</strong>합니다. 패스를 소중히 보관해 주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">전자 패스는 <strong>별도 교환소에서 실물 교환</strong>이 필요합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints (hybrid) ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">실패 없는 여행의 기준,<br>마이 익스클루시브</h2>
+
+    <div class="trust-item">
+      <div class="icon">🎯</div>
+      <p class="trust-title" data-output="html">PB 직접 기획</p>
+      <p class="trust-desc" data-output="html">오사카 전문팀이 검증한 최적 코스</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">💰</div>
+      <p class="trust-title" data-output="html">절약 효과 검증</p>
+      <p class="trust-desc" data-output="html">5곳만 가도 7,000엔 이상 절약</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">📖</div>
+      <p class="trust-title" data-output="html">한국어 가이드</p>
+      <p class="trust-desc" data-output="html">PDF 가이드로 언어 걱정 없이</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 (2회째) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <p class="tagline" data-output="html">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle" data-output="html">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+</main>
+
+</body>
+</html>
