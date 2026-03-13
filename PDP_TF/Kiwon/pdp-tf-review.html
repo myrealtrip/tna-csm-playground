@@ -180,6 +180,44 @@ body {
 }
 .featured-cta:hover .featured-cta-arrow { transform: translateX(4px); }
 
+/* ═══ Hero CTA (spotlight) ═══ */
+.hero-cta-wrap { margin-top: 24px; }
+.hero-cta-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.hero-cta-badge--blue { background: #DBEAFE; color: #1D4ED8; }
+.hero-cta-badge--green { background: #D1FAE5; color: #065F46; }
+.featured-cta--hero {
+  border-width: 2px; border-color: rgba(37,99,235,0.35);
+  box-shadow: 0 4px 20px rgba(37,99,235,0.08);
+  padding: 22px 26px;
+}
+.featured-cta--hero:hover {
+  border-color: #2563EB; box-shadow: 0 8px 36px rgba(37,99,235,0.18);
+  transform: translateY(-3px);
+}
+.featured-cta--hero .featured-cta-icon {
+  width: 52px; height: 52px; font-size: 22px; border-radius: 14px;
+  background: rgba(37,99,235,0.09);
+}
+.featured-cta--hero .featured-cta-title { font-size: 16px; }
+.featured-cta--hero-dark {
+  border-width: 2px; border-color: rgba(74,222,128,0.25);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  padding: 22px 26px;
+}
+.featured-cta--hero-dark:hover {
+  border-color: #4ADE80; box-shadow: 0 8px 36px rgba(74,222,128,0.2);
+  transform: translateY(-3px);
+}
+.featured-cta--hero-dark .featured-cta-icon {
+  width: 52px; height: 52px; font-size: 22px; border-radius: 14px;
+  background: rgba(74,222,128,0.15);
+}
+.featured-cta--hero-dark .featured-cta-title { font-size: 16px; }
+
 /* ═══ Block System ═══ */
 .block-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px;
@@ -498,16 +536,19 @@ details[open] summary { border-bottom: 1px solid #F1F5F9; }
       </tbody>
     </table>
 
-    <a href="before-after.html" target="_blank" class="featured-cta">
-      <div class="featured-cta-inner">
-        <div class="featured-cta-icon">&#9654;</div>
-        <div class="featured-cta-text">
-          <div class="featured-cta-title">Before/After 상세 슬라이드 보기</div>
-          <div class="featured-cta-desc">통이미지 PDP vs 블록 PDP &mdash; SEO, 로딩, 파일 크기, 접근성까지 전수 비교</div>
+    <div class="hero-cta-wrap">
+      <span class="hero-cta-badge hero-cta-badge--blue">&#9733; 핵심 산출물</span>
+      <a href="before-after.html" target="_blank" class="featured-cta featured-cta--hero">
+        <div class="featured-cta-inner">
+          <div class="featured-cta-icon">&#9654;</div>
+          <div class="featured-cta-text">
+            <div class="featured-cta-title">Before/After 상세 슬라이드 보기</div>
+            <div class="featured-cta-desc">통이미지 PDP vs 블록 PDP &mdash; SEO 0&rarr;80+점, 로딩 90%&darr;, 텍스트 검색 0&rarr;45개+ &middot; 슬라이드 9장</div>
+          </div>
+          <div class="featured-cta-arrow">&rarr;</div>
         </div>
-        <div class="featured-cta-arrow">&rarr;</div>
-      </div>
-    </a>
+      </a>
+    </div>
 
     <details>
       <summary>관련 산출물 보기</summary>
@@ -560,16 +601,19 @@ details[open] summary { border-bottom: 1px solid #F1F5F9; }
       </div>
     </div>
 
-    <a href="pdp-cvr-analysis.html" target="_blank" class="featured-cta featured-cta--dark">
-      <div class="featured-cta-inner">
-        <div class="featured-cta-icon">&#128202;</div>
-        <div class="featured-cta-text">
-          <div class="featured-cta-title">CVR 검증 리포트 전문 보기</div>
-          <div class="featured-cta-desc">BigQuery 659개 상품 &middot; 9단계 교차 검증 &middot; 카테고리별 임계점 분석 전문</div>
+    <div class="hero-cta-wrap">
+      <span class="hero-cta-badge hero-cta-badge--green">&#9733; 핵심 산출물</span>
+      <a href="pdp-cvr-analysis.html" target="_blank" class="featured-cta featured-cta--dark featured-cta--hero-dark">
+        <div class="featured-cta-inner">
+          <div class="featured-cta-icon">&#128202;</div>
+          <div class="featured-cta-text">
+            <div class="featured-cta-title">CVR 검증 리포트 전문 보기</div>
+            <div class="featured-cta-desc">BigQuery 659개 상품 &middot; 9단계 교차 검증 &middot; 월 +37.8억 기대 &middot; 카테고리별 임계점 분석 전문</div>
+          </div>
+          <div class="featured-cta-arrow">&rarr;</div>
         </div>
-        <div class="featured-cta-arrow">&rarr;</div>
-      </div>
-    </a>
+      </a>
+    </div>
   </div>
 </section>
 
