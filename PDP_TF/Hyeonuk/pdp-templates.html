@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRT PDP 섹션 빌더</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+  .keep-all { word-break: keep-all; word-wrap: break-word; }
+  .cat-tab.active { color: #51ABF3; border-bottom: 2px solid #51ABF3; }
+  .sub-btn.active { background: #51ABF3; color: #fff; border-color: #51ABF3; }
+
+  /* Section cards in library */
+  .sec-card { transition: all 0.12s; user-select: none; cursor: grab; border-radius: 9px; border: 1px solid #E5E7EB; background: #fff; padding: 7px 8px; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .sec-card:active { cursor: grabbing; }
+  .sec-card.in-canvas { opacity: 0.32; cursor: not-allowed; pointer-events: none; }
+  .sec-card:not(.in-canvas):hover { border-color: #51ABF3; box-shadow: 0 1px 4px rgba(81,171,243,0.2); }
+
+  /* Active items */
+  .active-item { border-radius: 9px; border: 1px solid #BFDFFF; background: #EEF6FF; padding: 7px 8px; display: flex; align-items: center; gap: 6px; cursor: grab; user-select: none; transition: all 0.12s; margin-bottom: 4px; }
+  .active-item:active { cursor: grabbing; }
+  .active-item.ghost { opacity: 0.3; }
+
+  /* Canvas section */
+  .canvas-sec { position: relative; background: white; }
+  .canvas-bar { display: flex; align-items: center; gap: 5px; padding: 5px 8px; background: rgba(255,255,255,0.97); border-bottom: 1px solid #E5E7EB; position: sticky; top: 0; z-index: 20; }
+  .canvas-sec.active .canvas-bar { background: rgba(81,171,243,0.08); border-color: #51ABF3; }
+  .canvas-sec.active { outline: 2px solid #51ABF3; outline-offset: -2px; }
+  .canvas-sec.cdrag { opacity: 0.3; }
+  .drag-handle { cursor: grab; color: #ccc; font-size: 14px; line-height: 1; }
+
+  /* Insert markers */
+  .ins-mark { height: 3px; background: #51ABF3; border-radius: 2px; pointer-events: none; box-shadow: 0 0 6px rgba(81,171,243,0.5); position: relative; }
+  .ins-mark::before { content: ''; display: block; width: 8px; height: 8px; background: #51ABF3; border-radius: 50%; position: absolute; top: -2.5px; left: -4px; }
+
+  /* Canvas empty */
+  .canvas-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; color: #9CA3AF; border: 2px dashed #E5E7EB; border-radius: 16px; margin: 20px; transition: all 0.15s; }
+  .canvas-empty.dov { border-color: #51ABF3; background: #EEF6FF; color: #51ABF3; }
+
+  /* Panel drop highlights */
+  .dov-active { background: #EFF6FF !important; }
+  .dov-lib { background: #FFF5F5 !important; }
+
+  /* Right panel */
+  #right-panel { transition: width 0.3s ease; overflow: hidden; }
+  #right-panel.open { width: 320px; }
+
+  /* Type badges */
+  .type-HERO { background: #EEF6FF; color: #1D6FAA; }
+  .type-표 { background: #ECFDF5; color: #065F46; }
+  .type-이미지 { background: #FFF7ED; color: #9A3412; }
+  .type-정보 { background: #F5F3FF; color: #5B21B6; }
+  .type-FAQ { background: #FFFBEB; color: #92400E; }
+  .type-공통 { background: #F9FAFB; color: #374151; }
+
+  /* Timeline / FAQ / Day tabs */
+  .timeline-line { position: absolute; left: 19px; top: 10px; bottom: -20px; width: 2px; background: #E5E7EB; z-index: 0; }
+  .last-item .timeline-line { display: none; }
+  .faq-answer { display: none; }
+  .faq-item.open .faq-answer { display: block; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-chevron { transition: transform 0.2s; }
+  .day-tab.active { background: #51ABF3; color: #fff; border-color: #51ABF3; }
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+  .sec-div { height: 8px; background: #F2F3F5; }
+  .cat-gh { font-size: 10px; font-weight: 700; color: #9CA3AF; padding: 8px 4px 3px; letter-spacing: 0.04em; border-bottom: 1px solid #F3F4F6; margin-bottom: 4px; }
+</style>
+</head>
+<body class="bg-[#F2F3F5] h-screen flex flex-col overflow-hidden">
+
+<header class="bg-white border-b border-gray-100 shadow-sm shrink-0 z-40">
+  <div class="flex overflow-x-auto px-4" style="scrollbar-width:none">
+    <button class="cat-tab active shrink-0 px-4 py-2.5 text-sm font-bold text-gray-400 border-b-2 border-transparent whitespace-nowrap" data-cat="ticket">① 티켓·이용권</button>
+    <button class="cat-tab shrink-0 px-4 py-2.5 text-sm font-bold text-gray-400 border-b-2 border-transparent whitespace-nowrap" data-cat="tour">② 가이드 투어</button>
+    <button class="cat-tab shrink-0 px-4 py-2.5 text-sm font-bold text-gray-400 border-b-2 border-transparent whitespace-nowrap" data-cat="golf">③ 골프·특수투어</button>
+    <button class="cat-tab shrink-0 px-4 py-2.5 text-sm font-bold text-gray-400 border-b-2 border-transparent whitespace-nowrap" data-cat="semi">④ 세미패키지</button>
+  </div>
+  <div id="sub-row" class="flex gap-2 px-4 py-2 bg-gray-50">
+    <button class="sub-btn active shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 whitespace-nowrap transition" data-sub="ticket-1a">1A 테마파크</button>
+    <button class="sub-btn shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 whitespace-nowrap transition" data-sub="ticket-1b">1B 교통 티켓</button>
+    <button class="sub-btn shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 whitespace-nowrap transition" data-sub="ticket-1c">1C 시티패스</button>
+    <button class="sub-btn shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 whitespace-nowrap transition" data-sub="ticket-1d">1D 유람선·공연</button>
+    <button class="sub-btn shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 whitespace-nowrap transition" data-sub="snap">1E 스냅·스파·미식</button>
+  </div>
+</header>
+
+<main class="flex flex-1 overflow-hidden">
+
+  <!-- Panel 1: 전체 섹션 라이브러리 -->
+  <div class="w-[280px] shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+    <div class="px-3 py-2.5 bg-gray-50 border-b border-gray-200 shrink-0">
+      <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">전체 섹션 라이브러리</p>
+      <p class="text-[10px] text-gray-400 mt-0.5">클릭 추가 · 드래그로 위치 지정</p>
+    </div>
+    <div id="lib-list" class="flex-1 overflow-y-auto p-2"></div>
+  </div>
+
+  <!-- Panel 2: 현재 적용된 섹션 -->
+  <div class="w-[280px] shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+    <div class="px-3 py-2.5 bg-blue-50 border-b border-blue-100 shrink-0 flex items-center gap-2">
+      <p class="text-[11px] font-bold text-[#1D6FAA] uppercase tracking-wider">현재 적용된 섹션</p>
+      <span id="active-count" class="ml-auto text-[10px] font-bold bg-[#51ABF3] text-white px-2 py-0.5 rounded-full">0</span>
+    </div>
+    <div id="active-list" class="flex-1 overflow-y-auto p-2 min-h-0"></div>
+  </div>
+
+  <!-- Center: PDP Canvas -->
+  <div id="center" class="flex-1 overflow-y-auto bg-[#F2F3F5] py-3 px-3">
+    <div id="mockup-container" class="w-full max-w-[430px] mx-auto rounded-2xl shadow-xl bg-white min-h-[200px]"></div>
+  </div>
+
+  <!-- Right: Info panel -->
+  <div id="right-panel" class="w-0 bg-white border-l border-gray-100 overflow-y-auto shrink-0">
+    <div class="w-[320px]">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 sticky top-0 bg-white z-10">
+        <p class="text-sm font-bold text-[#1D2229]" id="panel-title">섹션 정보</p>
+        <button onclick="closePanel()" class="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+      </div>
+      <div id="panel-content" class="p-4 space-y-4"></div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const SECTION_META = {
+  'ticket-1a': { label:'티켓 · 1A 테마파크', sections: [
+    { id:'A', title:'HERO 이미지', type:'HERO', why:'첫 인상으로 상품 신뢰도 결정. CVR에 직결됨.', imgSpec:'860×1400px (3:5)', assets:'대표 이미지 1장, 상품명, 배지', guide:'파크 전경 또는 대표 어트랙션. 밝고 생동감 있는 이미지.' },
+    { id:'B', title:'티켓 종류 비교표', type:'표', why:'티켓 옵션 복잡 → 표로 정리해야 이탈 방지.', imgSpec:'없음', assets:'종류·대상·유효기간·요금', guide:'성인/소인 구분, 가격은 KRW 표기.' },
+    { id:'C', title:'주요 어트랙션', type:'이미지', why:'"이 파크에 뭐가 있나" 확인 → 구매 동기 부여.', imgSpec:'각 400×300px', assets:'어트랙션 이미지 4장 이상', guide:'대표 어트랙션 위주.' },
+    { id:'D', title:'이용방법', type:'정보', why:'"어떻게 쓰나" 불안 해소 → 취소율 감소.', imgSpec:'없음', assets:'3단계 텍스트', guide:'단계는 3개로 압축.' },
+    { id:'E', title:'위치·교통 안내', type:'정보', why:'현장 이동 방법 불안 해소.', imgSpec:'지도 이미지 권장', assets:'주소, 교통 안내', guide:'지하철 노선 + 도보 시간 필수.' },
+    { id:'F', title:'준비사항·포함/불포함', type:'정보', why:'포함/불포함 불명확 시 CS 급증.', imgSpec:'없음', assets:'포함/불포함 목록', guide:'✅/❌ 형식으로 명확히.' },
+    { id:'G', title:'주의사항', type:'공통', why:'날짜/연령 제한 → 법적 보호.', imgSpec:'없음', assets:'불렛 형태 주의사항', guide:'핵심만 4–6개.' },
+    { id:'H', title:'FAQ', type:'FAQ', why:'반복 문의 사전 차단 → CS 비용 절감.', imgSpec:'없음', assets:'Q&A 3개 이상', guide:'실제 CS 문의 기반으로 작성.' }
+  ]},
+  'ticket-1b': { label:'티켓 · 1B 교통', sections: [
+    { id:'A', title:'HERO (구간 강조)', type:'HERO', why:'출발→도착 구간 정보가 핵심.', imgSpec:'860×1400px', assets:'열차/역 이미지, 구간명', guide:'히어로 하단에 구간 배지 필수.' },
+    { id:'B', title:'매력 포인트', type:'정보', why:'비행기 대비 편리함 등 USP 어필.', imgSpec:'없음', assets:'불렛 3–4개', guide:'속도/편의/가성비 관점.' },
+    { id:'C', title:'추천 대상', type:'정보', why:'"나한테 맞나" 확인.', imgSpec:'없음', assets:'체크리스트 3개', guide:'상황 기반 체크리스트.' },
+    { id:'D', title:'이용방법 (수령+탑승)', type:'정보', why:'교통권 수령 방법이 가장 중요.', imgSpec:'없음', assets:'4단계 텍스트', guide:'예약→수령→개찰→탑승 순서.' },
+    { id:'E', title:'노선/구간 안내', type:'이미지', why:'어느 역에 서는지 시각화 필수.', imgSpec:'노선도 860×400px', assets:'노선도 이미지', guide:'출발·도착역 강조.' },
+    { id:'F', title:'주의사항+FAQ', type:'FAQ', why:'교환 기한, 자유석/지정석 여부 핵심.', imgSpec:'없음', assets:'주의사항 + Q&A 2–3개', guide:'교환 마감일 명시 필수.' }
+  ]},
+  'ticket-1c': { label:'티켓 · 1C 시티패스', sections: [
+    { id:'A', title:'HERO', type:'HERO', why:'패스가 어디에 쓰이는지 이미지로 전달.', imgSpec:'860×1400px', assets:'대표 도시/랜드마크 이미지', guide:'도시 전경 또는 대표 관광지.' },
+    { id:'B', title:'구매 전 필독 공지', type:'정보', why:'사용 조건 복잡 → 미고지 시 분쟁.', imgSpec:'없음 (강조 박스)', assets:'필독 공지 텍스트', guide:'연속 사용 조건, 카운트 방식.' },
+    { id:'C', title:'포함 시설 목록', type:'이미지', why:'"이 패스로 어디 갈 수 있나" 핵심 동기.', imgSpec:'각 400×300px', assets:'포함 시설 이미지+이름', guide:'베스트 5–8개만 노출.' },
+    { id:'D', title:'노선도·지도', type:'이미지', why:'지하철 노선 범위 모르면 구매 망설임.', imgSpec:'860×600px', assets:'노선도 이미지', guide:'이용 가능 노선 색상 강조.' },
+    { id:'E', title:'이용방법', type:'정보', why:'패스 수령→사용 방법 안내.', imgSpec:'없음', assets:'3단계', guide:'수령 방식(현지/QR) 분기 설명.' },
+    { id:'F', title:'절약 계산 예시', type:'정보', why:'"정말 이득인가" 의심 해소.', imgSpec:'없음 (강조 박스)', assets:'시설별 입장료 vs 패스 가격 비교', guide:'"3곳만 가도 본전" 형식.' },
+    { id:'G', title:'주의사항+FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'주의사항+Q&A', guide:'사용 불가 시설, 기간 제한.' }
+  ]},
+  'ticket-1d': { label:'티켓 · 1D 유람선·공연', sections: [
+    { id:'A', title:'HERO (야경/공연)', type:'HERO', why:'야경·공연은 비주얼이 전부.', imgSpec:'860×1400px', assets:'야경 또는 공연 대표 이미지', guide:'어두운 배경에 빛이 강조된 사진.' },
+    { id:'B', title:'운행/공연 시간표', type:'표', why:'"몇 시에 출발하나" 파악 못 하면 이탈.', imgSpec:'없음', assets:'출발시간·소요시간·회차 데이터', guide:'날짜별 변동 있으면 표기 필수.' },
+    { id:'C', title:'탑승·집합 방법', type:'정보', why:'선착장·공연장 위치 모르면 CS 급증.', imgSpec:'집합장소 사진 권장', assets:'외관 사진, 주소, 집합 시간', guide:'"출발 N분 전까지 탑승 완료" 강조.' },
+    { id:'D', title:'주요 스팟·볼거리', type:'이미지', why:'유람선/공연 하이라이트 → 기대감 형성.', imgSpec:'각 400×300px', assets:'스팟/볼거리 이미지+설명', guide:'3–4개만 엄선.' },
+    { id:'E', title:'이용 조건·환불', type:'정보', why:'날씨 취소 정책 → 미고지 시 분쟁.', imgSpec:'없음', assets:'이용 조건 텍스트', guide:'우천 시 정책 반드시 포함.' },
+    { id:'F', title:'주의사항+FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'Q&A 2–3개', guide:'' }
+  ]},
+  'tour': { label:'가이드 투어', sections: [
+    { id:'A', title:'HERO (배지 강조)', type:'HERO', why:'패스트트랙/소그룹/한국어 배지 → CVR에 직결.', imgSpec:'860×1400px', assets:'현지 이미지 1장, 배지', guide:'명소 전경 + 사람이 있는 생동감 있는 구도.' },
+    { id:'B', title:'요금·옵션표', type:'표', why:'코스 옵션이 2개 이상이면 표가 필수.', imgSpec:'없음', assets:'옵션명·포함사항·요금', guide:'권장 옵션 강조 표시 추가.' },
+    { id:'C', title:'가이드 소개', type:'정보', why:'투어 신뢰도 = 가이드 신뢰도.', imgSpec:'프로필 200×200px (좌측)', assets:'가이드 사진, 경력·언어·한마디', guide:'경력 N년, 가이드 직접 쓴 한마디.' },
+    { id:'D', title:'포함/불포함', type:'정보', why:'입장료 포함 여부 분쟁 1위.', imgSpec:'없음', assets:'포함/불포함 목록', guide:'"입장권 포함"이면 어느 시설인지 명기.' },
+    { id:'E', title:'코스 타임라인', type:'이미지', why:'투어 흐름 시각화 → 결정 가속.', imgSpec:'각 지점 이미지 860×400px', assets:'시간·장소·설명, 각 지점 사진', guide:'핵심 하이라이트는 색상 구분.' },
+    { id:'F', title:'투어 매력 포인트', type:'정보', why:'경쟁 상품 대비 USP 명확화.', imgSpec:'없음', assets:'불렛 3–5개', guide:'아이콘+제목+설명 형식.' },
+    { id:'G', title:'이런 분께 추천', type:'정보', why:'타겟 명확화 → 적합 고객 전환율↑.', imgSpec:'없음', assets:'체크리스트 3개', guide:'상황 기반으로 작성.' },
+    { id:'H', title:'픽업·집합 방법', type:'정보', why:'집합장소 혼선 = CS 1위 원인.', imgSpec:'집합장소 사진 권장', assets:'주소, 인솔자 연락방법', guide:'현장 식별 방법 포함.' },
+    { id:'I', title:'주의사항+FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'Q&A 3개 이상', guide:'드레스코드, 우천 정책 포함.' }
+  ]},
+  'snap': { label:'티켓·이용권 · 1E 스냅·스파·미식', sections: [
+    { id:'A', title:'HERO', type:'HERO', why:'서비스 분위기·감성 전달.', imgSpec:'860×1400px', assets:'서비스 대표 이미지', guide:'스냅:결과물. 스파:인테리어. 미식:요리/식당.' },
+    { id:'B', title:'서비스 소개', type:'정보', why:'"이 서비스가 뭔지" 모르면 구매 불가.', imgSpec:'없음', assets:'소개 텍스트 2–4줄', guide:'누가, 어디서, 어떤 서비스인지 명확히.' },
+    { id:'C', title:'업소·장소 목록', type:'이미지', why:'여러 업소 중 선택 가능 → 그리드로 한눈에.', imgSpec:'각 400×300px', assets:'업소 이미지+이름+위치', guide:'업소 4–8개 그리드.' },
+    { id:'D', title:'포함사항·옵션', type:'정보', why:'어떤 서비스 포함인지 불명확 시 이탈.', imgSpec:'없음', assets:'포함/옵션 목록', guide:'1회권 vs 패스 차이 명확히.' },
+    { id:'E', title:'이용방법', type:'정보', why:'예약→방문→이용 흐름 안내.', imgSpec:'없음', assets:'3단계 텍스트', guide:'사전 예약 필요 여부 강조.' },
+    { id:'F', title:'위치 안내', type:'정보', why:'골목 업소 많음 → 지도/주소 안내 필수.', imgSpec:'지도 권장', assets:'주소, 교통 안내', guide:'가장 접근하기 쉬운 교통편 안내.' },
+    { id:'G', title:'주의사항+FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'Q&A 2–3개', guide:'' }
+  ]},
+  'golf': { label:'골프·특수투어', sections: [
+    { id:'A', title:'HERO (코스 비주얼)', type:'HERO', why:'코스 비주얼이 구매 결정 요소 1위.', imgSpec:'860×1400px', assets:'코스/현장 이미지', guide:'잔디가 넓게 펼쳐진 전경.' },
+    { id:'B', title:'코스·장소 스펙표', type:'표', why:'스펙 기반 구매 결정 → 표가 필수.', imgSpec:'없음', assets:'홀수·등급·카트·구글평점', guide:'여러 코스 선택 가능하면 동적 변경 권장.' },
+    { id:'C', title:'포함사항', type:'정보', why:'그린피·캐디·카트 포함 여부 분쟁 1위.', imgSpec:'없음', assets:'포함/불포함 체크리스트', guide:'각각 포함 여부 명기.' },
+    { id:'D', title:'일정 타임라인', type:'정보', why:'픽업→라운딩→귀환 일정 → 안심 구매.', imgSpec:'없음', assets:'시간대별 일정', guide:'픽업/티오프/귀환 예상시간 포함.' },
+    { id:'E', title:'픽업 정보', type:'정보', why:'골프장 위치 외곽 → 픽업이 구매 결정 요소.', imgSpec:'없음', assets:'픽업 장소·시간', guide:'픽업 가능 호텔 리스트 명시.' },
+    { id:'F', title:'주의사항+FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'Q&A 2–3개', guide:'복장 규정, 악천후 취소 정책 필수.' }
+  ]},
+  'semi': { label:'세미패키지', sections: [
+    { id:'A', title:'HERO (목적지)', type:'HERO', why:'목적지 분위기 = 항공+호텔 프리미엄 이미지.', imgSpec:'860×1400px', assets:'목적지 대표 이미지', guide:'야경 또는 상징적 랜드마크.' },
+    { id:'B', title:'하이라이트 3가지', type:'정보', why:'포함 상품 복잡 → 핵심 3가지 요약.', imgSpec:'아이콘', assets:'강점 3개 (아이콘+제목+설명)', guide:'항공·숙박·픽업 핵심 강점.' },
+    { id:'C', title:'포함·불포함', type:'정보', why:'항공+호텔 포함 → 경계 복잡, 분쟁 多.', imgSpec:'없음', assets:'포함/불포함 목록', guide:'식비·입장료 등 불포함도 명확히.' },
+    { id:'D', title:'Day별 일정', type:'정보', why:'3일 일정 → 탭으로 분리 필수.', imgSpec:'없음', assets:'Day1/2/3 일정', guide:'각 Day는 5–7줄. 식사 포함/불포함 표기.' },
+    { id:'E', title:'호텔 안내', type:'이미지', why:'숙소는 패키지 구매 결정 요소 2위.', imgSpec:'호텔 외관 860×500px', assets:'호텔명·등급·위치·시설 사진', guide:'조식 포함 여부 명기.' },
+    { id:'F', title:'1인 추가요금 (싱글 서플리먼트)', type:'정보', why:'미고지 = 환불 분쟁 1위 원인.', imgSpec:'없음 (주황 강조 박스 필수)', assets:'항목별 추가요금 표', guide:'박당 요금 등 항목별 명확히.' },
+    { id:'G', title:'투어 코스', type:'정보', why:'포함 투어 명확화 → 오해 방지.', imgSpec:'없음', assets:'포함 투어 목록', guide:'구체적으로 무엇이 포함인지.' },
+    { id:'H', title:'추천 대상', type:'정보', why:'타겟 명확화 → 전환율↑.', imgSpec:'없음', assets:'체크리스트 3개', guide:'처음 방문, 편하게 이동 등.' },
+    { id:'I', title:'취소 정책 (항공·지상 분리)', type:'정보', why:'항공+지상 정책 다름 → 분리 필수.', imgSpec:'없음 (파랑/초록 박스 2개)', assets:'항공 취소 정책 / 지상비 취소 정책', guide:'항공(파랑), 지상(초록) 색상 구분.' },
+    { id:'J', title:'FAQ', type:'FAQ', why:'공통', imgSpec:'없음', assets:'Q&A 3개 이상', guide:'항공 좌석, 아이 요금 등.' }
+  ]}
+};
+const SI = {
+  'ticket-1a': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-blue-700 to-blue-500"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/80"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex flex-wrap gap-2 mb-3"><span class="bg-[#003087]/80 text-[#6BAFFF] text-[11px] font-bold px-2.5 py-1 rounded border border-[#3366AA]">즉시확정</span><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">e-티켓</span></div><h1 class="text-[22px] font-bold leading-tight mb-2 keep-all">상하이 디즈니랜드 입장권</h1><p class="text-[13px] opacity-85 keep-all">마법의 세계로. 날짜 지정 없이 유연하게 사용 가능한 공식 입장권.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold text-[#1D2229] mb-4">🎫 티켓 종류</h2><div class="overflow-x-auto"><table class="w-full text-[12px]"><thead><tr class="bg-[#F7F8FA]"><th class="text-left px-3 py-2.5 font-bold text-gray-600 rounded-tl-lg">종류</th><th class="px-3 py-2.5 font-bold text-gray-600 text-center">대상</th><th class="px-3 py-2.5 font-bold text-gray-600 text-center">유효기간</th><th class="px-3 py-2.5 font-bold text-gray-600 text-left rounded-tr-lg">특징</th></tr></thead><tbody><tr class="border-b border-gray-50"><td class="px-3 py-3 font-medium whitespace-nowrap">일반 입장권</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">성인·소인</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">구매 후 90일</td><td class="px-3 py-3 text-gray-600 leading-relaxed">날짜 자유 선택 · 전 어트랙션 이용 · e-티켓 즉시 발급</td></tr><tr class="border-b border-gray-50 bg-[#F7FBFF]"><td class="px-3 py-3 font-medium whitespace-nowrap">날짜 지정권</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">성인·소인</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">지정일 1회</td><td class="px-3 py-3 text-gray-600 leading-relaxed">특정일 지정 · 성수기·주말 이용 가능 · 변경 불가</td></tr><tr><td class="px-3 py-3 font-medium whitespace-nowrap">프리미엄 패스</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">성인·소인</td><td class="px-3 py-3 text-center text-gray-600 whitespace-nowrap">구매 후 90일</td><td class="px-3 py-3 text-gray-600 leading-relaxed">퍼레이드 예약석 포함 · 미키 포토 서비스 · 파크 재입장 가능</td></tr></tbody></table></div></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold text-[#1D2229] mb-4">✨ 주요 어트랙션</h2><div class="grid grid-cols-2 gap-3"><div class="rounded-xl overflow-hidden"><div class="h-24 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center text-3xl">🏰</div><div class="p-2 bg-gray-50"><p class="text-[12px] font-bold">판타지랜드</p><p class="text-[11px] text-gray-500">신데렐라 캐슬</p></div></div><div class="rounded-xl overflow-hidden"><div class="h-24 bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center text-3xl">🚀</div><div class="p-2 bg-gray-50"><p class="text-[12px] font-bold">투모로우랜드</p><p class="text-[11px] text-gray-500">트론 라이트사이클</p></div></div><div class="rounded-xl overflow-hidden"><div class="h-24 bg-gradient-to-br from-yellow-200 to-orange-200 flex items-center justify-center text-3xl">🌿</div><div class="p-2 bg-gray-50"><p class="text-[12px] font-bold">어드벤처 아일</p><p class="text-[11px] text-gray-500">인디아나 존스</p></div></div><div class="rounded-xl overflow-hidden"><div class="h-24 bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-3xl">🎪</div><div class="p-2 bg-gray-50"><p class="text-[12px] font-bold">미키 에비뉴</p><p class="text-[11px] text-gray-500">미키 만나기</p></div></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold text-[#1D2229] mb-5">📋 이용방법</h2><div class="space-y-5"><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div><div><p class="font-bold text-sm">예약 완료</p><p class="text-[12px] text-gray-500 mt-0.5">마이리얼트립에서 티켓 선택 후 결제.</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div><div><p class="font-bold text-sm">바우처 수신</p><p class="text-[12px] text-gray-500 mt-0.5">이메일로 QR 바우처 자동 발송.</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div><div><p class="font-bold text-sm">현장 입장</p><p class="text-[12px] text-gray-500 mt-0.5">스마트폰 QR코드를 게이트에서 스캔.</p></div></div></div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold text-[#1D2229] mb-4">📍 위치 및 교통</h2><div class="bg-gray-50 rounded-xl p-4 space-y-3"><div class="flex gap-3 items-start"><span class="text-base shrink-0">🚇</span><div><p class="text-[12px] font-bold">지하철</p><p class="text-[12px] text-gray-600">迪士尼站 (디즈니랜드역) 하차 — 도보 5분</p></div></div><div class="flex gap-3 items-start"><span class="text-base shrink-0">📍</span><div><p class="text-[12px] font-bold">주소</p><p class="text-[12px] text-gray-600">上海市浦东新区申迪西路310号</p></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6"><div class="bg-[#F0F8FF] rounded-2xl p-5"><h3 class="font-bold text-[#1D6FAA] text-sm mb-3">✅ 예약 전 확인사항</h3><div class="border-b border-blue-100 pb-3 mb-3"><p class="text-[11px] font-bold text-gray-400 mb-1.5">포함 사항</p><p class="text-[13px] text-gray-700">입장권, e-티켓 발송</p></div><div class="border-b border-blue-100 pb-3 mb-3"><p class="text-[11px] font-bold text-gray-400 mb-1.5">불포함 사항</p><p class="text-[13px] text-gray-700">교통비, 식음료, 추가 어트랙션</p></div><div><p class="text-[11px] font-bold text-gray-400 mb-1.5">참고</p><p class="text-[13px] text-gray-700 leading-relaxed">만 3세 미만 무료 · 재입장 불가</p></div></div></div>`,
+    'G': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold text-[#1D2229] mb-4">⚠️ 주의사항</h2><ul class="space-y-2.5"><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span class="keep-all">날짜 지정 티켓은 지정 날짜 외 사용 불가.</span></li><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span class="keep-all">구매 완료 후 환불 불가.</span></li><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span class="keep-all">외부 음식 반입 제한.</span></li></ul></div>`,
+    'H': `<div class="bg-white px-5 py-6 pb-8"><h2 class="text-sm font-bold text-[#1D2229] mb-4">💬 자주 묻는 질문</h2><div class="divide-y divide-gray-100"><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">날짜를 사전에 지정해야 하나요?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500 leading-relaxed">일반 입장권은 구매 후 90일 이내 자유롭게 사용 가능합니다.</div></div><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">현장 발권이 필요한가요?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500 leading-relaxed">스마트폰 QR코드로 바로 입장 가능합니다.</div></div></div></div>`
+  },
+  'ticket-1b': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-gray-800 to-gray-600"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/80"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex gap-2 mb-3"><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">신오사카 → 도쿄</span></div><h1 class="text-[22px] font-bold leading-tight mb-2">산요 신칸센 승차권</h1><p class="text-[13px] opacity-85">오사카–도쿄 최단 2시간 22분. 전 노선 자유 이용.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🌟 이 티켓의 매력 포인트</h2><div class="space-y-4"><div class="flex gap-3 items-start"><span class="text-xl">⚡</span><div><p class="font-bold text-sm">최고 속도 320km/h</p><p class="text-[12px] text-gray-500 mt-0.5">도쿄–오사카 최단 2시간 22분 주파.</p></div></div><div class="flex gap-3 items-start"><span class="text-xl">🧳</span><div><p class="font-bold text-sm">넓은 수화물 공간</p><p class="text-[12px] text-gray-500 mt-0.5">캐리어 2개까지 무료.</p></div></div><div class="flex gap-3 items-start"><span class="text-xl">🎫</span><div><p class="font-bold text-sm">자유석 탑승</p><p class="text-[12px] text-gray-500 mt-0.5">원하는 시간 자유롭게 출발.</p></div></div></div></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">👥 이런 분께 추천</h2><div class="space-y-3"><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">오사카와 도쿄를 모두 여행하시는 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">짐이 많아 편하게 이동하고 싶은 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">빠르고 정확한 시간에 이동하고 싶은 분</p></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-5">📋 이용방법</h2><div class="space-y-4"><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div><div><p class="font-bold text-sm">예약 완료 후 바우처 수령</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div><div><p class="font-bold text-sm">신칸센 역 JR 창구에서 실물 교환</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div><div><p class="font-bold text-sm">자유석 탑승 (10–16호차)</p></div></div></div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🗺 노선 안내</h2><div class="bg-gray-50 rounded-xl p-4"><div class="flex items-center justify-between text-[11px]"><div class="text-center"><div class="w-8 h-8 bg-[#51ABF3] text-white rounded-full flex items-center justify-center font-bold text-[10px] mx-auto mb-1">OSK</div><p class="text-gray-600">신오사카</p></div><div class="flex-1 text-center text-gray-300">────</div><div class="text-center"><div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[10px] mx-auto mb-1">KYO</div><p class="text-gray-600">교토</p></div><div class="flex-1 text-center text-gray-300">────</div><div class="text-center"><div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[10px] mx-auto mb-1">NGY</div><p class="text-gray-600">나고야</p></div><div class="flex-1 text-center text-gray-300">────</div><div class="text-center"><div class="w-8 h-8 bg-[#51ABF3] text-white rounded-full flex items-center justify-center font-bold text-[10px] mx-auto mb-1">TKY</div><p class="text-gray-600">도쿄</p></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6 pb-8"><div class="bg-[#F0F8FF] rounded-2xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">⚠️ 주의사항</p><p class="text-[12px] text-blue-800 leading-relaxed">교환 기한: 구매 후 30일 이내<br>노조미·미즈호 탑승 불가<br>자유석 만석 시 다음 열차 이용</p></div></div>`
+  },
+  'ticket-1c': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-orange-400 to-red-500"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/75"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex gap-2 mb-3"><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">48시간 / 72시간</span></div><h1 class="text-[22px] font-bold leading-tight mb-2">오사카 주유패스</h1><p class="text-[13px] opacity-85">지하철·버스 무제한 + 관광지 50곳 무료입장.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-5"><div class="bg-amber-50 border border-amber-200 rounded-xl p-4"><p class="text-[12px] font-bold text-amber-700 mb-1">⚠️ 구매 전 필독</p><p class="text-[12px] text-amber-800 leading-relaxed">첫 개찰 후 연속 24h/48h 자동 카운트. 사용 전 날짜 변경 불가.</p></div></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🎡 주요 포함 시설</h2><div class="grid grid-cols-2 gap-3"><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center text-2xl">🎢</div><div class="p-2"><p class="text-[12px] font-bold">유니버설 스튜디오</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center text-2xl">🏯</div><div class="p-2"><p class="text-[12px] font-bold">오사카성</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-yellow-200 to-orange-200 flex items-center justify-center text-2xl">🌊</div><div class="p-2"><p class="text-[12px] font-bold">가이유칸 수족관</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-2xl">🎡</div><div class="p-2"><p class="text-[12px] font-bold">덴포잔 대관람차</p></div></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🗺 노선도</h2><div class="bg-gray-100 rounded-xl h-32 flex items-center justify-center text-gray-400 text-[12px]">지하철 노선도 이미지 영역<br>이용 가능 노선 색상 강조</div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-5">📋 이용방법</h2><div class="space-y-4"><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div><div><p class="font-bold text-sm">마이리얼트립에서 구매 후 QR 수신</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div><div><p class="font-bold text-sm">지하철 개찰구에서 QR 스캔 (첫 이용 시 시간 카운트 시작)</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div><div><p class="font-bold text-sm">포함 시설 입장 시 직원에게 제시</p></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">💰 이용 가치</h2><div class="bg-[#FFF8F0] border border-orange-200 rounded-xl p-4"><p class="text-[11px] font-bold text-orange-600 mb-3">3곳만 가도 이미 본전!</p><div class="space-y-2 text-[12px]"><div class="flex justify-between items-center"><span class="text-gray-600">가이유칸 수족관</span><span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">무료입장</span></div><div class="flex justify-between items-center"><span class="text-gray-600">오사카성 천수각</span><span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">무료입장</span></div><div class="flex justify-between items-center"><span class="text-gray-600">지하철 무제한</span><span class="text-[10px] bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full">무제한</span></div><div class="border-t border-orange-200 pt-2"><p class="text-[11px] text-orange-700 font-medium">개별 구매 대비 최대 30% 이상 절약 가능</p></div></div></div></div>`,
+    'G': `<div class="bg-white px-5 py-6 pb-8"><div class="bg-[#F0F8FF] rounded-2xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">⚠️ 주의사항</p><p class="text-[12px] text-blue-800 leading-relaxed">사용 불가 시설 일부 있음 (공식 홈페이지 확인 필수)<br>유효기간 이내 사용 완료 필수<br>분실 시 재발급 불가</p></div></div>`
+  },
+  'ticket-1d': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-slate-800 to-blue-900"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/80"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex gap-2 mb-3"><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">황푸강 야경</span></div><h1 class="text-[22px] font-bold leading-tight mb-2">상하이 황푸강 유람선</h1><p class="text-[13px] opacity-85">와이탄과 루자쭈이 야경을 물 위에서.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🕐 운행 시간표</h2><table class="w-full text-[12px]"><thead><tr class="bg-[#F7F8FA]"><th class="text-left px-3 py-2 font-bold text-gray-600">출발</th><th class="px-3 py-2 font-bold text-gray-600 text-center">소요</th><th class="px-3 py-2 font-bold text-gray-600 text-center">구분</th></tr></thead><tbody><tr class="border-b border-gray-50"><td class="px-3 py-2.5">19:00</td><td class="px-3 py-2.5 text-center">60분</td><td class="px-3 py-2.5 text-center text-[#51ABF3] font-bold">야경</td></tr><tr class="border-b border-gray-50 bg-[#F7FBFF]"><td class="px-3 py-2.5">20:00</td><td class="px-3 py-2.5 text-center">60분</td><td class="px-3 py-2.5 text-center text-[#51ABF3] font-bold">야경</td></tr><tr><td class="px-3 py-2.5">21:00</td><td class="px-3 py-2.5 text-center">60분</td><td class="px-3 py-2.5 text-center text-[#51ABF3] font-bold">야경</td></tr></tbody></table></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📍 집합장소 & 탑승방법</h2><div class="bg-gray-50 rounded-xl p-4 text-[12px] text-gray-700 leading-relaxed"><p class="font-bold mb-1">📍 선착장: 와이탄 5호 부두</p><p>지하철 2·10호선 南京東路역 도보 8분.</p><p class="mt-2 text-red-500 font-medium">출발 20분 전까지 탑승 완료 필수.</p></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🌃 주요 볼거리</h2><div class="grid grid-cols-2 gap-3"><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-blue-900 to-slate-700 flex items-center justify-center text-2xl">🏙️</div><div class="p-2"><p class="text-[12px] font-bold">와이탄 야경</p><p class="text-[11px] text-gray-500">유럽풍 건축물 조명</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-purple-900 to-blue-800 flex items-center justify-center text-2xl">🗼</div><div class="p-2"><p class="text-[12px] font-bold">동방명주</p><p class="text-[11px] text-gray-500">루자쭈이 마천루</p></div></div></div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📋 이용 조건</h2><ul class="space-y-2.5"><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span>악천후(우천·강풍) 시 운항 취소 가능 — 전액 환불</span></li><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span>미성년자 보호자 동반 필수</span></li><li class="flex gap-2.5 text-[13px] text-gray-700"><span class="text-red-400 shrink-0 mt-0.5">•</span><span>유효기간: 구매 후 30일</span></li></ul></div>`,
+    'F': `<div class="bg-white px-5 py-6 pb-8"><div class="bg-[#F0F8FF] rounded-2xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">⚠️ 주의사항</p><p class="text-[12px] text-blue-800 leading-relaxed">악천후 시 운항 취소 가능<br>미성년자 보호자 동반 필수</p></div></div>`
+  },
+  'tour': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-stone-700 to-stone-500"><div class="absolute inset-0 bg-gradient-to-b from-black/20 to-black/80"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex flex-wrap gap-2 mb-3"><span class="bg-[#2A1F00]/80 text-[#FFD77A] text-[11px] font-bold px-2.5 py-1 rounded border border-[#6B4E00]">패스트트랙</span><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">소그룹 8인</span><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">한국어</span></div><h1 class="text-[22px] font-bold leading-tight mb-2 keep-all">바티칸 소그룹 한국어 투어</h1><p class="text-[13px] opacity-85 keep-all">줄 없이 입장, 한국어 해설로 시스티나 예배당의 감동을.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">💳 옵션 비교</h2><table class="w-full text-[12px]"><thead><tr class="bg-[#F7F8FA]"><th class="text-left px-3 py-2 font-bold text-gray-600">옵션</th><th class="px-3 py-2 font-bold text-gray-600 text-center">포함</th><th class="px-3 py-2 font-bold text-gray-600 text-center">특징</th></tr></thead><tbody><tr class="border-b border-gray-50"><td class="px-3 py-3 font-medium">바티칸 박물관</td><td class="px-3 py-3 text-center text-gray-500 text-[11px]">입장+해설</td><td class="px-3 py-3 text-center text-[11px] text-gray-600">패스트트랙 · 소그룹</td></tr><tr class="bg-[#F7FBFF]"><td class="px-3 py-3 font-medium">바티칸+성 베드로</td><td class="px-3 py-3 text-center text-gray-500 text-[11px]">입장+해설+쿠폴라</td><td class="px-3 py-3 text-center text-[11px] text-gray-600">쿠폴라 전망 포함 · 심화 코스</td></tr></tbody></table></div>`,
+    'C': `<div class="bg-white px-5 py-6 text-center"><span class="text-[#51ABF3] font-bold text-[11px] border border-[#51ABF3] px-2 py-0.5 rounded-full">GUIDE</span><h2 class="text-sm font-bold mt-3 mb-4">10년 경력 로마 전문 한국어 가이드</h2><div class="flex items-center gap-4 text-left bg-gray-50 rounded-xl p-4"><div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-3xl shrink-0">👨‍🏫</div><div><p class="font-bold text-sm">김민준 가이드</p><p class="text-[12px] text-gray-500 mt-1 leading-relaxed keep-all">"로마 10년, 바티칸 1,200번 이상 안내. 천장화 한 장면의 이야기를 들려드릴게요."</p></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">✅ 포함/불포함</h2><div class="space-y-2"><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">바티칸 박물관 입장권</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">한국어 전문 가이드</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">패스트트랙 입장</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">교통비 (집합 장소까지 이동)</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">식음료</p></div></div></div>`,
+    'E': `<div class="bg-white py-6 px-5"><h2 class="text-sm font-bold mb-6">🗺️ 투어 코스 <span class="text-xs font-normal text-gray-400 ml-2">약 3시간 30분</span></h2><div class="relative pl-2"><div class="flex gap-4 mb-8 relative z-10"><div class="timeline-line"></div><div class="w-10 h-10 rounded-full bg-[#1D2229] text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">09:00</div><div><h3 class="font-bold text-sm">바티칸 정문 미팅</h3><p class="text-[12px] text-gray-500 mt-1">패스트트랙으로 줄 없이 입장.</p></div></div><div class="flex gap-4 mb-8 relative z-10"><div class="timeline-line"></div><div class="w-10 h-10 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">09:15</div><div class="w-full"><h3 class="font-bold text-sm text-[#2B8FD4]">바티칸 박물관</h3><p class="text-[12px] text-gray-500 mt-1 mb-2">라파엘로 방 + 지도의 방 해설.</p><div class="rounded-xl h-28 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-4xl">🏛️</div></div></div><div class="flex gap-4 relative z-10 last-item"><div class="w-10 h-10 rounded-full bg-[#1D2229] text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">12:30</div><div><h3 class="font-bold text-sm">투어 종료</h3><p class="text-[12px] text-gray-500 mt-1">박물관 출구 해산.</p></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">💫 이 투어의 매력 포인트</h2><div class="space-y-4"><div class="flex gap-3 items-start"><span class="text-xl shrink-0">🎟️</span><div><p class="font-bold text-sm">패스트트랙으로 최대 3시간 줄 절약</p><p class="text-[12px] text-gray-500 mt-0.5">성수기에도 바로 입장 가능.</p></div></div><div class="flex gap-3 items-start"><span class="text-xl shrink-0">👥</span><div><p class="font-bold text-sm">소그룹 8인 이하 운영</p><p class="text-[12px] text-gray-500 mt-0.5">가이드 해설이 잘 들리는 인원.</p></div></div><div class="flex gap-3 items-start"><span class="text-xl shrink-0">🇰🇷</span><div><p class="font-bold text-sm">10년 경력 한국어 전담 가이드</p><p class="text-[12px] text-gray-500 mt-0.5">현지 대학원 출신 전문 해설사.</p></div></div></div></div>`,
+    'G': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🎯 이런 분께 추천</h2><div class="space-y-3"><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">바티칸이 처음이라 설명이 필요하신 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">줄 서는 것이 체력적으로 부담스러우신 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">아이와 함께 의미 있는 여행을 원하시는 분</p></div></div></div>`,
+    'H': `<div class="bg-white px-5 py-6 pb-8"><h2 class="text-sm font-bold mb-3">📍 픽업·집합</h2><div class="bg-gray-50 rounded-xl p-4 text-[12px] text-gray-700 leading-relaxed"><p class="font-bold mb-1">바티칸 정문 (Via dei Bastioni di Michelangelo)</p><p>"MRT" 팻말 든 가이드 확인. 09:00 이전 도착.</p></div></div>`,
+    'I': `<div class="bg-white px-5 py-6 pb-8"><h2 class="text-sm font-bold mb-4">💬 자주 묻는 질문</h2><div class="divide-y divide-gray-100"><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">드레스코드가 있나요?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500 leading-relaxed">민소매, 반바지, 미니스커트는 입장 불가. 어깨와 무릎을 가리는 복장 필수입니다.</div></div><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">우천 시 투어가 진행되나요?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500 leading-relaxed">실내 투어라 우천 시에도 정상 진행됩니다.</div></div></div></div>`
+  },
+  'snap': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-teal-600 to-emerald-400"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/75"></div><div class="absolute bottom-6 left-5 right-5 text-white"><h1 class="text-[22px] font-bold leading-tight mb-2 keep-all">치앙마이 마사지 패스</h1><p class="text-[13px] opacity-85 keep-all">인기 업소 10곳 자유 이용 패스.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-3">💆 서비스 소개</h2><p class="text-[13px] text-gray-600 leading-relaxed keep-all">치앙마이 올드타운 및 님만해민 검증 업소 10곳을 자유롭게 이용. 태국 전통 마사지부터 오일 마사지까지.</p></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📍 이용 가능 업소</h2><div class="grid grid-cols-2 gap-3"><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-2xl">🌿</div><div class="p-2"><p class="text-[12px] font-bold">렛츠 릴랙스</p><p class="text-[11px] text-gray-500">올드타운 · 태국 전통</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center text-2xl">🌸</div><div class="p-2"><p class="text-[12px] font-bold">오리엔탈 터치</p><p class="text-[11px] text-gray-500">님만해민 · 오일</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center text-2xl">✨</div><div class="p-2"><p class="text-[12px] font-bold">더 체디 스파</p><p class="text-[11px] text-gray-500">핫 스톤 · 아로마</p></div></div><div class="rounded-xl overflow-hidden border border-gray-100"><div class="h-20 bg-gradient-to-br from-pink-100 to-pink-200 flex items-center justify-center text-2xl">🍃</div><div class="p-2"><p class="text-[12px] font-bold">핑크 레몬그라스</p><p class="text-[11px] text-gray-500">허발 컴프레스</p></div></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">✅ 포함사항 · 옵션</h2><div class="space-y-2"><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">마사지 10회 이용권 (60분/회)</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">제휴 업소 10곳 자유 선택 이용</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">추가 서비스 (스팀, 스크럽 등)</p></div></div></div>`,
+    'E': `<div class="bg-white px-5 py-6 pb-8"><h2 class="text-sm font-bold mb-5">📋 이용방법</h2><div class="space-y-4"><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">1</div><div><p class="font-bold text-sm">예약 완료 후 QR 바우처 수신</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">2</div><div><p class="font-bold text-sm">원하는 업소 방문 (사전 예약 권장)</p></div></div><div class="flex gap-4 items-start"><div class="w-8 h-8 rounded-full bg-[#51ABF3] text-white flex items-center justify-center text-sm font-bold shrink-0">3</div><div><p class="font-bold text-sm">프론트에서 QR 스캔 후 이용</p></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📍 위치 안내</h2><div class="bg-gray-50 rounded-xl p-4 text-[12px] text-gray-700 leading-relaxed"><p class="font-bold mb-1">올드타운 구역</p><p>타패 게이트 도보 5분 이내 다수 위치</p><p class="mt-2 font-bold">님만해민 구역</p><p>Maya 쇼핑몰 인근, 차량 10분</p></div></div>`,
+    'G': `<div class="bg-white px-5 py-6 pb-8"><div class="bg-[#F0F8FF] rounded-2xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">⚠️ 주의사항</p><p class="text-[12px] text-blue-800 leading-relaxed">방문 전 사전 전화 예약 권장<br>유효기간: 입국일로부터 14일<br>업소별 운영시간 상이 (13:00–24:00)</p></div></div>`
+  },
+  'golf': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-green-700 to-green-500"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/75"></div><div class="absolute bottom-6 left-5 right-5 text-white"><h1 class="text-[22px] font-bold leading-tight mb-2 keep-all">방콕 근교 골프 투어</h1><p class="text-[13px] opacity-85">픽업부터 라운딩까지 올인원.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">⛳ 골프장 선택</h2><div class="space-y-3"><div class="border rounded-xl p-4 hover:border-[#51ABF3] transition cursor-pointer"><div class="flex justify-between items-start"><div><p class="font-bold text-sm">알파인 골프 클럽</p><p class="text-[11px] text-gray-500 mt-1">18홀 · 챔피언십 코스 · 구글 4.7★</p></div></div><div class="mt-2 flex gap-2"><span class="text-[10px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full border border-green-200">캐디 포함</span><span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">전동카트</span></div></div><div class="border rounded-xl p-4 hover:border-[#51ABF3] transition cursor-pointer"><div class="flex justify-between items-start"><div><p class="font-bold text-sm">윈저 파크 골프 클럽</p><p class="text-[11px] text-gray-500 mt-1">18홀 · 파크랜드 코스 · 구글 4.5★</p></div></div></div></div></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">✅ 포함사항</h2><div class="space-y-2"><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">그린피 (18홀)</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">캐디피</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">전동카트</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">왕복 픽업 (수완나품 주변)</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">식음료</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">골프 장비 렌탈 (선택 추가)</p></div></div></div>`,
+    'D': `<div class="bg-white py-6 px-5"><h2 class="text-sm font-bold mb-5">🕐 일정 타임라인</h2><div class="relative pl-2"><div class="flex gap-4 mb-7 relative z-10"><div class="timeline-line"></div><div class="w-10 h-10 rounded-full bg-[#1D2229] text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">06:30</div><div><h3 class="font-bold text-sm">호텔 픽업</h3><p class="text-[12px] text-gray-500 mt-0.5">수완나품 주변 호텔. 차량 이동 약 1시간.</p></div></div><div class="flex gap-4 mb-7 relative z-10"><div class="timeline-line"></div><div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">08:00</div><div><h3 class="font-bold text-sm">티오프</h3><p class="text-[12px] text-gray-500 mt-0.5">체크인 후 라운딩. 약 4.5시간.</p></div></div><div class="flex gap-4 relative z-10 last-item"><div class="w-10 h-10 rounded-full bg-[#1D2229] text-white flex items-center justify-center text-[10px] font-bold shrink-0 z-10">14:30</div><div><h3 class="font-bold text-sm">호텔 귀환</h3></div></div></div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🚐 픽업 정보</h2><div class="bg-gray-50 rounded-xl p-4 text-[12px] text-gray-700 space-y-2"><p><span class="font-bold">픽업 시간:</span> 06:30 (협의 가능)</p><p><span class="font-bold">픽업 구역:</span> 수완나품 공항 주변 주요 호텔</p><p class="text-[11px] text-gray-500 mt-1">* 타 지역 픽업은 별도 문의</p></div></div>`,
+    'F': `<div class="bg-white px-5 py-6 pb-8"><div class="bg-[#F0F8FF] rounded-2xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">⚠️ 주의사항</p><p class="text-[12px] text-blue-800 leading-relaxed">복장 규정: 칼라 셔츠 착용 필수<br>악천후 취소 시 전액 환불<br>골프화 미착용 시 입장 불가</p></div></div>`
+  },
+  'semi': {
+    'A': `<div class="relative w-full h-[317px] bg-gradient-to-br from-violet-800 to-fuchsia-600"><div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/80"></div><div class="absolute bottom-6 left-5 right-5 text-white"><div class="flex gap-2 mb-3"><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">2박 3일</span><span class="bg-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded border border-white/30">항공 포함</span></div><h1 class="text-[22px] font-bold leading-tight mb-2 keep-all">홍콩 2박 3일 자유 여행 패키지</h1><p class="text-[13px] opacity-85 keep-all">항공+호텔+공항 픽업 포함.</p></div></div>`,
+    'B': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-5">✨ 이 패키지의 하이라이트</h2><div class="flex flex-col gap-5"><div class="flex items-start gap-4"><div class="w-14 h-14 rounded-2xl bg-violet-50 border border-violet-100 flex items-center justify-center text-2xl shrink-0">✈️</div><div><p class="font-bold text-sm">인천 직항 왕복 항공 포함</p><p class="text-[12px] text-gray-500 mt-1 leading-relaxed keep-all">별도 항공 검색 불필요.</p></div></div><div class="flex items-start gap-4"><div class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-2xl shrink-0">🏨</div><div><p class="font-bold text-sm">침사추이 4성급 호텔 2박</p><p class="text-[12px] text-gray-500 mt-1 leading-relaxed keep-all">구룡반도 중심부. 빅토리아항 도보권.</p></div></div><div class="flex items-start gap-4"><div class="w-14 h-14 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center text-2xl shrink-0">🚐</div><div><p class="font-bold text-sm">공항 픽업·드랍 포함</p><p class="text-[12px] text-gray-500 mt-1 leading-relaxed keep-all">전용 차량 이동.</p></div></div></div></div>`,
+    'C': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">✅ 포함 · 불포함</h2><div class="space-y-2"><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">왕복 항공권 (이코노미)</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">호텔 2박 (조식 포함)</p></div><div class="flex gap-3 items-start"><span class="text-green-500 font-bold shrink-0">✅</span><p class="text-[13px] text-gray-700">공항 픽업·드랍</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">중식·석식</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">관광지 입장료</p></div><div class="flex gap-3 items-start"><span class="text-red-400 font-bold shrink-0">❌</span><p class="text-[13px] text-gray-700">여행자 보험</p></div></div></div>`,
+    'D': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📅 Day별 일정</h2><div class="flex gap-2 mb-4"><button class="day-tab active text-[12px] font-bold px-3 py-1.5 rounded-full border transition" onclick="switchDay(this,'day1')">Day 1</button><button class="day-tab text-[12px] font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 transition" onclick="switchDay(this,'day2')">Day 2</button><button class="day-tab text-[12px] font-bold px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 transition" onclick="switchDay(this,'day3')">Day 3</button></div><div id="day1" class="day-content active text-[13px] text-gray-700 leading-relaxed space-y-2"><p>✈️ 인천 출발 → 홍콩 도착</p><p>🚐 공항 픽업 → 침사추이 체크인</p><p>🌃 빅토리아항 야경 자유 관광</p></div><div id="day2" class="day-content text-[13px] text-gray-700 leading-relaxed space-y-2"><p>🚡 피크 트램 → 빅토리아 피크</p><p>🛍 코즈웨이베이 쇼핑</p><p>⛴ 스타페리 탑승</p></div><div id="day3" class="day-content text-[13px] text-gray-700 leading-relaxed space-y-2"><p>🏨 호텔 체크아웃</p><p>🛍 오전 자유 쇼핑</p><p>🚐 공항 드랍 → 귀국</p></div></div>`,
+    'E': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🏨 호텔 안내</h2><div class="border rounded-2xl overflow-hidden"><div class="h-32 bg-gradient-to-br from-violet-100 to-fuchsia-100 flex items-center justify-center text-5xl">🏨</div><div class="p-4"><p class="font-bold text-sm">더 미라 홍콩 (4성급)</p><p class="text-[12px] text-gray-500 mt-1">침사추이 · 빅토리아항 도보 5분</p><div class="flex gap-2 mt-3"><span class="text-[10px] bg-violet-50 text-violet-700 px-2 py-0.5 rounded-full">조식 포함</span><span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">수영장</span><span class="text-[10px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">피트니스</span></div></div></div></div>`,
+    'F': `<div class="bg-white px-5 py-6"><div class="border-2 border-orange-400 bg-orange-50 rounded-2xl p-5"><p class="text-orange-600 font-bold text-sm mb-3">⚠️ 1인 이용 시 추가요금 (싱글 서플리먼트)</p><table class="w-full text-[12px]"><thead><tr class="text-gray-500"><th class="text-left py-1.5">항목</th><th class="text-right py-1.5">추가 요금</th></tr></thead><tbody><tr class="border-t border-orange-200"><td class="py-2 text-gray-700">호텔 싱글룸 차액</td><td class="py-2 text-right font-bold text-orange-600">₩80,000/박</td></tr><tr class="border-t border-orange-200"><td class="py-2 text-gray-700">픽업 차량 단독</td><td class="py-2 text-right font-bold text-orange-600">₩20,000</td></tr></tbody></table></div></div>`,
+    'G': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🗺️ 포함 투어 코스</h2><div class="space-y-3"><div class="flex gap-3 items-start"><span class="text-xl shrink-0">🚡</span><div><p class="font-bold text-sm">피크 트램 왕복 탑승</p><p class="text-[12px] text-gray-500 mt-0.5">홍콩 전경 조망. 약 1시간.</p></div></div><div class="flex gap-3 items-start"><span class="text-xl shrink-0">⛴</span><div><p class="font-bold text-sm">스타페리 탑승</p><p class="text-[12px] text-gray-500 mt-0.5">침사추이–센트럴 구간. 야경 감상.</p></div></div></div></div>`,
+    'H': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">🎯 이런 분께 추천</h2><div class="space-y-3"><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">처음 홍콩 여행이라 편하게 이동하고 싶은 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">항공·호텔을 따로 찾기 번거로우신 분</p></div><div class="flex gap-3 items-center"><span class="text-green-500 text-lg">✓</span><p class="text-[13px] text-gray-700">여행 경비를 예측 가능하게 관리하고 싶은 분</p></div></div></div>`,
+    'I': `<div class="bg-white px-5 py-6"><h2 class="text-sm font-bold mb-4">📋 취소 및 환불 정책</h2><div class="space-y-3"><div class="bg-blue-50 rounded-xl p-4"><p class="text-[12px] font-bold text-blue-700 mb-2">✈️ 항공권 취소 정책</p><p class="text-[12px] text-blue-800 leading-relaxed">출발 15일 전: 항공 요금의 10% 공제<br>출발 7일 전: 50% 공제<br>출발 3일 전 이후: 환불 불가</p></div><div class="bg-green-50 rounded-xl p-4"><p class="text-[12px] font-bold text-green-700 mb-2">🏨 지상비 취소 정책</p><p class="text-[12px] text-green-800 leading-relaxed">출발 7일 전: 전액 환불<br>출발 3일 전: 50% 공제<br>출발 1일 전 이후: 환불 불가</p></div></div></div>`,
+    'J': `<div class="bg-white px-5 py-6 pb-8"><h2 class="text-sm font-bold mb-4">💬 자주 묻는 질문</h2><div class="divide-y divide-gray-100"><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">항공 좌석 등급은?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500">일반석(이코노미) 기준입니다.</div></div><div class="faq-item py-4 cursor-pointer" onclick="this.classList.toggle('open')"><div class="flex justify-between items-center"><p class="text-[13px] font-medium keep-all pr-3">어린이 요금이 있나요?</p><span class="faq-chevron text-gray-400 shrink-0">▾</span></div><div class="faq-answer mt-2 text-[12px] text-gray-500">만 2세 이하 무릎 착석은 항공만 별도. 만 2세 이상은 성인 요금 동일.</div></div></div></div>`
+  }
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let currentTab = 'ticket-1a';
+let canvasItems = {}; // tabId → [{catId, secId}]
+let dragState = null;
+
+function initTab(tabId) {
+  if (!canvasItems[tabId]) {
+    const meta = SECTION_META[tabId];
+    canvasItems[tabId] = meta ? meta.sections.map(s => ({ catId: tabId, secId: s.id })) : [];
+  }
+}
+function getItems() { return canvasItems[currentTab] || []; }
+function inCanvas(catId, secId) { return getItems().some(it => it.catId===catId && it.secId===secId); }
+
+// ══════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════
+function renderAll(tabId) {
+  currentTab = tabId;
+  initTab(tabId);
+  renderLibrary();
+  renderActive();
+  renderCanvas();
+  closePanel();
+}
+
+function renderLibrary() {
+  let html = '';
+  for (const [catId, meta] of Object.entries(SECTION_META)) {
+    html += `<div class="cat-gh">${meta.label}</div>`;
+    for (const sec of meta.sections) {
+      const added = inCanvas(catId, sec.id);
+      html += `<div class="sec-card ${added?'in-canvas':''}"
+        draggable="${!added}"
+        ondragstart="onLibDS(event,'${catId}','${sec.id}')"
+        ondragend="onDE()"
+        onclick="${added?'':'addToEnd(`'+catId+'`,`'+sec.id+'`)'}">
+        <span style="width:18px;height:18px;border-radius:50%;background:#EEF6FF;color:#1D6FAA;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${sec.id}</span>
+        <span style="font-size:11px;font-weight:500;color:#374151;flex:1;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${sec.title}</span>
+        <span class="text-[9px] font-bold px-1 py-0.5 rounded type-${sec.type} shrink-0">${sec.type}</span>
+        <span style="font-size:12px;flex-shrink:0;color:${added?'#86EFAC':'#51ABF3'};font-weight:700">${added?'✓':'+'}</span>
+      </div>`;
+    }
+  }
+  document.getElementById('lib-list').innerHTML = html;
+}
+
+function renderActive() {
+  const items = getItems();
+  document.getElementById('active-count').textContent = items.length;
+  if (!items.length) {
+    document.getElementById('active-list').innerHTML = '<div style="text-align:center;color:#9CA3AF;font-size:11px;padding:20px 8px;border:2px dashed #E5E7EB;border-radius:10px;margin:4px">라이브러리에서<br>드래그하여 추가</div>';
+    return;
+  }
+  document.getElementById('active-list').innerHTML = items.map((item,i) => {
+    const sec = SECTION_META[item.catId]?.sections.find(s=>s.id===item.secId);
+    const catLabel = SECTION_META[item.catId]?.label || item.catId;
+    return `<div class="active-item" data-idx="${i}" draggable="true"
+      ondragstart="onActiveDS(event,${i})" ondragend="onDE()">
+      <span style="cursor:grab;color:#bbb;font-size:12px;flex-shrink:0">⠿</span>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:11px;font-weight:600;color:#1D2229;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sec?.title||item.secId}</p>
+        <p style="font-size:9px;color:#9CA3AF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${catLabel}</p>
+      </div>
+      <button onclick="event.stopPropagation();openPanel('${item.catId}||${item.secId}')" style="color:#bbb;font-size:10px;background:none;border:none;cursor:pointer;flex-shrink:0">▶</button>
+      <button onclick="rmItem(${i})" style="color:#ccc;font-size:15px;line-height:1;background:none;border:none;cursor:pointer;flex-shrink:0">×</button>
+    </div>`;
+  }).join('');
+}
+
+function renderCanvas() {
+  const container = document.getElementById('mockup-container');
+  const items = getItems();
+  if (!items.length) {
+    container.innerHTML = '<div class="canvas-empty"><div style="font-size:2.5rem;margin-bottom:12px">📋</div><p style="font-size:14px;font-weight:700">섹션을 드래그하여 추가</p><p style="font-size:12px;margin-top:4px;color:#9CA3AF">왼쪽 패널에서 드래그하거나 클릭하세요</p></div>';
+    return;
+  }
+  container.innerHTML = items.map((item,i) => {
+    const sec = SECTION_META[item.catId]?.sections.find(s=>s.id===item.secId);
+    const inner = SI[item.catId]?.[item.secId] || `<div style="padding:24px;text-align:center;color:#9CA3AF;font-size:13px">${sec?.title||item.secId}</div>`;
+    return (i>0?'<div class="sec-div"></div>':'')+
+    `<div class="canvas-sec" data-catid="${item.catId}" data-secid="${item.secId}" data-index="${i}"
+      draggable="true" ondragstart="onCanvasDS(event,${i})" ondragend="onDE()"
+      onclick="openPanel('${item.catId}||${item.secId}')" style="cursor:pointer">
+      <div class="canvas-bar">
+        <span class="drag-handle">⠿</span>
+        <span style="width:18px;height:18px;border-radius:50%;background:#EEF6FF;color:#1D6FAA;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${item.secId}</span>
+        <span style="font-size:11px;font-weight:500;color:#374151;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sec?.title||item.secId}</span>
+        ${sec?`<span class="text-[9px] font-bold px-1.5 py-0.5 rounded type-${sec.type} shrink-0">${sec.type}</span>`:''}
+        <button onclick="event.stopPropagation();openPanel('${item.catId}||${item.secId}')" style="color:#ccc;font-size:11px;background:none;border:none;cursor:pointer">▶</button>
+        <button onclick="event.stopPropagation();rmItem(${i})" style="color:#ccc;font-size:15px;line-height:1;background:none;border:none;cursor:pointer">×</button>
+      </div>
+      ${inner}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// MUTATIONS
+// ══════════════════════════════════════════════════════
+function addToEnd(catId, secId) {
+  if (!inCanvas(catId,secId)) { canvasItems[currentTab].push({catId,secId}); rerender(); }
+}
+function rmItem(idx) { canvasItems[currentTab].splice(idx,1); rerender(); }
+function insertAt(catId, secId, idx) {
+  if (inCanvas(catId,secId)) return;
+  canvasItems[currentTab].splice(idx,0,{catId,secId}); rerender();
+}
+function moveTo(fromIdx, toIdx) {
+  const items = canvasItems[currentTab];
+  const [m] = items.splice(fromIdx,1);
+  const ni = toIdx > fromIdx ? toIdx-1 : toIdx;
+  items.splice(Math.max(0,ni),0,m); rerender();
+}
+function rerender() { renderLibrary(); renderActive(); renderCanvas(); }
+
+// ══════════════════════════════════════════════════════
+// DRAG & DROP
+// ══════════════════════════════════════════════════════
+let cMark=null, aMark=null;
+
+function onLibDS(e,catId,secId) { dragState={type:'lib',catId,secId}; e.dataTransfer.effectAllowed='copy'; e.stopPropagation(); }
+function onActiveDS(e,fromIdx) {
+  const it=getItems()[fromIdx]; dragState={type:'active',catId:it.catId,secId:it.secId,fromIndex:fromIdx};
+  e.dataTransfer.effectAllowed='move'; e.stopPropagation();
+  setTimeout(()=>{ document.querySelectorAll('.active-item')[fromIdx]?.classList.add('ghost'); document.querySelector(`.canvas-sec[data-catid="${it.catId}"][data-secid="${it.secId}"]`)?.classList.add('cdrag'); },0);
+}
+function onCanvasDS(e,fromIdx) {
+  const it=getItems()[fromIdx]; dragState={type:'canvas',catId:it.catId,secId:it.secId,fromIndex:fromIdx};
+  e.dataTransfer.effectAllowed='move'; e.stopPropagation();
+  setTimeout(()=>{ e.target.closest?.('.canvas-sec')?.classList.add('cdrag'); },0);
+}
+function onDE() {
+  dragState=null;
+  document.querySelectorAll('.canvas-sec').forEach(el=>el.classList.remove('cdrag'));
+  document.querySelectorAll('.active-item').forEach(el=>el.classList.remove('ghost'));
+  rmCMark(); rmAMark();
+  document.getElementById('lib-list').classList.remove('dov-lib');
+  document.getElementById('active-list').classList.remove('dov-active');
+}
+
+// Canvas drop zone — init ONCE
+function initCanvasDZ() {
+  const c = document.getElementById('mockup-container');
+  c.addEventListener('dragover', e => {
+    if (!dragState) return; e.preventDefault();
+    showCMark(getCI(e)); c.querySelector('.canvas-empty')?.classList.add('dov');
+  });
+  c.addEventListener('dragleave', e => { if (!c.contains(e.relatedTarget)) { rmCMark(); c.querySelector('.canvas-empty')?.classList.remove('dov'); } });
+  c.addEventListener('drop', e => {
+    e.preventDefault(); if (!dragState) return;
+    const idx=getCI(e); rmCMark(); c.querySelector('.canvas-empty')?.classList.remove('dov');
+    const {type,catId,secId,fromIndex}=dragState; dragState=null;
+    if (type==='lib') insertAt(catId,secId,idx);
+    else moveTo(fromIndex,idx);
+  });
+}
+
+// Active list drop zone — init ONCE
+function initActiveDZ() {
+  const al = document.getElementById('active-list');
+  al.addEventListener('dragover', e => {
+    if (!dragState||(dragState.type!=='lib'&&dragState.type!=='active')) return;
+    e.preventDefault(); al.classList.add('dov-active'); showAMark(getAI(e));
+  });
+  al.addEventListener('dragleave', e => { if (!al.contains(e.relatedTarget)) { al.classList.remove('dov-active'); rmAMark(); } });
+  al.addEventListener('drop', e => {
+    e.preventDefault(); al.classList.remove('dov-active'); rmAMark();
+    if (!dragState) return;
+    const idx=getAI(e); const {type,catId,secId,fromIndex}=dragState; dragState=null;
+    if (type==='lib') insertAt(catId,secId,idx); else moveTo(fromIndex,idx);
+  });
+}
+
+// Library drop zone — drop active→lib removes it
+function initLibDZ() {
+  const ll = document.getElementById('lib-list');
+  ll.addEventListener('dragover', e => { if (dragState?.type==='active') { e.preventDefault(); ll.classList.add('dov-lib'); } });
+  ll.addEventListener('dragleave', e => { if (!ll.contains(e.relatedTarget)) ll.classList.remove('dov-lib'); });
+  ll.addEventListener('drop', e => {
+    e.preventDefault(); ll.classList.remove('dov-lib');
+    if (dragState?.type==='active') { const idx=dragState.fromIndex; dragState=null; rmItem(idx); }
+  });
+}
+
+// Index helpers
+function getCI(e) {
+  const ss=[...document.querySelectorAll('.canvas-sec')];
+  for (let i=0;i<ss.length;i++) { if (e.clientY < ss[i].getBoundingClientRect().top+ss[i].getBoundingClientRect().height/2) return i; }
+  return ss.length;
+}
+function getAI(e) {
+  const aa=[...document.querySelectorAll('#active-list .active-item')];
+  for (let i=0;i<aa.length;i++) { if (e.clientY < aa[i].getBoundingClientRect().top+aa[i].getBoundingClientRect().height/2) return i; }
+  return aa.length;
+}
+
+// Marker helpers
+function showCMark(idx) {
+  if (!cMark) { cMark=document.createElement('div'); cMark.className='ins-mark'; }
+  const ss=[...document.querySelectorAll('.canvas-sec')], c=document.getElementById('mockup-container');
+  if (!ss.length) { c.appendChild(cMark); return; }
+  if (idx===0) ss[0].before(cMark); else if (idx<ss.length) ss[idx].before(cMark); else c.appendChild(cMark);
+}
+function rmCMark() { cMark?.remove(); cMark=null; }
+function showAMark(idx) {
+  if (!aMark) { aMark=document.createElement('div'); aMark.style.cssText='height:3px;background:#51ABF3;border-radius:2px;pointer-events:none;box-shadow:0 0 4px rgba(81,171,243,0.5);margin:2px 0'; }
+  const aa=[...document.querySelectorAll('#active-list .active-item')], al=document.getElementById('active-list');
+  if (!aa.length) { al.appendChild(aMark); return; }
+  if (idx===0) aa[0].before(aMark); else if (idx<aa.length) aa[idx].before(aMark); else aa[aa.length-1].after(aMark);
+}
+function rmAMark() { aMark?.remove(); aMark=null; }
+
+// ══════════════════════════════════════════════════════
+// RIGHT PANEL
+// ══════════════════════════════════════════════════════
+function openPanel(sid) {
+  const p=sid.indexOf('||'); if (p===-1) return;
+  const catId=sid.slice(0,p), secId=sid.slice(p+2);
+  const sec=SECTION_META[catId]?.sections.find(s=>s.id===secId); if (!sec) return;
+  document.getElementById('panel-title').textContent=`[${sec.id}] ${sec.title}`;
+  document.getElementById('panel-content').innerHTML=`
+    <div><span class="text-[11px] font-bold px-2 py-1 rounded type-${sec.type}">${sec.type}</span></div>
+    <div class="bg-blue-50 rounded-xl p-4"><p class="text-[11px] font-bold text-blue-700 mb-2">❓ 왜 필요한가</p><p class="text-[13px] text-blue-900 leading-relaxed keep-all">${sec.why}</p></div>
+    <div class="bg-gray-50 rounded-xl p-4"><p class="text-[11px] font-bold text-gray-500 mb-2">📐 이미지 스펙</p><p class="text-[13px] text-gray-700">${sec.imgSpec}</p></div>
+    <div class="bg-green-50 rounded-xl p-4"><p class="text-[11px] font-bold text-green-700 mb-2">🗂 필요 에셋</p><p class="text-[13px] text-green-900">${sec.assets}</p></div>
+    ${sec.guide?`<div class="bg-yellow-50 rounded-xl p-4"><p class="text-[11px] font-bold text-yellow-700 mb-2">✏️ 작성 가이드</p><p class="text-[13px] text-yellow-900 leading-relaxed keep-all">${sec.guide}</p></div>`:''}
+  `;
+  document.getElementById('right-panel').classList.add('open');
+  document.querySelectorAll('.canvas-sec').forEach(w=>w.classList.remove('active'));
+  const t=document.querySelector(`.canvas-sec[data-catid="${catId}"][data-secid="${secId}"]`);
+  if (t) { t.classList.add('active'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+function closePanel() {
+  document.getElementById('right-panel').classList.remove('open');
+  document.querySelectorAll('.canvas-sec').forEach(w=>w.classList.remove('active'));
+}
+
+// ══════════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════════
+document.querySelectorAll('.cat-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    if (cat==='ticket') { document.getElementById('sub-row').style.display='flex'; renderAll(document.querySelector('.sub-btn.active')?.dataset.sub||'ticket-1a'); }
+    else { document.getElementById('sub-row').style.display='none'; renderAll(cat); }
+  });
+});
+document.querySelectorAll('.sub-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sub-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); renderAll(btn.dataset.sub);
+  });
+});
+function switchDay(btn,dayId) {
+  document.querySelectorAll('.day-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.day-content').forEach(d=>d.classList.remove('active'));
+  btn.classList.add('active'); document.getElementById(dayId)?.classList.add('active');
+}
+
+// Init
+initCanvasDZ(); initActiveDZ(); initLibDZ();
+renderAll('ticket-1a');
+</script>
+</body>
+</html>
