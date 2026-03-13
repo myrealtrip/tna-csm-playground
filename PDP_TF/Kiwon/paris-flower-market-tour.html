@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>파리 플로리스트와 함께하는 프라이빗 Rungis 플라워 마켓 투어 — PDP (TOUR)</title>
+<meta name="description" content="파리의 숨겨진 보석 같은 투어! 프랑스 최대 규모의 화훼시장 Rungis 플라워 마켓을 프로 플로리스트와 함께 둘러보세요.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  /* ── Design Tokens (inline :root) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    /* v3 Semantic Tokens */
+    --pdp-text-primary: var(--c-gray-1000);
+    --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500);
+    --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white);
+    --pdp-bg-sub: var(--c-gray-80);
+    --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600);
+    --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px;
+    --pdp-section-pb: 24px;
+    --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px;
+    --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px;
+    --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px;
+    --pdp-img-radius-lg: 24px;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+    position: relative;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .hero-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--c-blue-600);
+    color: var(--c-white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .hero-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.24;
+    letter-spacing: -0.52px;
+    color: var(--c-white);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: tagRow
+     ══════════════════════════════════════════ */
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding: 14px 20px 0;
+  }
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--c-gray-80);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-gray-700);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 32px 20px 24px;
+  }
+  .intro-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    line-height: 1.24;
+    margin-bottom: 14px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.65;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .intro-visual .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList (tour schedule)
+     ══════════════════════════════════════════ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .schedule-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .schedule-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 20px;
+  }
+  .schedule-item:last-child { padding-bottom: 0; }
+  .schedule-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 24px;
+  }
+  .schedule-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .schedule-line {
+    width: 1px;
+    flex: 1;
+    min-height: 16px;
+    background: var(--c-gray-200);
+    margin-top: 4px;
+  }
+  .schedule-item:last-child .schedule-line { display: none; }
+  .schedule-content { padding-top: 1px; flex: 1; }
+  .schedule-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-blue-600);
+    margin-bottom: 2px;
+  }
+  .schedule-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.38;
+    margin-bottom: 4px;
+  }
+  .schedule-desc {
+    font-size: 13px;
+    color: var(--c-gray-700);
+    line-height: 1.65;
+  }
+  .schedule-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .schedule-step-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: imageGrid (horizontal scroll)
+     ══════════════════════════════════════════ */
+  .image-grid {
+    padding: 32px 20px 24px;
+  }
+  .image-grid .grid-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 16px;
+  }
+  .image-grid-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .image-grid-scroll::-webkit-scrollbar { display: none; }
+  .grid-card {
+    flex: 0 0 240px;
+    height: 160px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+  }
+  .grid-card .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .grid-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 24px 12px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.38;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 32px 20px 24px;
+  }
+  .recommend-box .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .recommend-card {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .recommend-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .recommend-check {
+    color: var(--c-blue-600);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .recommend-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: guideIntro
+     ══════════════════════════════════════════ */
+  .guide-intro {
+    padding: 32px 20px 24px;
+  }
+  .guide-intro .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .guide-profile-card {
+    background: var(--c-gray-80);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .guide-profile-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .guide-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .guide-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .guide-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .guide-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-600);
+    margin-top: 2px;
+  }
+  .guide-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .guide-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .guide-feature-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-blue-80);
+    color: var(--c-blue-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .guide-feature-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 20px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .highlight-callout .callout-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.5;
+  }
+  .highlight-callout .callout-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    margin-top: 6px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionImage
+     ══════════════════════════════════════════ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-img-wrap .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: includeExclude
+     ══════════════════════════════════════════ */
+  .include-exclude {
+    padding: var(--pdp-section-pt) 20px var(--pdp-section-pb);
+  }
+  .include-exclude .ie-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .ie-group {
+    margin-bottom: var(--pdp-item-gap);
+  }
+  .ie-group:last-child { margin-bottom: 0; }
+  .ie-group-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: var(--pdp-title-gap);
+    letter-spacing: -0.16px;
+  }
+  .ie-group-title.included { color: var(--pdp-accent); }
+  .ie-group-title.excluded { color: var(--pdp-caution); }
+  .ie-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ie-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .ie-item .ie-mark {
+    flex-shrink: 0;
+    font-size: 16px;
+    margin-top: 1px;
+  }
+  .ie-item .ie-mark.included { color: var(--pdp-accent); }
+  .ie-item .ie-mark.excluded { color: var(--pdp-caution); }
+  .ie-item .ie-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--pdp-text-secondary);
+    line-height: 1.52;
+    letter-spacing: -0.14px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong { color: var(--c-gray-900); }
+
+  /* ══════════════════════════════════════════
+     BLOCK: customerReview
+     ══════════════════════════════════════════ */
+  .customer-review {
+    padding: 32px 20px 40px;
+  }
+  .customer-review .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .review-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .review-stars {
+    color: #F5A623;
+    font-size: 16px;
+  }
+  .review-count {
+    font-size: 13px;
+    color: var(--c-gray-500);
+  }
+  .review-card {
+    background: var(--c-gray-80);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 6px;
+  }
+  .review-date {
+    font-size: 12px;
+    color: var(--c-gray-500);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+  .review-text {
+    font-size: 14px;
+    color: var(--c-gray-700);
+    line-height: 1.55;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay
+     ══════════════════════════════════════════ */
+  .block-section { position: relative; }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute; top: 0; right: 0;
+    background: rgba(0,0,0,0.7); color: #fff;
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 0 0 0 6px;
+    z-index: 10; letter-spacing: 0.5px;
+    pointer-events: none; opacity: 0; transition: opacity 0.2s;
+  }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute; bottom: 2px; right: 2px;
+    background: rgba(21,131,219,0.8); color: #fff;
+    font-size: 9px; font-weight: 600;
+    padding: 1px 4px; border-radius: 3px;
+    pointer-events: none; opacity: 0; transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+  .poc-legend {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.85); color: #fff; font-size: 11px;
+    padding: 8px 16px; border-radius: 20px;
+    display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px);
+  }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC Legend -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover for output tags</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/ggzv/LK0oLHFg7D.jpg');">
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-badge" data-output="html">프라이빗 투어</span>
+      <h1 class="hero-title" data-output="html">파리 플로리스트와 함께하는<br>Rungis 플라워 마켓 투어</h1>
+      <p class="hero-sub" data-output="html">프랑스 최대 화훼시장을 프로와 함께 · 호텔픽업 · 아침식사 포함</p>
+    </div>
+  </section>
+
+  <!-- ═══ tagRow ═══ -->
+  <div class="tag-row block-section" data-block="tagRow" data-mode="structured">
+    <span class="tag-chip">최소 인원 1명</span>
+    <span class="tag-chip">3시간 소요</span>
+    <span class="tag-chip">차량이동</span>
+    <span class="tag-chip">한국어</span>
+    <span class="tag-chip">마리트 최초</span>
+    <span class="tag-chip">무료취소</span>
+  </div>
+
+  <!-- ═══ introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">사업자만 출입 가능한<br>파리의 숨겨진 꽃시장</h2>
+    <p class="body" data-output="html">파리 헝지스(Rungis) 플라워 마켓은 프랑스뿐만 아니라 세계에서도 가장 큰 도매 꽃 시장 중 하나입니다. 사업자 등록 없이는 출입과 구매가 어려운 이곳을, 파리 현지 플로리스트 경력 10년차 가이드와 함께 둘러봅니다. 꽃시장 투어 후에는 프렌치 앤틱 오브제 마켓까지 함께 방문합니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/N1o4/p5AirjUbtP.jpg');">
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ numberedList (tour schedule) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">투어 코스</h2>
+    <div class="schedule-list">
+
+      <!-- Step 1 -->
+      <div class="schedule-item">
+        <div class="schedule-left">
+          <div class="schedule-num" data-output="html">1</div>
+          <div class="schedule-line"></div>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-time" data-output="html">30분 소요</div>
+          <p class="schedule-title" data-output="html">파리 호텔 픽업 → 화훼시장 이동</p>
+          <p class="schedule-desc" data-output="html">숙소에서 픽업 후 차량으로 이동합니다. 파리 외곽에 위치한 화훼시장은 파리 중심에서 약 30분 거리입니다. (픽업 가능 구역: 파리 1존, 1구~20구)</p>
+          <div class="schedule-step-img">
+            <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/GcuN/6aF6JrgUC4.jpg');">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="schedule-item">
+        <div class="schedule-left">
+          <div class="schedule-num" data-output="html">2</div>
+          <div class="schedule-line"></div>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-time" data-output="html">50분 소요</div>
+          <p class="schedule-title" data-output="html">Rungis 화훼시장 투어</p>
+          <p class="schedule-desc" data-output="html">본격적으로 꽃 시장 투어를 시작합니다. 파리의 플로리스트가 직접 들려주는 화훼시장 이야기! 프랑스의 꽃들이 어디서 오는지, 판매와 구매는 어떻게 이루어지는지 생생하게 보실 수 있습니다.</p>
+          <div class="schedule-step-img">
+            <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154564/246344_original_1718742569.jpg?1718742569');">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="schedule-item">
+        <div class="schedule-left">
+          <div class="schedule-num" data-output="html">3</div>
+          <div class="schedule-line"></div>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-time" data-output="html">20분 소요</div>
+          <p class="schedule-title" data-output="html">브레이크 타임</p>
+          <p class="schedule-desc" data-output="html">파리지앵 플로리스트들처럼 꽃시장 안에서 커피와 크루아상으로 아침을 해결합니다. 새벽 향기를 맡으며 돌아다닌 후 먹는 아침은 정말 특별해요.</p>
+          <div class="schedule-step-img">
+            <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154564/246345_original_1718742569.jpg?1718742569');">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="schedule-item">
+        <div class="schedule-left">
+          <div class="schedule-num" data-output="html">4</div>
+          <div class="schedule-line"></div>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-time" data-output="html">50분 소요</div>
+          <p class="schedule-title" data-output="html">프렌치 앤틱마켓 &amp; 부자재 시장 투어</p>
+          <p class="schedule-desc" data-output="html">화훼시장 건너편 프렌치 앤틱마켓에서 다양한 앤틱 오브제를 만나보세요. 한국에서는 비싼 프렌치 앤틱 제품들을 로컬 프로페셔널 가격에 구매할 수 있도록 도와드립니다.</p>
+          <div class="schedule-step-img">
+            <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154564/246346_original_1718742570.jpg?1718742570');">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="schedule-item">
+        <div class="schedule-left">
+          <div class="schedule-num" data-output="html">5</div>
+        </div>
+        <div class="schedule-content">
+          <div class="schedule-time" data-output="html">30분 소요</div>
+          <p class="schedule-title" data-output="html">파리 시내 복귀</p>
+          <p class="schedule-desc" data-output="html">투어를 마친 후 차량으로 파리로 이동합니다. 파리 지하철 4호선 Porte d'Orléans 역에서 하차합니다.</p>
+          <div class="schedule-step-img">
+            <div class="img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154564/246347_original_1724072102.jpg?1724072102');">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ imageGrid (horizontal scroll) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">투어 하이라이트</h2>
+    <div class="image-grid-scroll">
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/yZbW/2kmm2P2xjB.jpg');">
+        </div>
+        <div class="grid-caption" data-output="html">프렌치 꽃과 식물들</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/dcDw/mphbJthXxA.jpg');">
+        </div>
+        <div class="grid-caption" data-output="html">화훼시장 내부 풍경</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/rxin/KEwPEFaQzP.jpg');">
+        </div>
+        <div class="grid-caption" data-output="html">프렌치 앤틱 오브제</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/QwQ8/xIS938tfSR.jpg');">
+        </div>
+        <div class="grid-caption" data-output="html">플로리스트의 아침</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <h2 class="section-title" data-output="html">이런 분께 추천해요</h2>
+    <div class="recommend-card">
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">파리의 숨겨진 로컬 스폿을 직접 경험하고 싶은 분</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">꽃과 식물을 사랑하는 분, 플로리스트를 꿈꾸는 분</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">프렌치 앤틱 오브제를 합리적 가격에 구매하고 싶은 분</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">새벽 파리에서 색다른 체험을 원하는 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ guideIntro ═══ -->
+  <section class="guide-intro block-section" data-block="guideIntro" data-mode="structured">
+    <h2 class="section-title" data-output="html">가이드 소개</h2>
+    <div class="guide-profile-card">
+      <div class="guide-profile-top">
+        <div class="guide-avatar">
+          <img src="https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/05/06/Xq9d/JHV2hkroOA.JPG" alt="포에티끄 파리">
+        </div>
+        <div>
+          <div class="guide-name" data-output="html">포에티끄 파리</div>
+          <div class="guide-sub" data-output="html">파리 현지 플로리스트 · 경력 10년</div>
+        </div>
+      </div>
+      <div class="guide-features">
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x1F33C;</div>
+          <p class="guide-feature-text" data-output="html">프랑스 플라워 에꼴 졸업, 파리 플로리스트로 활동 중인 프리랜서 플라워 디자이너</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x1F1EB;&#x1F1F7;</div>
+          <p class="guide-feature-text" data-output="html">프랑스어-한국어 통역 가능, 현지 꽃시장 내 사업자 등록 보유</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2728;</div>
+          <p class="guide-feature-text" data-output="html">꽃을 좋아하고 아름다움을 추구하는 분들께 포에틱한 감성을 공유합니다</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ highlightCallout ═══ -->
+  <section class="block-section" data-block="highlightCallout" data-mode="structured" style="padding: 24px 0;">
+    <div class="highlight-callout">
+      <p class="callout-text" data-output="html">&#x1F512; 사업자 등록 없이는 출입이 어려운 Rungis 화훼시장</p>
+      <p class="callout-sub" data-output="html">프로 플로리스트의 동행으로 특별한 접근이 가능합니다</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ sectionImage ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/11/27/JPjT/35OwDnVpZx.jpg');">
+      </div>
+    </div>
+    <p class="section-img-caption" data-output="html">Rungis 화훼시장의 다채로운 꽃들</p>
+  </section>
+
+  <!-- ═══ includeExclude ═══ -->
+  <section class="include-exclude block-section" data-block="includeExclude" data-mode="structured">
+    <h2 class="ie-title" data-output="html">포함 · 불포함</h2>
+    <div class="ie-group">
+      <h3 class="ie-group-title included" data-output="html">포함되어 있어요</h3>
+      <div class="ie-list">
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">호텔 픽업 (파리 1존)</span>
+        </div>
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">파리-화훼시장 왕복 차량 이동비</span>
+        </div>
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">Rungis 화훼시장 입장료</span>
+        </div>
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">간단한 아침식사 (커피 + 크루아상)</span>
+        </div>
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">프랑스어-한국어 통역</span>
+        </div>
+        <div class="ie-item">
+          <span class="ie-mark included" data-output="html">&#x2713;</span>
+          <span class="ie-text" data-output="html">화훼시장 투어 가이드</span>
+        </div>
+      </div>
+    </div>
+    <div class="ie-group">
+      <h3 class="ie-group-title excluded" data-output="html">불포함되어 있어요</h3>
+      <div class="ie-list">
+        <div class="ie-item">
+          <span class="ie-mark excluded" data-output="html">&#x2717;</span>
+          <span class="ie-text" data-output="html">개인 쇼핑 비용</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>꽃 시장은 온도가 낮습니다.</strong> 따뜻한 옷차림이 필수입니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html">가급적 <strong>편안한 옷차림과 운동화</strong>를 추천합니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html">여행자 보험에 미리 가입하시길 추천합니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>만나는 시간: 오전 05:30</strong> (호텔 픽업)</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html">픽업 가능 구역: <strong>파리 1존 (1구~20구)</strong>. 1존 이상 지역은 사전 문의가 필요합니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html">여행일 기준 1일 전 오전 9시 이전 통보 시 100% 전액 환불. 이후 취소 불가.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="section-title" data-output="html">이용자 후기</h2>
+    <div class="review-summary">
+      <span class="review-score" data-output="html">5.0</span>
+      <div>
+        <div class="review-stars" data-output="css">★★★★★</div>
+        <span class="review-count" data-output="html">후기 9개</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">여행자 후기<span class="review-date">2026.02</span></p>
+      <p class="review-text" data-output="html">파리에서 꼭 다시 하고 싶은 투어! 사업자만 출입 가능한 꽃시장을 프로 플로리스트와 함께 둘러볼 수 있어서 정말 특별했습니다. 리뷰 9개 전원 만점 ★★★★★</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
