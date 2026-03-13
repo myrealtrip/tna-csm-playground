@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>상하이 3박4일 세미패키지 — PDP (SEMI_PACKAGE)</title>
+<meta name="description" content="상하이 3박4일 우전 수향마을 단독투어 세미패키지. 호텔+조식+전용차량+가이드+입장권 포함. 후기 5.0점.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org", "@type": "Product",
+  "name": "상하이 3박4일 세미패키지 단독투어",
+  "description": "상하이 우전 수향마을 단독투어 세미패키지. 호텔, 식사, 차량, 가이드, 입장권 모두 포함.",
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "6" }
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418; --c-gray-850: #212529;
+    --c-gray-800: #343A40; --c-gray-700: #495056; --c-gray-600: #636363; --c-gray-500: #848C94;
+    --c-gray-400: #ADB5BD; --c-gray-200: #DEE2E6; --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7;
+    --c-blue-600: #1583DB; --c-blue-80: #E7F4FD; --c-red-500: #EC4937;
+    --c-yellow-200: #FFF2C6; --c-yellow-100: #FBFFE7; --c-yellow-50: #FDF1B5;
+    --c-yellow-warm: #FFE390; --c-white: #FFFFFF; --c-black: #000000;
+    --pdp-text-primary: var(--c-gray-1000); --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500); --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white); --pdp-bg-sub: var(--c-gray-80); --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600); --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px; --pdp-section-pb: 24px; --pdp-title-gap: 14px; --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px; --pdp-img-gap: 12px; --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px; --pdp-img-step-h: 180px; --pdp-img-grid-h: 160px;
+    --pdp-img-radius: 10px; --pdp-img-radius-lg: 24px;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: #E8E8E8; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .img-placeholder { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+
+  .intro-section { padding: 32px 20px 24px; }
+  .intro-section h2 { font-size: 20px; font-weight: 700; color: var(--c-gray-1000); letter-spacing: -0.4px; line-height: 1.35; margin-bottom: 6px; }
+  .intro-section .subtitle { font-size: 13px; font-weight: 500; color: var(--c-gray-500); margin-bottom: 14px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.65; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .intro-visual .img-placeholder { width: 100%; height: 100%; }
+
+  /* packageOverview */
+  .package-overview { padding: 32px 20px 24px; }
+  .package-overview .po-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .po-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .po-card { background: var(--c-gray-50); border-radius: 10px; padding: 16px; }
+  .po-card .po-icon { font-size: 20px; margin-bottom: 8px; }
+  .po-card .po-label { font-size: 12px; font-weight: 600; color: var(--c-gray-500); margin-bottom: 4px; }
+  .po-card .po-value { font-size: 14px; font-weight: 600; color: var(--c-gray-900); line-height: 1.4; }
+
+  /* dayItinerary */
+  .day-itinerary { padding: 32px 20px 24px; }
+  .day-itinerary .day-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .day-card { background: var(--c-gray-50); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  .day-card:last-child { margin-bottom: 0; }
+  .day-number { font-size: 12px; font-weight: 700; color: var(--c-blue-600); margin-bottom: 6px; }
+  .day-headline { font-size: 16px; font-weight: 700; color: var(--c-gray-900); margin-bottom: 10px; line-height: 1.35; }
+  .day-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .day-img { width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-top: 12px; }
+  .day-img .img-placeholder { width: 100%; height: 100%; }
+
+  .image-grid { padding: 32px 0 24px; }
+  .image-grid .grid-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; padding: 0 20px; }
+  .spot-scroll { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 0 20px; scrollbar-width: none; }
+  .spot-scroll::-webkit-scrollbar { display: none; }
+  .spot-card { flex: 0 0 240px; scroll-snap-align: start; }
+  .spot-thumb { width: 240px; height: 160px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .spot-thumb .img-placeholder { width: 100%; height: 100%; }
+  .spot-name { font-size: 14px; font-weight: 600; color: var(--c-gray-1000); margin-bottom: 3px; }
+  .spot-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.55; }
+
+  .highlight-callout { margin: 0 24px 24px; width: 342px; border-radius: 8px; background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390); padding: 19px 15px; }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+
+  .include-exclude { padding: var(--pdp-section-pt) 20px var(--pdp-section-pb); }
+  .include-exclude .ie-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .ie-group { margin-bottom: 20px; } .ie-group:last-child { margin-bottom: 0; }
+  .ie-group-title { font-size: 15px; font-weight: 700; margin-bottom: var(--pdp-title-gap); }
+  .ie-group-title.included { color: var(--pdp-accent); }
+  .ie-group-title.excluded { color: var(--pdp-caution); }
+  .ie-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .ie-mark { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .ie-mark.included { color: var(--pdp-accent); } .ie-mark.excluded { color: var(--pdp-caution); }
+  .ie-text { font-size: 14px; font-weight: 500; color: var(--pdp-text-secondary); line-height: 1.52; }
+
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  .customer-review { padding: 32px 20px 24px; }
+  .customer-review .review-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .review-summary { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .review-score { font-size: 17px; font-weight: 700; color: var(--c-gray-900); }
+  .review-stars { color: #F5A623; font-size: 16px; }
+  .review-count { font-size: 13px; font-weight: 500; color: var(--c-gray-500); }
+  .review-card { background: var(--c-gray-50); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 6px; }
+  .review-date { font-size: 12px; font-weight: 400; color: var(--c-gray-500); margin-left: 8px; }
+  .review-text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+
+  .block-section { position: relative; }
+  .block-section::before { content: attr(data-block) ' \2014 ' attr(data-mode); position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover::before { opacity: 1; }
+  .poc-legend { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 11px; padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px); }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span style="color: #848C94;">hover for output tags</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/06/vlVC/3lAjUN1HLE.jpg');"></div>
+  </section>
+
+  <!-- ═══ introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2>상하이 3박4일,<br>우전 수향마을 단독투어 패키지</h2>
+    <p class="subtitle">중국 · 상하이 · 3박4일 · 한국어/중국어 · 차량이동 · 최소 4명</p>
+    <p class="body">호텔, 식사, 전용 차량, 한국어 가이드, 주요 입장권까지 모두 포함된 상하이 세미패키지. 우전 수향마을의 낮과 밤을 모두 즐기고, 황푸강 유람선과 마시청 서커스까지 알차게 구성된 단독투어입니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/06/Jgcn/g2W5RftvY6.jpg');"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ packageOverview ═══ -->
+  <section class="package-overview block-section" data-block="packageOverview" data-mode="structured">
+    <h2 class="po-title">패키지 구성</h2>
+    <div class="po-grid">
+      <div class="po-card">
+        <div class="po-icon">&#x1F3E8;</div>
+        <p class="po-label">숙소</p>
+        <p class="po-value">3박 호텔<br>+ 매일 조식</p>
+      </div>
+      <div class="po-card">
+        <div class="po-icon">&#x1F697;</div>
+        <p class="po-label">교통</p>
+        <p class="po-value">전용 차량<br>공항 픽업/샌딩</p>
+      </div>
+      <div class="po-card">
+        <div class="po-icon">&#x1F9D1;&#x200D;&#x1F4BC;</div>
+        <p class="po-label">가이드</p>
+        <p class="po-value">3일 한국어<br>가이드 동행</p>
+      </div>
+      <div class="po-card">
+        <div class="po-icon">&#x1F3AB;</div>
+        <p class="po-label">입장권</p>
+        <p class="po-value">우전+예원<br>유람선+서커스</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ dayItinerary ═══ -->
+  <section class="day-itinerary block-section" data-block="dayItinerary" data-mode="hybrid">
+    <h2 class="day-title">일정 안내</h2>
+
+    <div class="day-card">
+      <p class="day-number">DAY 1</p>
+      <p class="day-headline">상하이 도착 · 황푸강 유람선</p>
+      <p class="day-desc">공항 픽업 후 호텔 체크인. 저녁에는 황푸강 유람선을 타고 동방명주, 와이탄 야경을 감상합니다.</p>
+      <div class="day-img">
+        <div class="img-placeholder" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/06/zbCP/gdxXvHTYKj.jpg');"></div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <p class="day-number">DAY 2</p>
+      <p class="day-headline">우전 수향마을 종일 투어</p>
+      <p class="day-desc">천년 역사의 우전 수향마을 서채·동채를 나룻배를 타며 둘러봅니다. 낮의 고즈넉함과 밤의 화려한 야경을 모두 감상하세요.</p>
+      <div class="day-img">
+        <div class="img-placeholder" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/06/IehW/In1TcQbJxq.jpg');"></div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <p class="day-number">DAY 3</p>
+      <p class="day-headline">상하이 시내 관광 · 마시청 서커스</p>
+      <p class="day-desc">예원, 와이탄, 난징루 등 상하이 핵심 명소를 돌아보고, 저녁에는 마시청 서커스를 관람합니다.</p>
+      <div class="day-img">
+        <div class="img-placeholder" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/06/gDsy/12cjffoivV.jpg');"></div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <p class="day-number">DAY 4</p>
+      <p class="day-headline">자유일정 · 공항 샌딩</p>
+      <p class="day-desc">체크아웃 후 자유시간. 항공편에 맞춰 공항으로 이동합니다. 디즈니랜드로 변경도 가능해요(차액 발생).</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ imageGrid ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title">여행 하이라이트</h2>
+    <div class="spot-scroll">
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" style="background-image:url('https://d6bztw1vgnv55.cloudfront.net/1504828/review/2026/03/08/4d094974-664b-4f01-9e68-31b04d6eaca2.jpeg');"></div>
+        </div>
+        <p class="spot-name">우전 수향마을</p>
+        <p class="spot-desc">물 위의 마을, 천년의 운치</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" style="background-image:url('https://d6bztw1vgnv55.cloudfront.net/1504828/review/2026/03/08/e1c86f35-6e69-4dbb-ab00-23204e6d0e14.jpeg');"></div>
+        </div>
+        <p class="spot-name">황푸강 야경</p>
+        <p class="spot-desc">와이탄과 동방명주를 한눈에</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" style="background-image:url('https://d6bztw1vgnv55.cloudfront.net/1504828/review/2026/03/08/2ce3d058-f1c2-47df-91c8-b3fde753cb09.jpeg');"></div>
+        </div>
+        <p class="spot-name">예원 정원</p>
+        <p class="spot-desc">명나라 시대 전통 정원</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" style="background-image:url('https://d6bztw1vgnv55.cloudfront.net/1504828/review/2026/01/15/79fa6d9a-4b4d-4970-8b63-ffac0a221cf0.jpg');"></div>
+        </div>
+        <p class="spot-name">마시청 서커스</p>
+        <p class="spot-desc">상하이의 밤을 장식하는 묘기</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title">&#x2B50; 후기 평점 5.0! 전원 만점</p>
+    <p class="hl-subtitle">6명의 여행자 모두 만점을 준 검증된 세미패키지. 단독투어라 우리 가족/친구만의 여행이 가능해요.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ includeExclude ═══ -->
+  <section class="include-exclude block-section" data-block="includeExclude" data-mode="structured">
+    <h2 class="ie-title">포함 · 불포함 사항</h2>
+    <div class="ie-group">
+      <h3 class="ie-group-title included">포함되어 있어요</h3>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">호텔 3박 + 매일 조식</span></div>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">중식 2회, 석식 2회</span></div>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">전용 차량 (공항 픽업/샌딩 + 전 일정)</span></div>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">한국어 가이드 3일</span></div>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">황푸강 유람선 + 마시청 서커스 + 예원 + 우전 수향마을(나룻배) 입장권</span></div>
+      <div class="ie-item"><span class="ie-mark included">&#x2713;</span><span class="ie-text">여행자 보험 (최대 1억 6천만원)</span></div>
+    </div>
+    <div class="ie-group">
+      <h3 class="ie-group-title excluded">불포함되어 있어요</h3>
+      <div class="ie-item"><span class="ie-mark excluded">&#x2717;</span><span class="ie-text">개인 항공권</span></div>
+      <div class="ie-item"><span class="ie-mark excluded">&#x2717;</span><span class="ie-text">디즈니랜드 변경 시 차액</span></div>
+      <div class="ie-item"><span class="ie-mark excluded">&#x2717;</span><span class="ie-text">4일차 자유일정 이동 가이드/기사</span></div>
+      <div class="ie-item"><span class="ie-mark excluded">&#x2717;</span><span class="ie-text">싱글룸 추가 요금 (1박당 60,000원)</span></div>
+      <div class="ie-item"><span class="ie-mark excluded">&#x2717;</span><span class="ie-text">개인 쇼핑비 등 포함 외 비용</span></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title">필수 확인 사항</h2>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>최소 4명</strong> — 단독투어 기준, 1팀 전용 차량 운행. 타 고객과 동행하지 않습니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>조인투어</strong> — 8인 이상 소그룹 구성 시 조인 가능합니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>디즈니 변경</strong> — 우전 대신 디즈니랜드로 변경 가능하나 차액이 발생합니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>싱글룸</strong> — 2인 1실 기준, 싱글룸 변경 시 1박당 60,000원 추가.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text"><strong>취소 규정</strong> — 22일 전: 전액 환불 / 21-15일 전: 50% 공제 / 14일 전-당일: 환불 불가.</p></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="review-title">이용자 후기</h2>
+    <div class="review-summary">
+      <span class="review-score">5.0</span>
+      <span class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span class="review-count">후기 6개</span>
+    </div>
+    <div class="review-card">
+      <p class="review-author">여행자 A <span class="review-date">2026.03</span></p>
+      <p class="review-text">가족 4명이서 단독투어로 다녀왔는데 정말 만족스러웠어요. 가이드님이 친절하시고 일정도 알차서 상하이를 제대로 즐겼습니다.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author">여행자 B <span class="review-date">2026.01</span></p>
+      <p class="review-text">우전 수향마을 야경이 정말 환상적이었어요. 나룻배도 타고, 호텔도 깔끔하고. 세미패키지라 편하게 다닐 수 있었습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

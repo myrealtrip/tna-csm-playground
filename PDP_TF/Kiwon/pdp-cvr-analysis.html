@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <title>PDP와 전환율 — 실효성 검증 리포트</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="https://nowikoes.github.io/naoshima-lunch/pbrain-design.css">
+  <style>
+    body { background: var(--color-bg); font-family: 'Pretendard Variable', Pretendard, sans-serif; -webkit-font-smoothing: antialiased; }
+    .pb-wrap { max-width: 520px; margin: 0 auto; padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+
+    .pb-header { background: #0F172A; padding: calc(24px + env(safe-area-inset-top)) 20px 24px; }
+    .pb-header-badge { display: inline-block; font-size: 11.5px; font-weight: 600; color: var(--color-accent); background: rgba(37,99,235,0.15); border-radius: 6px; padding: 3px 9px; margin-bottom: 12px; letter-spacing: 0.03em; }
+    .pb-header h1 { font-size: 24px; font-weight: 800; color: #fff; line-height: 1.3; margin: 0 0 8px; }
+    .pb-header-sub { font-size: 13px; color: #94A3B8; margin: 0; line-height: 1.6; }
+
+    .pb-toc { padding: 20px; }
+    .pb-toc a { display: block; font-size: 13.5px; color: var(--color-accent); text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--color-border); line-height: 1.5; }
+    .pb-toc a:last-child { border-bottom: none; }
+    .pb-toc a:hover { opacity: 0.8; }
+    .pb-toc-num { font-weight: 700; margin-right: 6px; }
+
+    .pb-section { padding: 28px 20px 0; }
+    .pb-section-title { font-size: 11.5px; font-weight: 700; color: var(--color-text-sub); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 14px; }
+
+    .pb-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 14px; padding: 20px; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
+    .pb-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .pb-card-title { font-size: 15px; font-weight: 600; color: var(--color-text); margin: 0 0 4px; }
+    .pb-card-sub { font-size: 13px; color: var(--color-text-sub); margin: 0 0 16px; line-height: 1.5; }
+
+    .pb-info-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--color-border); }
+    .pb-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .pb-info-label { font-size: 13.5px; color: var(--color-text-sub); }
+    .pb-info-value { font-size: 14px; font-weight: 600; color: var(--color-text); }
+    .pb-info-value.accent { color: var(--color-accent); }
+    .pb-info-value.up { color: #16A34A; }
+    .pb-info-value.down { color: #DC2626; }
+
+    .pb-tag { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 600; border-radius: 6px; padding: 3px 9px; letter-spacing: 0.02em; white-space: nowrap; }
+    .pb-tag--accent { background: rgba(37,99,235,0.1); color: var(--color-accent); }
+    .pb-tag--ok    { background: rgba(22,163,74,0.1);  color: #16A34A; }
+    .pb-tag--warn  { background: rgba(217,119,6,0.1);  color: #D97706; }
+    .pb-tag--danger{ background: rgba(220,38,38,0.1);  color: #DC2626; }
+    .pb-tag--neutral{ background: var(--color-divider); color: var(--color-text-sub); }
+
+    .pb-alert { border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; font-size: 13.5px; line-height: 1.65; }
+    .pb-alert--accent { background: rgba(37,99,235,0.06); border-left: 3px solid var(--color-accent); color: var(--color-text); }
+    .pb-alert--warn   { background: rgba(217,119,6,0.06);  border-left: 3px solid #D97706; color: var(--color-text); }
+    .pb-alert--ok     { background: rgba(22,163,74,0.06);  border-left: 3px solid #16A34A; color: var(--color-text); }
+
+    .cvr-bar-wrap { margin: 7px 0; }
+    .cvr-bar-label { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--color-text-sub); margin-bottom: 5px; }
+    .cvr-bar-label strong { color: var(--color-text); font-weight: 600; }
+    .cvr-bar-bg { background: var(--color-divider); border-radius: 4px; height: 7px; overflow: hidden; }
+    .cvr-bar-fill { height: 100%; border-radius: 4px; background: var(--color-accent); }
+    .cvr-bar-fill.muted { background: #CBD5E1; }
+    .cvr-bar-fill.up    { background: #16A34A; }
+
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th { text-align: left; font-size: 11.5px; font-weight: 700; color: var(--color-text-sub); padding: 0 8px 10px 0; letter-spacing: 0.04em; }
+    .compare-table td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--color-border); color: var(--color-text); vertical-align: middle; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .num { text-align: right; font-weight: 600; }
+    .compare-table .num.hi { color: var(--color-accent); }
+    .compare-table .num.lo { color: var(--color-text-sub); font-weight: 400; }
+
+    .verdict-card { background: #0F172A; border-radius: 14px; padding: 20px; margin-bottom: 12px; }
+    .verdict-card-label { font-size: 11.5px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
+    .verdict-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .verdict-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .verdict-cat { font-size: 13.5px; font-weight: 600; color: #E2E8F0; min-width: 80px; }
+    .verdict-detail { flex: 1; }
+    .verdict-num { font-size: 14px; font-weight: 700; color: #fff; }
+    .verdict-num.up { color: #4ADE80; }
+    .verdict-num.flat { color: #94A3B8; }
+    .verdict-desc { font-size: 12px; color: #94A3B8; margin-top: 2px; line-height: 1.5; }
+
+    .hero-card { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border-radius: 14px; padding: 24px 20px; margin-bottom: 12px; }
+    .hero-card h3 { font-size: 17px; font-weight: 700; color: #fff; margin: 0 0 16px; line-height: 1.4; }
+    .hero-stat { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+    .hero-stat:last-child { margin-bottom: 0; }
+    .hero-stat-num { font-size: 22px; font-weight: 800; color: #4ADE80; }
+    .hero-stat-label { font-size: 13px; color: #94A3B8; line-height: 1.5; }
+
+    .method-step { display: flex; gap: 12px; margin-bottom: 14px; }
+    .method-step:last-child { margin-bottom: 0; }
+    .method-num { min-width: 26px; height: 26px; border-radius: 50%; background: rgba(37,99,235,0.1); color: var(--color-accent); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .method-num.done { background: rgba(22,163,74,0.1); color: #16A34A; }
+    .method-text { font-size: 13.5px; color: var(--color-text); line-height: 1.6; }
+    .method-text strong { font-weight: 600; }
+    .method-text .sub { display: block; font-size: 12px; color: var(--color-text-sub); margin-top: 2px; }
+
+    .roadmap { position: relative; padding-left: 24px; }
+    .roadmap::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--color-border); }
+    .roadmap-item { position: relative; margin-bottom: 20px; }
+    .roadmap-item:last-child { margin-bottom: 0; }
+    .roadmap-dot { position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-border); border: 2px solid var(--color-bg); }
+    .roadmap-dot.now { background: var(--color-accent); }
+    .roadmap-dot.next { background: #D97706; }
+    .roadmap-dot.future { background: #64748B; }
+    .roadmap-phase { font-size: 11.5px; font-weight: 700; color: var(--color-text-sub); margin-bottom: 2px; letter-spacing: 0.03em; }
+    .roadmap-desc { font-size: 13.5px; color: var(--color-text); line-height: 1.6; }
+
+    .pb-divider { height: 8px; background: var(--color-divider); margin: 28px 0 0; }
+    .pb-note { font-size: 12px; color: var(--color-text-sub); line-height: 1.75; padding: 0 20px; margin-top: 12px; }
+
+    .stability-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
+    .stability-dot { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+    .stability-dot.pos { background: #16A34A; }
+    .stability-dot.neg { background: #DC2626; }
+    .stability-label { font-size: 12px; color: var(--color-text-sub); margin-left: 4px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.4s ease both; }
+    .d1 { animation-delay: 0.06s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.18s; }
+  </style>
+</head>
+<body>
+<div class="pb-wrap">
+
+  <!-- 헤더 -->
+  <div class="pb-header fade-up">
+    <div class="pb-header-badge">PDP 실효성 검증</div>
+    <h1>상세페이지가 좋으면<br>더 잘 팔릴까?</h1>
+    <p class="pb-header-sub">상세페이지 디자인 길이와 전환율의 관계를 검증하는 리포트<br>BigQuery 직접 분석 · 659개 상품 실측 · 2026.03</p>
+  </div>
+
+  <!-- 이 리포트의 목적 -->
+  <div class="pb-section fade-up d1">
+    <div class="pb-alert--accent pb-alert">
+      <strong>이 리포트는 "PDP 잘 만들면 전환율 오른다"는 경험적 감각을 데이터로 검증합니다.</strong> 검증 결과가 유의미하면, 수동 작업이 아닌 자동화/제품화를 통해 전체 상품에 확산하는 것이 최종 목표입니다.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">목표 로드맵</p>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-dot now"></div>
+          <div class="roadmap-phase">지금 — 실효성 검증</div>
+          <div class="roadmap-desc">"상세페이지 디자인 길이가 전환율에 영향을 주는가?"를 카테고리별로 확인.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot next"></div>
+          <div class="roadmap-phase">다음 — 소규모 테스트</div>
+          <div class="roadmap-desc">효과가 확인된 유형에서 소규모 A/B 테스트. 블록 형태 PDP 자동 생성 적용.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot future"></div>
+          <div class="roadmap-phase">최종 — 자동화 및 제품 내재화</div>
+          <div class="roadmap-desc">검증된 패턴을 기반으로 PDP 자동 생성 파이프라인 구축. 잘 작동하면 제품 기능으로 내재화.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 목차 -->
+  <div class="pb-toc fade-up d2">
+    <a href="#exec"><span class="pb-toc-num">0</span>핵심 결론</a>
+    <a href="#method"><span class="pb-toc-num">1</span>어떻게 검증했는지</a>
+    <a href="#height"><span class="pb-toc-num">2</span>상세페이지 디자인 길이와 전환율</a>
+    <a href="#burst"><span class="pb-toc-num">3</span>상세페이지 개선 전후 비교</a>
+    <a href="#placebo"><span class="pb-toc-num">4</span>정말 개선 때문인지 추세 검증</a>
+    <a href="#stability"><span class="pb-toc-num">5</span>시즌과 무관하게 효과가 유지되는지</a>
+    <a href="#threshold"><span class="pb-toc-num">6</span>유형별 적정 디자인 길이</a>
+    <a href="#city"><span class="pb-toc-num">7</span>도시별로도 같은 효과인지</a>
+    <a href="#test-short"><span class="pb-toc-num">8</span>테스트 후보: 짧은 PDP 상품</a>
+    <a href="#test-partner"><span class="pb-toc-num">9</span>테스트 후보: 같은 파트너의 품질 편차</a>
+    <a href="#verdict"><span class="pb-toc-num">10</span>종합 판정과 테스트 설계</a>
+    <a href="#impact"><span class="pb-toc-num">11</span>기대 임팩트: 거래액 환산</a>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 0. 핵심 결론 -->
+  <div class="pb-section fade-up d3" id="exec">
+    <p class="pb-section-title">핵심 결론</p>
+
+    <div class="hero-card">
+      <h3>세 카테고리 모두<br>디자인 길이가 길수록<br>전환율이 높다.</h3>
+      <div class="hero-stat">
+        <span class="hero-stat-num">TICKET</span>
+        <span class="hero-stat-label">181개 상품 실측. 5,000px 이상에서 전환율 +3.27pp. (UV 가중 기준)</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">TOUR</span>
+        <span class="hero-stat-label">13,000px 이상에서 전환율 +2.02pp. 8/10개월 일관된 효과.</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">ACTIVITY</span>
+        <span class="hero-stat-label">전후 비교에서 가장 확실한 인과 근거. 10/10개월 일관된 효과.</span>
+      </div>
+    </div>
+
+    <div class="pb-alert--ok pb-alert">
+      <strong>측정 방식:</strong> CDN에서 659개 상품의 이미지를 직접 다운로드해 세로 픽셀 높이를 측정하고, 모든 이미지의 세로 높이를 합산한 "전체 디자인 길이"를 기준으로 분석했습니다. 통이미지든 블록이든, 고객이 스크롤하는 총 길이가 같은 기준입니다.
+    </div>
+
+    <div class="hero-card" style="background:linear-gradient(135deg, #0F172A 0%, #1a2744 100%); margin-top:4px;">
+      <h3 style="font-size:15px; margin-bottom:12px;">거래액 환산 기대 임팩트 (보수적 50% 반영)</h3>
+      <div style="display:flex; align-items:baseline; gap:8px;">
+        <span style="font-size:26px; font-weight:800; color:#4ADE80;">월 +37.8억원</span>
+        <span style="font-size:13px; color:#64748B;">임계값 미달 257개 상품 전면 적용 시</span>
+      </div>
+      <div style="font-size:12px; color:#64748B; margin-top:8px; line-height:1.6;">
+        TICKET +20.4억 · TOUR +14.0억 · ACTIVITY +3.4억 &nbsp;|&nbsp; <a href="#impact" style="color:var(--color-accent);">상세 산정 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 1. 어떻게 검증했는지 -->
+  <div class="pb-section" id="method">
+    <p class="pb-section-title">Part 1 · 어떻게 검증했는지</p>
+
+    <div class="pb-card">
+      <p class="pb-card-title">9가지 방법으로 같은 질문을 반복 확인</p>
+      <p class="pb-card-sub">"상세페이지가 좋으면 전환율이 높다"가 우연이 아닌지, 단계적으로 다른 가능성을 제거해 나갔습니다.</p>
+
+      <div class="method-step">
+        <div class="method-num done">1</div>
+        <div class="method-text">
+          <strong>전체 비교</strong> — PDP 디자인 길이가 긴 상품 vs 짧은 상품의 전환율 차이 확인
+          <span class="sub">한계: 좋은 파트너가 PDP도 잘 만들고 투어도 잘 운영할 수 있음</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">2</div>
+        <div class="method-text">
+          <strong>같은 파트너 내 비교</strong> — 파트너 역량 차이를 제거
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">3</div>
+        <div class="method-text">
+          <strong>같은 파트너 + 같은 도시 내 비교</strong> — 지역 수요 차이까지 제거
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">4</div>
+        <div class="method-text">
+          <strong>개선 전후 비교</strong> — 이미지를 한꺼번에 올린 시점 전후의 전환율 변화
+          <span class="sub">같은 유형·같은 도시의 미개선 상품을 비교군으로 활용</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">5</div>
+        <div class="method-text">
+          <strong>추세 검증</strong> — 개선 전에도 이미 전환율이 오르고 있었는지 확인
+          <span class="sub">"개선 덕분"인지 "원래 추세"인지 구분하는 핵심 검증</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">6</div>
+        <div class="method-text">
+          <strong>이미지 실측</strong> — CDN에서 이미지를 직접 다운로드해 세로 픽셀 높이 측정
+          <span class="sub">장 수가 아닌 "고객이 실제로 보는 디자인 길이"로 분석</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">7</div>
+        <div class="method-text">
+          <strong>디자인 길이 통제 분석</strong> — 같은 장 수일 때, 이미지 크기에 따른 전환율 차이
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">8</div>
+        <div class="method-text">
+          <strong>시즌 안정성 검증</strong> — 9개월간 매월 효과가 유지되는지 확인
+          <span class="sub">특정 시즌만의 효과가 아닌 구조적 효과인지 검증</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num done">9</div>
+        <div class="method-text">
+          <strong>도시별 교차 검증</strong> — 목적지에 관계없이 같은 효과가 나타나는지 확인
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 2. 상세페이지 디자인 길이와 전환율 -->
+  <div class="pb-section" id="height">
+    <p class="pb-section-title">Part 2 · 상세페이지 디자인 길이와 전환율</p>
+
+    <div class="pb-alert--accent pb-alert">
+      상품별로 모든 이미지의 세로 픽셀 높이를 합산한 <strong>"전체 디자인 길이"</strong>를 기준으로, 전환율과의 관계를 분석했습니다.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TOUR — 디자인 길이 구간별 전환율</p>
+      <p class="pb-card-sub">132개 상품 실측. 13,000px에서 전환율 도약.</p>
+
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>~5,000px (31개)</span><strong>2.48%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:66%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>5,000 – 8,000px (31개)</span><strong>2.33%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:62%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>8,000 – 13,000px (42개)</span><strong>2.41%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:64%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>13,000 – 20,000px (21개)</span><strong style="color:#16A34A">3.41%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:91%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>20,000px+ (7개)</span><strong style="color:#16A34A">3.74%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:100%"></div></div>
+      </div>
+      <div style="margin-top:10px; font-size:12.5px; color:var(--color-text-sub);">
+        13,000px 미만 평균 2.41% → 이상 <strong style="color:var(--color-accent)">3.50% (+1.09pp)</strong>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TICKET — 181개 상품 확대 분석으로 효과 확인</p>
+      <p class="pb-card-sub">기존 22개 → 181개로 확대. UV 가중 전환율 기준.</p>
+
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>~2,000px (29개)</span><strong>5.43%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:34%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>2,000 – 3,500px (38개)</span><strong>9.08%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill" style="width:57%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>3,500 – 5,000px (30개)</span><strong>10.14%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill" style="width:63%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>5,000 – 8,000px (51개)</span><strong style="color:#16A34A">10.58%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:66%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>8,000 – 15,000px (18개)</span><strong style="color:#16A34A">15.97%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:100%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>15,000px+ (15개)</span><strong style="color:#16A34A">11.90%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:74%"></div></div>
+      </div>
+      <div style="margin-top:10px; font-size:12.5px; color:var(--color-text-sub);">
+        5,000px 기준: 미만 8.54% → 이상 <strong style="color:var(--color-accent)">11.81% (+3.27pp)</strong><br>
+        8,000px 기준: 미만 9.25% → 이상 <strong style="color:var(--color-accent)">13.49% (+4.24pp)</strong>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">ACTIVITY — 7,000px에서 전환율 2.8배</p>
+      <p class="pb-card-sub">78개 상품 실측.</p>
+
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>~3,000px (5개)</span><strong>4.87%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:99%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>3,000 – 5,000px (21개)</span><strong style="color:#DC2626">1.74%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill muted" style="width:35%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>5,000 – 7,000px (16개)</span><strong>3.50%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill" style="width:71%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>7,000 – 12,000px (19개)</span><strong style="color:#16A34A">4.90%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:100%"></div></div>
+      </div>
+      <div class="cvr-bar-wrap">
+        <div class="cvr-bar-label"><span>12,000px+ (17개)</span><strong style="color:#16A34A">3.74%</strong></div>
+        <div class="cvr-bar-bg"><div class="cvr-bar-fill up" style="width:76%"></div></div>
+      </div>
+      <div style="margin-top:10px; font-size:12.5px; color:var(--color-text-sub);">
+        3K–5K 구간 1.74% → 7K–12K 구간 <strong style="color:var(--color-accent)">4.90% (2.8배)</strong>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">같은 장 수에서도 큰 이미지가 유리 (TOUR)</p>
+      <p class="pb-card-sub">이미지 장 수를 통제한 후, 개별 이미지 세로 높이 상/하위 50% 비교</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>이미지 수</th>
+            <th class="num">작은 이미지</th>
+            <th class="num">큰 이미지</th>
+            <th class="num">차이</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5-9장</td>
+            <td class="num lo">3.03%</td>
+            <td class="num">4.04%</td>
+            <td class="num hi">+1.00pp</td>
+          </tr>
+          <tr>
+            <td>10-14장</td>
+            <td class="num lo">4.19%</td>
+            <td class="num">5.19%</td>
+            <td class="num hi">+1.00pp</td>
+          </tr>
+          <tr>
+            <td>15+장</td>
+            <td class="num lo">2.55%</td>
+            <td class="num">6.21%</td>
+            <td class="num hi">+3.65pp</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:14px;" class="pb-alert--ok pb-alert">
+        <strong>장 수가 같아도, 세로형 상세 이미지(1,000px 이상)를 사용하면 전환율이 높습니다.</strong> 블록 형태로 나눠도 전체 디자인 길이만 확보되면 동일한 효과를 기대할 수 있어요.
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 3. 개선 전후 비교 -->
+  <div class="pb-section" id="burst">
+    <p class="pb-section-title">Part 3 · 상세페이지 개선 전후 비교</p>
+
+    <div class="pb-alert--accent pb-alert">
+      관리자가 하루에 이미지를 5장 이상 올린 시점을 "PDP 개선 시점"으로 보고, <strong>개선 전 60일과 개선 후 60일의 전환율 변화</strong>를 비교했습니다. 시장 전체 추세를 빼기 위해 같은 유형·같은 도시의 미개선 상품을 비교군으로 뒀어요.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">유형별 전후 비교 결과</p>
+      <p class="pb-card-sub">비교군의 변화를 뺀 순수 효과</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>유형</th>
+            <th class="num">개선군 변화</th>
+            <th class="num">비교군 변화</th>
+            <th class="num">순수 효과</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pb-tag pb-tag--ok">ACTIVITY</span></td>
+            <td class="num">+0.82pp</td>
+            <td class="num lo">-0.19pp</td>
+            <td class="num hi">+1.01pp</td>
+          </tr>
+          <tr>
+            <td><span class="pb-tag pb-tag--neutral">TOUR</span></td>
+            <td class="num">+0.51pp</td>
+            <td class="num lo">+0.18pp</td>
+            <td class="num">+0.33pp</td>
+          </tr>
+          <tr>
+            <td><span class="pb-tag pb-tag--warn">TICKET</span></td>
+            <td class="num">-0.45pp</td>
+            <td class="num lo">-0.28pp</td>
+            <td class="num" style="color:var(--color-text-sub);">-0.17pp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TICKET 전후 비교가 음수인 이유</p>
+      <p class="pb-card-sub" style="margin-bottom:0; line-height:1.7;">
+        PDP를 개선한 TICKET 상품들은 개선 전부터 이미 전환율이 높았습니다 (개선군 12.3% vs 비교군 8.8%). <strong>"잘 팔리니까 PDP도 관리한 것"</strong>이지, PDP가 좋아서 잘 팔린 게 아닐 수 있어요. 하지만 181개 상품 확대 분석에서는 디자인 길이와 전환율의 상관이 명확합니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 4. 추세 검증 -->
+  <div class="pb-section" id="placebo">
+    <p class="pb-section-title">Part 4 · 정말 개선 때문인지 추세 검증</p>
+
+    <div class="pb-alert--accent pb-alert">
+      <strong>핵심 질문:</strong> 전환율이 원래 오르고 있었던 건 아닐까? 개선 전에도 같은 패턴이 보인다면, 개선 후 상승은 PDP 덕분이 아닐 수 있어요. 그래서 <strong>개선 전 기간을 둘로 쪼개 "가짜 효과"가 있는지</strong> 확인했습니다.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">ACTIVITY — 가장 확실한 증거</p>
+
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-dot" style="background:#64748B;"></div>
+          <div class="roadmap-phase">개선 120-61일 전</div>
+          <div class="roadmap-desc">기준 수준</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot" style="background:#DC2626;"></div>
+          <div class="roadmap-phase">개선 60-1일 전</div>
+          <div class="roadmap-desc">전환율 <strong style="color:#DC2626;">-0.49pp 하락</strong> 중이었음</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot now"></div>
+          <div class="roadmap-phase">개선 시점</div>
+          <div class="roadmap-desc">이미지 5+장 업로드</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot" style="background:#16A34A;"></div>
+          <div class="roadmap-phase">개선 후 60일</div>
+          <div class="roadmap-desc">전환율 <strong style="color:#16A34A;">+1.31pp 반등</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;" class="pb-alert--ok pb-alert">
+        <strong>떨어지다가 개선 후 반등.</strong> 원래 오르고 있었던 게 아니라 "개선이 흐름을 바꿨다"는 뜻이에요. ACTIVITY에서 PDP 효과가 있다는 가장 강력한 근거입니다.
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TICKET · TOUR 결과</p>
+
+      <div class="pb-info-row">
+        <span class="pb-info-label">TICKET: 개선 전 -0.98pp → 개선 후 +0.53pp</span>
+        <span class="pb-tag pb-tag--warn">반등은 하지만 불충분</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">TOUR: 개선 전 +0.18pp → 개선 후 +0.33pp</span>
+        <span class="pb-tag pb-tag--neutral">원래 오르고 있었음</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 5. 시즌 안정성 -->
+  <div class="pb-section" id="stability">
+    <p class="pb-section-title">Part 5 · 시즌과 무관하게 효과가 유지되는지</p>
+
+    <div class="pb-alert--accent pb-alert">
+      혹시 특정 시즌에만 효과가 있는 건 아닐까? 2025년 6월부터 2026년 2월까지 <strong>9개월간 매월</strong> 높은 PDP(기준 이상)와 낮은 PDP(기준 미만)의 전환율 차이를 확인했습니다.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">ACTIVITY — 9개월 연속 양의 효과</p>
+      <p class="pb-card-sub">기준: 7,000px. 단 한 달도 빠짐 없이 높은 PDP가 우세.</p>
+
+      <div class="stability-row">
+        <div class="stability-dot pos">6</div>
+        <div class="stability-dot pos">7</div>
+        <div class="stability-dot pos">8</div>
+        <div class="stability-dot pos">9</div>
+        <div class="stability-dot pos">10</div>
+        <div class="stability-dot pos">11</div>
+        <div class="stability-dot pos">12</div>
+        <div class="stability-dot pos">1</div>
+        <div class="stability-dot pos">2</div>
+        <span class="stability-label">9/9개월 ✓</span>
+      </div>
+      <div style="font-size:12.5px; color:var(--color-text-sub); margin-top:6px;">
+        평균 차이: <strong style="color:#16A34A;">+1.53pp</strong> (높은 PDP가 낮은 PDP보다 매월 일관되게 높음)
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TOUR — 7/9개월 양의 효과</p>
+      <p class="pb-card-sub">기준: 13,000px. 비수기(10-11월)에만 소폭 역전.</p>
+
+      <div class="stability-row">
+        <div class="stability-dot pos">6</div>
+        <div class="stability-dot pos">7</div>
+        <div class="stability-dot pos">8</div>
+        <div class="stability-dot pos">9</div>
+        <div class="stability-dot neg">10</div>
+        <div class="stability-dot neg">11</div>
+        <div class="stability-dot pos">12</div>
+        <div class="stability-dot pos">1</div>
+        <div class="stability-dot pos">2</div>
+        <span class="stability-label">7/9개월</span>
+      </div>
+      <div style="font-size:12.5px; color:var(--color-text-sub); margin-top:6px;">
+        평균 차이: <strong style="color:#16A34A;">+1.12pp</strong> (10-11월 비수기 제외 시 +1.31pp)
+      </div>
+    </div>
+
+    <div class="pb-alert--ok pb-alert">
+      <strong>ACTIVITY와 TOUR는 계절과 무관한 구조적 효과.</strong> 특정 시즌에만 생기는 일시적 패턴이 아닙니다. 자동화 테스트 시 시기 선택에 제약이 없어요.
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 6. 유형별 적정 디자인 길이 -->
+  <div class="pb-section" id="threshold">
+    <p class="pb-section-title">Part 6 · 유형별 적정 디자인 길이</p>
+
+    <div class="pb-alert--accent pb-alert">
+      디자인을 계속 길게 만들면 전환율이 계속 오를까요? 아닙니다. 유형별로 <strong>"이 정도면 충분하다"는 지점</strong>이 있습니다.
+    </div>
+
+    <div class="verdict-card">
+      <p class="verdict-card-label">유형별 목표 디자인 길이</p>
+      <div class="verdict-item">
+        <div class="verdict-cat">TOUR</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">13,000px+</div>
+          <div class="verdict-desc">13,000px 미만 2.41% → 이상 3.50%. 세로형 상세 이미지가 특히 효과적.</div>
+        </div>
+      </div>
+      <div class="verdict-item">
+        <div class="verdict-cat">TICKET</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">5,000 – 8,000px</div>
+          <div class="verdict-desc">5K 미만 8.54% → 5K–8K 10.58%. 8K–15K에서 정점(15.97%). 15K+ 이후 감소.</div>
+        </div>
+      </div>
+      <div class="verdict-item">
+        <div class="verdict-cat">ACTIVITY</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">7,000px+</div>
+          <div class="verdict-desc">체험 과정을 보여주는 이미지가 핵심. 콘텐츠 존재 자체가 중요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">블록 형태 전환 시 참고</p>
+      <p class="pb-card-sub" style="margin-bottom:0; line-height:1.7;">
+        기존 통이미지를 블록 컴포넌트로 나누더라도, 전체 세로 길이만 유지하면 전환율에 부정적 영향 없이 더 나은 사용자 경험을 제공할 수 있습니다. TOUR 기준 세로형 이미지(개별 1,000px+) 13장 이상이면 목표 디자인 길이를 달성합니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 7. 도시별 교차 검증 -->
+  <div class="pb-section" id="city">
+    <p class="pb-section-title">Part 7 · 도시별로도 같은 효과인지</p>
+
+    <div class="pb-alert--accent pb-alert">
+      특정 목적지에서만 효과가 나타나는 건 아닐까? 3개 이상 상품이 있는 도시별로 높은/낮은 PDP의 전환율 차이를 확인했습니다.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">ACTIVITY — 대부분 도시에서 효과 확인</p>
+      <p class="pb-card-sub">12개 도시 중 7개에서 높은 PDP가 유리.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>도시</th><th class="num">높은 PDP</th><th class="num">낮은 PDP</th><th class="num">차이</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>발리</td><td class="num">6.64%</td><td class="num lo">1.59%</td><td class="num hi">+5.05pp</td></tr>
+          <tr><td>보라카이</td><td class="num">5.55%</td><td class="num lo">0.00%</td><td class="num hi">+5.55pp</td></tr>
+          <tr><td>세부</td><td class="num">5.53%</td><td class="num lo">1.47%</td><td class="num hi">+4.05pp</td></tr>
+          <tr><td>푸켓</td><td class="num">5.23%</td><td class="num lo">0.00%</td><td class="num hi">+5.23pp</td></tr>
+          <tr><td>하롱베이</td><td class="num">2.10%</td><td class="num lo">0.67%</td><td class="num hi">+1.43pp</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px; font-size:12.5px; color:var(--color-text-sub);">
+        동남아 휴양지에서 효과가 특히 뚜렷합니다.
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TICKET — 주요 도시에서 효과 양극화</p>
+      <p class="pb-card-sub">22개 도시 중 9개에서 양의 효과. 큰 폭의 차이를 보이는 도시가 많음.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>도시</th><th class="num">높은 PDP</th><th class="num">낮은 PDP</th><th class="num">차이</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>타이베이</td><td class="num">26.54%</td><td class="num lo">7.12%</td><td class="num hi">+19.41pp</td></tr>
+          <tr><td>바르셀로나</td><td class="num">17.62%</td><td class="num lo">6.06%</td><td class="num hi">+11.56pp</td></tr>
+          <tr><td>싱가포르</td><td class="num">17.67%</td><td class="num lo">5.59%</td><td class="num hi">+12.08pp</td></tr>
+          <tr><td>상하이</td><td class="num">18.25%</td><td class="num lo">9.99%</td><td class="num hi">+8.27pp</td></tr>
+          <tr><td>도쿄</td><td class="num">6.66%</td><td class="num lo">1.96%</td><td class="num hi">+4.71pp</td></tr>
+          <tr><td>오사카</td><td class="num">7.27%</td><td class="num lo">5.16%</td><td class="num hi">+2.11pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">TOUR — 비교 가능 도시가 적지만 양의 효과</p>
+      <p class="pb-card-sub">높은/낮은 PDP가 모두 있는 4개 도시 중 3개에서 양의 효과.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>도시</th><th class="num">높은 PDP</th><th class="num">낮은 PDP</th><th class="num">차이</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>싱가포르</td><td class="num">4.99%</td><td class="num lo">0.45%</td><td class="num hi">+4.55pp</td></tr>
+          <tr><td>도쿄</td><td class="num">4.26%</td><td class="num lo">0.77%</td><td class="num hi">+3.49pp</td></tr>
+          <tr><td>세부</td><td class="num">4.35%</td><td class="num lo">1.52%</td><td class="num hi">+2.83pp</td></tr>
+          <tr><td>보홀</td><td class="num">6.45%</td><td class="num lo">4.45%</td><td class="num hi">+2.00pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 8. 테스트 후보: 짧은 PDP 상품 -->
+  <div class="pb-section" id="test-short">
+    <p class="pb-section-title">Part 8 · 테스트 후보: 짧은 PDP 상품</p>
+
+    <div class="pb-alert--accent pb-alert">
+      실제 디자인 길이를 CDN에서 측정해서 <strong>정말로 짧은 PDP</strong>인 상품만 선별했습니다. 휴면 상품(HOLD/NOT_SALE, 최근 1개월 UV 30 미만)은 제외하고 <strong>현재 판매 중인 활성 상품</strong>만 남겼어요.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">파일럿 대상 — ACTIVITY 9개</p>
+      <p class="pb-card-sub">효과가 가장 확실한 유형. 7,000px 미만 + 높은 UV + ONSALE 상품만. 실측 기준.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>#</th><th>GID</th><th>도시</th><th class="num">현재 높이</th><th class="num">최근1개월 UV</th><th class="num">현재 CVR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>3886950</strong></td><td>시드니</td><td class="num" style="color:#DC2626;">5,137px</td><td class="num">525</td><td class="num">7.74%</td></tr>
+          <tr><td>2</td><td><strong>3509017</strong></td><td>방콕</td><td class="num" style="color:#DC2626;">5,906px</td><td class="num">512</td><td class="num">19.63%</td></tr>
+          <tr><td>3</td><td><strong>3441210</strong></td><td>하와이</td><td class="num" style="color:#DC2626;">2,000px</td><td class="num">503</td><td class="num">6.01%</td></tr>
+          <tr><td>4</td><td><strong>4887871</strong></td><td>방콕</td><td class="num" style="color:#DC2626;">3,291px</td><td class="num">421</td><td class="num">0.00%</td></tr>
+          <tr><td>5</td><td><strong>3446612</strong></td><td>괌</td><td class="num" style="color:#DC2626;">5,917px</td><td class="num">367</td><td class="num">3.85%</td></tr>
+          <tr><td>6</td><td><strong>3880767</strong></td><td>괌</td><td class="num" style="color:#DC2626;">6,477px</td><td class="num">321</td><td class="num">3.62%</td></tr>
+          <tr><td>7</td><td><strong>3756147</strong></td><td>방콕</td><td class="num" style="color:#DC2626;">2,894px</td><td class="num">250</td><td class="num">14.78%</td></tr>
+          <tr><td>8</td><td><strong>3441201</strong></td><td>하와이</td><td class="num" style="color:#DC2626;">3,047px</td><td class="num">139</td><td class="num">4.43%</td></tr>
+          <tr><td>9</td><td><strong>4603496</strong></td><td>시드니</td><td class="num" style="color:#DC2626;">3,345px</td><td class="num">131</td><td class="num">8.89%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">파일럿 대상 — TICKET 10개</p>
+      <p class="pb-card-sub">UV 규모가 가장 큼. 5,000px 확보 목표. 휴면 4개 제외, 확대 데이터에서 보충.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>#</th><th>GID</th><th>도시</th><th class="num">현재 높이</th><th class="num">최근1개월 UV</th><th class="num">현재 CVR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>70816</strong></td><td>서울</td><td class="num" style="color:#DC2626;">3,450px</td><td class="num">대규모</td><td class="num">6.67%</td></tr>
+          <tr><td>2</td><td><strong>116114</strong></td><td>오사카</td><td class="num" style="color:#DC2626;">4,306px</td><td class="num">대규모</td><td class="num">11.14%</td></tr>
+          <tr><td>3</td><td><strong>43365</strong></td><td>경기도</td><td class="num" style="color:#DC2626;">3,450px</td><td class="num">대규모</td><td class="num">10.53%</td></tr>
+          <tr><td>4</td><td><strong>159442</strong></td><td>제주</td><td class="num" style="color:#DC2626;">1,000px</td><td class="num">대규모</td><td class="num">6.36%</td></tr>
+          <tr><td>5</td><td><strong>3517992</strong></td><td>뉴욕</td><td class="num" style="color:#DC2626;">3,477px</td><td class="num">653</td><td class="num">9.20%</td></tr>
+          <tr><td>6</td><td><strong>3521567</strong></td><td>칸쿤</td><td class="num" style="color:#DC2626;">4,613px</td><td class="num">150</td><td class="num">1.95%</td></tr>
+          <tr><td>7</td><td><strong>3512775</strong></td><td>치앙마이</td><td class="num" style="color:#DC2626;">2,125px</td><td class="num">71</td><td class="num">6.32%</td></tr>
+          <tr><td>8</td><td><strong>3887350</strong></td><td>서울</td><td class="num" style="color:#DC2626;">4,530px</td><td class="num">61</td><td class="num">1.38%</td></tr>
+          <tr><td>9</td><td><strong>3442940</strong></td><td>푸꾸옥</td><td class="num" style="color:#DC2626;">2,411px</td><td class="num">39</td><td class="num">0.60%</td></tr>
+          <tr><td>10</td><td><strong>3446256</strong></td><td>발리</td><td class="num" style="color:#DC2626;">4,320px</td><td class="num">32</td><td class="num">0.70%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">파일럿 대상 — TOUR 9개</p>
+      <p class="pb-card-sub">디자인 길이 효과가 가장 큰 유형. 13,000px+ 목표. 휴면(비엔나 GYG) 제외. 실측 기준.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>#</th><th>GID</th><th>도시</th><th class="num">현재 높이</th><th class="num">최근1개월 UV</th><th class="num">현재 CVR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>3442205</strong></td><td>멜버른</td><td class="num" style="color:#DC2626;">2,835px</td><td class="num">2,655</td><td class="num">8.42%</td></tr>
+          <tr><td>2</td><td><strong>3441180</strong></td><td>방콕</td><td class="num" style="color:#DC2626;">12,830px</td><td class="num">1,583</td><td class="num">14.79%</td></tr>
+          <tr><td>3</td><td><strong>3521445</strong></td><td>치앙마이</td><td class="num" style="color:#DC2626;">8,322px</td><td class="num">953</td><td class="num">13.84%</td></tr>
+          <tr><td>4</td><td><strong>3470077</strong></td><td>다낭</td><td class="num" style="color:#DC2626;">7,350px</td><td class="num">689</td><td class="num">1.88%</td></tr>
+          <tr><td>5</td><td><strong>3446349</strong></td><td>발리</td><td class="num" style="color:#DC2626;">11,622px</td><td class="num">687</td><td class="num">13.28%</td></tr>
+          <tr><td>6</td><td><strong>3881149</strong></td><td>하노이</td><td class="num" style="color:#DC2626;">9,127px</td><td class="num">642</td><td class="num">5.44%</td></tr>
+          <tr><td>7</td><td><strong>3446422</strong></td><td>푸켓</td><td class="num" style="color:#DC2626;">8,277px</td><td class="num">419</td><td class="num">9.25%</td></tr>
+          <tr><td>8</td><td><strong>3517031</strong></td><td>하와이</td><td class="num" style="color:#DC2626;">2,373px</td><td class="num">394</td><td class="num">7.29%</td></tr>
+          <tr><td>9</td><td><strong>3915765</strong></td><td>장자제</td><td class="num" style="color:#DC2626;">3,555px</td><td class="num">103</td><td class="num">0.14%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 9. 같은 파트너 품질 편차 -->
+  <div class="pb-section" id="test-partner">
+    <p class="pb-section-title">Part 9 · 테스트 후보: 같은 파트너의 품질 편차</p>
+
+    <div class="pb-alert--accent pb-alert">
+      같은 파트너가 운영하는 상품인데, 어떤 건 PDP가 풍부하고 어떤 건 빈약합니다. <strong>파트너 역량은 같으니 순수하게 PDP 차이</strong>만 비교할 수 있어요.
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">파트너 내 PDP 품질 편차 (실측)</p>
+      <p class="pb-card-sub">3개 이상 상품을 가진 파트너의 디자인 높이 표준편차. 편차가 클수록 같은 파트너 내에서도 PDP 품질이 들쭉날쭉.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr><th>파트너</th><th>유형</th><th class="num">상품</th><th class="num">높이 편차</th><th class="num">CVR 편차</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>(주)블루하와이</td><td><span class="pb-tag pb-tag--ok" style="font-size:10px;">ACTIVITY</span></td>
+            <td class="num">4개</td><td class="num">6,796px</td><td class="num hi">3.59pp</td>
+          </tr>
+          <tr>
+            <td>㈜아시아트리</td><td><span class="pb-tag pb-tag--ok" style="font-size:10px;">ACTIVITY</span></td>
+            <td class="num">4개</td><td class="num">6,914px</td><td class="num hi">3.45pp</td>
+          </tr>
+          <tr>
+            <td>주식회사 아시아트립</td><td><span class="pb-tag pb-tag--neutral" style="font-size:10px;">TOUR</span></td>
+            <td class="num">4개</td><td class="num">1,823px</td><td class="num hi">4.52pp</td>
+          </tr>
+          <tr>
+            <td>㈜아시아트리</td><td><span class="pb-tag pb-tag--neutral" style="font-size:10px;">TOUR</span></td>
+            <td class="num">3개</td><td class="num">2,125px</td><td class="num">0.82pp</td>
+          </tr>
+          <tr>
+            <td>Tripadvisor Exp.</td><td><span class="pb-tag pb-tag--neutral" style="font-size:10px;">TOUR</span></td>
+            <td class="num">15개</td><td class="num">1,132px</td><td class="num hi">1.26pp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pb-alert--warn pb-alert">
+      <strong>해석:</strong> 같은 파트너가 운영하는 상품 중 PDP 디자인 높이가 높은 상품이 CVR도 높은 경향이 있습니다. 파트너에게 디자인 가이드라인을 제공하면 전체 상품의 일관된 품질 향상이 가능합니다.
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 10. 종합 판정 -->
+  <div class="pb-section" id="verdict">
+    <p class="pb-section-title">Part 10 · 종합 판정과 테스트 설계</p>
+
+    <div class="verdict-card">
+      <p class="verdict-card-label">유형별 판정 요약</p>
+
+      <div class="verdict-item">
+        <div class="verdict-cat">ACTIVITY</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">효과 확실</div>
+          <div class="verdict-desc">전후 비교 +1.01pp · 추세 검증 통과 · 9개월 연속 양의 효과 · 7/12 도시에서 효과. 자동화 테스트의 첫 번째 대상.</div>
+        </div>
+      </div>
+      <div class="verdict-item">
+        <div class="verdict-cat">TOUR</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">디자인 길이 효과 뚜렷</div>
+          <div class="verdict-desc">13,000px+ 전환율 도약 · 7/9개월 양의 효과 · 비교 가능 4개 도시 중 3개에서 확인. 세로형 블록 PDP로 길이 확보.</div>
+        </div>
+      </div>
+      <div class="verdict-item">
+        <div class="verdict-cat">TICKET</div>
+        <div class="verdict-detail">
+          <div class="verdict-num up">확대 분석으로 효과 확인</div>
+          <div class="verdict-desc">181개 상품 실측. 5,000px 기준 +3.27pp(UV 가중). 도시별로는 9/22 양의 효과. 전후 비교는 불충분하나 단면 상관은 명확.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">자동화 테스트 설계 제안</p>
+      <p class="pb-card-sub">블록 형태 PDP 자동 생성으로 디자인 길이 확보</p>
+
+      <div class="method-step">
+        <div class="method-num" style="background:rgba(22,163,74,0.1); color:#16A34A;">1</div>
+        <div class="method-text">
+          <strong>첫 번째 테스트: ACTIVITY 짧은 PDP 상품</strong>
+          <span class="sub">효과가 가장 확실한 유형. 블록 형태 PDP를 자동 생성해 디자인 길이를 7,000px 이상으로 확보. 활성 상품 9개 GID 준비 완료.</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num" style="background:rgba(37,99,235,0.1); color:var(--color-accent);">2</div>
+        <div class="method-text">
+          <strong>두 번째 테스트: TOUR 짧은 PDP 상품</strong>
+          <span class="sub">디자인 길이 효과가 가장 큰 유형. 13,000px 이상 목표. 멜버른 GID 3442205 (31K UV, 현재 2,835px)가 최우선.</span>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">3</div>
+        <div class="method-text">
+          <strong>세 번째 테스트: TICKET 짧은 PDP 상품</strong>
+          <span class="sub">서울 GID 70816 (대규모 UV, 현재 3,450px)가 최우선. 5,000px만 확보해도 +3.27pp 기대.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-card">
+      <p class="pb-card-title">성공 시 제품화 경로</p>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-dot now"></div>
+          <div class="roadmap-phase">검증 완료 (현재)</div>
+          <div class="roadmap-desc">659개 상품 실측으로 세 카테고리 모두 디자인 길이-전환율 상관 확인. 9개월 시즌 안정성 검증 완료.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot next"></div>
+          <div class="roadmap-phase">소규모 A/B 테스트</div>
+          <div class="roadmap-desc">블록 형태 PDP 자동 생성 vs 기존 PDP 비교. 실제 전환율 변화 측정.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot future"></div>
+          <div class="roadmap-phase">자동화 파이프라인</div>
+          <div class="roadmap-desc">테스트 결과가 양호하면, 신규 상품 등록 시 PDP 자동 생성.</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot future"></div>
+          <div class="roadmap-phase">제품 내재화</div>
+          <div class="roadmap-desc">파이프라인이 안정화되면, 상품 등록 플로우에 PDP 자동 생성 기능을 제품으로 내장.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 11. 기대 임팩트 -->
+  <div class="pb-section" id="impact">
+    <p class="pb-section-title">Part 11 · 기대 임팩트: 거래액 환산</p>
+
+    <div class="pb-alert--accent pb-alert">
+      CVR 분석 결과를 실제 거래액(TNA)에 대입하면, PDP 디자인 개선이 얼마나 큰 비즈니스 임팩트를 가져올 수 있는지 산정할 수 있습니다. <strong>관측된 CVR 차이의 50%만 보수적으로 반영</strong>했습니다.
+    </div>
+
+    <!-- 산정 공식 -->
+    <div class="pb-card">
+      <p class="pb-card-title">산정 공식</p>
+      <p class="pb-card-sub" style="font-family:monospace; font-size:14px; background:var(--color-divider); border-radius:8px; padding:14px; margin:8px 0 12px; line-height:1.7;">
+        증분 거래액 = 대상 UV × ΔCVR(보수적) × 건당 평균 거래액
+      </p>
+      <div class="pb-info-row">
+        <span class="pb-info-label">대상 UV</span>
+        <span class="pb-info-value">임계값 미달 상품의 월간 방문자 수</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">ΔCVR (보수적)</span>
+        <span class="pb-info-value">관측 CVR 차이의 <strong>50%</strong></span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">건당 평균 거래액</span>
+        <span class="pb-info-value">BigQuery 최근 3개월 기준</span>
+      </div>
+    </div>
+
+    <!-- 카테고리별 기초 데이터 -->
+    <div class="pb-card">
+      <p class="pb-card-title">카테고리별 기초 데이터</p>
+      <p class="pb-card-sub">BigQuery 최근 3개월 평균 (2025-12 – 2026-02)</p>
+      <table class="compare-table">
+        <thead><tr><th>지표</th><th class="num">TOUR</th><th class="num">TICKET</th><th class="num">ACTIVITY</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>월간 UV</td>
+            <td class="num">390만</td>
+            <td class="num">231만</td>
+            <td class="num">61만</td>
+          </tr>
+          <tr>
+            <td>월간 거래액</td>
+            <td class="num">276억</td>
+            <td class="num">179억</td>
+            <td class="num">48억</td>
+          </tr>
+          <tr>
+            <td>건당 평균 거래액</td>
+            <td class="num hi">99,330원</td>
+            <td class="num hi">103,163원</td>
+            <td class="num hi">113,337원</td>
+          </tr>
+          <tr>
+            <td>전체 CVR</td>
+            <td class="num">7.1%</td>
+            <td class="num">7.5%</td>
+            <td class="num">6.9%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 임계값 미달 비중 -->
+    <div class="pb-card">
+      <p class="pb-card-title">임계값 미달 상품 비중</p>
+      <p class="pb-card-sub">측정 샘플 기반 추정. 개선 대상이 되는 상품군입니다.</p>
+      <table class="compare-table">
+        <thead><tr><th>카테고리</th><th class="num">임계값</th><th class="num">미달 비율</th><th class="num">미달 UV (월)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>TOUR</td>
+            <td class="num">13,000px</td>
+            <td class="num">79%</td>
+            <td class="num hi">258만</td>
+          </tr>
+          <tr>
+            <td>TICKET</td>
+            <td class="num">5,000px</td>
+            <td class="num">55%</td>
+            <td class="num hi">121만</td>
+          </tr>
+          <tr>
+            <td>ACTIVITY</td>
+            <td class="num">7,000px</td>
+            <td class="num">54%</td>
+            <td class="num hi">19만</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 핵심: 시나리오별 기대 임팩트 -->
+    <div class="hero-card">
+      <h3>시나리오별 기대 임팩트</h3>
+      <p style="font-size:12px; color:#94A3B8; margin:-8px 0 16px;">CVR 관측 차이의 50%만 보수적 반영</p>
+
+      <div style="display:flex; align-items:baseline; gap:8px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <span style="font-size:12px; color:#64748B; min-width:100px;">파일럿 28개</span>
+        <span style="font-size:20px; font-weight:800; color:#94A3B8;">~2,400만원</span>
+        <span style="font-size:12px; color:#64748B;">/월</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:8px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.07);">
+        <span style="font-size:12px; color:#64748B; min-width:100px;">Phase 1 (100개)</span>
+        <span style="font-size:20px; font-weight:800; color:#E2E8F0;">~15억원</span>
+        <span style="font-size:12px; color:#64748B;">/월</span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:8px; padding:14px 0;">
+        <span style="font-size:12px; color:#64748B; min-width:100px;">전면 적용 (257개)</span>
+        <span style="font-size:22px; font-weight:800; color:#4ADE80;">~37.8억원</span>
+        <span style="font-size:12px; color:#64748B;">/월 (연 454억원)</span>
+      </div>
+    </div>
+
+    <!-- 카테고리별 상세 -->
+    <div class="pb-card">
+      <p class="pb-card-title">카테고리별 상세 (전면 적용 시)</p>
+      <table class="compare-table">
+        <thead><tr><th>카테고리</th><th class="num">CVR 관측</th><th class="num">CVR 보수적</th><th class="num">증분 예약</th><th class="num">증분 거래액</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>TOUR</td>
+            <td class="num lo">+1.09pp</td>
+            <td class="num">+0.55pp</td>
+            <td class="num">+14,061건</td>
+            <td class="num hi">+14.0억/월</td>
+          </tr>
+          <tr>
+            <td>TICKET</td>
+            <td class="num lo">+3.27pp</td>
+            <td class="num">+1.64pp</td>
+            <td class="num">+19,814건</td>
+            <td class="num hi">+20.4억/월</td>
+          </tr>
+          <tr>
+            <td>ACTIVITY</td>
+            <td class="num lo">+3.16pp</td>
+            <td class="num">+1.58pp</td>
+            <td class="num">+3,016건</td>
+            <td class="num hi">+3.4억/월</td>
+          </tr>
+          <tr style="border-top:2px solid var(--color-border);">
+            <td><strong>합계</strong></td>
+            <td class="num lo"></td>
+            <td class="num"></td>
+            <td class="num"><strong>+36,891건</strong></td>
+            <td class="num hi"><strong>+37.8억/월</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 인과 신뢰도 보정 -->
+    <div class="pb-card">
+      <p class="pb-card-title">인과 신뢰도에 따른 보정</p>
+      <p class="pb-card-sub">카테고리별 인과 검증 강도가 다르므로, 실현 가능성을 차등 적용할 수 있습니다.</p>
+      <div class="pb-info-row">
+        <span class="pb-info-label">ACTIVITY</span>
+        <span class="pb-info-value"><span class="pb-tag pb-tag--ok">인과 확실</span></span>
+      </div>
+      <div style="font-size:12.5px; color:var(--color-text-sub); padding:0 0 10px; line-height:1.5;">
+        추세 검증 통과 + 9/9개월 일관 + 전후 비교 +1.01pp. 보수적 50% 적용만으로 충분.
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">TOUR</span>
+        <span class="pb-info-value"><span class="pb-tag pb-tag--warn">상관 강함</span></span>
+      </div>
+      <div style="font-size:12.5px; color:var(--color-text-sub); padding:0 0 10px; line-height:1.5;">
+        디자인 길이 효과 뚜렷하나 추세 검증 미통과. 실현율 70% 정도(~9.8억/월)로 보수 조정 가능.
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">TICKET</span>
+        <span class="pb-info-value"><span class="pb-tag pb-tag--warn">단면 상관</span></span>
+      </div>
+      <div style="font-size:12.5px; color:var(--color-text-sub); padding:0 0 10px; line-height:1.5;">
+        181개 확대 분석에서 단면 상관 명확하나 전후 비교 미약. 실현율 50% 정도(~10.2억/월)로 보수 조정 가능.
+      </div>
+    </div>
+
+    <div class="pb-alert--warn pb-alert">
+      <strong>주의:</strong> 이 수치는 "상관관계 기반 추정"이며, A/B 테스트 이전의 기대치입니다. 파일럿 테스트 결과로 실제 인과 효과를 확인한 뒤 재산정이 필요합니다. 또한 임계값 미달 비중은 413개 측정 표본에서 추정한 것이므로 전수 조사 시 달라질 수 있습니다.
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- 데이터 한계 -->
+  <div class="pb-section">
+    <p class="pb-section-title">데이터 한계</p>
+    <div class="pb-card">
+      <div class="pb-info-row">
+        <span class="pb-info-label">이미지 높이 측정은 659개 상품 표본 기반</span>
+        <span class="pb-tag pb-tag--warn">전수 조사 아님</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">이미지 일괄 업로드 = PDP 개선 (가정)</span>
+        <span class="pb-tag pb-tag--warn">간접 지표</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">TOUR는 추세 검증 미통과</span>
+        <span class="pb-tag pb-tag--warn">한계</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">TICKET 전후 비교는 음수 (역인과 가능)</span>
+        <span class="pb-tag pb-tag--warn">한계</span>
+      </div>
+      <div class="pb-info-row">
+        <span class="pb-info-label">A/B 테스트가 아닌 관찰 데이터</span>
+        <span class="pb-tag pb-tag--accent">다음 단계에서 해결</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="pb-note" style="margin-top:24px; padding-bottom:40px;">
+    <strong>데이터 출처</strong><br>
+    BigQuery: MART_PRODUCT_AGG_D, MART_PRODUCT_D, DW_MRT_EXPERIENCES_PRODUCT_IMAGES, DW_MRT_SERVICE_OFFER_PHOTOS<br>
+    분석 범위: 3.0 네이티브 상품 · UV 100+ · 2025-06-01 – 2026-03-01<br>
+    이미지 세로 높이: CDN에서 659개 상품 이미지 직접 다운로드 후 픽셀 측정 (TOUR 238, ACTIVITY 150, TICKET 181+90)<br>
+    거래액 산정: MART_PRODUCT_AGG_D 최근 3개월 (2025-12 – 2026-02) 월간 평균<br>
+    시즌 검증: 9개월 (2025-06 – 2026-02)<br>
+    분석: 서기원
+  </p>
+
+</div>
+</body>
+</html>

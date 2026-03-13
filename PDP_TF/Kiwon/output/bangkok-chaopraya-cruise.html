@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>방콕 차오프라야 프린세스 디너 크루즈 — PDP (ACTIVITY)</title>
+<meta name="description" content="차오프라야 강 위에서 즐기는 인터내셔널 뷔페 디너와 라이브 음악. 왕궁, 왓 아룬 야경을 감상하는 2시간 크루즈.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "차오프라야 프린세스 디너 크루즈 뷔페",
+  "description": "차오프라야 강 위에서 즐기는 인터내셔널 뷔페 디너와 라이브 음악 크루즈",
+  "brand": { "@type": "Brand", "name": "차오프라야 프린세스" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.6", "reviewCount": "5" }
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418; --c-gray-850: #212529;
+    --c-gray-800: #343A40; --c-gray-700: #495056; --c-gray-600: #636363; --c-gray-550: #595959;
+    --c-gray-500: #848C94; --c-gray-400: #ADB5BD; --c-gray-200: #DEE2E6; --c-gray-100: #E5E5E5;
+    --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7; --c-blue-600: #1583DB; --c-blue-80: #E7F4FD;
+    --c-red-500: #EC4937; --c-yellow-200: #FFF2C6; --c-yellow-100: #FBFFE7;
+    --c-yellow-50: #FDF1B5; --c-yellow-warm: #FFE390; --c-white: #FFFFFF; --c-black: #000000;
+
+    --pdp-text-primary: var(--c-gray-1000); --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500); --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white); --pdp-bg-sub: var(--c-gray-80); --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600); --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px; --pdp-section-pb: 24px; --pdp-title-gap: 14px; --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px; --pdp-img-gap: 12px; --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px; --pdp-img-step-h: 180px; --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px; --pdp-img-radius: 10px; --pdp-img-radius-lg: 24px;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px; --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: #E8E8E8; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .img-placeholder { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+
+  .intro-section { padding: 32px 20px 24px; }
+  .intro-section h2 { font-size: 20px; font-weight: 700; color: var(--c-gray-1000); letter-spacing: -0.4px; line-height: 1.35; margin-bottom: 6px; }
+  .intro-section .subtitle { font-size: 13px; font-weight: 500; color: var(--c-gray-500); margin-bottom: 14px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.65; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .intro-visual .img-placeholder { width: 100%; height: 100%; }
+
+  /* 2nd intro (감성 훅) */
+  .intro-section-2 { padding: 0 20px 24px; }
+  .intro-section-2 .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.65; }
+  .intro-section-2 .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 16px; }
+  .intro-section-2 .intro-visual .img-placeholder { width: 100%; height: 100%; }
+
+  .image-grid { padding: 32px 0 24px; }
+  .image-grid .grid-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; padding: 0 20px; }
+  .spot-scroll { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 0 20px; scrollbar-width: none; }
+  .spot-scroll::-webkit-scrollbar { display: none; }
+  .spot-card { flex: 0 0 240px; scroll-snap-align: start; }
+  .spot-thumb { width: 240px; height: 160px; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .spot-thumb .img-placeholder { width: 100%; height: 100%; }
+  .spot-name { font-size: 14px; font-weight: 600; color: var(--c-gray-1000); margin-bottom: 3px; line-height: 1.38; }
+  .spot-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.55; }
+
+  /* visualTimeline */
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .vt-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .vt-list { position: relative; padding-left: 20px; border-left: 2px solid var(--c-gray-200); }
+  .vt-item { position: relative; padding-bottom: 24px; }
+  .vt-item:last-child { padding-bottom: 0; }
+  .vt-dot { position: absolute; left: -27px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--c-blue-600); border: 2px solid var(--c-white); }
+  .vt-time { font-size: 12px; font-weight: 700; color: var(--c-blue-600); margin-bottom: 4px; }
+  .vt-label { font-size: 15px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 4px; }
+  .vt-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.55; }
+
+  .highlight-callout { margin: 0 24px 24px; width: 342px; border-radius: 8px; background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390); padding: 19px 15px; }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+
+  .section-image { padding: 0 20px 24px; }
+  .section-image .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-image .section-img-wrap .img-placeholder { width: 100%; height: 100%; }
+  .section-image .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  /* operationTable */
+  .operation-table { padding: 32px 20px 24px; }
+  .operation-table .op-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .op-grid { display: flex; flex-direction: column; gap: 12px; }
+  .op-row { display: flex; gap: 12px; }
+  .op-label { font-size: 13px; font-weight: 700; color: var(--c-gray-900); min-width: 80px; flex-shrink: 0; }
+  .op-value { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.55; }
+
+  /* notice with dots */
+  .notice-group { padding: 32px 20px 24px; }
+  .notice-group .ng-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .ng-section { margin-bottom: 20px; }
+  .ng-section:last-child { margin-bottom: 0; }
+  .ng-section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .ng-section-title.include { color: var(--pdp-accent); }
+  .ng-section-title.exclude { color: var(--pdp-caution); }
+  .ng-section-title.caution { color: var(--c-gray-900); }
+  .ng-item { display: flex; gap: 8px; margin-bottom: 8px; align-items: baseline; }
+  .ng-item .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .ng-item .dot.include { background: var(--pdp-accent); }
+  .ng-item .dot.exclude { background: var(--pdp-caution); }
+  .ng-item .dot.caution { background: var(--c-red-500); }
+  .ng-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .ng-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  .customer-review { padding: 32px 20px 24px; }
+  .customer-review .review-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .review-summary { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .review-score { font-size: 17px; font-weight: 700; color: var(--c-gray-900); }
+  .review-stars { color: #F5A623; font-size: 16px; }
+  .review-count { font-size: 13px; font-weight: 500; color: var(--c-gray-500); }
+  .review-card { background: var(--c-gray-50); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 6px; }
+  .review-date { font-size: 12px; font-weight: 400; color: var(--c-gray-500); margin-left: 8px; }
+  .review-text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+
+  .block-section { position: relative; }
+  .block-section::before { content: attr(data-block) ' \2014 ' attr(data-mode); position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after { content: attr(data-output); position: absolute; bottom: 2px; right: 2px; background: rgba(21,131,219,0.8); color: #fff; font-size: 9px; font-weight: 600; padding: 1px 4px; border-radius: 3px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+  .poc-legend { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 11px; padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px); }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover for output tags</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/07/11/3uq1/8iOoHwvtrd.jpg');"></div>
+  </section>
+
+  <!-- ═══ introSection (핵심 매력) ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">차오프라야 강 위에서<br>방콕 야경과 디너를 한번에</h2>
+    <p class="subtitle" data-output="html">태국 · 방콕 · 2시간 · 디너 크루즈</p>
+    <p class="body" data-output="html">차오프라야 강을 따라 왕궁, 왓 아룬 등 방콕의 상징적인 랜드마크를 감상하며 인터내셔널 뷔페 디너를 즐기세요. 선상에서 라이브 음악 공연과 태국 전통 댄스까지 함께하는 특별한 저녁입니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/23/G7is/Aa5uazNNMA.jpg');"></div>
+    </div>
+  </section>
+
+  <!-- ═══ introSection (두 번째 감성 훅) ═══ -->
+  <section class="intro-section-2 block-section" data-block="introSection" data-mode="structured">
+    <p class="body" data-output="html">뷔페에는 타이식과 인터내셔널 요리가 함께 준비되어 있고, 웰컴 드링크와 커피/차가 제공됩니다. Lower(실내석)와 Upper(실외석) 어디서든 같은 음식과 공연을 즐길 수 있어요.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/23/A5gK/f2yKZoCBB8.jpg');"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ imageGrid (크루즈 분위기) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">크루즈에서 만나는 방콕</h2>
+    <div class="spot-scroll">
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/07/11/xz2F/QE3Raxx6rm.jpg');"></div>
+        </div>
+        <p class="spot-name" data-output="html">왓 아룬 야경</p>
+        <p class="spot-desc" data-output="html">조명 아래 빛나는 새벽의 사원</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2022/09/07/bJjD/qOvjblChLc.jpg');"></div>
+        </div>
+        <p class="spot-name" data-output="html">인터내셔널 뷔페</p>
+        <p class="spot-desc" data-output="html">타이식과 양식이 함께하는 선상 뷔페</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/07/23/u2x9/RRdIVleoe0.jpg');"></div>
+        </div>
+        <p class="spot-name" data-output="html">라이브 공연</p>
+        <p class="spot-desc" data-output="html">선상에서 즐기는 음악과 전통 댄스</p>
+      </div>
+      <div class="spot-card">
+        <div class="spot-thumb">
+          <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/07/11/L0Bj/8BtaF1b0X1.jpg');"></div>
+        </div>
+        <p class="spot-name" data-output="html">차오프라야 선상</p>
+        <p class="spot-desc" data-output="html">방콕의 밤을 물 위에서 감상</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ visualTimeline ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="structured">
+    <h2 class="vt-title" data-output="html">크루즈 타임라인</h2>
+    <div class="vt-list">
+      <div class="vt-item">
+        <div class="vt-dot"></div>
+        <p class="vt-time" data-output="html">18:00 - 19:00</p>
+        <p class="vt-label" data-output="html">체크인</p>
+        <p class="vt-desc" data-output="html">아이콘시암 G층 또는 아시아티크 Warehouse 7-8 창구에서 바우처를 실물 티켓으로 교환</p>
+      </div>
+      <div class="vt-item">
+        <div class="vt-dot"></div>
+        <p class="vt-time" data-output="html">19:15 - 19:30</p>
+        <p class="vt-label" data-output="html">승선 & 출항</p>
+        <p class="vt-desc" data-output="html">좌석 안내 후 웰컴 드링크와 함께 크루즈 출항</p>
+      </div>
+      <div class="vt-item">
+        <div class="vt-dot"></div>
+        <p class="vt-time" data-output="html">19:30 - 21:30</p>
+        <p class="vt-label" data-output="html">디너 크루즈</p>
+        <p class="vt-desc" data-output="html">인터내셔널 뷔페 디너 + 라이브 음악 + 태국 전통 댄스. 왕궁, 왓 아룬 등 방콕 야경 감상</p>
+      </div>
+      <div class="vt-item">
+        <div class="vt-dot"></div>
+        <p class="vt-time" data-output="html">21:30</p>
+        <p class="vt-label" data-output="html">하선</p>
+        <p class="vt-desc" data-output="html">출발 선착장으로 귀환</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">&#x1F6A2; 선셋 크루즈도 있어요!</p>
+    <p class="hl-subtitle" data-output="html">아시아티크 출발 한정, 17:00-18:30 선셋 타임. 낮과 밤의 방콕을 모두 즐기고 싶다면 선셋 옵션을 확인하세요.</p>
+  </div>
+
+  <!-- ═══ sectionImage ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image" style="padding-top: 32px;">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/07/11/HSdo/59VKfJhB5c.jpg');"></div>
+    </div>
+    <p class="section-img-caption" data-output="html">차오프라야 프린세스 크루즈 선상</p>
+  </section>
+
+  <!-- ═══ Zone 전환 ═══ -->
+  <div class="divider"></div>
+
+  <!-- ═══ operationTable ═══ -->
+  <section class="operation-table block-section" data-block="operationTable" data-mode="structured">
+    <h2 class="op-title" data-output="html">운영 정보</h2>
+    <div class="op-grid">
+      <div class="op-row">
+        <span class="op-label" data-output="html">운항 시간</span>
+        <span class="op-value" data-output="html">19:30 - 21:30 (2시간)</span>
+      </div>
+      <div class="op-row">
+        <span class="op-label" data-output="html">체크인</span>
+        <span class="op-value" data-output="html">18:00 - 19:00 (마감 30분 전 도착)</span>
+      </div>
+      <div class="op-row">
+        <span class="op-label" data-output="html">탑승장소</span>
+        <span class="op-value" data-output="html">아이콘시암 G층 또는 아시아티크 Warehouse 7-8</span>
+      </div>
+      <div class="op-row">
+        <span class="op-label" data-output="html">운항 요일</span>
+        <span class="op-value" data-output="html">목·금·토·일</span>
+      </div>
+      <div class="op-row">
+        <span class="op-label" data-output="html">최소 인원</span>
+        <span class="op-value" data-output="html">2명</span>
+      </div>
+      <div class="op-row">
+        <span class="op-label" data-output="html">언어</span>
+        <span class="op-value" data-output="html">영어</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice (포함/불포함/주의사항 통합) ═══ -->
+  <section class="notice-group block-section" data-block="includeExclude" data-mode="structured">
+    <h2 class="ng-title" data-output="html">포함 · 불포함 · 주의사항</h2>
+
+    <div class="ng-section">
+      <p class="ng-section-title include" data-output="html">포함되어 있어요</p>
+      <div class="ng-item"><span class="dot include"></span><span class="text" data-output="html">인터내셔널 뷔페 디너</span></div>
+      <div class="ng-item"><span class="dot include"></span><span class="text" data-output="html">태국 전통 댄스 공연</span></div>
+      <div class="ng-item"><span class="dot include"></span><span class="text" data-output="html">라이브 음악</span></div>
+      <div class="ng-item"><span class="dot include"></span><span class="text" data-output="html">웰컴 드링크, 커피/차</span></div>
+    </div>
+
+    <div class="ng-section">
+      <p class="ng-section-title exclude" data-output="html">불포함되어 있어요</p>
+      <div class="ng-item"><span class="dot exclude"></span><span class="text" data-output="html">주류 및 추가 음료</span></div>
+      <div class="ng-item"><span class="dot exclude"></span><span class="text" data-output="html">개별 여행자 보험</span></div>
+    </div>
+
+    <div class="ng-section">
+      <p class="ng-section-title caution" data-output="html">주의사항</p>
+      <div class="ng-item"><span class="dot caution"></span><span class="text" data-output="html"><strong>실외석 변경 가능</strong> — 우천·만석 시 실내석으로 변경될 수 있습니다</span></div>
+      <div class="ng-item"><span class="dot caution"></span><span class="text" data-output="html"><strong>교통 체증</strong> — 방콕은 정체가 심해요. 가까운 곳도 1시간 전, 먼 곳은 1시간 30분 전 출발을 권장합니다</span></div>
+      <div class="ng-item"><span class="dot caution"></span><span class="text" data-output="html"><strong>외부 음식 반입 불가</strong></span></div>
+      <div class="ng-item"><span class="dot caution"></span><span class="text" data-output="html"><strong>반려동물 동반 불가</strong></span></div>
+      <div class="ng-item"><span class="dot caution"></span><span class="text" data-output="html">유모차 및 휠체어 이용 가능</span></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="review-title" data-output="html">이용자 후기</h2>
+    <div class="review-summary">
+      <span class="review-score" data-output="html">4.6</span>
+      <span class="review-stars" data-output="css">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      <span class="review-count" data-output="html">후기 5개</span>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">여행자 A <span class="review-date">2026.02</span></p>
+      <p class="review-text" data-output="html">왓 아룬 야경이 정말 아름다웠고 뷔페 음식도 맛있었어요. 라이브 공연까지 있어서 2시간이 금방 지나갔습니다.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">여행자 B <span class="review-date">2026.01</span></p>
+      <p class="review-text" data-output="html">방콕 여행의 하이라이트! 강 위에서 보는 야경이 최고예요. 체크인도 간단했고 직원들이 친절했습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

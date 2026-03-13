@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>퍼핑빌리 + 펭귄 퍼레이드 콤보 투어 — PDP Pilot (TOUR)</title>
+<meta name="description" content="퍼핑빌리 증기기차와 필립아일랜드 펭귄 퍼레이드를 하루에 즐기는 멜버른 최고 인기 콤보 투어. 한국어 가이드, 27년 경력 조이투어.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+  /* ── Design Tokens (inline :root) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+    position: relative;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .hero-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+    color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--c-blue-600);
+    color: var(--c-white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .hero-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.24;
+    letter-spacing: -0.52px;
+    color: var(--c-white);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 32px 20px 24px;
+  }
+  .intro-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    line-height: 1.24;
+    margin-bottom: 14px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.65;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .intro-visual .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-img-wrap .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: numberedList
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .num-step-img .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .num-title {
+    font-weight: 600;
+  }
+  .schedule-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .schedule-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 20px;
+  }
+  .schedule-item:last-child { padding-bottom: 0; }
+  .schedule-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 24px;
+  }
+  .schedule-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .schedule-line {
+    width: 1px;
+    flex: 1;
+    min-height: 16px;
+    background: var(--c-gray-200);
+    margin-top: 4px;
+  }
+  .schedule-item:last-child .schedule-line { display: none; }
+  .schedule-content { padding-top: 1px; flex: 1; }
+  .schedule-time {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--c-blue-600);
+    margin-bottom: 2px;
+  }
+  .schedule-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.38;
+    margin-bottom: 4px;
+  }
+  .schedule-desc {
+    font-size: 13px;
+    color: var(--c-gray-700);
+    line-height: 1.65;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: imageGrid
+     renderMode: hybrid (horizontal scroll)
+     ══════════════════════════════════════════ */
+  .image-grid {
+    padding: 32px 20px 24px;
+  }
+  .image-grid .grid-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 16px;
+  }
+  .image-grid-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .image-grid-scroll::-webkit-scrollbar { display: none; }
+  .grid-card {
+    flex: 0 0 240px;
+    height: 160px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+  }
+  .grid-card .img-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+  .grid-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 24px 12px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+    color: var(--c-white);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.38;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 32px 20px 24px;
+  }
+  .recommend-box .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .recommend-card {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .recommend-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .recommend-check {
+    color: var(--c-blue-600);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .recommend-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: guideIntro
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .guide-intro {
+    padding: 32px 20px 24px;
+  }
+  .guide-intro .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .guide-profile-card {
+    background: var(--c-gray-80);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .guide-profile-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .guide-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--c-blue-600);
+    color: var(--c-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .guide-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .guide-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-600);
+    margin-top: 2px;
+  }
+  .guide-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .guide-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .guide-feature-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--c-blue-80);
+    color: var(--c-blue-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .guide-feature-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 20px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .highlight-callout .callout-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    line-height: 1.5;
+  }
+  .highlight-callout .callout-sub {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    margin-top: 6px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong { color: var(--c-gray-900); }
+
+  /* ══════════════════════════════════════════
+     BLOCK: customerReview
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .customer-review {
+    padding: 32px 20px 40px;
+  }
+  .customer-review .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .review-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .review-score {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+  }
+  .review-stars {
+    color: #F5A623;
+    font-size: 16px;
+  }
+  .review-count {
+    font-size: 13px;
+    color: var(--c-gray-500);
+  }
+  .review-card {
+    background: var(--c-gray-80);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 6px;
+  }
+  .review-date {
+    font-size: 12px;
+    color: var(--c-gray-500);
+    margin-left: 8px;
+    font-weight: 400;
+  }
+  .review-text {
+    font-size: 14px;
+    color: var(--c-gray-700);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay: renderMode / output 태그
+     ══════════════════════════════════════════ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC 범례 ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background: linear-gradient(135deg, #1a3d2a 0%, #2d6b4a 30%, #4a8b3a 60%, #7ab648 100%);">
+      <span class="label">퍼핑빌리 증기기차 히어로 이미지 390x458</span>
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-badge" data-output="html">투어</span>
+      <h1 class="hero-title" data-output="html">퍼핑빌리 + 펭귄 퍼레이드</h1>
+      <p class="hero-sub" data-output="html">멜버른 최고 인기 콤보 투어 &middot; 한국어 가이드</p>
+    </div>
+  </section>
+
+  <!-- ═══ 2. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <h2 data-output="html">멜버른 투어의 정석,<br>하루에 두 번 감동</h2>
+    <p class="body" data-output="html">100년 역사의 퍼핑빌리 증기기차를 타고 단데농 산맥을 관통하는 낮의 감동, 그리고 해질녘 필립아일랜드에서 작은 펭귄들이 바다에서 돌아오는 퍼레이드를 지켜보는 밤의 감동. 멜버른에서 꼭 해야 할 두 가지 체험을 하루에 모두 담았습니다.</p>
+    <div class="intro-visual">
+      <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2d5a3a 0%, #4a8b5a 50%, #7ab648 100%);">
+        <span class="label">melbourne-combo-tour-overview.jpg · 350x200 (퍼핑빌리+펭귄 콤보 투어 하이라이트)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 3. numberedList (투어 일정) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">투어 일정</h2>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">1</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">07:30</div>
+            <p class="schedule-title num-title" data-output="html">멜버른 시내 픽업</p>
+            <p class="schedule-desc" data-output="html">호텔 또는 지정 장소에서 전용 차량 픽업</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #3a4a5a 0%, #5a7a8a 100%);">
+            <span class="label">step1-pickup-melbourne.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">2</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">09:30</div>
+            <p class="schedule-title num-title" data-output="html">퍼핑빌리 기차역 도착, 증기기차 탑승</p>
+            <p class="schedule-desc" data-output="html">100년 역사의 증기기차를 타고 단데농 산맥을 관통합니다. 창밖으로 다리를 내밀고 인생 사진을 남겨보세요.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #3a5a3a 0%, #6b8b4a 100%);">
+            <span class="label">step2-puffing-billy-train.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">3</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">11:00</div>
+            <p class="schedule-title num-title" data-output="html">단데농 산맥 산책 + 야생 코알라</p>
+            <p class="schedule-desc" data-output="html">울창한 유칼립투스 숲을 산책하며 야생 코알라를 만납니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #4a7b5a 0%, #8ab86a 100%);">
+            <span class="label">step3-dandenong-koala.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">4</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">12:30</div>
+            <p class="schedule-title num-title" data-output="html">현지 카페 점심 (자유식)</p>
+            <p class="schedule-desc" data-output="html">가이드가 추천하는 현지 카페에서 자유롭게 식사합니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #5a6a4a 0%, #8a9a6a 100%);">
+            <span class="label">step4-local-cafe-lunch.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">5</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">14:30</div>
+            <p class="schedule-title num-title" data-output="html">필립아일랜드로 이동</p>
+            <p class="schedule-desc" data-output="html">전용 차량으로 필립아일랜드까지 이동합니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #3a5a6a 0%, #5a8a9a 100%);">
+            <span class="label">step5-drive-phillip-island.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">6</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">16:00</div>
+            <p class="schedule-title num-title" data-output="html">초콜릿 팩토리 or 코알라 보존센터 (선택)</p>
+            <p class="schedule-desc" data-output="html">필립아일랜드의 인기 명소 중 하나를 선택하여 관람합니다. (입장료 별도)</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #5a4a3a 0%, #8a7a6a 100%);">
+            <span class="label">step6-chocolate-factory.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">7</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">일몰</div>
+            <p class="schedule-title num-title" data-output="html">펭귄 퍼레이드 관람</p>
+            <p class="schedule-desc" data-output="html">해질녘 바다에서 돌아오는 작은 펭귄들의 행진을 관람합니다. 자연 그대로의 감동적인 순간입니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #1a3a5a 0%, #3a6a8a 100%);">
+            <span class="label">step7-penguin-parade.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <div class="schedule-num" data-output="html">8</div>
+          <div class="schedule-content">
+            <div class="schedule-time" data-output="html">21:00</div>
+            <p class="schedule-title num-title" data-output="html">멜버른 시내 복귀</p>
+            <p class="schedule-desc" data-output="html">호텔 또는 지정 장소까지 안전하게 모셔다 드립니다.</p>
+          </div>
+        </div>
+        <div class="num-step-img">
+          <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2a3a4a 0%, #4a5a6a 100%);">
+            <span class="label">step8-return-melbourne.jpg · 350x180</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 4. imageGrid (horizontal scroll) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid">
+    <h2 class="grid-title" data-output="html">투어 하이라이트</h2>
+    <div class="image-grid-scroll">
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #3a5a3a 0%, #6b8b4a 100%);">
+          <span class="label">퍼핑빌리 증기기차</span>
+        </div>
+        <div class="grid-caption" data-output="html">퍼핑빌리 증기기차<br>단데농 산맥 관통</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #4a7b5a 0%, #8ab86a 100%);">
+          <span class="label">창밖 다리 내밀기</span>
+        </div>
+        <div class="grid-caption" data-output="html">창밖 다리 내밀기<br>인생 포토존</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #5a7a4a 0%, #8aaa6a 100%);">
+          <span class="label">야생 코알라</span>
+        </div>
+        <div class="grid-caption" data-output="html">야생 코알라 스팟</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #2a5a7a 0%, #4a8aaa 100%);">
+          <span class="label">필립아일랜드 해안</span>
+        </div>
+        <div class="grid-caption" data-output="html">필립아일랜드 해안</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #1a3a5a 0%, #3a6a8a 100%);">
+          <span class="label">펭귄 퍼레이드</span>
+        </div>
+        <div class="grid-caption" data-output="html">펭귄 퍼레이드<br>일몰 후 관람</div>
+      </div>
+      <div class="grid-card">
+        <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #4a3a5a 0%, #7a6a8a 100%);">
+          <span class="label">인생영상 촬영</span>
+        </div>
+        <div class="grid-caption" data-output="html">인생영상 촬영<br>전문 편집 제공</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 5. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <h2 class="section-title" data-output="html">이런 분께 추천해요</h2>
+    <div class="recommend-card">
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">멜버른이 처음이라 핵심 명소를 하루에 효율적으로 돌고 싶은 분</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">아이와 함께하는 가족 여행객 (코알라, 펭귄 등 동물 체험)</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">자연과 동물을 사랑하는 분 (산맥 산책, 야생 코알라, 펭귄 퍼레이드)</p>
+      </div>
+      <div class="recommend-item">
+        <span class="recommend-check" data-output="html">&#x2713;</span>
+        <p class="recommend-text" data-output="html">한국어 가이드와 편안하게 투어하고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 6. guideIntro ═══ -->
+  <section class="guide-intro block-section" data-block="guideIntro" data-mode="structured">
+    <h2 class="section-title" data-output="html">투어 운영사 소개</h2>
+    <div class="guide-profile-card">
+      <div class="guide-profile-top">
+        <div class="guide-avatar" data-output="html">JT</div>
+        <div>
+          <div class="guide-name" data-output="html">조이투어</div>
+          <div class="guide-sub" data-output="html">멜버른 현지 정식 법인 여행사</div>
+        </div>
+      </div>
+      <div class="guide-features">
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">27</div>
+          <p class="guide-feature-text" data-output="html">27년 경력의 멜버른 전문 여행사</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">최신 신차(3년 미만) 전용 차량 운영</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">무사고 경력 전문 가이드진</p>
+        </div>
+        <div class="guide-feature">
+          <div class="guide-feature-icon" data-output="html">&#x2713;</div>
+          <p class="guide-feature-text" data-output="html">멜버른 유일 오피스 라운지 운영</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 7. highlightCallout ═══ -->
+  <section class="block-section" data-block="highlightCallout" data-mode="structured" style="padding: 24px 0;">
+    <div class="highlight-callout">
+      <p class="callout-text" data-output="html">5.0 만점 &middot; 리뷰 730개!<br>멜버른 투어 1위</p>
+      <p class="callout-sub" data-output="html">마이리얼트립 멜버른 카테고리 최다 리뷰</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ sectionImage (투어 동선 지도) ═══ -->
+  <section class="section-image block-section" data-block="sectionImage" data-mode="image">
+    <div class="section-img-wrap">
+      <div class="img-placeholder" data-output="image" style="background: linear-gradient(135deg, #e8eae6 0%, #c5d4c0 30%, #a3b89e 60%, #7a9a6a 100%);">
+        <span class="label">melbourne-tour-route-map.jpg · 350x232 (투어 동선 지도)</span>
+      </div>
+    </div>
+    <p class="section-img-caption" data-output="html">멜버른 시내 → 단데농 산맥 → 필립아일랜드 투어 동선</p>
+  </section>
+
+  <!-- ═══ 8. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">안내 사항</h2>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>최소 출발 인원 4명.</strong> 미달 시 출발 3일 전까지 안내드립니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>펭귄 촬영 금지.</strong> 펭귄 보호를 위해 플래시를 포함한 모든 촬영이 금지됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>따뜻한 옷 필수.</strong> 필립아일랜드는 일몰 후 기온이 급격히 떨어집니다. 방풍 자켓과 긴 바지를 준비해주세요.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>차량 내 음식물 반입 금지.</strong> 최신 신차 유지를 위해 차량 내 음식물 반입이 제한됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>포함 사항:</strong> 퍼핑빌리 기차 탑승권, 펭귄 퍼레이드 입장권, 한국어 가이드, 전용 차량, 멜버른 맛집 할인쿠폰, 기념품 할인쿠폰, 인생영상(전문 편집), 시크릿 선물</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>불포함 사항:</strong> 점심 식사, 초콜릿 팩토리/코알라 보존센터 입장료(선택), 개인 경비, 여행자 보험</p>
+    </div>
+    <div class="notice-item">
+      <div class="dot"></div>
+      <p class="text" data-output="html"><strong>가격:</strong> 성인 &#8361;75,000 / 소인(만 3-12세) &#8361;55,000 / 유아(만 2세 이하) 무료</p>
+    </div>
+  </section>
+
+  <!-- ─── divider ─── -->
+  <div class="divider"></div>
+
+  <!-- ═══ 9. customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured">
+    <h2 class="section-title" data-output="html">고객 후기</h2>
+    <div class="review-summary">
+      <span class="review-score" data-output="html">4.8</span>
+      <div>
+        <div class="review-stars" data-output="css">★★★★★</div>
+        <span class="review-count" data-output="html">324건의 리뷰</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">김*진<span class="review-date">2026.02</span></p>
+      <p class="review-text" data-output="html">퍼핑빌리 기차에서 다리 내밀고 사진 찍는 거 정말 인생샷이에요! 아이들이 펭귄 퍼레이드 보고 너무 좋아했습니다. 가이드님 설명도 재미있고 친절하셨어요.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">박*수<span class="review-date">2026.01</span></p>
+      <p class="review-text" data-output="html">하루에 퍼핑빌리와 펭귄을 다 볼 수 있어서 시간 절약 최고. 차량도 깨끗하고 편안했습니다. 멜버른 여행 필수 코스로 추천합니다.</p>
+    </div>
+    <div class="review-card">
+      <p class="review-author" data-output="html">이*영<span class="review-date">2025.12</span></p>
+      <p class="review-text" data-output="html">야생 코알라를 직접 볼 수 있어서 감동이었어요. 점심 추천해주신 카페도 맛있었고, 전반적으로 만족스러운 투어였습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

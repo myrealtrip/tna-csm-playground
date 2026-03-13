@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>LA코리아타운 스토리텔링 도보투어 — Hybrid PDP PoC</title>
+<meta name="description" content="LA 현지 거주 마케터 라빠빠와 함께하는 코리아타운 스토리텔링 도보투어. 역사, 문화, 경제, 스트릿컬처까지 2시간 깊이 있는 이색 투어.">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "LA코리아타운 스토리텔링 도보투어",
+  "description": "LA 현지 거주 마케터와 함께하는 코리아타운 스토리텔링 도보투어. 역사, 문화, 경제, 스트릿컬처를 2시간 동안 깊이 있게 탐방합니다.",
+  "touristType": ["문화 여행자", "역사 탐방자", "LA 방문자"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 5,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "투어 출발, LA코리아타운의 시작",
+          "description": "코리아타운 형성과 발전의 역사, 한인 이주 이야기"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "Koreatown back to 8090",
+          "description": "올림픽길을 걸으며 80-90년대 코리아타운 전성기 탐방"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "Memories of Koreatown",
+          "description": "LA 특유의 스트릿컬처와 숨겨진 명소 방문"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "World-wide Koreatown",
+          "description": "미국 역사적 장소와 알쓸신잡 이야기"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "From Korea to global",
+          "description": "한류 핫스팟과 스타들의 흔적 탐방"
+        }
+      }
+    ]
+  },
+  "duration": "PT2H30M",
+  "maximumAttendeeCapacity": 8
+}
+</script>
+
+<style>
+  /* ── Design Tokens (from pdp-tokens.json) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    /* v3 Semantic Tokens */
+    --pdp-text-primary: var(--c-gray-1000);
+    --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500);
+    --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white);
+    --pdp-bg-sub: var(--c-gray-80);
+    --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600);
+    --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px;
+    --pdp-section-pb: 24px;
+    --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px;
+    --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px;
+    --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px;
+    --pdp-img-radius-lg: 24px;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+    --content-inset: 342px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══ BLOCK: exclusiveHeader ══ */
+  .exclusive-header {
+    width: 390px;
+    height: 102px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .exclusive-header .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .exclusive-header .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .tagline {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.3px;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-gray-400);
+    letter-spacing: -0.24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ══ BLOCK: heroImage ══ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* ══ BLOCK: introSection ══ */
+  .intro-section {
+    padding: 60px 20px 23px;
+    text-align: center;
+  }
+  .intro-section .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .intro-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.56px;
+    line-height: 1.24;
+    margin-bottom: 16px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.44;
+  }
+  .intro-visual {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  /* ══ BLOCK: sectionImage ══ */
+  .section-image {
+    padding: 0 20px 24px;
+  }
+  .section-img-wrap {
+    width: 100%;
+    height: 232px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .section-img-caption {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-500);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* ══ BLOCK: painPointCards ══ */
+  .pain-point-cards {
+    padding: 0 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pain-card {
+    background: var(--c-gray-50);
+    border-radius: 12px;
+    padding: 20px 30px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    letter-spacing: -0.32px;
+    line-height: 1.35;
+  }
+
+  /* ══ BLOCK: guideProfile ══ */
+  .guide-profile {
+    padding: 32px 20px 24px;
+  }
+  .guide-profile .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 24px;
+  }
+  .guide-profile .photo {
+    width: 350px;
+    height: 170px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .guide-profile .role {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 4px;
+  }
+  .guide-profile .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-1000);
+    margin-bottom: 8px;
+  }
+  .guide-profile .bio {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+    margin-bottom: 8px;
+  }
+  .guide-profile .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 20px;
+    border-top: 1px solid var(--c-gray-100);
+    padding-top: 16px;
+  }
+  .guide-profile .stat {
+    text-align: center;
+  }
+  .guide-profile .stat + .stat {
+    border-left: 1px solid var(--c-gray-100);
+  }
+  .guide-profile .stat-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 4px;
+  }
+  .guide-profile .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+  }
+
+  /* ══ BLOCK: recommendBox ══ */
+  .recommend-box {
+    padding: 0 20px 24px;
+  }
+  .recommend-box .box {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .recommend-box .box-inner {
+    padding: 10px 12px;
+  }
+  .recommend-box .box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 8px;
+  }
+  .recommend-box .check-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-black);
+    line-height: 1.72;
+    padding-left: 20px;
+    position: relative;
+  }
+  .recommend-box .check-item::before {
+    content: '\2713';
+    position: absolute;
+    left: 0;
+    color: var(--c-blue-600);
+    font-weight: 700;
+  }
+
+  /* ══ BLOCK: sectionHeader ══ */
+  .section-header {
+    padding: 50px 20px 33px;
+    text-align: center;
+  }
+  .section-header .tag {
+    display: inline-block;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.13px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+  }
+
+  /* ══ BLOCK: programCard ══ */
+  .program-card {
+    padding: 0 24px 32px;
+  }
+  .program-card .card-image {
+    width: 342px;
+    height: 254px;
+    border-radius: 24px;
+    margin-bottom: 16px;
+  }
+  .program-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+  }
+  .program-card .duration {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-500);
+    letter-spacing: -0.15px;
+  }
+  .program-card .desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+    margin-top: 10px;
+  }
+
+  /* ══ BLOCK: highlightCallout ══ */
+  .highlight-callout {
+    margin: 0 24px 24px;
+    width: 342px;
+    height: 76px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .highlight-callout .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    letter-spacing: -0.13px;
+  }
+  .highlight-callout .hl-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    margin-top: 4px;
+  }
+
+  /* ══ BLOCK: visualTimeline ══ */
+  .visual-timeline {
+    padding: 32px 20px 24px;
+  }
+  .visual-timeline .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 32px;
+  }
+  .timeline-item {
+    margin-bottom: 50px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image {
+    width: 350px;
+    height: 170px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .timeline-item .badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    padding: 2.5px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .badge.ev { background: #F3E8FF; }
+  .timeline-item .tl-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+    margin-bottom: 10px;
+  }
+  .timeline-item .tl-desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+  }
+
+  /* ══ BLOCK: numberedList (포함/불포함) ══ */
+  .numbered-list {
+    padding: 32px 20px 24px;
+  }
+  .numbered-list .list-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .numbered-list .list-subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    margin-bottom: 12px;
+  }
+  .numbered-list .list-subtitle.excluded {
+    margin-top: 24px;
+  }
+  .num-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .num-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .num-item-header {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .num-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .num-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .num-item .num-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+  .num-step-img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .list-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: baseline;
+  }
+  .list-item .num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-blue-600);
+    flex-shrink: 0;
+    min-width: 18px;
+  }
+  .list-item .num.excluded {
+    color: var(--c-gray-500);
+  }
+  .list-item .item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+  }
+
+  /* ══ BLOCK: notice ══ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong {
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+
+  /* ══ BLOCK: trustPoints ══ */
+  .trust-points {
+    width: 390px;
+    min-height: 496px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    padding: 63px 20px 43px;
+    text-align: center;
+  }
+  .trust-points .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .trust-points .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-points .headline {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+    margin-bottom: 55px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item {
+    text-align: center;
+    margin-bottom: 27px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .trust-item .trust-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-white);
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+  .trust-item .trust-desc {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-400);
+    letter-spacing: -0.28px;
+    line-height: 1.34;
+  }
+
+  /* ══ PoC Overlay ══ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' \2014 ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC 범례 ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader (hybrid) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">LA에서 만나는 또 하나의 한국</p>
+    <p class="subtitle" data-output="html">코리아타운의 숨겨진 이야기를 걸으며 발견하다</p>
+  </section>
+
+  <!-- ═══ 2. heroImage (image) ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/yAWY/JRBNeEmlQt.jpg');">
+    </div>
+  </section>
+
+  <!-- ═══ 3. introSection (hybrid) ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h1 data-output="html">LA 코리아타운,<br>걸으며 발견하는<br>우리의 이야기</h1>
+    <p class="body" data-output="html">세계에서 가장 큰 한인타운, LA 코리아타운.<br>단순한 맛집 탐방이 아닌, 역사와 문화, 경제와 스트릿컬처까지.<br>LA에 사는 흔한 아저씨 '라빠빠'가 들려주는<br>흔하지 않은 코리아타운의 이야기.</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/xYM3/ZlMhwbslpv.jpg');"></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards (structured) ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">"LA 코리아타운, 맛집만 들르고 떠나기엔<br>너무 많은 이야기가 숨어 있는 곳"</div>
+    <div class="pain-card" data-output="html">"한인 이주 역사부터 한류 핫스팟까지,<br>혼자서는 절대 알 수 없는 로컬 스토리"</div>
+    <div class="pain-card" data-output="html">"LA 현지인이 직접 안내하는<br>안전하고 깊이 있는 도보 투어"</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile (hybrid) ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">이 투어를 만든 사람</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/05/02/E8Rk/b3IDdznO3g.jpg');"></div>
+    <p class="role" data-output="html">LA 현지 거주 마케터 · 스토리텔러</p>
+    <p class="name" data-output="html">김종은 (LAPAPA / 라빠빠)</p>
+    <p class="bio" data-output="html">한국을 세계에 알리는 마케팅을 10년간 전문적으로 해온 LA 현지 거주자. 코리아타운 곳곳에서 발견한 흥미로운 이야기들을 한국 여행자들과 나누고 싶어 직접 답사하고, 자료를 찾아 공부한 뒤 스토리텔링 투어를 만들었습니다.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">5.0</div>
+        <div class="stat-label" data-output="html">평점</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">9건</div>
+        <div class="stat-label" data-output="html">후기</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">10년+</div>
+        <div class="stat-label" data-output="html">마케팅 경력</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox (structured) ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 추천해요</p>
+        <p class="check-item" data-output="html">LA 코리아타운을 맛집 외에 깊이 있게 알고 싶은 분</p>
+        <p class="check-item" data-output="html">한인 이주 역사와 문화에 관심 있는 분</p>
+        <p class="check-item" data-output="html">LA 현지인의 시선으로 코리아타운을 걷고 싶은 분</p>
+        <p class="check-item" data-output="html">혼자 여행하거나 소규모로 안전한 투어를 원하는 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader (structured) ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">PROGRAM</span>
+    <h2 data-output="html">2시간 30분,<br>코리아타운을 관통하는<br>5개의 스토리</h2>
+  </section>
+
+  <!-- ═══ 8. programCard (hybrid) — 5 courses ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240331_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">투어 출발, LA코리아타운의 시작</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">시작 지점에서 간단한 인사와 함께 투어를 시작합니다. 전체 코스 소개와 함께 LA코리아타운에 대한 정보, 한인들의 미국 이주의 역사, 코리아타운의 형성과 발전의 이야기를 들려드립니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240332_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">Koreatown back to 8090</h3>
+    <span class="duration" data-output="html">20분 소요</span>
+    <p class="desc" data-output="html">1980~1990년대 코리아타운의 전성기를 누렸던 올림픽길(Olympic Blvd)을 걸으며 레트로한 코리아타운의 풍경을 즐겨보세요. 코리아타운의 대부, 초창기 에피소드, LA폭동 등의 이야기들을 들려드립니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240333_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">Memories of Koreatown</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">LA 특유의 자유분방함을 길거리 예술을 통해 느껴보세요! 코리아타운 안에 숨겨진 LAPAPA 만의 볼거리와 명소들을 방문합니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240334_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">World-wide Koreatown</h3>
+    <span class="duration" data-output="html">20분 소요</span>
+    <p class="desc" data-output="html">LA코리아타운은 미국 내에서 '역사와 현대가 가장 독특하게 뒤섞인 거리'로 알려진 곳. 세계적으로 유명한 미국의 역사적인 장소들과 그냥 지나치면 몰랐을 알쓸신잡 이야기들을 대방출합니다!</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/hmuE/UufgCFQJH9.jpg');"></div>
+    <h3 data-output="html">From Korea to global</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">LA에서도 지금 힙하게 떠오르는 코리아타운의 핫스팟, 한국적인 것으로 현지에서 한류의 인기를 이끌어가는 최신 트렌드를 알아보고, 스타들이 다녀간 곳들을 둘러봅니다.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout (structured) ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">도보 + 대중교통 하이브리드 투어</p>
+    <p class="hl-subtitle" data-output="html">안전하게 코리아타운 핵심 스팟을 로컬처럼 둘러봅니다</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline (hybrid) ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">투어 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240331_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:00</span>
+      <h4 class="tl-title" data-output="html">투어 출발, LA코리아타운의 시작</h4>
+      <p class="tl-desc" data-output="html">Bank of Hope 주차장 앞 코리아타운 사인에서 만나 한인 이주 역사와 코리아타운 형성 이야기를 시작합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240332_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:30</span>
+      <h4 class="tl-title" data-output="html">Koreatown back to 8090</h4>
+      <p class="tl-desc" data-output="html">올림픽길을 걸으며 80~90년대 코리아타운 전성기의 레트로한 풍경과 에피소드를 만납니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240333_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:50</span>
+      <h4 class="tl-title" data-output="html">Memories of Koreatown</h4>
+      <p class="tl-desc" data-output="html">LA 특유의 스트릿컬처와 숨겨진 명소들을 LAPAPA만의 시선으로 탐방합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240334_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">11:20</span>
+      <h4 class="tl-title" data-output="html">World-wide Koreatown</h4>
+      <p class="tl-desc" data-output="html">미국 역사적 장소들과 알쓸신잡 이야기를 발견하며 코리아타운의 다양성을 경험합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/hmuE/UufgCFQJH9.jpg');"></div>
+      <span class="badge pm" data-output="html">11:40</span>
+      <h4 class="tl-title" data-output="html">From Korea to global</h4>
+      <p class="tl-desc" data-output="html">한류 핫스팟과 스타들의 흔적을 둘러보며 투어를 마무리합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude (hybrid) ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함 사항</h2>
+
+    <p class="list-subtitle" data-output="html">포함되어 있어요</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">투어 관련 모든 비용 (이동 중 대중교통, 가이드 비용, 가이드 팁 등)</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함되어 있어요</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">여행자 개별 이동 교통비 (출발, 종료 지점)</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice (structured) ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">LA의 낮시간 햇빛이 강한 관계로 개별 <strong>선글라스 또는 모자</strong> 지참을 추천합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">가벼운 개인 용품 외 짐이 있을 경우 사전에 연락주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">이 투어는 다른 여행자들이 함께 참여합니다. <strong>단독 투어</strong>를 희망하실 경우 별도로 연락주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">개별 <strong>여행자 보험</strong> 가입을 권장합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints (hybrid) ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">마이리얼트립이<br>직접 검증한 투어</h2>
+
+    <div class="trust-item">
+      <div class="icon">&#x1F6E1;</div>
+      <p class="trust-title" data-output="html">안전한 하이브리드 코스</p>
+      <p class="trust-desc" data-output="html">도보 + 대중교통을 결합한 안전한 코스 설계<br>LA 현지인이 직접 검증한 루트</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x2B50;</div>
+      <p class="trust-title" data-output="html">평점 5.0 만점</p>
+      <p class="trust-desc" data-output="html">9건의 후기 모두 만점<br>재미와 배움을 동시에 잡은 스토리텔링</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F3AF;</div>
+      <p class="trust-title" data-output="html">10년 마케팅 전문가의 큐레이션</p>
+      <p class="trust-desc" data-output="html">한국을 세계에 알려온 전문가가<br>직접 답사하고 연구해 만든 코스</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 (반복) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">LA에서 만나는 또 하나의 한국</p>
+    <p class="subtitle" data-output="html">코리아타운의 숨겨진 이야기를 걸으며 발견하다</p>
+  </section>
+
+</main>
+
+</body>
+</html>

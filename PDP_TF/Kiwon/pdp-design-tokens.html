@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDP 디자인 토큰 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+    background: #101418;
+    color: #E5E5E5;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ── */
+  .page { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 220px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    background: #0a0c10;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    padding: 32px 20px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+  .sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+    letter-spacing: -0.3px;
+  }
+  .sidebar a {
+    display: block;
+    font-size: 13px;
+    color: #848C94;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .sidebar a:hover, .sidebar a.active {
+    background: rgba(21,131,219,0.1);
+    color: #1583DB;
+  }
+  .sidebar .nav-group {
+    font-size: 11px;
+    font-weight: 600;
+    color: #495056;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 20px 0 8px 12px;
+  }
+  .content {
+    margin-left: 220px;
+    flex: 1;
+    padding: 48px 60px 120px;
+    max-width: 1100px;
+  }
+
+  /* ── Header ── */
+  .header {
+    margin-bottom: 64px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .header h1 em { font-style: normal; color: #1583DB; }
+  .header p {
+    font-size: 16px;
+    color: #636363;
+  }
+  .source-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #848C94;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-top: 12px;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 64px;
+    scroll-margin-top: 32px;
+  }
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: #636363;
+    margin-bottom: 32px;
+  }
+  .subsection {
+    margin-bottom: 40px;
+  }
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ADB5BD;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ── Color Swatches ── */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+  .swatch-grid.wide {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .swatch {
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.15s;
+  }
+  .swatch:hover {
+    border-color: rgba(21,131,219,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .swatch-color {
+    height: 72px;
+    position: relative;
+  }
+  .swatch-info {
+    padding: 10px 12px;
+  }
+  .swatch-var {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ADB5BD;
+    font-family: 'SF Mono', 'JetBrains Mono', monospace;
+    word-break: break-all;
+    line-height: 1.3;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: #636363;
+    margin-top: 2px;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* ── Semantic Token Row ── */
+  .token-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 140px 180px;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .token-row:hover {
+    background: rgba(255,255,255,0.03);
+  }
+  .token-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .token-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'SF Mono', monospace;
+  }
+  .token-value {
+    font-size: 12px;
+    color: #636363;
+    font-family: 'SF Mono', monospace;
+  }
+  .token-desc {
+    font-size: 13px;
+    color: #848C94;
+  }
+
+  /* ── Typography Scale ── */
+  .type-row {
+    display: grid;
+    grid-template-columns: 1fr 200px 160px;
+    gap: 24px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .type-row:hover { background: rgba(255,255,255,0.02); }
+  .type-sample {
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .type-vars {
+    font-size: 11px;
+    color: #636363;
+    font-family: 'SF Mono', monospace;
+    line-height: 1.6;
+  }
+  .type-meta {
+    font-size: 12px;
+    color: #848C94;
+  }
+  .type-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1583DB;
+    background: rgba(21,131,219,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  /* ── Spacing & Radius ── */
+  .radius-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .radius-item {
+    text-align: center;
+    cursor: pointer;
+  }
+  .radius-box {
+    width: 80px;
+    height: 80px;
+    background: #1583DB;
+    margin-bottom: 10px;
+    transition: transform 0.15s;
+  }
+  .radius-item:hover .radius-box { transform: scale(1.05); }
+  .radius-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ADB5BD;
+    font-family: 'SF Mono', monospace;
+  }
+  .radius-val {
+    font-size: 11px;
+    color: #636363;
+  }
+
+  .spacing-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+  }
+  .spacing-bar {
+    height: 24px;
+    background: rgba(21,131,219,0.2);
+    border: 1px solid rgba(21,131,219,0.3);
+    border-radius: 4px;
+    position: relative;
+  }
+  .spacing-bar span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    font-weight: 700;
+    color: #1583DB;
+    white-space: nowrap;
+  }
+  .spacing-meta {
+    font-size: 12px;
+    color: #848C94;
+    min-width: 180px;
+  }
+  .spacing-meta code {
+    color: #ADB5BD;
+    font-family: 'SF Mono', monospace;
+    font-size: 11px;
+  }
+
+  /* ── Layout Diagram ── */
+  .layout-diagram {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .canvas-box {
+    width: 390px;
+    background: #1a1c22;
+    border: 2px solid #495056;
+    border-radius: 12px;
+    padding: 0;
+    position: relative;
+  }
+  .canvas-label {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    color: #636363;
+    font-family: 'SF Mono', monospace;
+    white-space: nowrap;
+  }
+  .canvas-padding {
+    border: 1px dashed rgba(21,131,219,0.3);
+    margin: 20px;
+    min-height: 200px;
+    position: relative;
+    border-radius: 8px;
+  }
+  .canvas-padding .canvas-label {
+    top: -20px;
+    color: #1583DB;
+  }
+  .padding-indicator {
+    position: absolute;
+    font-size: 10px;
+    color: #1583DB;
+    font-family: 'SF Mono', monospace;
+    font-weight: 600;
+  }
+  .padding-indicator.left { top: 50%; left: -36px; transform: translateY(-50%) rotate(-90deg); }
+  .padding-indicator.right { top: 50%; right: -36px; transform: translateY(-50%) rotate(90deg); }
+  .padding-indicator.top { top: -14px; left: 50%; transform: translateX(-50%); }
+
+  .content-area {
+    border: 1px dashed rgba(255,227,144,0.3);
+    margin: 16px;
+    min-height: 140px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .content-area .canvas-label { color: #FFE390; }
+  .block-gap-line {
+    height: 16px;
+    border-left: 2px dashed rgba(236,73,55,0.3);
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1583DB;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 10px;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(21,131,219,0.3);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .content { margin-left: 0; padding: 24px 20px; }
+    .token-row { grid-template-columns: 36px 1fr; }
+    .token-value, .token-desc { display: none; }
+    .type-row { grid-template-columns: 1fr; }
+    .type-vars, .type-meta { display: none; }
+    .canvas-box { width: 100%; max-width: 390px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-title">PDP 디자인 토큰</div>
+  <div class="nav-group">색상</div>
+  <a href="#gray">Gray Scale</a>
+  <a href="#blue">Blue</a>
+  <a href="#accent">Red / Yellow</a>
+  <a href="#semantic-text">텍스트</a>
+  <a href="#semantic-bg">배경</a>
+  <a href="#semantic-etc">테두리 / 포인트</a>
+  <div class="nav-group">타이포그래피</div>
+  <a href="#type-display">Display / Hero</a>
+  <a href="#type-body">Body 계열</a>
+  <a href="#type-caption">Caption / Small</a>
+  <div class="nav-group">간격 / 레이아웃</div>
+  <a href="#radius">모서리 라운드</a>
+  <a href="#spacing">간격</a>
+  <a href="#layout">레이아웃</a>
+</nav>
+
+<div class="page">
+<main class="content">
+
+<!-- Header -->
+<header class="header">
+  <h1>PDP <em>디자인 토큰</em> 가이드</h1>
+  <p>pdp-tokens.css 시각화 — 색상, 타이포그래피, 간격, 레이아웃</p>
+  <span class="source-badge">출처: Figma T&amp;A + PB Exclusive</span>
+  <span class="source-badge" style="margin-left: 8px;">클릭하면 CSS 변수명 복사</span>
+</header>
+
+<!-- ═══════════ 1. COLOR PALETTE ═══════════ -->
+<section class="section" id="colors">
+  <h2 class="section-title">색상 팔레트</h2>
+  <p class="section-desc">Primitive (원시값) → Semantic (의미 매핑) 3계층 구조</p>
+
+  <!-- Gray Scale -->
+  <div class="subsection" id="gray">
+    <h3 class="subsection-title">Gray Scale — 14단계</h3>
+    <div class="swatch-grid">
+      <div class="swatch" onclick="copyToken('--c-gray-1000')">
+        <div class="swatch-color" style="background:#141619;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-1000</div><div class="swatch-hex">#141619</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-950')">
+        <div class="swatch-color" style="background:#141719;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-950</div><div class="swatch-hex">#141719</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-900')">
+        <div class="swatch-color" style="background:#101418;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-900</div><div class="swatch-hex">#101418</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-850')">
+        <div class="swatch-color" style="background:#212529;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-850</div><div class="swatch-hex">#212529</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-800')">
+        <div class="swatch-color" style="background:#343A40;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-800</div><div class="swatch-hex">#343A40</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-700')">
+        <div class="swatch-color" style="background:#495056;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-700</div><div class="swatch-hex">#495056</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-600')">
+        <div class="swatch-color" style="background:#636363;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-600</div><div class="swatch-hex">#636363</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-550')">
+        <div class="swatch-color" style="background:#595959;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-550</div><div class="swatch-hex">#595959</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-500')">
+        <div class="swatch-color" style="background:#848C94;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-500</div><div class="swatch-hex">#848C94</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-400')">
+        <div class="swatch-color" style="background:#ADB5BD;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-400</div><div class="swatch-hex">#ADB5BD</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-200')">
+        <div class="swatch-color" style="background:#DEE2E6;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-200</div><div class="swatch-hex">#DEE2E6</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-100')">
+        <div class="swatch-color" style="background:#E5E5E5;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-100</div><div class="swatch-hex">#E5E5E5</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-80')">
+        <div class="swatch-color" style="background:#F1F3F5;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-80</div><div class="swatch-hex">#F1F3F5</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-gray-50')">
+        <div class="swatch-color" style="background:#F5F6F7;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-gray-50</div><div class="swatch-hex">#F5F6F7</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blue -->
+  <div class="subsection" id="blue">
+    <h3 class="subsection-title">Blue</h3>
+    <div class="swatch-grid">
+      <div class="swatch" onclick="copyToken('--c-blue-600')">
+        <div class="swatch-color" style="background:#1583DB;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-blue-600</div><div class="swatch-hex">#1583DB</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-blue-80')">
+        <div class="swatch-color" style="background:#E7F4FD;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-blue-80</div><div class="swatch-hex">#E7F4FD</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-blue-dark')">
+        <div class="swatch-color" style="background:#001227;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-blue-dark</div><div class="swatch-hex">#001227</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Red / Yellow -->
+  <div class="subsection" id="accent">
+    <h3 class="subsection-title">Red / Yellow</h3>
+    <div class="swatch-grid">
+      <div class="swatch" onclick="copyToken('--c-red-500')">
+        <div class="swatch-color" style="background:#EC4937;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-red-500</div><div class="swatch-hex">#EC4937</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-yellow-200')">
+        <div class="swatch-color" style="background:#FFF2C6;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-yellow-200</div><div class="swatch-hex">#FFF2C6</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-yellow-100')">
+        <div class="swatch-color" style="background:#FBFFE7;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-yellow-100</div><div class="swatch-hex">#FBFFE7</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-yellow-50')">
+        <div class="swatch-color" style="background:#FDF1B5;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-yellow-50</div><div class="swatch-hex">#FDF1B5</div></div>
+      </div>
+      <div class="swatch" onclick="copyToken('--c-yellow-warm')">
+        <div class="swatch-color" style="background:#FFE390;"></div>
+        <div class="swatch-info"><div class="swatch-var">--c-yellow-warm</div><div class="swatch-hex">#FFE390</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic: Text -->
+  <div class="subsection" id="semantic-text">
+    <h3 class="subsection-title">Semantic — 텍스트</h3>
+    <div class="token-row" onclick="copyToken('--pdp-text-head')">
+      <div class="token-dot" style="background:#141619;"></div>
+      <div class="token-name">--pdp-text-head</div>
+      <div class="token-value">var(--c-gray-1000)</div>
+      <div class="token-desc">섹션 제목</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text')">
+      <div class="token-dot" style="background:#101418;"></div>
+      <div class="token-name">--pdp-text</div>
+      <div class="token-value">var(--c-gray-900)</div>
+      <div class="token-desc">본문</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-dark')">
+      <div class="token-dot" style="background:#212529;"></div>
+      <div class="token-name">--pdp-text-dark</div>
+      <div class="token-value">var(--c-gray-850)</div>
+      <div class="token-desc">강조 본문</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-sub')">
+      <div class="token-dot" style="background:#343A40;"></div>
+      <div class="token-name">--pdp-text-sub</div>
+      <div class="token-value">var(--c-gray-800)</div>
+      <div class="token-desc">보조 텍스트</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-body')">
+      <div class="token-dot" style="background:#495056;"></div>
+      <div class="token-name">--pdp-text-body</div>
+      <div class="token-value">var(--c-gray-700)</div>
+      <div class="token-desc">설명 텍스트</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-muted')">
+      <div class="token-dot" style="background:#848C94;"></div>
+      <div class="token-name">--pdp-text-muted</div>
+      <div class="token-value">var(--c-gray-500)</div>
+      <div class="token-desc">비활성</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-dim')">
+      <div class="token-dot" style="background:#ADB5BD;"></div>
+      <div class="token-name">--pdp-text-dim</div>
+      <div class="token-value">var(--c-gray-400)</div>
+      <div class="token-desc">최약 텍스트</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-text-white')">
+      <div class="token-dot" style="background:#FFFFFF; border-color: rgba(255,255,255,0.3);"></div>
+      <div class="token-name">--pdp-text-white</div>
+      <div class="token-value">var(--c-white)</div>
+      <div class="token-desc">어두운 배경 위</div>
+    </div>
+  </div>
+
+  <!-- Semantic: Background -->
+  <div class="subsection" id="semantic-bg">
+    <h3 class="subsection-title">Semantic — 배경</h3>
+    <div class="token-row" onclick="copyToken('--pdp-bg')">
+      <div class="token-dot" style="background:#FFFFFF; border-color: rgba(255,255,255,0.3);"></div>
+      <div class="token-name">--pdp-bg</div>
+      <div class="token-value">var(--c-white)</div>
+      <div class="token-desc">기본 배경</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-bg-sub')">
+      <div class="token-dot" style="background:#F1F3F5;"></div>
+      <div class="token-name">--pdp-bg-sub</div>
+      <div class="token-value">var(--c-gray-80)</div>
+      <div class="token-desc">섹션 구분, 디바이더</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-bg-card')">
+      <div class="token-dot" style="background:#F5F6F7;"></div>
+      <div class="token-name">--pdp-bg-card</div>
+      <div class="token-value">var(--c-gray-50)</div>
+      <div class="token-desc">카드, 박스</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-bg-dark')">
+      <div class="token-dot" style="background:#101418;"></div>
+      <div class="token-name">--pdp-bg-dark</div>
+      <div class="token-value">var(--c-gray-900)</div>
+      <div class="token-desc">PB Exclusive 어두운 배경</div>
+    </div>
+  </div>
+
+  <!-- Semantic: Border, Accent, Badge, Callout -->
+  <div class="subsection" id="semantic-etc">
+    <h3 class="subsection-title">Semantic — 테두리 / 포인트 / 배지 / 콜아웃</h3>
+    <div class="token-row" onclick="copyToken('--pdp-border')">
+      <div class="token-dot" style="background:#DEE2E6;"></div>
+      <div class="token-name">--pdp-border</div>
+      <div class="token-value">var(--c-gray-200)</div>
+      <div class="token-desc">테두리</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-border-light')">
+      <div class="token-dot" style="background:#E5E5E5;"></div>
+      <div class="token-name">--pdp-border-light</div>
+      <div class="token-value">var(--c-gray-100)</div>
+      <div class="token-desc">연한 테두리</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-accent')">
+      <div class="token-dot" style="background:#1583DB;"></div>
+      <div class="token-name">--pdp-accent</div>
+      <div class="token-value">var(--c-blue-600)</div>
+      <div class="token-desc">포인트 색상</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-accent-soft')">
+      <div class="token-dot" style="background:#E7F4FD;"></div>
+      <div class="token-name">--pdp-accent-soft</div>
+      <div class="token-value">var(--c-blue-80)</div>
+      <div class="token-desc">연한 포인트</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-caution')">
+      <div class="token-dot" style="background:#EC4937;"></div>
+      <div class="token-name">--pdp-caution</div>
+      <div class="token-value">var(--c-red-500)</div>
+      <div class="token-desc">경고, 주의</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-badge-am')">
+      <div class="token-dot" style="background:#E7F4FD;"></div>
+      <div class="token-name">--pdp-badge-am</div>
+      <div class="token-value">var(--c-blue-80)</div>
+      <div class="token-desc">오전 배지</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-badge-pm')">
+      <div class="token-dot" style="background:#FFF2C6;"></div>
+      <div class="token-name">--pdp-badge-pm</div>
+      <div class="token-value">var(--c-yellow-200)</div>
+      <div class="token-desc">오후 배지</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-callout-1')">
+      <div class="token-dot" style="background:#FDF1B5;"></div>
+      <div class="token-name">--pdp-callout-1</div>
+      <div class="token-value">var(--c-yellow-50)</div>
+      <div class="token-desc">콜아웃 그래디언트 1</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-callout-2')">
+      <div class="token-dot" style="background:#FBFFE7;"></div>
+      <div class="token-name">--pdp-callout-2</div>
+      <div class="token-value">var(--c-yellow-100)</div>
+      <div class="token-desc">콜아웃 그래디언트 2</div>
+    </div>
+    <div class="token-row" onclick="copyToken('--pdp-callout-3')">
+      <div class="token-dot" style="background:#FFE390;"></div>
+      <div class="token-name">--pdp-callout-3</div>
+      <div class="token-value">var(--c-yellow-warm)</div>
+      <div class="token-desc">콜아웃 그래디언트 3</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 2. TYPOGRAPHY ═══════════ -->
+<section class="section" id="typography">
+  <h2 class="section-title">타이포그래피</h2>
+  <p class="section-desc">Pretendard Variable — Display(28px)부터 Stat Label(11px)까지 14단계</p>
+
+  <!-- Display / Hero / Section -->
+  <div class="subsection" id="type-display">
+    <h3 class="subsection-title">Display / Hero / Section</h3>
+
+    <div class="type-row" onclick="copyToken('--pdp-fs-display')">
+      <div><span class="type-label">Display</span><div class="type-sample" style="font-size:28px; font-weight:700; line-height:1.24;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-display<br>--pdp-fw-display<br>--pdp-lh-display</div>
+      <div class="type-meta">28px / 700 / 1.24<br>introSection 메인 카피</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-hero')">
+      <div><span class="type-label">Hero Title</span><div class="type-sample" style="font-size:26px; font-weight:700; line-height:1.24;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-hero<br>--pdp-fw-hero<br>--pdp-lh-hero</div>
+      <div class="type-meta">26px / 700 / 1.24<br>sectionHeader 제목</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-section')">
+      <div><span class="type-label">Section Title</span><div class="type-sample" style="font-size:24px; font-weight:700; line-height:1.24;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-section<br>--pdp-fw-section<br>--pdp-lh-section</div>
+      <div class="type-meta">24px / 700 / 1.24<br>guideProfile, trustPoints</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-h1')">
+      <div><span class="type-label">H1</span><div class="type-sample" style="font-size:20px; font-weight:600; line-height:1.38;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-h1<br>--pdp-fw-h1<br>--pdp-lh-h1</div>
+      <div class="type-meta">20px / 600 / 1.38<br>T&amp;A 상품명</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-subhead')">
+      <div><span class="type-label">Subheading</span><div class="type-sample" style="font-size:19px; font-weight:700; line-height:1.38;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-subhead<br>--pdp-fw-subhead<br>--pdp-lh-subhead</div>
+      <div class="type-meta">19px / 700 / 1.38<br>programCard 제목</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-trust')">
+      <div><span class="type-label">Trust Title</span><div class="type-sample" style="font-size:18px; font-weight:700; line-height:1.35;">나오시마 워킹투어</div></div>
+      <div class="type-vars">--pdp-fs-trust<br>--pdp-fw-trust<br>--pdp-lh-trust</div>
+      <div class="type-meta">18px / 700 / 1.35<br>trustPoints 항목</div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="subsection" id="type-body">
+    <h3 class="subsection-title">Body 계열</h3>
+
+    <div class="type-row" onclick="copyToken('--pdp-fs-body-lg')">
+      <div><span class="type-label">Body Large</span><div class="type-sample" style="font-size:16px; font-weight:500; line-height:1.38;">세토내해의 예술 섬 나오시마를 걸어서 만나는 하루</div></div>
+      <div class="type-vars">--pdp-fs-body-lg<br>--pdp-fw-body-lg<br>--pdp-lh-body-lg</div>
+      <div class="type-meta">16px / 500 / 1.38<br>painPointCards, programCard</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-body')">
+      <div><span class="type-label">Body</span><div class="type-sample" style="font-size:15px; font-weight:500; line-height:1.44;">세토내해의 예술 섬 나오시마를 걸어서 만나는 하루</div></div>
+      <div class="type-vars">--pdp-fs-body<br>--pdp-fw-body<br>--pdp-lh-body</div>
+      <div class="type-meta">15px / 500 / 1.44<br>기본 본문</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-body-dk')">
+      <div><span class="type-label">Body Dark</span><div class="type-sample" style="font-size:14px; font-weight:500; line-height:1.52;">세토내해의 예술 섬 나오시마를 걸어서 만나는 하루</div></div>
+      <div class="type-vars">--pdp-fs-body-dk<br>--pdp-fw-body-dk<br>--pdp-lh-body-dk</div>
+      <div class="type-meta">14px / 500 / 1.52<br>guideProfile 소개</div>
+    </div>
+  </div>
+
+  <!-- Caption / Small -->
+  <div class="subsection" id="type-caption">
+    <h3 class="subsection-title">Caption / Small / Stat</h3>
+
+    <div class="type-row" onclick="copyToken('--pdp-fs-caption-head')">
+      <div><span class="type-label">Caption Bold</span><div class="type-sample" style="font-size:13px; font-weight:600;">오전 10:00 출발 | 약 6시간 소요</div></div>
+      <div class="type-vars">--pdp-fs-caption-head<br>--pdp-fw-caption-head</div>
+      <div class="type-meta">13px / 600<br>캡션 볼드</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-caption')">
+      <div><span class="type-label">Caption</span><div class="type-sample" style="font-size:13px; font-weight:500; line-height:1.38;">오전 10:00 출발 | 약 6시간 소요</div></div>
+      <div class="type-vars">--pdp-fs-caption<br>--pdp-fw-caption<br>--pdp-lh-caption</div>
+      <div class="type-meta">13px / 500 / 1.38<br>캡션</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-small')">
+      <div><span class="type-label">Small</span><div class="type-sample" style="font-size:12px; font-weight:400; line-height:1.24;">PB EXCLUSIVE</div></div>
+      <div class="type-vars">--pdp-fs-small<br>--pdp-fw-small<br>--pdp-lh-small</div>
+      <div class="type-meta">12px / 400 / 1.24<br>exclusive subtitle</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-stat-val')">
+      <div><span class="type-label">Stat Value</span><div class="type-sample" style="font-size:15px; font-weight:700;">4.9</div></div>
+      <div class="type-vars">--pdp-fs-stat-val<br>--pdp-fw-stat-val</div>
+      <div class="type-meta">15px / 700<br>통계 수치</div>
+    </div>
+    <div class="type-row" onclick="copyToken('--pdp-fs-stat-lbl')">
+      <div><span class="type-label">Stat Label</span><div class="type-sample" style="font-size:11px; font-weight:500; line-height:1.35;">고객 만족도</div></div>
+      <div class="type-vars">--pdp-fs-stat-lbl<br>--pdp-fw-stat-lbl<br>--pdp-lh-stat-lbl</div>
+      <div class="type-meta">11px / 500 / 1.35<br>통계 라벨</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. SPACING & RADIUS ═══════════ -->
+<section class="section" id="spacing-section">
+  <h2 class="section-title">간격 & 모서리</h2>
+  <p class="section-desc">모서리 라운드 5단계, 레이아웃 간격 체계</p>
+
+  <div class="subsection" id="radius">
+    <h3 class="subsection-title">모서리 라운드 (Border Radius)</h3>
+    <div class="radius-grid">
+      <div class="radius-item" onclick="copyToken('--radius-xs')">
+        <div class="radius-box" style="border-radius: 5px;"></div>
+        <div class="radius-label">--radius-xs</div>
+        <div class="radius-val">5px</div>
+      </div>
+      <div class="radius-item" onclick="copyToken('--radius-sm')">
+        <div class="radius-box" style="border-radius: 6px;"></div>
+        <div class="radius-label">--radius-sm</div>
+        <div class="radius-val">6px</div>
+      </div>
+      <div class="radius-item" onclick="copyToken('--radius-md')">
+        <div class="radius-box" style="border-radius: 8px;"></div>
+        <div class="radius-label">--radius-md</div>
+        <div class="radius-val">8px</div>
+      </div>
+      <div class="radius-item" onclick="copyToken('--radius')">
+        <div class="radius-box" style="border-radius: 10px;"></div>
+        <div class="radius-label">--radius</div>
+        <div class="radius-val">10px (기본)</div>
+      </div>
+      <div class="radius-item" onclick="copyToken('--radius-lg')">
+        <div class="radius-box" style="border-radius: 12px;"></div>
+        <div class="radius-label">--radius-lg</div>
+        <div class="radius-val">12px</div>
+      </div>
+      <div class="radius-item" onclick="copyToken('--radius-xl')">
+        <div class="radius-box" style="border-radius: 24px;"></div>
+        <div class="radius-label">--radius-xl</div>
+        <div class="radius-val">24px</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection" id="spacing">
+    <h3 class="subsection-title">간격 (Spacing)</h3>
+    <div class="spacing-row">
+      <div class="spacing-bar" style="width: 320px;"><span>--pdp-section-gap: 32px</span></div>
+      <div class="spacing-meta">섹션 간 여백<br><code>padding-top</code></div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-bar" style="width: 240px;"><span>--pdp-padding-h: 20px</span></div>
+      <div class="spacing-meta">좌우 패딩<br><code>padding-left/right</code></div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-bar" style="width: 280px;"><span>--pdp-inset-h: 24px</span></div>
+      <div class="spacing-meta">인셋 패딩<br><code>programCard 등</code></div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-bar" style="width: 160px;"><span>--pdp-block-gap: 16px</span></div>
+      <div class="spacing-meta">블록 내부 간격<br><code>margin-bottom</code></div>
+    </div>
+    <div class="spacing-row">
+      <div class="spacing-bar" style="width: 80px;"><span>--pdp-divider-h: 8px</span></div>
+      <div class="spacing-meta">디바이더 높이<br><code>섹션 구분선</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4. LAYOUT ═══════════ -->
+<section class="section" id="layout">
+  <h2 class="section-title">레이아웃</h2>
+  <p class="section-desc">390px 모바일 캔버스 기준</p>
+
+  <div class="layout-diagram">
+    <div class="canvas-box">
+      <div class="canvas-label">--pdp-canvas-width: 390px</div>
+      <div class="canvas-padding">
+        <div class="canvas-label">--pdp-content-width: 350px</div>
+        <div class="padding-indicator left">20px</div>
+        <div class="padding-indicator right">20px</div>
+        <div class="content-area">
+          <div class="canvas-label">--pdp-content-inset: 342px</div>
+          <div style="text-align: center; color: #848C94; font-size: 12px; padding: 20px;">
+            블록 콘텐츠 영역<br>
+            <span style="font-size: 11px; color: #636363;">programCard, guideProfile 등</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+function copyToken(name) {
+  const text = `var(${name})`;
+  navigator.clipboard.writeText(text).then(() => {
+    const toast = document.getElementById('toast');
+    toast.textContent = `복사됨: ${text}`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1800);
+  });
+}
+
+// Active nav tracking
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.sidebar a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+
+document.querySelectorAll('[id]').forEach(el => {
+  if (el.closest('.sidebar')) return;
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

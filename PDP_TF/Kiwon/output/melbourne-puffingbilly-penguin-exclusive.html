@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>퍼핑빌리 &amp; 필립아일랜드 투어 — Hybrid PDP PoC</title>
+<meta name="description" content="멜버른 근교의 증기기관차 퍼핑빌리를 타고 숲속을 달린 후, 필립아일랜드에서 페어리 펭귄 퍼레이드를 감상하는 하루 투어">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "퍼핑빌리 & 필립아일랜드 투어",
+  "description": "증기기관차 퍼핑빌리와 페어리 펭귄 퍼레이드를 하루에 즐기는 멜버른 근교 투어",
+  "touristType": ["커플", "가족", "자연 애호가"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 5,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "TouristAttraction", "name": "퍼핑빌리 증기기관차" } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "TouristAttraction", "name": "사사프라스 동화마을" } },
+      { "@type": "ListItem", "position": 3, "item": { "@type": "TouristAttraction", "name": "노비스 해안 산책길" } },
+      { "@type": "ListItem", "position": 4, "item": { "@type": "TouristAttraction", "name": "사우스 포인트 전망대" } },
+      { "@type": "ListItem", "position": 5, "item": { "@type": "TouristAttraction", "name": "필립아일랜드 펭귄 퍼레이드" } }
+    ]
+  },
+  "duration": "PT13H",
+  "maximumAttendeeCapacity": 15
+}
+</script>
+
+<link rel="stylesheet" href="pb-exclusive.css">
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP EXCLUSIVE</div>
+    <p class="tagline" data-output="html">숲을 달리고, 펭귄을 만나는 하루</p>
+    <p class="subtitle" data-output="html">멜버른이 숨겨둔 가장 완벽한 하루를 선물합니다</p>
+  </section>
+
+  <!-- ═══ 2. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/V41E/SqgmqYZuPs.jpg');"></div>
+  </section>
+
+  <!-- ═══ 3. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">MYREALTRIP EXCLUSIVE</div>
+    <h1 data-output="html">증기기관차가 숲을 가르고,<br>펭귄이 바다에서 걸어 나오는 곳</h1>
+    <p class="body" data-output="html">100년 된 증기기관차 퍼핑빌리를 타고 단데농 숲속을 달리는 것으로 하루가 시작됩니다. 동화 같은 사사프라스 마을에서 점심을 먹고, 오후에는 필립아일랜드의 해안 절벽과 야생 왈라비를 만납니다. 해 질 녘, 세계에서 가장 작은 페어리 펭귄이 바다에서 걸어 나와 보금자리로 돌아가는 퍼레이드가 이 하루의 마지막 선물입니다.</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/kA9N/hCfFTWsrAz.jpg');"></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">퍼핑빌리 + 필립아일랜드, 각각 예약하면 이틀<br>이 투어는 <strong>하루에 둘 다</strong></div>
+    <div class="pain-card" data-output="html">멜버른 근교는 대중교통이 불편한데<br><strong>전용 차량으로 편하게 이동</strong></div>
+    <div class="pain-card" data-output="html">영어 가이드 투어는 놓치는 이야기가 많은데<br><strong>한국인 가이드</strong>가 현지 스토리를 전달</div>
+    <div class="pain-card" data-output="html">펭귄 퍼레이드 시간은 시즌마다 달라서 헷갈리는데<br>가이드가 <strong>최적 시간에 맞춰 일정 조율</strong></div>
+    <div class="pain-card" data-output="html">와이너리, 동물 농장, 트래킹 등<br><strong>선택 코스로 나만의 여행</strong>을 설계</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">이 투어를 만든 사람들</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/profile_images/118096/118096_medium_1536286246.png?1536286246'); background-size:contain; background-color:#f5f6f7;"></div>
+    <p class="role" data-output="html">현지 투어 프로바이더</p>
+    <p class="name" data-output="html">트래블포레스트</p>
+    <p class="bio" data-output="html">여행자가 만든 진짜 여행. 멜버른 현지에 오피스 라운지를 운영하며, 짐 보관과 교통카드 대여까지 제공하는 프리미엄 투어 전문팀입니다. 낯선 공항에 도착해서 출국할 때까지 필요한 모든 것을 여행자의 시선으로 설계합니다.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">4.2</div>
+        <div class="stat-label" data-output="html">평균 평점</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">18건</div>
+        <div class="stat-label" data-output="html">후기</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">13시간</div>
+        <div class="stat-label" data-output="html">투어 시간</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 추천합니다</p>
+        <p class="check-item" data-output="html">멜버른 근교를 하루에 알차게 돌아보고 싶은 분</p>
+        <p class="check-item" data-output="html">아이와 함께 동물 체험과 자연을 즐기고 싶은 가족</p>
+        <p class="check-item" data-output="html">한국어 설명과 함께 현지 이야기를 듣고 싶은 분</p>
+        <p class="check-item" data-output="html">증기기관차와 펭귄 퍼레이드를 꼭 보고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">COMBO 코스</span>
+    <h2 data-output="html">숲에서 시작해<br>바다에서 끝나는 하루</h2>
+  </section>
+
+  <!-- ═══ 8. programCard ×5 ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/xkJn/1oKuP3IrYI.jpg');"></div>
+    <h3 data-output="html">퍼핑빌리 증기기관차</h3>
+    <span class="duration" data-output="html">오전 · 약 1시간 탑승</span>
+    <p class="desc" data-output="html">호주에서 가장 오래된 증기기관차를 타고 단데농 산맥의 울창한 숲속을 달립니다. &lt;토마스와 친구들&gt;의 모티브가 된 바로 그 기차. 창문 밖으로 스치는 유칼립투스 향과 함께 100년 전 시간 속으로 빠져듭니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/5zVn/R61S9WxfQT.jpg');"></div>
+    <h3 data-output="html">사사프라스 동화마을</h3>
+    <span class="duration" data-output="html">오전 · 자유 점심시간 포함</span>
+    <p class="desc" data-output="html">이름처럼 동화 속에 들어온 듯한 작은 마을. 아가사 크리스티의 소설 이름을 딴 티룸, 뉴질랜드산 양모 가게, 캔들샵과 사탕가게까지. 아기자기한 골목을 산책하며 점심을 즐깁니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/08/27/iT5Y/CHDGgYnsCF.jpg');"></div>
+    <h3 data-output="html">노비스 해안 산책길</h3>
+    <span class="duration" data-output="html">오후</span>
+    <p class="desc" data-output="html">탁 트인 바다와 함께 걷는 해안 산책길. 운이 좋으면 야생 왈라비나 펭귄까지 마주칠 수 있는 자연 속 힐링 스팟입니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/08/27/MydO/ewvRRmXUgK.jpg');"></div>
+    <h3 data-output="html">사우스 포인트 &amp; 야생 왈라비</h3>
+    <span class="duration" data-output="html">오후</span>
+    <p class="desc" data-output="html">시원하게 펼쳐진 해안 절벽과 거센 파도. 전망대에서 바라보는 필립 아일랜드의 전경은 사진보다 더 멋집니다. 이동 중 차창 밖 초원에서 자유롭게 뛰노는 야생 왈라비를 만납니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/ENvo/3VRnNv1qgM.jpg');"></div>
+    <h3 data-output="html">펭귄 퍼레이드</h3>
+    <span class="duration" data-output="html">저녁 · 해질녘</span>
+    <p class="desc" data-output="html">이 투어의 하이라이트. 세계에서 가장 작은 페어리 펭귄들이 하루의 사냥을 마치고 바다에서 걸어 나와 보금자리로 돌아가는 감동의 순간. 자연 그대로의 퍼레이드를 눈앞에서 경험합니다.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">멜버른 오피스 라운지 운영 중</p>
+    <p class="hl-subtitle" data-output="html">짐 보관 · 마이키 교통카드 대여 (평일 09:00–18:00)</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">COMBO 투어 하루 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/08/28/Z9QP/iPWrL79HKY.jpg');"></div>
+      <span class="badge am" data-output="html">09:50 – 11:20</span>
+      <h4 class="tl-title" data-output="html">미팅 &amp; 출발</h4>
+      <p class="tl-desc" data-output="html">RMIT 대학 Building 20에서 미팅 후 전용 차량으로 출발. 썸머타임 9:50 / 일반시즌 8:20 출발.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/xkJn/1oKuP3IrYI.jpg');"></div>
+      <span class="badge am" data-output="html">오전</span>
+      <h4 class="tl-title" data-output="html">퍼핑빌리 증기기관차 탑승</h4>
+      <p class="tl-desc" data-output="html">100년 역사의 증기기관차를 타고 단데농 산맥의 울창한 숲을 통과합니다. 약 1시간 탑승.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/06/24/5zVn/R61S9WxfQT.jpg');"></div>
+      <span class="badge pm" data-output="html">점심시간</span>
+      <h4 class="tl-title" data-output="html">사사프라스 마을 · 자유 점심</h4>
+      <p class="tl-desc" data-output="html">동화 같은 마을에서 자유롭게 점심. 선택으로 트래킹 코스나 와이너리 투어(10/5–31 한정)도 가능.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/08/28/hgmV/xCS875r60m.jpg');"></div>
+      <span class="badge pm" data-output="html">오후</span>
+      <h4 class="tl-title" data-output="html">마루 동물농장 · 노비스 · 사우스 포인트</h4>
+      <p class="tl-desc" data-output="html">마루 동물농장(선택, 입장료 별도) → 해안 산책길 노비스 → 사우스 포인트 전망대 → 야생 왈라비 사파리.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/08/28/5npY/PMPTn5v6as.jpg');"></div>
+      <span class="badge ev" data-output="html">해질녘 · 21:00–24:00 귀환</span>
+      <h4 class="tl-title" data-output="html">펭귄 퍼레이드 &amp; 멜버른 복귀</h4>
+      <p class="tl-desc" data-output="html">페어리 펭귄의 귀가 행렬을 감상한 뒤 멜버른으로. 썸머타임 23:00–24:00 / 일반시즌 21:00–22:00 도착.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함</h2>
+
+    <p class="list-subtitle" data-output="html">포함되어 있어요</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">전용 차량 이동</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">02</span>
+          <p class="num-title" data-output="html">한국인 가이드 동행</p>
+        </div>
+      </div>
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">03</span>
+          <p class="num-title" data-output="html">일정 내 입장권 (불포함 코스는 코스소개에 별도 안내)</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함되어 있어요</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">가이드 팁</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">02</span>
+      <p class="item-text" data-output="html">마루 동물원 입장료 (성인 $25 / 아동 $15)</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">03</span>
+      <p class="item-text" data-output="html">식사 및 개인비용</p>
+    </div>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">04</span>
+      <p class="item-text" data-output="html">포함사항 외 일체</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">안내 및 유의사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>미팅시간 10분 전</strong>에 도착하여 인원확인을 받아주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">미팅시간에 늦는 경우 <strong>사전 연락 없이 출발</strong>하며, 노쇼로 처리됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">날씨나 현지 사정에 의해 일정은 변경될 수 있으며, 이 경우 부분환불되지 않습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">인원에 따라 픽업차량은 <strong>7인승 또는 15인승</strong> 밴을 이용합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">캐리어를 가지고 투어 참여가 불가합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">개별 여행자 보험 가입을 권장합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>예약 확정 후 취소 및 환불이 불가</strong>합니다. 예약 전 취소 규정을 반드시 확인해주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">확정 후 발송된 <strong>바우처</strong>에 시간, 장소, 비상연락처가 기재되어 있습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">타인 양도가 불가하며, 타인이 이용할 경우 이용이 거절될 수 있습니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">COMBO 투어 미팅시간: 썸머타임 9:50–11:20 / 일반시즌 8:20–11:20</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">왜 이 투어를<br>마이리얼트립이 직접 고른 걸까요</h2>
+
+    <div class="trust-item">
+      <div class="icon">🚂</div>
+      <p class="trust-title" data-output="html">하루에 두 곳, 놓치지 않는 동선</p>
+      <p class="trust-desc" data-output="html">퍼핑빌리와 필립아일랜드를 각각 예약하면 이틀이 필요합니다. 이 투어는 최적의 동선으로 하루에 모두 경험할 수 있도록 설계되었습니다.</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">🐧</div>
+      <p class="trust-title" data-output="html">시즌별 맞춤 일정</p>
+      <p class="trust-desc" data-output="html">펭귄 퍼레이드 시간은 계절에 따라 달라집니다. 가이드가 매 시즌 최적 시간에 맞춰 일정을 조율합니다.</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">🏠</div>
+      <p class="trust-title" data-output="html">멜버른 오피스 라운지</p>
+      <p class="trust-desc" data-output="html">현지 오피스에서 짐 보관, 교통카드 대여까지. 투어 전후로 불편함 없이 멜버른을 즐길 수 있습니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP EXCLUSIVE</div>
+    <p class="tagline" data-output="html">숲을 달리고, 펭귄을 만나는 하루</p>
+    <p class="subtitle" data-output="html">멜버른이 숨겨둔 가장 완벽한 하루를 선물합니다</p>
+  </section>
+
+</main>
+
+</body>
+</html>

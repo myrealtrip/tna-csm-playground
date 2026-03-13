@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>{{product_name}} — PDP (SEMI_PACKAGE)</title>
+<meta name="description" content="{{meta_description}}">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<!-- schema.org FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    <!-- {{#each faq_items}} -->
+    { "@type": "Question", "name": "{{question}}", "acceptedAnswer": { "@type": "Answer", "text": "{{answer}}" }}
+    <!-- {{/each}} -->
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418; --c-gray-850: #212529;
+    --c-gray-800: #343A40; --c-gray-700: #495056; --c-gray-600: #636363; --c-gray-550: #595959;
+    --c-gray-500: #848C94; --c-gray-400: #ADB5BD; --c-gray-200: #DEE2E6; --c-gray-100: #E5E5E5;
+    --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7;
+    --c-blue-600: #1583DB; --c-blue-80: #E7F4FD; --c-red-500: #EC4937;
+    --c-yellow-200:#FFF2C6; --c-yellow-100:#FBFFE7; --c-yellow-50:#FDF1B5; --c-yellow-warm:#FFE390;
+    --c-white: #FFFFFF; --c-black: #000000;
+    /* v3 Semantic Tokens */
+    --pdp-text-primary: var(--c-gray-1000);
+    --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500);
+    --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white);
+    --pdp-bg-sub: var(--c-gray-80);
+    --pdp-bg-card: var(--c-gray-50);
+    --pdp-accent: var(--c-blue-600);
+    --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px;
+    --pdp-section-pb: 24px;
+    --pdp-title-gap: 14px;
+    --pdp-item-gap: 24px;
+    --pdp-card-padding: 20px;
+    --pdp-img-gap: 12px;
+    --pdp-img-hero-h: 458px;
+    --pdp-img-section-h: 232px;
+    --pdp-img-step-h: 180px;
+    --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px;
+    --pdp-img-radius: 10px;
+    --pdp-img-radius-lg: 24px;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: var(--c-white); -webkit-font-smoothing: antialiased; }
+  @media (min-width: 600px) { body { background: #F5F5F5; display: flex; justify-content: center; } }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+
+  .img-placeholder {
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45); color: #fff; padding: 3px 10px; border-radius: 4px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px; pointer-events: none; backdrop-filter: blur(2px);
+  }
+
+  /* ══ heroImage ══ */
+  .hero-image { width: 390px; height: 458px; position: relative; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; }
+  .hero-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 24px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%); color: var(--c-white);
+  }
+  .hero-badge {
+    display: inline-block; background: var(--c-blue-600); color: var(--c-white);
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 5px; margin-bottom: 12px; letter-spacing: 0.3px;
+  }
+  .hero-title { font-size: 26px; font-weight: 700; line-height: 1.24; letter-spacing: -0.52px; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+  .hero-sub { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.85); margin-top: 8px; letter-spacing: -0.28px; }
+
+  /* ══ introSection ══ */
+  .intro-section { padding: 48px 20px 32px; text-align: center; }
+  .intro-section h1 { font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.44; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+
+  /* ══ painPointCards ══ */
+  .pain-points { padding: 0 20px 32px; }
+  .pain-points .section-title { font-size: 20px; font-weight: 700; color: var(--c-black); letter-spacing: -0.4px; margin-bottom: 20px; }
+  .pp-list { display: flex; flex-direction: column; gap: 16px; }
+  .pp-card { background: var(--c-gray-50); border-radius: 12px; padding: 20px 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .pp-card .pp-emoji { font-size: 28px; flex-shrink: 0; }
+  .pp-card .pp-body { flex: 1; }
+  .pp-card .pp-title { font-size: 15px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.15px; line-height: 1.38; margin-bottom: 6px; }
+  .pp-card .pp-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.13px; }
+
+  /* ══ recommendBox (promo gifts) ══ */
+  .promo-gifts { padding: 32px 20px 24px; }
+  .promo-gifts .section-title { font-size: 20px; font-weight: 700; color: var(--c-black); letter-spacing: -0.4px; margin-bottom: 20px; }
+  .gift-list { display: flex; flex-direction: column; gap: 12px; }
+  .gift-card {
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(135deg, #FDF1B5 0%, #FBFFE7 50%, #FFE390 100%); border-radius: 12px; padding: 16px 18px;
+  }
+  .gift-card .gift-num {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--c-gray-900); flex-shrink: 0;
+  }
+  .gift-card .gift-body { flex: 1; }
+  .gift-card .gift-title { font-size: 15px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.15px; margin-bottom: 2px; }
+  .gift-card .gift-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.44; letter-spacing: -0.13px; }
+
+  /* ══ priceTable (package overview) ══ */
+  .package-overview { padding: 32px 20px 24px; }
+  .package-overview .section-title { font-size: 20px; font-weight: 700; color: var(--c-black); letter-spacing: -0.4px; margin-bottom: 20px; }
+  .pkg-list { display: flex; flex-direction: column; gap: 0; }
+  .pkg-row { display: flex; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--c-gray-80); }
+  .pkg-row:last-child { border-bottom: none; }
+  .pkg-row .pkg-label { width: 72px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.13px; }
+  .pkg-row .pkg-value { flex: 1; font-size: 14px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.14px; line-height: 1.44; }
+
+  /* ══ programCard (hotel) ══ */
+  .hotel-info { padding: 32px 20px 24px; }
+  .hotel-info .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .hotel-card { background: var(--c-gray-50); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+  .hotel-card:last-child { margin-bottom: 0; }
+  .hotel-card .hotel-img { width: 100%; height: 160px; }
+  .hotel-card .hotel-body { padding: 16px 18px 18px; }
+  .hotel-grade { display: inline-block; font-size: 11px; font-weight: 700; color: var(--c-blue-600); background: var(--c-blue-80); padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .hotel-name { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 4px; }
+  .hotel-location { font-size: 13px; font-weight: 500; color: var(--c-gray-500); margin-bottom: 14px; letter-spacing: -0.13px; }
+  .hotel-meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .hotel-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.13px; }
+  .hotel-meta-item .meta-icon { font-size: 14px; flex-shrink: 0; }
+  .hotel-meta-item .meta-label { color: var(--c-gray-500); margin-right: 2px; }
+
+  /* ══ programCard (meals) ══ */
+  .meal-highlights { padding: 32px 20px 24px; }
+  .meal-highlights .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .meal-card { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--c-gray-80); }
+  .meal-card:last-child { border-bottom: none; }
+  .meal-card .meal-img { width: 100px; height: 100px; border-radius: 12px; flex-shrink: 0; }
+  .meal-card .meal-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+  .meal-card .meal-day-badge { display: inline-flex; align-items: center; gap: 4px; width: fit-content; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+  .meal-day-badge.dinner { background: var(--c-yellow-200); color: #8B6914; }
+  .meal-day-badge.lunch { background: var(--c-blue-80); color: var(--c-blue-600); }
+  .meal-card .meal-name { font-size: 17px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.17px; }
+  .meal-card .meal-desc { font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.13px; }
+
+  /* ══ sectionImage (vehicle) ══ */
+  .vehicle-info { padding: 32px 20px 24px; }
+  .vehicle-info .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .vehicle-card { background: var(--c-gray-50); border-radius: 12px; overflow: hidden; }
+  .vehicle-card .vehicle-img { width: 100%; height: 180px; }
+  .vehicle-card .vehicle-body { padding: 20px 18px; }
+  .vehicle-features { display: flex; flex-direction: column; gap: 12px; }
+  .vehicle-feature { display: flex; align-items: flex-start; gap: 10px; }
+  .vehicle-feature .vf-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .vehicle-feature .vf-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; letter-spacing: -0.14px; }
+  .vehicle-feature .vf-text strong { font-weight: 700; color: var(--c-gray-900); }
+
+  /* ══ visualTimeline ══ */
+  .day-itinerary { padding: 32px 20px 24px; }
+  .day-itinerary .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 28px; }
+  .day-block { margin-bottom: 32px; }
+  .day-block:last-child { margin-bottom: 0; }
+  .day-label { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .day-num { background: var(--c-gray-900); color: var(--c-white); font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 6px; letter-spacing: -0.13px; }
+  .day-title { font-size: 15px; font-weight: 600; color: var(--c-gray-800); letter-spacing: -0.15px; }
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 2px; background: var(--c-gray-200); border-radius: 1px; }
+  .tl-entry { position: relative; padding-bottom: 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .tl-entry:last-child { padding-bottom: 0; }
+  .tl-entry::before { content: ''; position: absolute; left: -20px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--c-white); border: 2.5px solid var(--c-blue-600); z-index: 1; }
+  .tl-time { font-size: 13px; font-weight: 700; color: var(--c-blue-600); min-width: 42px; flex-shrink: 0; padding-top: 1px; }
+  .tl-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.44; letter-spacing: -0.14px; }
+
+  /* ══ programCard (spots) ══ */
+  .spot-section { padding: 32px 20px 24px; }
+  .spot-section .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 6px; }
+  .spot-section .section-subtitle { font-size: 14px; font-weight: 500; color: var(--c-gray-500); margin-bottom: 20px; letter-spacing: -0.14px; }
+  .spot-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .spot-scroll::-webkit-scrollbar { display: none; }
+  .spot-card { min-width: 200px; max-width: 200px; scroll-snap-align: start; border-radius: 12px; overflow: hidden; background: var(--c-white); border: 1px solid var(--c-gray-80); flex-shrink: 0; }
+  .spot-card .spot-img { width: 200px; height: 140px; }
+  .spot-card .spot-body { padding: 14px 14px 16px; }
+  .spot-card .spot-subtitle { font-size: 11px; font-weight: 600; color: var(--c-blue-600); letter-spacing: 0.3px; margin-bottom: 4px; }
+  .spot-card .spot-name { font-size: 16px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.16px; margin-bottom: 6px; line-height: 1.3; }
+  .spot-card .spot-desc { font-size: 12px; font-weight: 500; color: var(--c-gray-600); line-height: 1.52; letter-spacing: -0.12px; }
+
+  /* ══ include/exclude ══ */
+  .include-exclude { padding: 32px 20px 24px; }
+  .include-exclude .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .ie-group { margin-bottom: 24px; }
+  .ie-group:last-child { margin-bottom: 0; }
+  .ie-group-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.16px; }
+  .ie-group-title.included { color: var(--c-blue-600); }
+  .ie-group-title.excluded { color: var(--c-red-500); }
+  .ie-list { display: flex; flex-direction: column; gap: 10px; }
+  .ie-item { display: flex; align-items: flex-start; gap: 10px; }
+  .ie-item .ie-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  .ie-item .ie-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; letter-spacing: -0.14px; }
+
+  /* ══ FAQ accordion ══ */
+  .faq-accordion { padding: 32px 20px 24px; }
+  .faq-accordion .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .faq-item { border-bottom: 1px solid var(--c-gray-80); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-question { width: 100%; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0; text-align: left; font-family: var(--font-family); }
+  .faq-question .q-label { font-size: 13px; font-weight: 700; color: var(--c-blue-600); flex-shrink: 0; margin-right: 2px; }
+  .faq-question .q-text { font-size: 15px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.15px; line-height: 1.38; flex: 1; }
+  .faq-question .q-arrow { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease; }
+  .faq-question .q-arrow svg { width: 14px; height: 14px; }
+  .faq-item.open .faq-question .q-arrow { transform: rotate(180deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-item.open .faq-answer { max-height: 200px; }
+  .faq-answer-inner { padding: 0 0 16px 24px; font-size: 14px; font-weight: 500; color: var(--c-gray-700); line-height: 1.52; letter-spacing: -0.14px; }
+
+  /* ══ sectionImage ══ */
+  .section-image { padding: 0 20px 24px; }
+  .section-img-wrap { width: 100%; height: 232px; border-radius: 10px; overflow: hidden; }
+  .section-img-caption { font-size: 12px; font-weight: 500; color: var(--c-gray-500); margin-top: 8px; text-align: center; }
+
+  /* ══ notice ══ */
+  .notice { padding: 32px 20px 40px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item:last-child { margin-bottom: 0; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+
+  /* ══ imageGrid (2-col grid) ══ */
+  .image-grid { padding: 32px 20px 24px; position: relative; }
+  .image-grid .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .img-grid-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .img-grid-wrap .grid-item { border-radius: 10px; overflow: hidden; position: relative; }
+  .img-grid-wrap .grid-item.full { grid-column: 1 / -1; }
+  .img-grid-wrap .grid-item .img-placeholder { width: 100%; height: 140px; }
+  .img-grid-wrap .grid-item.full .img-placeholder { height: 180px; }
+  .img-grid-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 12px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); font-size: 12px; font-weight: 600; color: var(--c-white); letter-spacing: -0.12px; }
+
+  /* ══ highlightCallout ══ */
+  .highlight-callout { position: relative; padding: 24px 0; }
+  .callout { margin: 0 20px; padding: 20px; background: linear-gradient(135deg, var(--c-yellow-50) 0%, var(--c-yellow-100) 50%, var(--c-yellow-warm) 100%); border-radius: 12px; text-align: center; }
+  .callout-text { font-size: 16px; font-weight: 700; color: var(--c-gray-950); line-height: 1.5; }
+  .callout-sub { margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--c-gray-700); line-height: 1.5; }
+
+  /* ══ priceTable (price grid) ══ */
+  .price-table { padding: 32px 20px 24px; position: relative; }
+  .price-table .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .price-grid { display: flex; flex-direction: column; gap: 12px; }
+  .price-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: var(--c-gray-50); border-radius: 12px; }
+  .price-row.highlight { background: var(--c-blue-80); }
+  .price-label { font-size: 15px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.15px; }
+  .price-value { font-size: 15px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.15px; }
+  .price-row.highlight .price-label { color: var(--c-blue-600); }
+  .price-row.highlight .price-value { color: var(--c-blue-600); }
+  .price-note { margin-top: 12px; font-size: 12px; color: var(--c-gray-500); line-height: 1.55; }
+
+  /* ══ numberedList (simplified booking steps) ══ */
+  .numbered-list { padding: 32px 20px 24px; position: relative; }
+  .numbered-list .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .nl-items { display: flex; flex-direction: column; gap: 24px; counter-reset: nl-counter; }
+  .nl-item { display: flex; flex-direction: column; counter-increment: nl-counter; }
+  .num-item-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 4px; }
+  .num-item-header::before {
+    content: counter(nl-counter); flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--c-gray-900); color: var(--c-white);
+    font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .nl-item .nl-title { font-size: 14px; font-weight: 600; color: var(--c-gray-900); line-height: 1.52; letter-spacing: -0.14px; }
+  .nl-item .nl-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; letter-spacing: -0.14px; }
+
+  /* ══ customerReview ══ */
+  .customer-review { padding: 32px 20px 24px; position: relative; }
+  .customer-review .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .review-summary { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .review-score { font-size: 32px; font-weight: 700; color: var(--c-gray-950); }
+  .review-stars { color: #FFB800; font-size: 16px; }
+  .review-count { font-size: 13px; color: var(--c-gray-500); }
+  .review-card { background: var(--c-gray-50); border-radius: 12px; padding: 16px; margin-bottom: 10px; }
+  .review-card:last-child { margin-bottom: 0; }
+  .review-author { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 6px; }
+  .review-date { font-size: 12px; color: var(--c-gray-500); margin-left: 8px; font-weight: 400; }
+  .review-text { font-size: 14px; color: var(--c-gray-700); line-height: 1.55; }
+
+  /* ══ Debug label (Version A) ══ */
+  .block-section { position: relative; }
+  .debug-label {
+    position: absolute; top: 4px; left: 4px; z-index: 100;
+    background: rgba(0,200,80,0.92); color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 8px; border-radius: 3px; pointer-events: none; letter-spacing: 0.3px;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .block-section:hover .debug-label { opacity: 1; }
+  @media print { .debug-label { display: none; } }
+
+  .poc-legend {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: var(--canvas-w); background: var(--c-gray-900); color: var(--c-white);
+    display: flex; justify-content: center; gap: 16px; padding: 8px 16px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px; z-index: 999;
+  }
+  .poc-legend span { opacity: 0.7; }
+  .poc-legend .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+  .dot-s { background: #4CAF50; }
+  .dot-h { background: #FF9800; }
+  .dot-i { background: #9C27B0; }
+</style>
+</head>
+<body>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image" data-output="image">
+    <div class="debug-label">heroImage</div>
+    <div class="img-placeholder" style="width:100%;height:100%; background: linear-gradient(135deg, #1a2a4a 0%, #2c4a7c 30%, #4a7ab5 60%, #6a9ad5 100%);">
+      <span class="label">{{hero_image}} 390x458</span>
+    </div>
+    <div class="hero-overlay">
+      <span class="hero-badge">{{category_badge}}</span>
+      <h1 class="hero-title">{{hero_title}}</h1>
+      <p class="hero-sub">{{hero_subtitle}}</p>
+    </div>
+  </section>
+
+  <!-- ═══ introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured" data-output="html">
+    <div class="debug-label">introSection</div>
+    <h1>{{intro_heading}}</h1>
+    <p class="body">{{intro_body}}</p>
+    <div class="intro-visual img-placeholder" style="background: linear-gradient(135deg, #1a2a4a 0%, #3a5a8a 50%, #6a9ad5 100%);">
+      <span class="label">{{intro_image}} 350x200</span>
+    </div>
+  </section>
+
+  <!-- ═══ painPointCards ═══ -->
+  <section class="pain-points block-section" data-block="painPointCards" data-mode="structured" data-output="html">
+    <div class="debug-label">painPointCards</div>
+    <h2 class="section-title">{{usp_title}}</h2>
+    <div class="pp-list">
+      <!-- {{#each usp_cards}} -->
+      <div class="pp-card">
+        <span class="pp-emoji">{{emoji}}</span>
+        <div class="pp-body">
+          <p class="pp-title">{{title}}</p>
+          <p class="pp-desc">{{description}}</p>
+        </div>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ recommendBox (promo gifts) ═══ -->
+  <section class="promo-gifts block-section" data-block="recommendBox" data-mode="structured" data-output="html">
+    <div class="debug-label">recommendBox</div>
+    <h2 class="section-title">{{promo_title}}</h2>
+    <div class="gift-list">
+      <!-- {{#each promo_gifts}} -->
+      <div class="gift-card">
+        <div class="gift-num">{{number}}</div>
+        <div class="gift-body">
+          <p class="gift-title">{{title}}</p>
+          <p class="gift-desc">{{description}}</p>
+        </div>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ priceTable (package overview) ═══ -->
+  <section class="package-overview block-section" data-block="priceTable" data-mode="structured" data-output="html">
+    <div class="debug-label">priceTable</div>
+    <h2 class="section-title">{{overview_title}}</h2>
+    <div class="pkg-list">
+      <!-- {{#each overview_rows}} -->
+      <div class="pkg-row">
+        <span class="pkg-label">{{label}}</span>
+        <span class="pkg-value">{{value}}</span>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ programCard (hotels) ═══ -->
+  <section class="hotel-info block-section" data-block="programCard" data-mode="structured" data-output="html">
+    <div class="debug-label">programCard (hotels)</div>
+    <h2 class="section-title">{{hotel_section_title}}</h2>
+    <!-- {{#each hotels}} -->
+    <div class="hotel-card">
+      <div class="hotel-img img-placeholder" style="background: linear-gradient(135deg, #2a3a5a 0%, #4a6a8a 100%);">
+        <span class="label">{{hotel_image}}</span>
+      </div>
+      <div class="hotel-body">
+        <span class="hotel-grade">{{grade}}</span>
+        <h3 class="hotel-name">{{name}}</h3>
+        <p class="hotel-location">{{location}}</p>
+        <div class="hotel-meta">
+          <!-- {{#each meta}} -->
+          <div class="hotel-meta-item">
+            <span class="meta-icon">{{icon}}</span>
+            <span>{{text}}</span>
+          </div>
+          <!-- {{/each}} -->
+        </div>
+      </div>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ programCard (meals) ═══ -->
+  <section class="meal-highlights block-section" data-block="programCard" data-mode="structured" data-output="html">
+    <div class="debug-label">programCard (meals)</div>
+    <h2 class="section-title">{{meal_section_title}}</h2>
+    <!-- {{#each meals}} -->
+    <div class="meal-card">
+      <div class="meal-img img-placeholder" style="background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);">
+        <span class="label">{{meal_image}}</span>
+      </div>
+      <div class="meal-body">
+        <span class="meal-day-badge {{meal_type}}">{{day_label}}</span>
+        <p class="meal-name">{{meal_name}}</p>
+        <p class="meal-desc">{{meal_desc}}</p>
+      </div>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ sectionImage (vehicle) ═══ -->
+  <section class="vehicle-info block-section" data-block="sectionImage" data-mode="structured" data-output="html">
+    <div class="debug-label">sectionImage (vehicle)</div>
+    <h2 class="section-title">{{vehicle_title}}</h2>
+    <div class="vehicle-card">
+      <div class="vehicle-img img-placeholder" style="background: linear-gradient(135deg, #2a3a4a 0%, #5a7a9a 100%);">
+        <span class="label">{{vehicle_image}}</span>
+      </div>
+      <div class="vehicle-body">
+        <div class="vehicle-features">
+          <!-- {{#each vehicle_features}} -->
+          <div class="vehicle-feature">
+            <span class="vf-icon">{{icon}}</span>
+            <p class="vf-text">{{text}}</p>
+          </div>
+          <!-- {{/each}} -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ visualTimeline ═══ -->
+  <section class="day-itinerary block-section" data-block="visualTimeline" data-mode="structured" data-output="html">
+    <div class="debug-label">visualTimeline</div>
+    <h2 class="section-title">{{itinerary_title}}</h2>
+    <!-- {{#each days}} -->
+    <div class="day-block">
+      <div class="day-label">
+        <span class="day-num">{{day_num}}</span>
+        <span class="day-title">{{day_title}}</span>
+      </div>
+      <div class="timeline">
+        <!-- {{#each entries}} -->
+        <div class="tl-entry">
+          <span class="tl-time">{{time}}</span>
+          <span class="tl-text">{{text}}</span>
+        </div>
+        <!-- {{/each}} -->
+      </div>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ programCard (spots) ═══ -->
+  <section class="spot-section block-section" data-block="programCard" data-mode="hybrid" data-output="html">
+    <div class="debug-label">programCard (spots)</div>
+    <h2 class="section-title">{{spots_title}}</h2>
+    <p class="section-subtitle">{{spots_subtitle}}</p>
+    <div class="spot-scroll">
+      <!-- {{#each spots}} -->
+      <div class="spot-card">
+        <div class="spot-img img-placeholder" style="background: linear-gradient(135deg, #3a5a8a 0%, #6a9ad5 100%);">
+          <span class="label">{{spot_image}}</span>
+        </div>
+        <div class="spot-body">
+          <p class="spot-subtitle">{{spot_category}}</p>
+          <h3 class="spot-name">{{spot_name}}</h3>
+          <p class="spot-desc">{{spot_desc}}</p>
+        </div>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice (include/exclude) ═══ -->
+  <section class="include-exclude block-section" data-block="includeExclude" data-mode="structured" data-output="html">
+    <div class="debug-label">notice (include/exclude)</div>
+    <h2 class="section-title">{{include_exclude_title}}</h2>
+    <div class="ie-group">
+      <h3 class="ie-group-title included">{{included_label}}</h3>
+      <div class="ie-list">
+        <!-- {{#each included_items}} -->
+        <div class="ie-item"><span class="ie-icon">{{icon}}</span><span class="ie-text">{{text}}</span></div>
+        <!-- {{/each}} -->
+      </div>
+    </div>
+    <div class="ie-group">
+      <h3 class="ie-group-title excluded">{{excluded_label}}</h3>
+      <div class="ie-list">
+        <!-- {{#each excluded_items}} -->
+        <div class="ie-item"><span class="ie-icon">{{icon}}</span><span class="ie-text">{{text}}</span></div>
+        <!-- {{/each}} -->
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview (FAQ) ═══ -->
+  <section class="faq-accordion block-section" data-block="customerReview" data-mode="structured" data-output="html">
+    <div class="debug-label">customerReview (FAQ)</div>
+    <h2 class="section-title">{{faq_title}}</h2>
+    <!-- {{#each faq_items}} -->
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+        <span class="q-label">Q</span>
+        <span class="q-text">{{question}}</span>
+        <span class="q-arrow"><svg viewBox="0 0 14 14" fill="none"><path d="M3 5L7 9L11 5" stroke="#848C94" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">{{answer}}</div></div>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ imageGrid (2-col) ═══ -->
+  <section class="image-grid block-section" data-block="imageGrid" data-mode="hybrid" data-output="image">
+    <div class="debug-label">imageGrid</div>
+    <h2 class="section-title">{{image_grid_title}}</h2>
+    <div class="img-grid-wrap">
+      <!-- {{#each grid_items}} -->
+      <div class="grid-item {{#if full}}full{{/if}}">
+        <div class="img-placeholder" style="background: linear-gradient(135deg, #3a5a8a 0%, #6a9ad5 100%);">
+          <span class="label">{{image}}</span>
+        </div>
+        <div class="img-grid-caption">{{caption}}</div>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ highlightCallout ═══ -->
+  <section class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured" data-output="html">
+    <div class="debug-label">highlightCallout</div>
+    <div class="callout">
+      <p class="callout-text">{{callout_text}}</p>
+      <p class="callout-sub">{{callout_sub}}</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ priceTable (pricing) ═══ -->
+  <section class="price-table block-section" data-block="priceTable" data-mode="structured" data-output="html">
+    <div class="debug-label">priceTable (pricing)</div>
+    <h2 class="section-title">{{price_section_title}}</h2>
+    <div class="price-grid">
+      <!-- {{#each price_rows}} -->
+      <div class="price-row {{#if highlight}}highlight{{/if}}">
+        <span class="price-label">{{label}}</span>
+        <span class="price-value">{{value}}</span>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+    <p class="price-note">{{price_note}}</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ numberedList (booking steps) ═══ -->
+  <section class="numbered-list block-section" data-block="numberedList" data-mode="structured" data-output="html">
+    <div class="debug-label">numberedList</div>
+    <h2 class="section-title">{{booking_steps_title}}</h2>
+    <div class="nl-items">
+      <!-- {{#each booking_steps}} -->
+      <div class="nl-item">
+        <div class="num-item-header">
+          <div><p class="nl-title">{{title}}</p></div>
+        </div>
+        <p class="nl-text" style="padding-left: 36px;">{{text}}</p>
+      </div>
+      <!-- {{/each}} -->
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured" data-output="html">
+    <div class="debug-label">notice</div>
+    <h2 class="notice-title">{{notice_title}}</h2>
+    <!-- {{#each notice_items}} -->
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text">{{notice_text}}</p>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ customerReview ═══ -->
+  <section class="customer-review block-section" data-block="customerReview" data-mode="structured" data-output="html">
+    <div class="debug-label">customerReview</div>
+    <h2 class="section-title">{{review_section_title}}</h2>
+    <div class="review-summary">
+      <span class="review-score">{{review_score}}</span>
+      <div>
+        <div class="review-stars">{{review_stars}}</div>
+        <span class="review-count">{{review_count}}</span>
+      </div>
+    </div>
+    <!-- {{#each reviews}} -->
+    <div class="review-card">
+      <p class="review-author">{{review_author}}<span class="review-date">{{review_date}}</span></p>
+      <p class="review-text">{{review_text}}</p>
+    </div>
+    <!-- {{/each}} -->
+  </section>
+
+</main>
+
+<!-- PoC Legend -->
+<div class="poc-legend">
+  <span><span class="dot dot-s"></span> structured</span>
+  <span><span class="dot dot-h"></span> hybrid</span>
+  <span><span class="dot dot-i"></span> image</span>
+  <span>hover for block labels</span>
+</div>
+
+</body>
+</html>

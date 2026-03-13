@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDP 카테고리별 블록 조합 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+    background: #101418;
+    color: #E5E5E5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .hero {
+    text-align: center;
+    padding: 56px 24px 40px;
+    background: linear-gradient(145deg, #0a0c10, #101418 50%, #141719);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .hero h1 { font-size: 36px; font-weight: 700; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .hero h1 em { font-style: normal; color: #1583DB; }
+  .hero p { font-size: 16px; color: #636363; }
+
+  /* ── Tab Bar ── */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0a0c10;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0 24px;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #636363;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: inherit;
+  }
+  .tab:hover { color: #ADB5BD; }
+  .tab.active { color: #1583DB; border-bottom-color: #1583DB; }
+  .tab .tier-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .tier-dot.exclusive { background: #FFE390; }
+  .tier-dot.generic { background: #848C94; }
+
+  /* ── Container ── */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Tab Content ── */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── Category Overview ── */
+  .overview {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+  }
+  .overview h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .overview .desc { font-size: 14px; color: #848C94; margin-bottom: 12px; }
+  .overview .meta { display: flex; gap: 24px; }
+  .overview .meta-item { font-size: 13px; color: #636363; }
+  .overview .meta-item strong { color: #ADB5BD; font-weight: 600; }
+  .tier-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .tier-badge.exclusive { background: rgba(255,227,144,0.15); color: #FFE390; }
+  .tier-badge.generic { background: rgba(132,140,148,0.15); color: #848C94; }
+
+  /* ── Block Order ── */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .block-order { margin-bottom: 48px; }
+  .block-item {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    transition: background 0.15s;
+  }
+  .block-item:hover { background: rgba(255,255,255,0.04); }
+  .block-seq {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(21,131,219,0.1);
+    color: #1583DB;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .block-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .block-name .ko { color: #848C94; font-weight: 400; font-size: 12px; margin-left: 8px; }
+  .mode-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+  .mode-badge.structured { background: rgba(21,131,219,0.12); color: #1583DB; }
+  .mode-badge.hybrid { background: rgba(255,227,144,0.12); color: #FFE390; }
+  .mode-badge.image { background: rgba(132,140,148,0.12); color: #848C94; }
+  .status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .status-badge.required { background: #EC4937; color: #fff; }
+  .status-badge.recommended { background: transparent; border: 1.5px solid #1583DB; color: #1583DB; }
+  .status-badge.optional { background: transparent; border: 1.5px solid #636363; color: #636363; }
+
+  .divider-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    margin: 4px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+  .divider-text { font-size: 10px; color: #495056; font-weight: 600; letter-spacing: 1px; }
+
+  .na-section {
+    margin-top: 24px;
+    padding: 16px;
+    background: rgba(255,255,255,0.01);
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 10px;
+  }
+  .na-title { font-size: 12px; font-weight: 600; color: #495056; margin-bottom: 10px; letter-spacing: 0.5px; }
+  .na-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .na-item {
+    font-size: 12px;
+    color: #495056;
+    text-decoration: line-through;
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+  }
+
+  /* ── Subtypes ── */
+  .subtypes { margin-top: 16px; }
+  .subtypes-label { font-size: 11px; font-weight: 600; color: #636363; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .subtype-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .subtype-chip {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ADB5BD;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .subtype-chip .hint {
+    font-size: 10px;
+    color: #636363;
+    font-weight: 400;
+  }
+
+  /* ── Pilots ── */
+  .pilots { margin-bottom: 48px; }
+  .pilot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .pilot-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.15s;
+  }
+  .pilot-card:hover {
+    border-color: rgba(21,131,219,0.3);
+    transform: translateY(-2px);
+  }
+  .pilot-card .pilot-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .pilot-card .pilot-desc { font-size: 13px; color: #636363; margin-bottom: 16px; }
+  .pilot-card .pilot-link {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1583DB;
+    text-decoration: none;
+    padding: 6px 16px;
+    border: 1.5px solid rgba(21,131,219,0.3);
+    border-radius: 8px;
+    transition: all 0.15s;
+  }
+  .pilot-card .pilot-link:hover { background: rgba(21,131,219,0.1); }
+  .pilot-card.placeholder {
+    border-style: dashed;
+    opacity: 0.5;
+  }
+  .pilot-card.placeholder .pilot-link { display: none; }
+
+  /* ── Rules ── */
+  .rules { margin-bottom: 48px; }
+  .rule-item {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #ADB5BD;
+    line-height: 1.6;
+  }
+  .rule-item code {
+    font-family: 'SF Mono', monospace;
+    font-size: 12px;
+    color: #1583DB;
+    background: rgba(21,131,219,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── Matrix ── */
+  .matrix-section {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .matrix-section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .matrix-section .desc {
+    font-size: 14px;
+    color: #636363;
+    margin-bottom: 24px;
+  }
+  .matrix-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 700px;
+  }
+  .matrix th {
+    padding: 12px 14px;
+    text-align: center;
+    font-weight: 600;
+    color: #848C94;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .matrix th:first-child { text-align: left; width: 160px; }
+  .matrix td {
+    padding: 10px 14px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-weight: 500;
+  }
+  .matrix td:first-child {
+    text-align: left;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: 'SF Mono', monospace;
+  }
+  .matrix tr:hover td { background: rgba(255,255,255,0.02); }
+  .m-req { color: #EC4937; font-weight: 700; }
+  .m-rec { color: #1583DB; }
+  .m-opt { color: #636363; }
+  .m-na { color: #343A40; }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 28px; }
+    .tab { padding: 12px 16px; font-size: 12px; }
+    .overview { grid-template-columns: 1fr; }
+    .block-item { grid-template-columns: 28px 1fr; }
+    .mode-badge, .status-badge { display: none; }
+    .pilot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>PDP <em>카테고리별</em> 블록 조합</h1>
+  <p>5개 상품 카테고리 x 21개 블록 — 조합 규칙과 배치 순서</p>
+</header>
+
+<!-- Tab Bar -->
+<nav class="tab-bar">
+  <button class="tab active" data-cat="PB_EXCLUSIVE"><span class="tier-dot exclusive"></span>PB Exclusive</button>
+  <button class="tab" data-cat="TICKET"><span class="tier-dot generic"></span>티켓/입장권</button>
+  <button class="tab" data-cat="TOUR"><span class="tier-dot generic"></span>일반 투어</button>
+  <button class="tab" data-cat="SEMI_PACKAGE"><span class="tier-dot generic"></span>세미패키지</button>
+  <button class="tab" data-cat="CONVENIENCE"><span class="tier-dot generic"></span>편의/서비스</button>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════ PB_EXCLUSIVE ═══════════════ -->
+<div class="tab-content active" id="PB_EXCLUSIVE">
+  <div class="overview">
+    <div>
+      <h2>PB Exclusive</h2>
+      <div class="desc">PB 자체 기획 상품 — 워킹투어, 체험, 패키지 등</div>
+      <div class="meta">
+        <div class="meta-item">블록 수: <strong>최소 7개 – 최대 25개</strong></div>
+        <div class="meta-item">실제 사례: <strong>나오시마 약 20개</strong></div>
+      </div>
+    </div>
+    <span class="tier-badge exclusive">EXCLUSIVE</span>
+  </div>
+
+  <div class="block-order">
+    <div class="section-title">블록 배치 순서</div>
+
+    <div class="block-item"><div class="block-seq">1</div><div class="block-name">exclusiveHeader <span class="ko">브랜드 헤더</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">2</div><div class="block-name">heroImage <span class="ko">히어로 이미지</span></div><span class="mode-badge image">image</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">3</div><div class="block-name">introSection <span class="ko">상품 소개</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">4</div><div class="block-name">painPointCards <span class="ko">고객 불안 해소</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">5</div><div class="block-name">guideProfile <span class="ko">가이드 프로필</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">6</div><div class="block-name">recommendBox <span class="ko">추천 포인트</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+
+    <div class="block-item"><div class="block-seq">7</div><div class="block-name">sectionHeader <span class="ko">프로그램 제목</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">8</div><div class="block-name">programCard <span class="ko">프로그램 카드 (반복)</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">9</div><div class="block-name">highlightCallout <span class="ko">핵심 차별점</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+
+    <div class="block-item"><div class="block-seq">10</div><div class="block-name">visualTimeline <span class="ko">일정 타임라인</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+
+    <div class="block-item"><div class="block-seq">11</div><div class="block-name">priceTable <span class="ko">가격표</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">12</div><div class="block-name">numberedList <span class="ko">이용안내</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">13</div><div class="block-name">imageGrid <span class="ko">이미지 갤러리</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">14</div><div class="block-name">customerReview <span class="ko">고객 리뷰</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">15</div><div class="block-name">notice <span class="ko">안내사항</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">16</div><div class="block-name">trustPoints <span class="ko">신뢰 지표</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge required">필수</span></div>
+
+    <div class="na-section">
+      <div class="na-title">사용 불가 (NOT APPLICABLE)</div>
+      <div class="na-list">
+        <span class="na-item">guideIntro</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pilots">
+    <div class="section-title">파일럿</div>
+    <div class="pilot-grid">
+      <div class="pilot-card">
+        <div class="pilot-name">나오시마 워킹투어</div>
+        <div class="pilot-desc">PB Exclusive 대표 PoC. 14블록, schema.org 구조화 데이터 포함</div>
+        <a class="pilot-link" href="naoshima-poc.html">열어보기</a>
+      </div>
+      <div class="pilot-card">
+        <div class="pilot-name">구마모토 워킹투어</div>
+        <div class="pilot-desc">가이드 2명, 프로그램 섹션 2개의 복잡한 구성</div>
+        <a class="pilot-link" href="kumamoto-poc.html">열어보기</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rules">
+    <div class="section-title">조합 규칙</div>
+    <div class="rule-item"><code>exclusiveHeader</code> 정확히 2회 사용 (PDP 최상단 + 최하단 브랜딩)</div>
+    <div class="rule-item"><code>programCard</code> 최대 12회 반복. 각 스팟/활동마다 1장</div>
+    <div class="rule-item"><code>sectionHeader</code> 최대 5회. programCard 그룹 앞에 반드시 1개씩</div>
+    <div class="rule-item"><code>guideProfile</code> 1회만 사용. introSection 이후, programCard 이전에 배치</div>
+    <div class="rule-item"><code>trustPoints</code> 반드시 PDP 최하단에 배치</div>
+    <div class="rule-item"><code>heroImage</code>와 <code>exclusiveHeader</code> 사이에는 구분선 삽입하지 않음</div>
+  </div>
+</div>
+
+<!-- ═══════════════ TICKET ═══════════════ -->
+<div class="tab-content" id="TICKET">
+  <div class="overview">
+    <div>
+      <h2>티켓/입장권</h2>
+      <div class="desc">테마파크, 전시, 공연, 교통패스 등</div>
+      <div class="meta">
+        <div class="meta-item">블록 수: <strong>최소 3개 – 최대 10개</strong></div>
+      </div>
+      <div class="subtypes">
+        <div class="subtypes-label">서브타입 (블록 조합 동일, 분류 용도)</div>
+        <div class="subtype-chips">
+          <span class="subtype-chip">테마파크 <span class="hint">USJ, 디즈니</span></span>
+          <span class="subtype-chip">교통 <span class="hint">JR패스, 이코카</span></span>
+          <span class="subtype-chip">시티패스 <span class="hint">주유패스</span></span>
+          <span class="subtype-chip">유람선·공연 <span class="hint">크루즈, 쇼</span></span>
+        </div>
+      </div>
+    </div>
+    <span class="tier-badge generic">GENERIC</span>
+  </div>
+
+  <div class="block-order">
+    <div class="section-title">블록 배치 순서</div>
+    <div class="block-item"><div class="block-seq">1</div><div class="block-name">heroImage <span class="ko">히어로 이미지</span></div><span class="mode-badge image">image</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">2</div><div class="block-name">introSection <span class="ko">상품 소개</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">3</div><div class="block-name">numberedList <span class="ko">이용안내</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">4</div><div class="block-name">imageGrid <span class="ko">이미지 갤러리</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">5</div><div class="block-name">priceTable <span class="ko">가격표</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">6</div><div class="block-name">customerReview <span class="ko">고객 리뷰</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">7</div><div class="block-name">highlightCallout <span class="ko">핵심 차별점</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">8</div><div class="block-name">notice <span class="ko">안내사항</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="na-section">
+      <div class="na-title">사용 불가 (NOT APPLICABLE)</div>
+      <div class="na-list">
+        <span class="na-item">exclusiveHeader</span>
+        <span class="na-item">guideProfile</span>
+        <span class="na-item">guideIntro</span>
+        <span class="na-item">painPointCards</span>
+        <span class="na-item">trustPoints</span>
+        <span class="na-item">visualTimeline</span>
+        <span class="na-item">programCard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pilots">
+    <div class="section-title">파일럿</div>
+    <div class="pilot-grid">
+      <div class="pilot-card">
+        <div class="pilot-name">해리포터 스튜디오 입장권</div>
+        <div class="pilot-desc">TICKET 카테고리. 실제 CDN 이미지 포함</div>
+        <a class="pilot-link" href="pilot-ticket-harrypotter.html">열어보기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TOUR ═══════════════ -->
+<div class="tab-content" id="TOUR">
+  <div class="overview">
+    <div>
+      <h2>일반 투어/체험</h2>
+      <div class="desc">PB Exclusive가 아닌 일반 투어 상품</div>
+      <div class="meta">
+        <div class="meta-item">블록 수: <strong>최소 3개 – 최대 12개</strong></div>
+      </div>
+      <div class="subtypes">
+        <div class="subtypes-label">서브타입 (블록 조합 동일, 권장 강조 블록 상이)</div>
+        <div class="subtype-chips">
+          <span class="subtype-chip">가이드 투어 <span class="hint">guideIntro 권장</span></span>
+          <span class="subtype-chip">스냅·스파·미식 <span class="hint">imageGrid 중심</span></span>
+          <span class="subtype-chip">골프·특수투어 <span class="hint">notice 강조</span></span>
+        </div>
+      </div>
+    </div>
+    <span class="tier-badge generic">GENERIC</span>
+  </div>
+
+  <div class="block-order">
+    <div class="section-title">블록 배치 순서</div>
+    <div class="block-item"><div class="block-seq">1</div><div class="block-name">heroImage <span class="ko">히어로 이미지</span></div><span class="mode-badge image">image</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">2</div><div class="block-name">introSection <span class="ko">상품 소개</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">3</div><div class="block-name">numberedList <span class="ko">이용안내</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">4</div><div class="block-name">imageGrid <span class="ko">이미지 갤러리</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">5</div><div class="block-name">guideIntro <span class="ko">가이드 소개 (간략)</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">6</div><div class="block-name">customerReview <span class="ko">고객 리뷰</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">7</div><div class="block-name">recommendBox <span class="ko">추천 포인트</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">8</div><div class="block-name">sectionHeader <span class="ko">프로그램 제목</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">9</div><div class="block-name">highlightCallout <span class="ko">핵심 차별점</span></div><span class="mode-badge structured">structured</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">10</div><div class="block-name">priceTable <span class="ko">가격표</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">11</div><div class="block-name">notice <span class="ko">안내사항</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="na-section">
+      <div class="na-title">사용 불가 (NOT APPLICABLE)</div>
+      <div class="na-list">
+        <span class="na-item">exclusiveHeader</span>
+        <span class="na-item">painPointCards</span>
+        <span class="na-item">trustPoints</span>
+        <span class="na-item">guideProfile</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pilots">
+    <div class="section-title">파일럿</div>
+    <div class="pilot-grid">
+      <div class="pilot-card">
+        <div class="pilot-name">수향마을 체험 투어</div>
+        <div class="pilot-desc">TOUR 카테고리. customerReview, guideIntro 블록 포함</div>
+        <a class="pilot-link" href="pilot-tour-suyang.html">열어보기</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SEMI_PACKAGE ═══════════════ -->
+<div class="tab-content" id="SEMI_PACKAGE">
+  <div class="overview">
+    <div>
+      <h2>세미패키지</h2>
+      <div class="desc">호텔 포함 다일정 상품 — packageOverview + Day별 일정 + 호텔 안내 + FAQ가 핵심</div>
+      <div class="meta">
+        <div class="meta-item">블록 수: <strong>최소 7개 – 최대 18개</strong></div>
+        <div class="meta-item">전용 블록: <strong>4개 (신규 설계 완료)</strong></div>
+      </div>
+    </div>
+    <span class="tier-badge generic">GENERIC</span>
+  </div>
+
+  <div class="block-order">
+    <div class="section-title">블록 배치 순서</div>
+    <div class="block-item"><div class="block-seq">1</div><div class="block-name">heroImage <span class="ko">히어로 이미지</span></div><span class="mode-badge image">image</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">2</div><div class="block-name">introSection <span class="ko">상품 소개</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item" style="border-color: rgba(21,131,219,0.3);"><div class="block-seq" style="background:rgba(21,131,219,0.15);color:#1583DB;">N</div><div class="block-name" style="color:#1583DB;">packageOverview <span class="ko">구성 한눈에 보기</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge required">필수</span></div>
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+    <div class="block-item" style="border-color: rgba(21,131,219,0.3);"><div class="block-seq" style="background:rgba(21,131,219,0.15);color:#1583DB;">N</div><div class="block-name" style="color:#1583DB;">dayItinerary <span class="ko">Day별 일정</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+    <div class="block-item" style="border-color: rgba(21,131,219,0.3);"><div class="block-seq" style="background:rgba(21,131,219,0.15);color:#1583DB;">N</div><div class="block-name" style="color:#1583DB;">hotelInfo <span class="ko">호텔 안내</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge required">필수</span></div>
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+    <div class="block-item"><div class="block-seq">7</div><div class="block-name">imageGrid <span class="ko">이미지 갤러리</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">8</div><div class="block-name">highlightCallout <span class="ko">핵심 차별점</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+    <div class="block-item"><div class="block-seq">9</div><div class="block-name">priceTable <span class="ko">가격표</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">10</div><div class="block-name">numberedList <span class="ko">이용안내</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="divider-indicator"><span class="divider-line"></span><span class="divider-text">구분선</span><span class="divider-line"></span></div>
+    <div class="block-item" style="border-color: rgba(21,131,219,0.3);"><div class="block-seq" style="background:rgba(21,131,219,0.15);color:#1583DB;">N</div><div class="block-name" style="color:#1583DB;">faqAccordion <span class="ko">자주 묻는 질문</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">12</div><div class="block-name">notice <span class="ko">안내사항</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">13</div><div class="block-name">customerReview <span class="ko">고객 리뷰</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="na-section">
+      <div class="na-title">사용 불가 (NOT APPLICABLE)</div>
+      <div class="na-list">
+        <span class="na-item">exclusiveHeader</span>
+        <span class="na-item">painPointCards</span>
+        <span class="na-item">trustPoints</span>
+        <span class="na-item">guideProfile</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pilots">
+    <div class="section-title">파일럿</div>
+    <div class="pilot-grid">
+      <div class="pilot-card">
+        <div class="pilot-name">상하이 3박4일</div>
+        <div class="pilot-desc">SEMI_PACKAGE 대표 PoC. 신규 블록 4개 포함, Figma 기반 설계</div>
+        <a class="pilot-link" href="pilot-semi-shanghai.html">열어보기</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rules">
+    <div class="section-title">전용 블록 (N = 신규)</div>
+    <div class="rule-item"><code>packageOverview</code> 구성 한눈에 보기. 일정/인원/호텔/차량/가이드/보험 아이콘 그리드 (3열)</div>
+    <div class="rule-item"><code>dayItinerary</code> Day 1–N 형태의 다일정 타임라인. <code>visualTimeline</code>(단일일정 AM/PM)과 구조적으로 다름</div>
+    <div class="rule-item"><code>hotelInfo</code> 호텔 등급/위치/객실/조식 정보 카드. 최대 4개 호텔 나열</div>
+    <div class="rule-item"><code>faqAccordion</code> Q&A 아코디언. schema.org FAQPage 구조화 데이터로 검색 리치 스니펫 지원</div>
+    <div class="rule-item" style="color:#636363;"><code>surchargeTable</code>은 <code>priceTable</code>의 행(싱글룸 추가요금)으로 흡수 — 별도 블록 불필요</div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONVENIENCE ═══════════════ -->
+<div class="tab-content" id="CONVENIENCE">
+  <div class="overview">
+    <div>
+      <h2>편의/서비스</h2>
+      <div class="desc">유심, 포켓와이파이, 수하물배송 등</div>
+      <div class="meta">
+        <div class="meta-item">블록 수: <strong>최소 3개 - 최대 8개</strong></div>
+      </div>
+    </div>
+    <span class="tier-badge generic">GENERIC</span>
+  </div>
+
+  <div class="block-order">
+    <div class="section-title">블록 배치 순서</div>
+    <div class="block-item"><div class="block-seq">1</div><div class="block-name">heroImage <span class="ko">히어로 이미지</span></div><span class="mode-badge image">image</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">2</div><div class="block-name">introSection <span class="ko">상품 소개</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">3</div><div class="block-name">numberedList <span class="ko">이용안내</span></div><span class="mode-badge structured">structured</span><span class="status-badge required">필수</span></div>
+    <div class="block-item"><div class="block-seq">4</div><div class="block-name">priceTable <span class="ko">가격표</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">5</div><div class="block-name">customerReview <span class="ko">고객 리뷰</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+    <div class="block-item"><div class="block-seq">6</div><div class="block-name">imageGrid <span class="ko">이미지 갤러리</span></div><span class="mode-badge hybrid">hybrid</span><span class="status-badge optional">선택</span></div>
+    <div class="block-item"><div class="block-seq">7</div><div class="block-name">notice <span class="ko">안내사항</span></div><span class="mode-badge structured">structured</span><span class="status-badge recommended">권장</span></div>
+
+    <div class="na-section">
+      <div class="na-title">사용 불가 (NOT APPLICABLE)</div>
+      <div class="na-list">
+        <span class="na-item">exclusiveHeader</span>
+        <span class="na-item">painPointCards</span>
+        <span class="na-item">guideProfile</span>
+        <span class="na-item">guideIntro</span>
+        <span class="na-item">trustPoints</span>
+        <span class="na-item">visualTimeline</span>
+        <span class="na-item">programCard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pilots">
+    <div class="section-title">파일럿</div>
+    <div class="pilot-grid">
+      <div class="pilot-card placeholder"><div class="pilot-name">파일럿 준비 중</div><div class="pilot-desc">편의/서비스 카테고리 PoC는 아직 작성되지 않았어요</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPARISON MATRIX ═══════════════ -->
+<section class="matrix-section">
+  <h2>전체 비교 매트릭스</h2>
+  <p class="desc">21개 블록 x 5개 카테고리 — 필수/권장/선택/사용불가</p>
+
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>블록</th>
+          <th>PB Exclusive</th>
+          <th>티켓</th>
+          <th>일반 투어</th>
+          <th>세미패키지</th>
+          <th>편의</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>exclusiveHeader</td><td class="m-req">필수</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td></tr>
+        <tr><td>heroImage</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td></tr>
+        <tr><td>introSection</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td></tr>
+        <tr><td>painPointCards</td><td class="m-rec">권장</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td></tr>
+        <tr><td>guideProfile</td><td class="m-rec">권장</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td></tr>
+        <tr><td>guideIntro</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-rec">권장</td><td class="m-opt">선택</td><td class="m-na">-</td></tr>
+        <tr><td>recommendBox</td><td class="m-rec">권장</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-opt">선택</td></tr>
+        <tr><td>sectionHeader</td><td class="m-req">필수</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-opt">선택</td></tr>
+        <tr><td>programCard</td><td class="m-req">필수</td><td class="m-na">-</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-na">-</td></tr>
+        <tr><td>visualTimeline</td><td class="m-rec">권장</td><td class="m-na">-</td><td class="m-opt">선택</td><td class="m-rec">권장</td><td class="m-na">-</td></tr>
+        <tr><td>highlightCallout</td><td class="m-rec">권장</td><td class="m-opt">선택</td><td class="m-opt">선택</td><td class="m-rec">권장</td><td class="m-opt">선택</td></tr>
+        <tr><td>trustPoints</td><td class="m-req">필수</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td></tr>
+        <tr><td>numberedList</td><td class="m-opt">선택</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td><td class="m-req">필수</td></tr>
+        <tr><td>priceTable</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-req">필수</td><td class="m-rec">권장</td></tr>
+        <tr><td>imageGrid</td><td class="m-opt">선택</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-opt">선택</td></tr>
+        <tr><td>customerReview</td><td class="m-opt">선택</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td></tr>
+        <tr><td>notice</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td><td class="m-rec">권장</td></tr>
+        <tr style="border-top: 2px solid rgba(21,131,219,0.3);"><td style="color:#1583DB;">packageOverview</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-req">필수</td><td class="m-na">-</td></tr>
+        <tr><td style="color:#1583DB;">dayItinerary</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-req">필수</td><td class="m-na">-</td></tr>
+        <tr><td style="color:#1583DB;">hotelInfo</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-req">필수</td><td class="m-na">-</td></tr>
+        <tr><td style="color:#1583DB;">faqAccordion</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-na">-</td><td class="m-rec">권장</td><td class="m-na">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.cat).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

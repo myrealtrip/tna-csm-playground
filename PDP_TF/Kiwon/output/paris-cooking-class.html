@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>파리 쿠킹 클래스 — Hybrid PDP PoC</title>
+<meta name="description" content="프랑스 현지 제과사와 함께하는 파리 쿠킹 클래스. 현지 시장 장보기 + 세이보리 타르트 만들기 + 프렌치 브런치. 꼬르동 블루 졸업 셰프 이소라.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "파리 쿠킹 클래스 + 현지 시장 장보기",
+  "description": "프랑스 현지 제과사와 함께하는 파리 쿠킹 클래스. 현지 시장 탐방, 세이보리 타르트 제작, 프렌치 브런치.",
+  "touristType": ["미식 여행자", "쿠킹 체험", "파리 방문자"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "duration": "PT3H30M",
+  "maximumAttendeeCapacity": 6
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619; --c-gray-950: #141719; --c-gray-900: #101418;
+    --c-gray-850: #212529; --c-gray-800: #343A40; --c-gray-700: #495056;
+    --c-gray-600: #636363; --c-gray-550: #595959; --c-gray-500: #848C94;
+    --c-gray-400: #ADB5BD; --c-gray-200: #DEE2E6; --c-gray-100: #E5E5E5;
+    --c-gray-80: #F1F3F5; --c-gray-50: #F5F6F7;
+    --c-blue-600: #1583DB; --c-blue-80: #E7F4FD;
+    --c-red-500: #EC4937;
+    --c-yellow-200: #FFF2C6; --c-yellow-100: #FBFFE7;
+    --c-yellow-50: #FDF1B5; --c-yellow-warm: #FFE390;
+    --c-white: #FFFFFF; --c-black: #000000;
+    --pdp-text-primary: var(--c-gray-1000); --pdp-text-secondary: var(--c-gray-800);
+    --pdp-text-tertiary: var(--c-gray-500); --pdp-text-on-dark: var(--c-white);
+    --pdp-bg: var(--c-white); --pdp-bg-sub: var(--c-gray-80);
+    --pdp-bg-card: var(--c-gray-50); --pdp-accent: var(--c-blue-600);
+    --pdp-caution: var(--c-red-500);
+    --pdp-section-pt: 32px; --pdp-section-pb: 24px;
+    --pdp-title-gap: 14px; --pdp-item-gap: 24px; --pdp-card-padding: 20px;
+    --pdp-img-gap: 12px; --pdp-img-hero-h: 458px; --pdp-img-section-h: 232px;
+    --pdp-img-step-h: 180px; --pdp-img-grid-h: 160px;
+    --pdp-img-card-lg-h: 254px; --pdp-img-radius: 10px; --pdp-img-radius-lg: 24px;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px; --content-w: 350px; --content-inset: 342px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-family); background: #E8E8E8; display: flex; justify-content: center; -webkit-font-smoothing: antialiased; }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  .img-placeholder { background-size: cover; background-position: center; background-repeat: no-repeat; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+  .img-placeholder .label { background: rgba(0,0,0,0.45); color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; pointer-events: none; backdrop-filter: blur(2px); }
+  .exclusive-header { width: 390px; height: 102px; background: var(--c-gray-900); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; }
+  .exclusive-header .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%); pointer-events: none; }
+  .exclusive-header .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1; }
+  .exclusive-header .tagline { font-size: 15px; font-weight: 700; color: var(--c-white); letter-spacing: -0.3px; position: relative; z-index: 1; }
+  .exclusive-header .subtitle { font-size: 12px; font-weight: 400; color: var(--c-gray-400); letter-spacing: -0.24px; position: relative; z-index: 1; }
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; font-size: 14px; }
+  .intro-section { padding: 60px 20px 23px; text-align: center; }
+  .intro-section .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .intro-section h1 { font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.44; }
+  .intro-visual { width: 100%; height: 200px; border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .pain-point-cards { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .pain-card { background: var(--c-gray-50); border-radius: 12px; padding: 20px 30px; text-align: center; font-size: 16px; font-weight: 500; color: var(--c-gray-850); letter-spacing: -0.32px; line-height: 1.35; }
+  .guide-profile { padding: 32px 20px 24px; }
+  .guide-profile .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .guide-profile .photo { width: 350px; height: 170px; border-radius: 12px; margin-bottom: 16px; }
+  .guide-profile .role { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 4px; }
+  .guide-profile .name { font-size: 18px; font-weight: 700; color: var(--c-gray-1000); margin-bottom: 8px; }
+  .guide-profile .bio { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; margin-bottom: 8px; }
+  .guide-profile .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 20px; border-top: 1px solid var(--c-gray-100); padding-top: 16px; }
+  .guide-profile .stat { text-align: center; }
+  .guide-profile .stat + .stat { border-left: 1px solid var(--c-gray-100); }
+  .guide-profile .stat-value { font-size: 15px; font-weight: 700; color: var(--c-black); margin-bottom: 4px; }
+  .guide-profile .stat-label { font-size: 11px; font-weight: 500; color: var(--c-gray-700); }
+  .recommend-box { padding: 0 20px 24px; }
+  .recommend-box .box { background: var(--c-gray-50); border-radius: 10px; padding: 10px; }
+  .recommend-box .box-inner { padding: 10px 12px; }
+  .recommend-box .box-title { font-size: 14px; font-weight: 700; color: var(--c-black); margin-bottom: 8px; }
+  .recommend-box .check-item { font-size: 14px; font-weight: 500; color: var(--c-black); line-height: 1.72; padding-left: 20px; position: relative; }
+  .recommend-box .check-item::before { content: '\2713'; position: absolute; left: 0; color: var(--c-blue-600); font-weight: 700; }
+  .section-header { padding: 50px 20px 33px; text-align: center; }
+  .section-header .tag { display: inline-block; background: var(--c-gray-900); color: var(--c-white); font-size: 13px; font-weight: 600; letter-spacing: -0.13px; padding: 2px 4px; border-radius: 6px; margin-bottom: 18px; }
+  .section-header h2 { font-size: 26px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.52px; line-height: 1.24; }
+  .program-card { padding: 0 24px 32px; }
+  .program-card .card-image { width: 342px; height: 254px; border-radius: 24px; margin-bottom: 16px; }
+  .program-card h3 { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; }
+  .program-card .duration { font-size: 15px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.15px; }
+  .program-card .desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; margin-top: 10px; }
+  .highlight-callout { margin: 0 24px 24px; width: 342px; height: 76px; border-radius: 8px; background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390); padding: 19px 15px; display: flex; flex-direction: column; justify-content: center; }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.13px; }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 32px; }
+  .timeline-item { margin-bottom: 50px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image { width: 350px; height: 170px; border-radius: 10px; margin-bottom: 15px; }
+  .timeline-item .badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--c-gray-900); padding: 2.5px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .tl-title { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 10px; }
+  .timeline-item .tl-desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; }
+  .numbered-list { padding: 32px 20px 24px; }
+  .numbered-list .list-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .numbered-list .list-subtitle { font-size: 15px; font-weight: 700; color: var(--c-gray-900); margin-bottom: 12px; }
+  .numbered-list .list-subtitle.excluded { margin-top: 24px; }
+  .num-list { display: flex; flex-direction: column; gap: 24px; }
+  .num-item { display: flex; flex-direction: column; }
+  .num-item-header { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .num-item .num { font-size: 13px; font-weight: 700; color: var(--c-blue-600); flex-shrink: 0; min-width: 18px; }
+  .num-item .num-title { font-size: 14px; font-weight: 600; color: var(--c-gray-800); line-height: 1.52; }
+  .list-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: baseline; }
+  .list-item .num { font-size: 13px; font-weight: 700; flex-shrink: 0; min-width: 18px; }
+  .list-item .num.excluded { color: var(--c-gray-500); }
+  .list-item .item-text { font-size: 14px; font-weight: 500; color: var(--c-gray-800); line-height: 1.52; }
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+  .trust-points { width: 390px; min-height: 496px; background: var(--c-gray-900); position: relative; overflow: hidden; padding: 63px 20px 43px; text-align: center; }
+  .trust-points .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%); pointer-events: none; }
+  .trust-points .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; position: relative; z-index: 1; }
+  .trust-points .headline { font-size: 26px; font-weight: 700; color: var(--c-white); letter-spacing: -0.52px; line-height: 1.24; margin-bottom: 55px; position: relative; z-index: 1; }
+  .trust-item { text-align: center; margin-bottom: 27px; position: relative; z-index: 1; }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon { width: 40px; height: 40px; margin: 0 auto 12px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .trust-item .trust-title { font-size: 18px; font-weight: 700; color: var(--c-white); line-height: 1.35; margin-bottom: 5px; }
+  .trust-item .trust-desc { font-size: 14px; font-weight: 500; color: var(--c-gray-400); letter-spacing: -0.28px; line-height: 1.34; }
+  .block-section { position: relative; }
+  .block-section::before { content: attr(data-block) ' \2014 ' attr(data-mode); position: absolute; top: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10; letter-spacing: 0.5px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover::before { opacity: 1; }
+  [data-output]::after { content: attr(data-output); position: absolute; bottom: 2px; right: 2px; background: rgba(21,131,219,0.8); color: #fff; font-size: 9px; font-weight: 600; padding: 1px 4px; border-radius: 3px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .block-section:hover [data-output]::after { opacity: 1; }
+  [data-output] { position: relative; }
+  .poc-legend { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #fff; font-size: 11px; padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100; backdrop-filter: blur(8px); }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">파리에서 직접 만드는 프렌치 브런치</p>
+    <p class="subtitle" data-output="html">꼬르동 블루 졸업 셰프와 함께하는 쿠킹 클래스</p>
+  </section>
+
+  <!-- ═══ 2. heroImage ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/oa0o/fR1WV0B3tJ.JPG');"></div>
+  </section>
+
+  <!-- ═══ 3. introSection ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h1 data-output="html">파리 현지 시장에서<br>장 보고, 직접 만드는<br>프렌치 브런치</h1>
+    <p class="body" data-output="html">파리 요리학교 Le Cordon Bleu 졸업,<br>14년차 파리 거주 현직 셰프와 함께<br>현지 시장 탐방부터 세이보리 타르트 만들기,<br>그리고 행복한 프렌치 브런치까지.</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/07/06/LlPj/8KYnu1Ybmz.jpg');"></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">"파리에서 진짜 현지인처럼<br>시장에서 장을 보고 요리해볼 수 있을까?"</div>
+    <div class="pain-card" data-output="html">"관광지 쿠킹 클래스 말고,<br>현직 셰프에게 제대로 배우고 싶은데"</div>
+    <div class="pain-card" data-output="html">"언어 장벽 없이 프랑스 식문화를<br>깊이 있게 체험하고 싶다면"</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">이 클래스를 만든 사람</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/2GSb/ScpJZaWCVU.JPG');"></div>
+    <p class="role" data-output="html">파리 현지 셰프 · 꼬르동 블루 졸업</p>
+    <p class="name" data-output="html">이소라</p>
+    <p class="bio" data-output="html">파리 거주 14년차. 파리 꼬르동 블루를 졸업하고 현직 파티셰로 활동 중. 프랑스 제과 장인 쉐프들과 함께 호흡하며 익힌 지식과 노하우를 여행자들에게 전하고 있습니다. 2025년 홍익대학교 문화예술경영대학원 특강 진행.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">5.0</div>
+        <div class="stat-label" data-output="html">평점</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">44건</div>
+        <div class="stat-label" data-output="html">후기</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">14년</div>
+        <div class="stat-label" data-output="html">파리 거주</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 추천해요</p>
+        <p class="check-item" data-output="html">프랑스 식문화를 직접 체험하고 싶은 분</p>
+        <p class="check-item" data-output="html">파리에서 특별한 경험을 하고 싶은 분</p>
+        <p class="check-item" data-output="html">소수정예로 재미있는 시간을 보내실 분</p>
+        <p class="check-item" data-output="html">현직 셰프에게 진짜 레시피를 배우고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">PROGRAM</span>
+    <h2 data-output="html">시장 장보기부터<br>브런치까지,<br>3시간 30분의 미식 여정</h2>
+  </section>
+
+  <!-- ═══ 8. programCard ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/rP80/A1KetGXIpT.JPG');"></div>
+    <h3 data-output="html">15구 현지 시장 탐방 및 장보기</h3>
+    <span class="duration" data-output="html">60분 소요</span>
+    <p class="desc" data-output="html">15구 현지 동네 사람들이 이용하는 시장을 구경합니다. 프랑스 유명 디저트 매장, 바게트 1위 제빵점, 과일 가게, 햄 전문점, 치즈 가게를 둘러보며 브런치용 재료를 구매합니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/JFN2/vyihsvcpED.JPG');"></div>
+    <h3 data-output="html">쿠킹 클래스</h3>
+    <span class="duration" data-output="html">90분 소요</span>
+    <p class="desc" data-output="html">쿠킹 아틀리에에서 프랑스 전통 세이보리 타르트 반죽을 직접 만듭니다. 몰드로 찍어낸 후 오븐에 넣어 굽고, 각자 취향에 맞는 토핑을 올리는 시간입니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/keOI/HIh9GWLttL.JPG');"></div>
+    <h3 data-output="html">행복한 프렌치 브런치</h3>
+    <span class="duration" data-output="html">60분 소요</span>
+    <p class="desc" data-output="html">직접 만든 세이보리 타르트와 시장에서 구매한 햄, 치즈, 과일, 바게트, 디저트를 곁들여 푸짐한 프렌치 브런치를 즐기는 시간입니다.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">세이보리 타르트 레시피 + 파리 맛집 리스트 제공</p>
+    <p class="hl-subtitle" data-output="html">클래스 후에도 집에서 재현할 수 있는 레시피를 드려요</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">클래스 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/crGo/YvUBsp0i0d.JPG');"></div>
+      <span class="badge am" data-output="html">09:00</span>
+      <h4 class="tl-title" data-output="html">현지 시장 탐방 및 장보기</h4>
+      <p class="tl-desc" data-output="html">12호선 Volontaires역 앞에서 만나 15구 현지 시장으로 이동. 프랑스 치즈, 햄, 과일을 구매합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/5582/seWs3p3Boa.JPG');"></div>
+      <span class="badge am" data-output="html">10:00</span>
+      <h4 class="tl-title" data-output="html">쿠킹 클래스 시작</h4>
+      <p class="tl-desc" data-output="html">쿠킹 아틀리에에서 프랑스 전통 세이보리 타르트를 직접 만듭니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2025/10/19/1nQY/CNgZtzhnNq.JPG');"></div>
+      <span class="badge pm" data-output="html">11:30</span>
+      <h4 class="tl-title" data-output="html">프렌치 브런치 타임</h4>
+      <p class="tl-desc" data-output="html">직접 만든 타르트와 시장 재료로 풍성한 브런치를 즐깁니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함 사항</h2>
+
+    <p class="list-subtitle" data-output="html">포함되어 있어요</p>
+    <div class="num-list">
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">01</span><p class="num-title" data-output="html">쿠킹 클래스 식재료 (세이보리 타르트)</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">02</span><p class="num-title" data-output="html">직접 만든 세이보리 타르트 식사</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">03</span><p class="num-title" data-output="html">샐러드 + 파리 1등 바게트</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">04</span><p class="num-title" data-output="html">음료 (탄산음료/탄산수 중 택1)</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">05</span><p class="num-title" data-output="html">세이보리 타르트 레시피</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">06</span><p class="num-title" data-output="html">파리 맛집 리스트</p></div></div>
+      <div class="num-item"><div class="num-item-header"><span class="num" data-output="html">07</span><p class="num-title" data-output="html">프랑스 식문화 · 식재료 설명</p></div></div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함되어 있어요</p>
+    <div class="list-item"><span class="num excluded" data-output="html">01</span><p class="item-text" data-output="html">브런치용 치즈, 햄, 과일, 디저트 개인 구매 (최소 10유로/인)</p></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html">특정 음식 <strong>알레르기</strong>가 있으시면 사전에 알려주세요.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html">도보 이동이 포함된 투어입니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html">추가로 넣고 싶은 식재료가 있다면 시장에서 직접 구매 가능합니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html"><strong>녹음은 허용되지 않습니다.</strong></p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html"><strong>여행자 보험</strong> 가입을 추천합니다.</p></div>
+    <div class="notice-item"><span class="dot"></span><p class="text" data-output="html">최소 모객 인원 미만 시 취소될 수 있습니다.</p></div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">마이리얼트립이<br>직접 검증한 클래스</h2>
+    <div class="trust-item">
+      <div class="icon">&#x1F468;&#x200D;&#x1F373;</div>
+      <p class="trust-title" data-output="html">꼬르동 블루 졸업 현직 셰프</p>
+      <p class="trust-desc" data-output="html">파리 14년 거주, 프랑스 제과 장인들과<br>함께 호흡한 전문 파티셰</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x2B50;</div>
+      <p class="trust-title" data-output="html">평점 5.0 / 후기 44건</p>
+      <p class="trust-desc" data-output="html">압도적인 만족도<br>재미와 맛을 동시에 잡은 클래스</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F3AF;</div>
+      <p class="trust-title" data-output="html">시장 + 쿠킹 + 브런치 올인원</p>
+      <p class="trust-desc" data-output="html">현지 시장 탐방, 요리 체험, 식사까지<br>3시간 30분 풀코스 프랑스 미식 경험</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">파리에서 직접 만드는 프렌치 브런치</p>
+    <p class="subtitle" data-output="html">꼬르동 블루 졸업 셰프와 함께하는 쿠킹 클래스</p>
+  </section>
+
+</main>
+</body>
+</html>

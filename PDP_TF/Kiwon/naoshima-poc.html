@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>나오시마 워킹투어 — Hybrid PDP PoC</title>
+<meta name="description" content="나오시마 아트 아일랜드 워킹투어. 이우환 미술관, 지중미술관, 베네세 하우스를 한국어 도슨트와 함께.">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "나오시마 아트 아일랜드 워킹투어",
+  "description": "예술의 섬 나오시마를 한국어 도슨트와 함께 걸으며 안도 타다오 건축과 현대미술을 만나는 하루",
+  "touristType": ["Art Tour", "Walking Tour", "Cultural Tour"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "offers": [
+    { "@type": "Offer", "name": "프라이빗 1인", "price": 323000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "프라이빗 2인", "price": 198000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "프라이빗 3–4인", "price": 158000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "그룹 5–8인", "price": 128000, "priceCurrency": "KRW", "availability": "InStock" }
+  ],
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 5,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "이우환 미술관",
+          "description": "세계적인 현대미술 거장 이우환의 작품 세계를 만나는 안도 타다오 건축 미술관",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.4446, "longitude": 133.9958 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "지중미술관",
+          "description": "안도 타다오가 설계한 지하 미술관. 클로드 모네, 월터 드 마리아, 제임스 터렐의 작품이 자연광 아래 전시",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.4483, "longitude": 133.9944 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "베네세 하우스",
+          "description": "미술관과 호텔이 결합된 독특한 공간. 야외 설치 작품과 바다가 어우러진 풍경",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.4430, "longitude": 133.9975 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "쿠사마 야요이 호박",
+          "description": "나오시마의 상징. 쿠사마 야요이의 노란 호박과 빨간 호박",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.4407, "longitude": 133.9990 }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "TouristAttraction",
+          "name": "나오시마 목욕탕 I♥湯",
+          "description": "아라카와 슈사쿠 작가의 실제 운영되는 목욕탕 겸 예술 작품",
+          "geo": { "@type": "GeoCoordinates", "latitude": 34.4614, "longitude": 134.0009 }
+        }
+      }
+    ]
+  },
+  "performer": {
+    "@type": "Person",
+    "name": "김은주",
+    "jobTitle": "한국인 도슨트",
+    "description": "시각디자인 전공, 나오시마 거주 3년차"
+  },
+  "duration": "PT8H",
+  "maximumAttendeeCapacity": 8
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "최대 인원은 몇 명인가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "최대 8명 소규모 프라이빗 투어입니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "취소 조건은 무엇인가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "페리 미운항 시 전액 환불됩니다. 단순 기상 악화는 취소 사유가 아닙니다." }
+    },
+    {
+      "@type": "Question",
+      "name": "집합 장소는 어디인가요?",
+      "acceptedAnswer": { "@type": "Answer", "text": "다카마쓰항 페리 터미널입니다. 우노항 출발은 불가합니다." }
+    }
+  ]
+}
+</script>
+
+<style>
+  /* ── Design Tokens (from pdp-tokens.json) ── */
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+    --content-w: 350px;
+    --content-inset: 342px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Canvas ── */
+  .pdp-canvas {
+    width: var(--canvas-w);
+    background: var(--c-white);
+    min-height: 100vh;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 8px;
+    background: var(--c-gray-80);
+  }
+
+  /* ── Image System: 파일 있으면 표시, 없으면 컬러 플레이스홀더 ── */
+  .img-placeholder {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: exclusiveHeader
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .exclusive-header {
+    width: 390px;
+    height: 102px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .exclusive-header .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .exclusive-header .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .tagline {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.3px;
+    position: relative;
+    z-index: 1;
+  }
+  .exclusive-header .subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--c-gray-400);
+    letter-spacing: -0.24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: heroImage
+     renderMode: image
+     ══════════════════════════════════════════ */
+  .hero-image {
+    width: 390px;
+    height: 458px;
+  }
+  .hero-image .img-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: introSection
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .intro-section {
+    padding: 60px 20px 23px;
+    text-align: center;
+  }
+  .intro-section .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .intro-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.56px;
+    line-height: 1.24;
+    margin-bottom: 16px;
+  }
+  .intro-section .body {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+    letter-spacing: -0.3px;
+    line-height: 1.44;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: painPointCards
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .pain-point-cards {
+    padding: 0 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pain-card {
+    background: var(--c-gray-50);
+    border-radius: 12px;
+    padding: 20px 30px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    letter-spacing: -0.32px;
+    line-height: 1.35;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: guideProfile (single variant)
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .guide-profile {
+    padding: 32px 20px 24px;
+  }
+  .guide-profile .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 24px;
+  }
+  .guide-profile .photo {
+    width: 350px;
+    height: 170px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .guide-profile .role {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    margin-bottom: 4px;
+  }
+  .guide-profile .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-gray-1000);
+    margin-bottom: 8px;
+  }
+  .guide-profile .bio {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.52;
+    margin-bottom: 8px;
+  }
+  .guide-profile .instagram {
+    font-size: 13px;
+    color: var(--c-blue-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .guide-profile .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 20px;
+    border-top: 1px solid var(--c-gray-100);
+    padding-top: 16px;
+  }
+  .guide-profile .stat {
+    text-align: center;
+  }
+  .guide-profile .stat + .stat {
+    border-left: 1px solid var(--c-gray-100);
+  }
+  .guide-profile .stat-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 4px;
+  }
+  .guide-profile .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--c-gray-700);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: recommendBox
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .recommend-box {
+    padding: 0 20px 24px;
+  }
+  .recommend-box .box {
+    background: var(--c-gray-50);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .recommend-box .box-inner {
+    padding: 10px 12px;
+  }
+  .recommend-box .box-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-black);
+    margin-bottom: 8px;
+  }
+  .recommend-box .check-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-black);
+    line-height: 1.72;
+    padding-left: 20px;
+    position: relative;
+  }
+  .recommend-box .check-item::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--c-blue-600);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: sectionHeader
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .section-header {
+    padding: 50px 20px 33px;
+    text-align: center;
+  }
+  .section-header .tag {
+    display: inline-block;
+    background: var(--c-gray-900);
+    color: var(--c-white);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.13px;
+    padding: 2px 4px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-gray-900);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: programCard
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .program-card {
+    padding: 0 24px 32px;
+  }
+  .program-card .card-image {
+    width: 342px;
+    height: 254px;
+    border-radius: 24px;
+    margin-bottom: 16px;
+  }
+  .program-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+  }
+  .program-card .duration {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-gray-500);
+    letter-spacing: -0.15px;
+  }
+  .program-card .desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+    margin-top: 10px;
+  }
+  .program-card .note-box {
+    background: var(--c-gray-50);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-550);
+    letter-spacing: -0.13px;
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: highlightCallout
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .highlight-callout {
+    margin: 0 24px 24px;
+    width: 342px;
+    height: 76px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .highlight-callout .hl-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    letter-spacing: -0.13px;
+  }
+  .highlight-callout .hl-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-gray-850);
+    margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: visualTimeline
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .visual-timeline {
+    padding: 32px 20px 24px;
+  }
+  .visual-timeline .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 32px;
+  }
+  .timeline-item {
+    margin-bottom: 50px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image {
+    width: 350px;
+    height: 170px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .timeline-item .badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-gray-900);
+    padding: 2.5px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .tl-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-gray-950);
+    letter-spacing: -0.19px;
+    line-height: 1.38;
+    margin-bottom: 10px;
+  }
+  .timeline-item .tl-desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    letter-spacing: -0.16px;
+    line-height: 1.38;
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: notice
+     renderMode: structured
+     ══════════════════════════════════════════ */
+  .notice {
+    padding: 32px 20px 24px;
+  }
+  .notice .notice-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--c-black);
+    letter-spacing: -0.48px;
+    margin-bottom: 20px;
+  }
+  .notice-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .notice-item .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c-red-500);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .notice-item .text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--c-gray-800);
+    line-height: 1.65;
+  }
+  .notice-item .text strong {
+    font-weight: 600;
+    color: var(--c-gray-900);
+  }
+
+  /* ══════════════════════════════════════════
+     BLOCK: trustPoints
+     renderMode: hybrid
+     ══════════════════════════════════════════ */
+  .trust-points {
+    width: 390px;
+    min-height: 496px;
+    background: var(--c-gray-900);
+    position: relative;
+    overflow: hidden;
+    padding: 63px 20px 43px;
+    text-align: center;
+  }
+  .trust-points .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .trust-points .logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--c-gray-400);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-points .headline {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--c-white);
+    letter-spacing: -0.52px;
+    line-height: 1.24;
+    margin-bottom: 55px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item {
+    text-align: center;
+    margin-bottom: 27px;
+    position: relative;
+    z-index: 1;
+  }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .trust-item .trust-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-white);
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+  .trust-item .trust-desc {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-gray-400);
+    letter-spacing: -0.28px;
+    line-height: 1.34;
+  }
+
+  /* ══════════════════════════════════════════
+     PoC Overlay: renderMode / output 태그
+     ══════════════════════════════════════════ */
+  .block-section {
+    position: relative;
+  }
+  .block-section::before {
+    content: attr(data-block) ' — ' attr(data-mode);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0 0 0 6px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover::before {
+    opacity: 1;
+  }
+  [data-output]::after {
+    content: attr(data-output);
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(21,131,219,0.8);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 4px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .block-section:hover [data-output]::after {
+    opacity: 1;
+  }
+  [data-output] { position: relative; }
+
+  /* ── PoC 범례 ── */
+  .poc-legend {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .poc-legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .poc-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader (hybrid) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <p class="tagline" data-output="html">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle" data-output="html">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+  <!-- ═══ 2. heroImage (image) — no divider ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%; background-color:#7BA3A8; background-image:url(images/naoshima/hero.jpg);">
+      <span class="label">hero.jpg · 390×458</span>
+    </div>
+  </section>
+
+  <!-- ═══ 3. introSection (structured) — no divider ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <h1 data-output="html">아트 아일랜드,<br>나오시마 워킹투어</h1>
+    <p class="body" data-output="html">예술의 섬 나오시마를 한국어 도슨트와 함께 걸으며<br>안도 타다오 건축과 현대미술을 만나는 하루</p>
+  </section>
+
+  <!-- ═══ 4. painPointCards (structured) ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">나오시마, 가고 싶은데 교통편이 너무 복잡해요</div>
+    <div class="pain-card" data-output="html">미술관이 많은데 어디부터 봐야 할지 모르겠어요</div>
+    <div class="pain-card" data-output="html">일본어를 못해서 작품 해설을 이해할 수 없어요</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile (hybrid, single) ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">가이드 소개</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-color:#8A8882; background-image:url(images/naoshima/guide-profile.jpg);"><span class="label">guide-profile.jpg · 350×170</span></div>
+    <p class="role" data-output="html">한국인 도슨트</p>
+    <p class="name" data-output="html">김은주</p>
+    <p class="bio" data-output="html">시각디자인 전공, 나오시마 거주 3년차. 안도 타다오 건축과 현대미술을 한국어로 깊이 있게 안내합니다.</p>
+    <a class="instagram" href="#" data-output="html">@naoshima_eunju</a>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">시각디자인</div>
+        <div class="stat-label" data-output="html">전문 분야</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">나오시마 3년</div>
+        <div class="stat-label" data-output="html">거주 경험</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">한국어 원어민</div>
+        <div class="stat-label" data-output="html">언어</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox (structured) ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분에게 추천해요</p>
+        <p class="check-item" data-output="html">미술관/갤러리 여행을 좋아하는 분</p>
+        <p class="check-item" data-output="html">안도 타다오 건축에 관심 있는 분</p>
+        <p class="check-item" data-output="html">혼자 여행하지만 해설을 듣고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader (structured) ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">Highlight 1</span>
+    <h2 data-output="html">나오시마<br>워킹투어</h2>
+  </section>
+
+  <!-- ═══ 8. programCard ×5 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#9AA093; background-image:url(images/naoshima/program-01-leeufan.jpg);"><span class="label">program-01-leeufan.jpg</span></div>
+    <h3 data-output="html">이우환 미술관</h3>
+    <span class="duration" data-output="html">30분</span>
+    <p class="desc" data-output="html">세계적인 현대미술 거장 이우환의 작품 세계를 만나는 안도 타다오 건축 미술관. 외부 정원의 조각 작품을 감상합니다.</p>
+    <div class="note-box" data-output="html">내부 입장은 별도 티켓 필요. 외부 관람은 무료입니다.</div>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#A8B0A0; background-image:url(images/naoshima/program-02-chichu.jpg);"><span class="label">program-02-chichu.jpg</span></div>
+    <h3 data-output="html">지중미술관</h3>
+    <span class="duration" data-output="html">60분</span>
+    <p class="desc" data-output="html">안도 타다오가 설계한 지하 미술관. 클로드 모네, 월터 드 마리아, 제임스 터렐의 작품이 자연광 아래 전시됩니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#94A8B0; background-image:url(images/naoshima/program-03-benesse.jpg);"><span class="label">program-03-benesse.jpg</span></div>
+    <h3 data-output="html">베네세 하우스</h3>
+    <span class="duration" data-output="html">40분</span>
+    <p class="desc" data-output="html">미술관과 호텔이 결합된 독특한 공간. 야외 설치 작품과 바다가 어우러진 풍경을 걸으며 감상합니다.</p>
+  </article>
+
+  <!-- ═══ highlightCallout (structured) ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">혼자라도 무조건 출발! 예약 즉시 확정</p>
+    <p class="hl-subtitle" data-output="html">1인 출발 보장 — 취소 걱정 없이 일정을 계획하세요</p>
+  </div>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#B8C4C8; background-image:url(images/naoshima/program-04-pumpkin.jpg);"><span class="label">program-04-pumpkin.jpg</span></div>
+    <h3 data-output="html">쿠사마 야요이 호박</h3>
+    <span class="duration" data-output="html">15분</span>
+    <p class="desc" data-output="html">나오시마의 상징. 쿠사마 야요이의 노란 호박과 빨간 호박 앞에서 인생샷을 남기는 시간.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-color:#C0A890; background-image:url(images/naoshima/program-05-bath.jpg);"><span class="label">program-05-bath.jpg</span></div>
+    <h3 data-output="html">나오시마 목욕탕 I♥湯</h3>
+    <span class="duration" data-output="html">20분</span>
+    <p class="desc" data-output="html">아라카와 슈사쿠 작가의 실제 운영되는 목욕탕 겸 예술 작품. 외관과 내부 인테리어 모두 작품입니다.</p>
+  </article>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 9. visualTimeline (hybrid) ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">나오시마 상세 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#6A8CA8; background-image:url(images/naoshima/tl-01-ferry.jpg);"><span class="label">tl-01-ferry.jpg</span></div>
+      <span class="badge am" data-output="html">오전 코스 | 8:30 - 9:00</span>
+      <h4 class="tl-title" data-output="html">다카마쓰항 출발</h4>
+      <p class="tl-desc" data-output="html">페리 안에서 나오시마 사전 브리핑. 섬의 역사와 예술 프로젝트를 미리 이해합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#9AA093; background-image:url(images/naoshima/tl-02-leeufan.jpg);"><span class="label">tl-02-leeufan.jpg</span></div>
+      <span class="badge am" data-output="html">오전 코스 | 9:30 - 10:00</span>
+      <h4 class="tl-title" data-output="html">이우환 미술관 관람</h4>
+      <p class="tl-desc" data-output="html">안도 타다오 건축물과 이우환 조각 작품을 도슨트 해설과 함께.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#A8B0A0; background-image:url(images/naoshima/tl-03-chichu.jpg);"><span class="label">tl-03-chichu.jpg</span></div>
+      <span class="badge am" data-output="html">오전 코스 | 10:00 - 11:00</span>
+      <h4 class="tl-title" data-output="html">지중미술관 감상</h4>
+      <p class="tl-desc" data-output="html">모네, 터렐, 드 마리아 작품을 자연광 아래에서 체험.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#C8B8A0; background-image:url(images/naoshima/tl-04-lunch.jpg);"><span class="label">tl-04-lunch.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 코스 | 12:00 - 13:00</span>
+      <h4 class="tl-title" data-output="html">현지 맛집에서 점심</h4>
+      <p class="tl-desc" data-output="html">가이드가 엄선한 나오시마 현지 식당에서 식사. 예산 2,000~3,000엔.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#B8C4C8; background-image:url(images/naoshima/tl-05-pumpkin.jpg);"><span class="label">tl-05-pumpkin.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 코스 | 13:30 - 15:00</span>
+      <h4 class="tl-title" data-output="html">호박 & 혼무라 마을 산책</h4>
+      <p class="tl-desc" data-output="html">쿠사마 야요이 호박, 이에 프로젝트, 나오시마 목욕탕을 도보로 탐방.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-color:#6A8CA8; background-image:url(images/naoshima/tl-06-return.jpg);"><span class="label">tl-06-return.jpg</span></div>
+      <span class="badge pm" data-output="html">오후 코스 | 16:00 - 17:00</span>
+      <h4 class="tl-title" data-output="html">다카마쓰항 귀환</h4>
+      <p class="tl-desc" data-output="html">미야노우라항에서 페리 탑승. 투어 마무리 및 자유 해산.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. notice (structured) ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>최대 인원 8명</strong>으로 소규모 프라이빗 투어입니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html"><strong>페리 미운항 시</strong> 전액 환불됩니다. 단순 기상 악화는 취소 사유가 아닙니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">집합 장소는 <strong>다카마쓰항 페리 터미널</strong>입니다. 우노항 출발은 불가합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">이우환 미술관은 <strong>외부 무료관람</strong>만 포함됩니다. 내부 입장은 별도 티켓을 현장 구매해 주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">편한 운동화를 신어 주세요. 하루 <strong>약 15,000보</strong> 정도 걷게 됩니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. trustPoints (hybrid) ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">실패 없는 여행의 기준,<br>마이 익스클루시브</h2>
+
+    <div class="trust-item">
+      <div class="icon">🚀</div>
+      <p class="trust-title" data-output="html">혼자라도 괜찮아요, 무조건 출발</p>
+      <p class="trust-desc" data-output="html">취소될까 봐 마음 졸이지 마세요.<br>예약 즉시 출발이 확정됩니다</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">🎫</div>
+      <p class="trust-title" data-output="html">번거로운 예약 걱정은 NO!</p>
+      <p class="trust-desc" data-output="html">교통, 입장권까지 준비해드려요.<br>오직 여행에만 집중하세요</p>
+    </div>
+
+    <div class="trust-item">
+      <div class="icon">💰</div>
+      <p class="trust-title" data-output="html">만족하지 못하셨다면 투어비는 0원</p>
+      <p class="trust-desc" data-output="html">퀄리티 보장 상품으로 결제 금액 그대로 돌려드려요.<br>마이리얼트립이 검증된 노하우로 만든 투어입니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ exclusiveHeader 하단 (2회째) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MY EXCLUSIVE</div>
+    <p class="tagline" data-output="html">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle" data-output="html">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+</main>
+
+</body>
+</html>

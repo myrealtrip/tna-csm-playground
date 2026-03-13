@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>구마모토 워킹투어 — Hybrid PDP PoC</title>
+<meta name="description" content="구마모토 수향마을 산책 + 시내 탐방 워킹투어. 한국어 가이드와 함께 구마모토성, 수전궁, 사쿠라노바바 조사이엔을 걷습니다.">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "구마모토 수향마을 & 시내 탐방 워킹투어",
+  "description": "수향마을의 맑은 수원지와 구마모토성의 웅장함을 한국어 가이드와 함께 걷는 하루",
+  "touristType": ["Walking Tour", "Cultural Tour", "City Tour"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "offers": [
+    { "@type": "Offer", "name": "프라이빗 1인", "price": 89000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "프라이빗 2인", "price": 69000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "프라이빗 3–4인", "price": 59000, "priceCurrency": "KRW", "availability": "InStock" },
+    { "@type": "Offer", "name": "그룹 5–8인", "price": 49000, "priceCurrency": "KRW", "availability": "InStock" }
+  ],
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem", "position": 1,
+        "item": {
+          "@type": "TouristAttraction", "name": "수전궁 (水前寺成趣園)",
+          "description": "350년 역사의 일본 정원. 후지산을 본뜬 축산과 아소의 복류수가 만든 연못",
+          "geo": { "@type": "GeoCoordinates", "latitude": 32.7868, "longitude": 130.7304 }
+        }
+      },
+      {
+        "@type": "ListItem", "position": 2,
+        "item": { "@type": "TouristAttraction", "name": "수원지 카페거리", "description": "맑은 지하수가 솟아나는 수원지 주변 골목 카페" }
+      },
+      {
+        "@type": "ListItem", "position": 3,
+        "item": { "@type": "TouristAttraction", "name": "시모도오리 상점가", "description": "구마모토 최대 아케이드 상점가" }
+      },
+      {
+        "@type": "ListItem", "position": 4,
+        "item": {
+          "@type": "TouristAttraction", "name": "구마모토성",
+          "description": "일본 3대 명성 중 하나. 2016년 지진 이후 복원 과정과 400년 역사",
+          "geo": { "@type": "GeoCoordinates", "latitude": 32.8060, "longitude": 130.7058 }
+        }
+      },
+      {
+        "@type": "ListItem", "position": 5,
+        "item": { "@type": "TouristAttraction", "name": "사쿠라노바바 조사이엔", "description": "구마모토성 앞 관광 복합시설. 구마모토 라멘, 말고기 요리 등 현지 미식" }
+      },
+      {
+        "@type": "ListItem", "position": 6,
+        "item": { "@type": "TouristAttraction", "name": "가미도오리 거리", "description": "레트로 감성 가득한 거리. 빈티지 숍과 현지 베이커리" }
+      }
+    ]
+  },
+  "performer": [
+    { "@type": "Person", "name": "박지현", "jobTitle": "한국인 가이드", "description": "구마모토 거주 5년차" },
+    { "@type": "Person", "name": "田中 유미", "alternateName": "다나카 유미", "jobTitle": "현지인 가이드", "description": "구마모토 출신, 한국어 6급" }
+  ],
+  "duration": "PT7H",
+  "maximumAttendeeCapacity": 8
+}
+</script>
+
+<style>
+  :root {
+    --c-gray-1000: #141619;
+    --c-gray-950:  #141719;
+    --c-gray-900:  #101418;
+    --c-gray-850:  #212529;
+    --c-gray-800:  #343A40;
+    --c-gray-700:  #495056;
+    --c-gray-600:  #636363;
+    --c-gray-550:  #595959;
+    --c-gray-500:  #848C94;
+    --c-gray-400:  #ADB5BD;
+    --c-gray-200:  #DEE2E6;
+    --c-gray-100:  #E5E5E5;
+    --c-gray-80:   #F1F3F5;
+    --c-gray-50:   #F5F6F7;
+    --c-blue-600:  #1583DB;
+    --c-blue-80:   #E7F4FD;
+    --c-red-500:   #EC4937;
+    --c-yellow-200:#FFF2C6;
+    --c-yellow-100:#FBFFE7;
+    --c-yellow-50: #FDF1B5;
+    --c-yellow-warm:#FFE390;
+    --c-white:     #FFFFFF;
+    --c-black:     #000000;
+    --font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --canvas-w: 390px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-family);
+    background: #E8E8E8;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+  .pdp-canvas { width: var(--canvas-w); background: var(--c-white); min-height: 100vh; }
+  .divider { height: 8px; background: var(--c-gray-80); }
+  /* ── Image System: 파일 있으면 표시, 없으면 컬러 플레이스홀더 ── */
+  .img-placeholder {
+    background-size: cover; background-position: center; background-repeat: no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+  .img-placeholder .label {
+    background: rgba(0,0,0,0.45); color: #fff; padding: 3px 10px; border-radius: 4px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.3px;
+    pointer-events: none; backdrop-filter: blur(2px);
+  }
+
+  /* ── exclusiveHeader ── */
+  .exclusive-header {
+    width: 390px; height: 102px; background: var(--c-gray-900);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;
+  }
+  .exclusive-header .bg-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(21,131,219,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .exclusive-header .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1; }
+  .exclusive-header .tagline { font-size: 15px; font-weight: 700; color: var(--c-white); letter-spacing: -0.3px; position: relative; z-index: 1; }
+  .exclusive-header .subtitle { font-size: 12px; font-weight: 400; color: var(--c-gray-400); letter-spacing: -0.24px; position: relative; z-index: 1; }
+
+  /* ── heroImage ── */
+  .hero-image { width: 390px; height: 458px; }
+  .hero-image .img-placeholder { width: 100%; height: 100%; font-size: 14px; }
+
+  /* ── introSection ── */
+  .intro-section { padding: 60px 20px 23px; text-align: center; }
+  .intro-section .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .intro-section h1 { font-size: 28px; font-weight: 700; color: var(--c-black); letter-spacing: -0.56px; line-height: 1.24; margin-bottom: 16px; }
+  .intro-section .body { font-size: 15px; font-weight: 500; color: var(--c-gray-700); letter-spacing: -0.3px; line-height: 1.44; }
+
+  /* ── painPointCards ── */
+  .pain-point-cards { padding: 0 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+  .pain-card { background: var(--c-gray-50); border-radius: 12px; padding: 20px 30px; text-align: center; font-size: 16px; font-weight: 500; color: var(--c-gray-850); letter-spacing: -0.32px; line-height: 1.35; }
+
+  /* ── guideProfile (dual variant) ── */
+  .guide-profile { padding: 32px 20px 24px; }
+  .guide-profile .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 24px; }
+  .guide-entry { display: flex; gap: 16px; align-items: flex-start; }
+  .guide-entry + .guide-entry { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--c-gray-100); }
+  .guide-entry .photo { width: 110px; height: 80px; border-radius: 12px; flex-shrink: 0; }
+  .guide-entry .info { flex: 1; }
+  .guide-entry .role { font-size: 13px; font-weight: 600; color: var(--c-gray-900); margin-bottom: 2px; }
+  .guide-entry .name { font-size: 16px; font-weight: 700; color: var(--c-gray-1000); margin-bottom: 6px; }
+  .guide-entry .bio { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.35; }
+  .guide-profile .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 20px;
+    border-top: 1px solid var(--c-gray-100); padding-top: 16px;
+  }
+  .guide-profile .stat { text-align: center; }
+  .guide-profile .stat + .stat { border-left: 1px solid var(--c-gray-100); }
+  .guide-profile .stat-value { font-size: 15px; font-weight: 700; color: var(--c-black); margin-bottom: 4px; }
+  .guide-profile .stat-label { font-size: 11px; font-weight: 500; color: var(--c-gray-700); }
+
+  /* ── recommendBox ── */
+  .recommend-box { padding: 0 20px 24px; }
+  .recommend-box .box { background: var(--c-gray-50); border-radius: 10px; padding: 10px; }
+  .recommend-box .box-inner { padding: 10px 12px; }
+  .recommend-box .box-title { font-size: 14px; font-weight: 700; color: var(--c-black); margin-bottom: 8px; }
+  .recommend-box .check-item { font-size: 14px; font-weight: 500; color: var(--c-black); line-height: 1.72; padding-left: 20px; position: relative; }
+  .recommend-box .check-item::before { content: '✓'; position: absolute; left: 0; color: var(--c-blue-600); font-weight: 700; }
+
+  /* ── sectionHeader ── */
+  .section-header { padding: 50px 20px 33px; text-align: center; }
+  .section-header .tag { display: inline-block; background: var(--c-gray-900); color: var(--c-white); font-size: 13px; font-weight: 600; letter-spacing: -0.13px; padding: 2px 4px; border-radius: 6px; margin-bottom: 18px; }
+  .section-header h2 { font-size: 26px; font-weight: 700; color: var(--c-gray-900); letter-spacing: -0.52px; line-height: 1.24; }
+
+  /* ── programCard ── */
+  .program-card { padding: 0 24px 32px; }
+  .program-card .card-image { width: 342px; height: 254px; border-radius: 24px; margin-bottom: 16px; }
+  .program-card h3 { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; }
+  .program-card .duration { font-size: 15px; font-weight: 600; color: var(--c-gray-500); letter-spacing: -0.15px; }
+  .program-card .desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; margin-top: 10px; }
+
+  /* ── highlightCallout ── */
+  .highlight-callout {
+    margin: 0 24px 24px; width: 342px; height: 76px; border-radius: 8px;
+    background: linear-gradient(135deg, #FDF1B5, #FBFFE7, #FFE390);
+    padding: 19px 15px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .highlight-callout .hl-title { font-size: 13px; font-weight: 600; color: var(--c-gray-900); letter-spacing: -0.13px; }
+  .highlight-callout .hl-subtitle { font-size: 12px; font-weight: 500; color: var(--c-gray-850); margin-top: 4px; }
+
+  /* ── visualTimeline ── */
+  .visual-timeline { padding: 32px 20px 24px; }
+  .visual-timeline .section-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 32px; }
+  .timeline-item { margin-bottom: 50px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item .tl-image { width: 350px; height: 170px; border-radius: 10px; margin-bottom: 15px; }
+  .timeline-item .badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--c-gray-900); padding: 2.5px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .timeline-item .badge.am { background: var(--c-blue-80); }
+  .timeline-item .badge.pm { background: var(--c-yellow-200); }
+  .timeline-item .tl-title { font-size: 19px; font-weight: 700; color: var(--c-gray-950); letter-spacing: -0.19px; line-height: 1.38; margin-bottom: 10px; }
+  .timeline-item .tl-desc { font-size: 16px; font-weight: 500; color: var(--c-gray-800); letter-spacing: -0.16px; line-height: 1.38; }
+
+  /* ── priceTable ── */
+  .price-table { padding: 32px 20px 24px; }
+  .price-table .table-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .price-table table { width: 100%; border-collapse: collapse; }
+  .price-table thead th { background: var(--c-gray-80); font-size: 12px; font-weight: 600; color: var(--c-gray-800); padding: 10px 12px; text-align: left; }
+  .price-table thead th:last-child { text-align: right; }
+  .price-table tbody td { font-size: 13px; font-weight: 500; color: var(--c-gray-900); padding: 10px 12px; border-bottom: 1px solid var(--c-gray-200); }
+  .price-table tbody td:last-child { text-align: right; font-weight: 600; color: var(--c-gray-1000); }
+
+  /* ── notice ── */
+  .notice { padding: 32px 20px 24px; }
+  .notice .notice-title { font-size: 24px; font-weight: 700; color: var(--c-black); letter-spacing: -0.48px; margin-bottom: 20px; }
+  .notice-item { display: flex; gap: 8px; margin-bottom: 10px; }
+  .notice-item .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--c-red-500); flex-shrink: 0; margin-top: 7px; }
+  .notice-item .text { font-size: 13px; font-weight: 500; color: var(--c-gray-800); line-height: 1.65; }
+  .notice-item .text strong { font-weight: 600; color: var(--c-gray-900); }
+
+  /* ── trustPoints ── */
+  .trust-points {
+    width: 390px; min-height: 496px; background: var(--c-gray-900);
+    position: relative; overflow: hidden; padding: 63px 20px 43px; text-align: center;
+  }
+  .trust-points .bg-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(21,131,219,0.06) 0%, transparent 50%); pointer-events: none; }
+  .trust-points .logo { font-size: 11px; font-weight: 700; color: var(--c-gray-400); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; position: relative; z-index: 1; }
+  .trust-points .headline { font-size: 26px; font-weight: 700; color: var(--c-white); letter-spacing: -0.52px; line-height: 1.24; margin-bottom: 55px; position: relative; z-index: 1; }
+  .trust-item { text-align: center; margin-bottom: 27px; position: relative; z-index: 1; }
+  .trust-item:last-child { margin-bottom: 0; }
+  .trust-item .icon { width: 40px; height: 40px; margin: 0 auto 12px; background: rgba(255,255,255,0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .trust-item .trust-title { font-size: 18px; font-weight: 700; color: var(--c-white); line-height: 1.35; margin-bottom: 5px; }
+  .trust-item .trust-desc { font-size: 14px; font-weight: 500; color: var(--c-gray-400); letter-spacing: -0.28px; line-height: 1.34; }
+
+  /* ── PoC overlay ── */
+  .block-section { position: relative; }
+  .block-section::before {
+    content: attr(data-block) ' — ' attr(data-mode);
+    position: absolute; top: 0; right: 0;
+    background: rgba(0,0,0,0.7); color: #fff; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 0 0 0 6px; z-index: 10;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none;
+  }
+  .block-section:hover::before { opacity: 1; }
+
+  .poc-legend {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.85); color: #fff; font-size: 11px;
+    padding: 8px 16px; border-radius: 20px; display: flex; gap: 16px; z-index: 100;
+  }
+  .poc-legend span { display: flex; align-items: center; gap: 4px; }
+  .poc-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .poc-legend .dot.html { background: #1583DB; }
+  .poc-legend .dot.image { background: #ADB5BD; }
+  .poc-legend .dot.svg { background: #FFE390; }
+  .poc-legend .dot.css { background: #6B8F71; }
+</style>
+</head>
+<body>
+
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">구마모토 PoC — dual guide + 2 sections</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- 1. exclusiveHeader -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo">MY EXCLUSIVE</div>
+    <p class="tagline">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+  <!-- 2. heroImage -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" style="width:100%;height:100%; background-color:#6A9AC0; background-image:url(images/kumamoto/hero.jpg);"><span class="label">hero.jpg · 390×458</span></div>
+  </section>
+
+  <!-- 3. introSection -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="structured">
+    <div class="logo">MY EXCLUSIVE</div>
+    <h1>물의 도시,<br>구마모토 워킹투어</h1>
+    <p class="body">수향마을의 맑은 수원지와 구마모토성의 웅장함을<br>한국어 가이드와 함께 걷는 하루</p>
+  </section>
+
+  <!-- 4. painPointCards -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card">구마모토, 후쿠오카에서 가까운데 뭘 해야 할지 모르겠어요</div>
+    <div class="pain-card">일본어를 못해서 현지 가이드 투어가 불안해요</div>
+    <div class="pain-card">교통편 예약이 복잡해서 패키지가 있으면 좋겠어요</div>
+    <div class="pain-card">사진 스팟과 맛집 정보를 한 번에 알고 싶어요</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 5. guideProfile (dual variant) -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title">가이드 소개</h2>
+
+    <div class="guide-entry">
+      <div class="photo img-placeholder" style="background-color:#C8C0B8; background-image:url(images/kumamoto/guide-01.jpg);"><span class="label">guide-01.jpg</span></div>
+      <div class="info">
+        <p class="role">한국인 가이드</p>
+        <p class="name">박지현</p>
+        <p class="bio">구마모토 거주 5년차. 일본 문화와 역사를 한국어로 쉽게 풀어드립니다.</p>
+      </div>
+    </div>
+
+    <div class="guide-entry">
+      <div class="photo img-placeholder" style="background-color:#D0C8C0; background-image:url(images/kumamoto/guide-02.jpg);"><span class="label">guide-02.jpg</span></div>
+      <div class="info">
+        <p class="role">현지인 가이드</p>
+        <p class="name">田中 유미</p>
+        <p class="bio">구마모토 출신. 한국어 6급, 한국어 강사 경력 2년. 현지인만 아는 숨은 명소를 안내합니다.</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">일본 문화</div>
+        <div class="stat-label">전문 분야</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">한국어 강사 2년</div>
+        <div class="stat-label">경험</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">한국어 6급</div>
+        <div class="stat-label">언어</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. recommendBox -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title">이런 분에게 추천해요</p>
+        <p class="check-item">후쿠오카 근교 당일치기를 원하는 분</p>
+        <p class="check-item">일본 소도시 감성을 느끼고 싶은 분</p>
+        <p class="check-item">구마모토성과 수향마을을 효율적으로 보고 싶은 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ════ 프로그램 섹션 1: 수향마을 산책 ════ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag">Highlight 1</span>
+    <h2>수향마을<br>산책</h2>
+  </section>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#8AAA90; background-image:url(images/kumamoto/program-01-suizenji.jpg);"><span class="label">program-01-suizenji.jpg</span></div>
+    <h3>수전궁 (水前寺成趣園)</h3>
+    <span class="duration">40분</span>
+    <p class="desc">350년 역사의 일본 정원. 후지산을 본뜬 축산과 아소의 복류수가 만든 연못이 어우러진 명승지입니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#A8B8B0; background-image:url(images/kumamoto/program-02-cafe.jpg);"><span class="label">program-02-cafe.jpg</span></div>
+    <h3>수원지 카페거리</h3>
+    <span class="duration">30분</span>
+    <p class="desc">맑은 지하수가 솟아나는 수원지 주변 골목. 현지 카페에서 구마모토 로컬 커피를 즐깁니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#B0A898; background-image:url(images/kumamoto/program-03-shimotori.jpg);"><span class="label">program-03-shimotori.jpg</span></div>
+    <h3>시모도오리 상점가</h3>
+    <span class="duration">20분</span>
+    <p class="desc">구마모토 최대 아케이드 상점가. 구마몬 굿즈숍과 현지 디저트를 탐방합니다.</p>
+  </article>
+
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title">구마모토의 물은 100% 지하수! 일본 유일</p>
+    <p class="hl-subtitle">수도꼭지에서 나오는 물이 전부 아소산 복류수입니다</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ════ 프로그램 섹션 2: 구마모토 시내 탐방 ════ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag">Highlight 2</span>
+    <h2>구마모토 시내<br>탐방</h2>
+  </section>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#7A8A98; background-image:url(images/kumamoto/program-04-castle.jpg);"><span class="label">program-04-castle.jpg</span></div>
+    <h3>구마모토성</h3>
+    <span class="duration">50분</span>
+    <p class="desc">일본 3대 명성 중 하나. 2016년 지진 이후 복원 과정과 400년 역사를 가이드 해설과 함께 둘러봅니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#C0B0A0; background-image:url(images/kumamoto/program-05-josaien.jpg);"><span class="label">program-05-josaien.jpg</span></div>
+    <h3>사쿠라노바바 조사이엔</h3>
+    <span class="duration">40분</span>
+    <p class="desc">구마모토성 앞 관광 복합시설. 구마모토 라멘, 말고기 요리 등 현지 미식을 체험합니다.</p>
+  </article>
+
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" style="background-color:#B8A898; background-image:url(images/kumamoto/program-06-kamitori.jpg);"><span class="label">program-06-kamitori.jpg</span></div>
+    <h3>가미도오리 거리</h3>
+    <span class="duration">30분</span>
+    <p class="desc">레트로 감성 가득한 거리. 빈티지 숍과 현지 베이커리를 자유롭게 둘러봅니다.</p>
+  </article>
+
+  <div class="divider"></div>
+
+  <!-- 7. visualTimeline -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title">구마모토 상세 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#8898A8; background-image:url(images/kumamoto/tl-01-station.jpg);"><span class="label">tl-01-station.jpg</span></div>
+      <span class="badge am">오전 코스 | 9:00 - 9:30</span>
+      <h4 class="tl-title">구마모토역 집합</h4>
+      <p class="tl-desc">JR 구마모토역 개찰구 앞에서 가이드와 만남. 당일 일정 브리핑.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#8AAA90; background-image:url(images/kumamoto/tl-02-suizenji.jpg);"><span class="label">tl-02-suizenji.jpg</span></div>
+      <span class="badge am">오전 코스 | 9:30 - 10:30</span>
+      <h4 class="tl-title">수전궁 정원 산책</h4>
+      <p class="tl-desc">350년 역사의 정원을 도슨트 해설과 함께 걸으며 감상.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#A8B8B0; background-image:url(images/kumamoto/tl-03-cafe.jpg);"><span class="label">tl-03-cafe.jpg</span></div>
+      <span class="badge am">오전 코스 | 10:30 - 11:00</span>
+      <h4 class="tl-title">수원지 카페거리 탐방</h4>
+      <p class="tl-desc">현지 로스터리 카페에서 아소산 복류수로 내린 커피.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#C8B8A0; background-image:url(images/kumamoto/tl-04-lunch.jpg);"><span class="label">tl-04-lunch.jpg</span></div>
+      <span class="badge pm">오후 코스 | 12:00 - 13:00</span>
+      <h4 class="tl-title">구마모토 현지 맛집</h4>
+      <p class="tl-desc">구마모토 라멘 또는 말고기 요리. 가이드 추천 식당에서 식사.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#7A8A98; background-image:url(images/kumamoto/tl-05-castle.jpg);"><span class="label">tl-05-castle.jpg</span></div>
+      <span class="badge pm">오후 코스 | 13:30 - 14:30</span>
+      <h4 class="tl-title">구마모토성 탐방</h4>
+      <p class="tl-desc">천수각 복원 과정과 난공불락 석벽의 비밀을 해설.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#C0B0A0; background-image:url(images/kumamoto/tl-06-josaien.jpg);"><span class="label">tl-06-josaien.jpg</span></div>
+      <span class="badge pm">오후 코스 | 14:30 - 15:30</span>
+      <h4 class="tl-title">사쿠라노바바 조사이엔</h4>
+      <p class="tl-desc">쇼핑과 디저트 타임. 구마몬 굿즈와 구마모토 기념품 쇼핑.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" style="background-color:#B8A898; background-image:url(images/kumamoto/tl-07-end.jpg);"><span class="label">tl-07-end.jpg</span></div>
+      <span class="badge pm">오후 코스 | 16:00</span>
+      <h4 class="tl-title">투어 종료 및 자유 해산</h4>
+      <p class="tl-desc">가미도오리 또는 구마모토역에서 자유 해산.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 8. priceTable -->
+  <section class="price-table block-section" data-block="priceTable" data-mode="structured">
+    <h2 class="table-title">투어 요금</h2>
+    <table>
+      <thead>
+        <tr><th>옵션</th><th>인원</th><th>가격</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>프라이빗 투어</td><td>1인</td><td>89,000원</td></tr>
+        <tr><td>프라이빗 투어</td><td>2인</td><td>69,000원/인</td></tr>
+        <tr><td>프라이빗 투어</td><td>3~4인</td><td>59,000원/인</td></tr>
+        <tr><td>그룹 투어</td><td>5~8인</td><td>49,000원/인</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 9. notice -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title">필수 확인 사항</h2>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text"><strong>최대 인원 8명</strong>으로 소규모 프라이빗 투어입니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text">집합 장소는 <strong>JR 구마모토역 개찰구 앞</strong>입니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text">점심 식사비는 <strong>투어비에 불포함</strong>입니다. 현지에서 개별 결제해 주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text">편한 운동화를 신어 주세요. 하루 <strong>약 12,000보</strong> 정도 걷게 됩니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text"><strong>태풍·폭우</strong> 등 천재지변 시 전액 환불됩니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 10. trustPoints -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo">MY EXCLUSIVE</div>
+    <h2 class="headline">실패 없는 여행의 기준,<br>마이 익스클루시브</h2>
+    <div class="trust-item">
+      <div class="icon">🚀</div>
+      <p class="trust-title">혼자라도 괜찮아요, 무조건 출발</p>
+      <p class="trust-desc">취소될까 봐 마음 졸이지 마세요.<br>예약 즉시 출발이 확정됩니다</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">🎫</div>
+      <p class="trust-title">번거로운 예약 걱정은 NO!</p>
+      <p class="trust-desc">교통, 입장권까지 준비해드려요.<br>오직 여행에만 집중하세요</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">💰</div>
+      <p class="trust-title">만족하지 못하셨다면 투어비는 0원</p>
+      <p class="trust-desc">퀄리티 보장 상품으로 결제 금액 그대로 돌려드려요.<br>마이리얼트립이 검증된 노하우로 만든 투어입니다.</p>
+    </div>
+  </section>
+
+  <!-- exclusiveHeader 하단 -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo">MY EXCLUSIVE</div>
+    <p class="tagline">실패 없는 여행의 기준, 마이 익스클루시브</p>
+    <p class="subtitle">마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.</p>
+  </section>
+
+</main>
+</body>
+</html>

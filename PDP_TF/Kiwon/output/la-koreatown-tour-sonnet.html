@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0">
+<title>LA코리아타운 스토리텔링 도보투어 — PB Exclusive PoC (Sonnet)</title>
+<meta name="description" content="LA 현지 거주 마케터 라빠빠와 함께하는 코리아타운 스토리텔링 도보투어. 역사, 문화, 경제, 스트릿컬처까지 2시간 깊이 있는 이색 투어.">
+
+<!-- 외부 CSS (pb-exclusive.css) — 인라인 스타일 없음 -->
+<link rel="stylesheet" href="pb-exclusive.css">
+
+<!-- schema.org 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristTrip",
+  "name": "LA코리아타운 스토리텔링 도보투어",
+  "description": "LA 현지 거주 마케터와 함께하는 코리아타운 스토리텔링 도보투어. 역사, 문화, 경제, 스트릿컬처를 2시간 동안 깊이 있게 탐방합니다.",
+  "touristType": ["문화 여행자", "역사 탐방자", "LA 방문자"],
+  "inLanguage": "ko",
+  "provider": {
+    "@type": "TravelAgency",
+    "name": "마이리얼트립 PB Exclusive",
+    "url": "https://www.myrealtrip.com"
+  },
+  "itinerary": {
+    "@type": "ItemList",
+    "numberOfItems": 5,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "TouristAttraction", "name": "투어 출발, LA코리아타운의 시작", "description": "코리아타운 형성과 발전의 역사, 한인 이주 이야기" } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "TouristAttraction", "name": "Koreatown back to 8090", "description": "올림픽길을 걸으며 80-90년대 코리아타운 전성기 탐방" } },
+      { "@type": "ListItem", "position": 3, "item": { "@type": "TouristAttraction", "name": "Memories of Koreatown", "description": "LA 특유의 스트릿컬처와 숨겨진 명소 방문" } },
+      { "@type": "ListItem", "position": 4, "item": { "@type": "TouristAttraction", "name": "World-wide Koreatown", "description": "미국 역사적 장소와 알쓸신잡 이야기" } },
+      { "@type": "ListItem", "position": 5, "item": { "@type": "TouristAttraction", "name": "From Korea to global", "description": "한류 핫스팟과 스타들의 흔적 탐방" } }
+    ]
+  },
+  "duration": "PT2H",
+  "maximumAttendeeCapacity": 8,
+  "offers": {
+    "@type": "Offer",
+    "price": "59830",
+    "priceCurrency": "KRW"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- PoC 범례 -->
+<div class="poc-legend">
+  <span><span class="dot html"></span> html</span>
+  <span><span class="dot image"></span> image</span>
+  <span><span class="dot svg"></span> svg</span>
+  <span><span class="dot css"></span> css</span>
+  <span style="color: #848C94;">hover로 output 태그 확인</span>
+</div>
+
+<main class="pdp-canvas">
+
+  <!-- ═══ 1. exclusiveHeader (hybrid) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">맛집 말고, 코리아타운의 진짜 이야기</p>
+    <p class="subtitle" data-output="html">LA 현지 마케터가 직접 걸으며 들려주는 한인의 역사</p>
+  </section>
+
+  <!-- ═══ 2. heroImage (image) ═══ -->
+  <section class="hero-image block-section" data-block="heroImage" data-mode="image">
+    <div class="img-placeholder" data-output="image" style="width:100%;height:100%;background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/yAWY/JRBNeEmlQt.jpg');"></div>
+  </section>
+
+  <!-- ═══ 3. introSection (hybrid) ═══ -->
+  <section class="intro-section block-section" data-block="introSection" data-mode="hybrid">
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h1 data-output="html">코리아타운에는<br>가이드북이 담지 못한<br>100년의 이야기가 있다</h1>
+    <p class="body" data-output="html">세계에서 가장 큰 한인타운, LA 코리아타운.<br>1세대 이민자의 땀, LA폭동의 상흔, 한류가 만들어낸 새 물결까지.<br>10년간 한국을 세계에 알려온 마케터 '라빠빠'가<br>걷고, 공부하고, 발견한 이야기들을 직접 들려드립니다.</p>
+    <div class="intro-visual img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/xYM3/ZlMhwbslpv.jpg');"></div>
+  </section>
+
+  <!-- ═══ 4. painPointCards (structured) ═══ -->
+  <section class="pain-point-cards block-section" data-block="painPointCards" data-mode="structured">
+    <div class="pain-card" data-output="html">"코리아타운에 갔는데<br>순두부찌개만 먹고 왔어요.<br>뭔가 더 있을 것 같았는데…"</div>
+    <div class="pain-card" data-output="html">"혼자 걸으면 그냥 간판들만 보여요.<br>이 거리가 왜 여기 생겼는지,<br>아무도 안 알려주더라고요."</div>
+    <div class="pain-card" data-output="html">"관광지도 아닌 동네를<br>안전하게, 깊이 있게<br>탐방할 방법이 없을까요?"</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. guideProfile (hybrid) ═══ -->
+  <section class="guide-profile block-section" data-block="guideProfile" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">이 투어를 만든 사람</h2>
+    <div class="photo img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/05/02/E8Rk/b3IDdznO3g.jpg');"></div>
+    <p class="role" data-output="html">LA 현지 거주 마케터 · 스토리텔러</p>
+    <p class="name" data-output="html">김종은 (LAPAPA / 라빠빠)</p>
+    <p class="bio" data-output="html">본인 표현으로는 "흔한 잡동사니 아저씨". 10년간 한국을 세계에 알리는 마케팅을 전문으로 해온 LA 현지 거주자입니다. LA에 살면서 코리아타운 곳곳에서 발견한 흥미로운 이야기들을 한국 여행자와 나누고 싶어, 직접 발품을 팔고 자료를 찾아 공부한 끝에 이 투어를 만들었습니다.</p>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" data-output="html">5.0</div>
+        <div class="stat-label" data-output="html">평점</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">9건</div>
+        <div class="stat-label" data-output="html">후기</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" data-output="html">10년+</div>
+        <div class="stat-label" data-output="html">마케팅 경력</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 6. recommendBox (structured) ═══ -->
+  <section class="recommend-box block-section" data-block="recommendBox" data-mode="structured">
+    <div class="box">
+      <div class="box-inner">
+        <p class="box-title" data-output="html">이런 분께 추천해요</p>
+        <p class="check-item" data-output="html">LA에서 맛집 투어 이상의 경험을 원하는 분</p>
+        <p class="check-item" data-output="html">재미있는 이야기와 함께 걷는 도보 투어가 좋은 분</p>
+        <p class="check-item" data-output="html">한인 이민사, 미국 속 한국 문화에 관심 있는 분</p>
+        <p class="check-item" data-output="html">혼자 또는 소규모로 안전하게 로컬 동네를 탐방하고 싶은 분</p>
+        <p class="check-item" data-output="html">한류 핫스팟과 스타 방문 장소가 궁금한 분</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 7. sectionHeader (structured) ═══ -->
+  <section class="section-header block-section" data-block="sectionHeader" data-mode="structured">
+    <span class="tag" data-output="html">PROGRAM</span>
+    <h2 data-output="html">2시간에 담은<br>코리아타운 100년사<br>5개의 챕터</h2>
+  </section>
+
+  <!-- ═══ 8-1. programCard — Course 1 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240331_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">투어 출발, LA코리아타운의 시작</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">Bank of Hope 주차장 앞 코리아타운 사인 앞에서 시작합니다. 1900년대 초 하와이 사탕수수 농장에서 시작된 한인 이민의 역사부터, 지금 이 거리가 어떻게 형성됐는지 흥미로운 이야기들로 투어의 문을 엽니다.</p>
+  </article>
+
+  <!-- ═══ 8-2. programCard — Course 2 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240332_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">Koreatown back to 8090</h3>
+    <span class="duration" data-output="html">20분 소요</span>
+    <p class="desc" data-output="html">1980~90년대 코리아타운의 황금기를 누린 올림픽길(Olympic Blvd)을 걷습니다. 레트로한 간판과 건물 사이, 코리아타운을 일군 1세대의 에피소드, 1992년 LA폭동의 상흔과 그 이후의 이야기를 솔직하게 들려드립니다.</p>
+  </article>
+
+  <!-- ═══ 8-3. programCard — Course 3 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240333_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">Memories of Koreatown</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">LA 특유의 자유로운 스트릿컬처를 느낄 수 있는 구간입니다. 가이드북에는 없는, LAPAPA만 아는 골목 속 명소들을 돌아봅니다. 벽화 하나, 간판 하나에도 숨어 있는 이야기들이 있습니다.</p>
+  </article>
+
+  <!-- ═══ 8-4. programCard — Course 4 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240334_original_1715108261.jpg?1715108261');"></div>
+    <h3 data-output="html">World-wide Koreatown</h3>
+    <span class="duration" data-output="html">20분 소요</span>
+    <p class="desc" data-output="html">코리아타운은 사실 미국 역사의 중요한 무대이기도 합니다. 그냥 지나치면 절대 알 수 없는 미국 역사 속 랜드마크와, 들으면 무릎을 탁 치게 되는 알쓸신잡 이야기들을 가득 풀어드립니다.</p>
+  </article>
+
+  <!-- ═══ 8-5. programCard — Course 5 (hybrid) ═══ -->
+  <article class="program-card block-section" data-block="programCard" data-mode="hybrid">
+    <div class="card-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/hmuE/UufgCFQJH9.jpg');"></div>
+    <h3 data-output="html">From Korea to global</h3>
+    <span class="duration" data-output="html">30분 소요</span>
+    <p class="desc" data-output="html">지금 이 순간 LA에서 가장 힙한 코리아타운의 한류 핫스팟을 돌아봅니다. BTS, 블랙핑크 등 K-팝 스타들이 실제로 다녀간 장소, 현지에서 한류를 이끌어가는 최신 트렌드까지. 투어의 마지막을 K-culture로 화려하게 마무리합니다.</p>
+  </article>
+
+  <!-- ═══ 9. highlightCallout (structured) ═══ -->
+  <div class="highlight-callout block-section" data-block="highlightCallout" data-mode="structured">
+    <p class="hl-title" data-output="html">가이드 팁 포함 · 대중교통 비용 포함 — 추가 지출 없이 즐기세요</p>
+    <p class="hl-subtitle" data-output="html">투어 관련 모든 비용이 포함되어 있어 지갑 걱정 없이 이야기에만 집중하실 수 있습니다</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 10. visualTimeline (hybrid) ═══ -->
+  <section class="visual-timeline block-section" data-block="visualTimeline" data-mode="hybrid">
+    <h2 class="section-title" data-output="html">투어 일정</h2>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240331_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:00 AM</span>
+      <h4 class="tl-title" data-output="html">투어 출발, LA코리아타운의 시작</h4>
+      <p class="tl-desc" data-output="html">3253 W Olympic Blvd, Bank of Hope 주차장 앞 코리아타운 사인에서 집합. 한인 이주 역사와 코리아타운 형성 이야기로 시작합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240332_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:30 AM</span>
+      <h4 class="tl-title" data-output="html">Koreatown back to 8090</h4>
+      <p class="tl-desc" data-output="html">올림픽길을 걸으며 80~90년대 코리아타운 황금기와 LA폭동의 역사를 되짚습니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240333_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">10:50 AM</span>
+      <h4 class="tl-title" data-output="html">Memories of Koreatown</h4>
+      <p class="tl-desc" data-output="html">LA 스트릿컬처와 LAPAPA만 아는 숨겨진 명소들을 탐방합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://d2ur7st6jjikze.cloudfront.net/offer_courses/154144/240334_original_1715108261.jpg?1715108261');"></div>
+      <span class="badge am" data-output="html">11:20 AM</span>
+      <h4 class="tl-title" data-output="html">World-wide Koreatown</h4>
+      <p class="tl-desc" data-output="html">미국 역사적 랜드마크와 알쓸신잡 이야기로 코리아타운의 세계적 위상을 발견합니다.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-image img-placeholder" data-output="image" style="background-image:url('https://dry7pvlp22cox.cloudfront.net/mrt-images-prod/2024/10/21/hmuE/UufgCFQJH9.jpg');"></div>
+      <span class="badge pm" data-output="html">11:40 AM</span>
+      <h4 class="tl-title" data-output="html">From Korea to global</h4>
+      <p class="tl-desc" data-output="html">한류 핫스팟과 스타들의 발자취를 돌아보며 2시간의 여정을 마무리합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 11. includeExclude (hybrid) ═══ -->
+  <section class="numbered-list block-section" data-block="includeExclude" data-mode="hybrid">
+    <h2 class="list-title" data-output="html">포함 · 불포함 사항</h2>
+
+    <p class="list-subtitle" data-output="html">포함되어 있어요</p>
+    <div class="num-list">
+      <div class="num-item">
+        <div class="num-item-header">
+          <span class="num" data-output="html">01</span>
+          <p class="num-title" data-output="html">투어 관련 모든 비용 (이동 중 대중교통 요금, 가이드 비용, 가이드 팁 등)</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="list-subtitle excluded" data-output="html">불포함되어 있어요</p>
+    <div class="list-item">
+      <span class="num excluded" data-output="html">01</span>
+      <p class="item-text" data-output="html">여행자 개별 이동 교통비 (집합 장소까지 오는 비용, 투어 종료 후 이동 비용)</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 12. notice (structured) ═══ -->
+  <section class="notice block-section" data-block="notice" data-mode="structured">
+    <h2 class="notice-title" data-output="html">필수 확인 사항</h2>
+
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">LA의 낮 햇빛이 강하므로 <strong>선글라스 또는 모자</strong>를 챙겨오시길 권장합니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">가벼운 개인 용품 외 큰 짐이 있을 경우, 참가 전 <strong>사전 연락</strong>을 부탁드립니다.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">이 투어는 다른 여행자들과 함께 진행됩니다. <strong>단독 투어</strong>를 원하시면 별도로 연락주세요.</p>
+    </div>
+    <div class="notice-item">
+      <span class="dot"></span>
+      <p class="text" data-output="html">해외 여행 특성상 개별 <strong>여행자 보험</strong> 가입을 권장합니다.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 13. trustPoints (hybrid) ═══ -->
+  <section class="trust-points block-section" data-block="trustPoints" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <h2 class="headline" data-output="html">단순한 투어가 아닙니다.<br>마이리얼트립이 보증하는<br>진짜 경험입니다.</h2>
+
+    <div class="trust-item">
+      <div class="icon">&#x2B50;</div>
+      <p class="trust-title" data-output="html">전원 만점, 9건의 후기</p>
+      <p class="trust-desc" data-output="html">참여한 모든 여행자가 5점 만점을 남겼습니다.<br>"몰랐던 것들을 너무 많이 알게 됐다"는 후기가 압도적입니다.</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F3AF;</div>
+      <p class="trust-title" data-output="html">전문가가 직접 만든 콘텐츠</p>
+      <p class="trust-desc" data-output="html">10년 마케팅 전문가가 수십 번 답사하고<br>자료를 연구해 만든 스토리텔링 코스입니다.</p>
+    </div>
+    <div class="trust-item">
+      <div class="icon">&#x1F6E1;</div>
+      <p class="trust-title" data-output="html">추가 비용 제로</p>
+      <p class="trust-desc" data-output="html">대중교통부터 가이드 팁까지 모두 포함.<br>투어 중 지갑을 꺼낼 일이 없습니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ 14. exclusiveHeader 하단 반복 (hybrid) ═══ -->
+  <section class="exclusive-header block-section" data-block="exclusiveHeader" data-mode="hybrid">
+    <div class="bg-overlay"></div>
+    <div class="logo" data-output="svg">MYREALTRIP PB EXCLUSIVE</div>
+    <p class="tagline" data-output="html">맛집 말고, 코리아타운의 진짜 이야기</p>
+    <p class="subtitle" data-output="html">LA 현지 마케터가 직접 걸으며 들려주는 한인의 역사</p>
+  </section>
+
+</main>
+
+</body>
+</html>

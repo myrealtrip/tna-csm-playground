@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDP TF — Before / After 비교</title>
+<style>
+  :root {
+    --gray-50: #F5F6F7;
+    --gray-80: #F1F3F5;
+    --gray-100: #E5E5E5;
+    --gray-200: #DEE2E6;
+    --gray-400: #ADB5BD;
+    --gray-600: #636363;
+    --gray-700: #495056;
+    --gray-800: #343A40;
+    --gray-850: #212529;
+    --gray-900: #101418;
+    --gray-1000: #141619;
+    --blue-600: #1583DB;
+    --red-500: #EC4937;
+    --yellow-warm: #FFE390;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gray-900);
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide System ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    position: relative;
+    scroll-snap-align: start;
+  }
+  .slide + .slide { border-top: 1px solid rgba(255,255,255,0.06); }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(145deg, #0a0c10, #141619 40%, #1a1c22);
+    text-align: center;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: var(--blue-600);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+  .cover h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+  .cover h1 em {
+    font-style: normal;
+    color: var(--blue-600);
+  }
+  .cover .subtitle {
+    font-size: 20px;
+    color: var(--gray-400);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  .cover .date {
+    font-size: 14px;
+    color: var(--gray-600);
+    letter-spacing: 1px;
+  }
+
+  /* ── Section Labels ── */
+  .slide-label {
+    position: absolute;
+    top: 24px;
+    left: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── Two Column Compare ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .compare-col {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+  }
+  .compare-col.before {
+    border-color: rgba(236,73,55,0.3);
+  }
+  .compare-col.after {
+    border-color: rgba(21,131,219,0.3);
+  }
+  .col-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .before .col-badge { background: rgba(236,73,55,0.15); color: var(--red-500); }
+  .after .col-badge  { background: rgba(21,131,219,0.15); color: var(--blue-600); }
+
+  .compare-col h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .compare-col p {
+    font-size: 15px;
+    color: var(--gray-400);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* ── Metric Cards ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .metric {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .metric .value {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .before .metric .value { color: var(--red-500); }
+  .after .metric .value  { color: var(--blue-600); }
+  .metric .label {
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+
+  /* ── Slide Headings ── */
+  .slide h2 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .slide h2 em { font-style: normal; color: var(--blue-600); }
+  .slide .slide-desc {
+    font-size: 16px;
+    color: var(--gray-400);
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 700px;
+  }
+
+  /* ── Code Compare ── */
+  .code-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .code-block {
+    background: #0d0f13;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .code-block .code-header {
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-block .code-header .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .code-block .code-header .dot.red { background: var(--red-500); }
+  .code-block .code-header .dot.blue { background: var(--blue-600); }
+  .code-block pre {
+    padding: 20px;
+    font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--gray-400);
+    overflow-x: auto;
+    margin: 0;
+  }
+  .code-block pre .tag { color: #7B93A8; }
+  .code-block pre .attr { color: #9DAAB8; }
+  .code-block pre .str { color: #6B8F71; }
+  .code-block pre .comment { color: #4A5568; font-style: italic; }
+  .code-block pre .highlight { color: var(--blue-600); }
+  .code-block pre .warn { color: var(--red-500); }
+
+  /* ── Stats Bar ── */
+  .stats-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1000px;
+  }
+  .stat-item {
+    text-align: center;
+    min-width: 140px;
+  }
+  .stat-item .number {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-item .number.bad { color: var(--red-500); }
+  .stat-item .number.good { color: var(--blue-600); }
+  .stat-item .desc {
+    font-size: 14px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+
+  /* ── Table ── */
+  .compare-table {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  .compare-table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 1px;
+  }
+  .compare-table th:nth-child(2),
+  .compare-table th:nth-child(3) { text-align: center; }
+  .compare-table td {
+    font-size: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+  .compare-table td:nth-child(2),
+  .compare-table td:nth-child(3) { text-align: center; }
+  .compare-table td:nth-child(2) { color: var(--red-500); }
+  .compare-table td:nth-child(3) { color: var(--blue-600); }
+  .compare-table td:first-child { color: var(--white); font-weight: 600; }
+
+  /* ── Arrow ── */
+  .arrow-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 40px 0;
+    width: 100%;
+    max-width: 800px;
+  }
+  .arrow-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px 32px;
+    text-align: center;
+    flex: 1;
+  }
+  .arrow-box.from { border-color: rgba(236,73,55,0.2); }
+  .arrow-box.to   { border-color: rgba(21,131,219,0.2); }
+  .arrow-box .arrow-label {
+    font-size: 12px;
+    color: var(--gray-600);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .arrow-box .arrow-value {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .arrow-box.from .arrow-value { color: var(--red-500); }
+  .arrow-box.to .arrow-value   { color: var(--blue-600); }
+  .arrow-icon {
+    font-size: 28px;
+    color: var(--gray-600);
+    flex-shrink: 0;
+  }
+
+  /* ── Block Grid ── */
+  .block-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 1000px;
+  }
+  .block-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .block-card .block-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .block-card .block-mode {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  .block-card .block-mode.structured { background: rgba(21,131,219,0.15); color: var(--blue-600); }
+  .block-card .block-mode.hybrid    { background: rgba(255,227,144,0.15); color: var(--yellow-warm); }
+  .block-card .block-mode.image     { background: rgba(173,181,189,0.15); color: var(--gray-400); }
+
+  /* ── Timeline ── */
+  .timeline {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    max-width: 1000px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+  }
+  .timeline-item {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding-top: 48px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gray-800);
+    border: 2px solid var(--gray-600);
+  }
+  .timeline-item.active::before {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    box-shadow: 0 0 12px rgba(21,131,219,0.4);
+  }
+  .timeline-item .tl-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .timeline-item .tl-desc {
+    font-size: 11px;
+    color: var(--gray-600);
+    line-height: 1.5;
+    padding: 0 8px;
+  }
+  .timeline-item.active .tl-title { color: var(--blue-600); }
+
+  /* ── Nav dots ── */
+  .nav-dots {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .nav-dot:hover, .nav-dot.active {
+    background: var(--blue-600);
+    transform: scale(1.4);
+  }
+
+  /* ── Google Search Result Simulation ── */
+  .google-result {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: left;
+  }
+  .google-result .g-url {
+    font-size: 12px;
+    color: #70757a;
+    margin-bottom: 4px;
+    font-family: Arial, sans-serif;
+  }
+  .google-result .g-title {
+    font-size: 18px;
+    color: #1a0dab;
+    font-weight: 400;
+    margin-bottom: 6px;
+    font-family: Arial, sans-serif;
+    line-height: 1.3;
+  }
+  .google-result .g-desc {
+    font-size: 13px;
+    color: #4d5156;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
+  }
+  .google-result .g-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-family: Arial, sans-serif;
+  }
+  .google-result .g-stars {
+    color: #fbbc04;
+    font-size: 14px;
+    letter-spacing: -1px;
+  }
+  .google-result .g-rating-text {
+    font-size: 13px;
+    color: #70757a;
+  }
+  .google-result .g-faq {
+    margin-top: 12px;
+    border-top: 1px solid #e8eaed;
+    padding-top: 8px;
+  }
+  .google-result .g-faq-item {
+    font-size: 14px;
+    color: #1a0dab;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8eaed;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+  }
+
+  /* ── Search Demo (Ctrl+F) ── */
+  .search-demo { margin-top: 16px; }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+  }
+  .search-icon { font-size: 14px; }
+  .search-text {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 600;
+  }
+  .search-result-badge {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .search-result-badge.bad {
+    background: rgba(236,73,55,0.15);
+    color: var(--red-500);
+  }
+  .search-result-badge.good {
+    background: rgba(21,131,219,0.15);
+    color: var(--blue-600);
+  }
+  .image-placeholder {
+    background: var(--gray-800);
+    border-radius: 10px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+  }
+  .img-label {
+    font-size: 11px;
+    color: var(--gray-600);
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .img-content {
+    opacity: 0.4;
+    filter: blur(0.5px);
+  }
+  .fake-img-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .fake-img-text.small {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gray-400);
+  }
+  .img-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(236,73,55,0.08);
+    border: 2px dashed rgba(236,73,55,0.3);
+    border-radius: 10px;
+  }
+  .img-overlay span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--red-500);
+    text-align: center;
+    line-height: 1.6;
+  }
+  .html-placeholder {
+    background: #0d0f13;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .html-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .html-tag { color: #7B93A8; }
+  .html-found {
+    background: rgba(21,131,219,0.25);
+    color: var(--blue-600);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-family: inherit;
+  }
+  .found-badge {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--blue-600);
+    color: var(--white);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .slide { padding: 40px 24px; }
+    .compare-grid, .code-compare { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 32px; }
+    .slide h2 { font-size: 28px; }
+    .block-grid { grid-template-columns: repeat(3, 1fr); }
+    .stats-row { gap: 16px; }
+    .stat-item .number { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ═══════════════════════ SLIDE 1: COVER ═══════════════════════ -->
+<section class="slide cover" id="s1">
+  <span class="badge">PDP TF</span>
+  <h1>통이미지에서<br><em>구조형 PDP</em>로</h1>
+  <p class="subtitle">현재 상세 설명 영역의 118개 섹션이 전부 이미지입니다.<br>텍스트를 HTML로 꺼내면 SEO, 접근성, 로그 추적이 가능해집니다.</p>
+  <p class="date">2026.03.11 — PB T&A</p>
+</section>
+
+<!-- ═══════════════════════ SLIDE 2: 현황 수치 ═══════════════════════ -->
+<section class="slide" id="s2">
+  <span class="slide-label">현황</span>
+  <h2>지금 PDP의 <em>상세 설명</em></h2>
+  <p class="slide-desc">나오시마 워킹투어 PDP (experiences.myrealtrip.com/products/5569978) 실측 기준</p>
+
+  <div class="stats-row" style="margin-bottom: 56px;">
+    <div class="stat-item">
+      <div class="number bad">118</div>
+      <div class="desc">이미지 섹션</div>
+    </div>
+    <div class="stat-item">
+      <div class="number bad">0</div>
+      <div class="desc">텍스트 요소</div>
+    </div>
+    <div class="stat-item">
+      <div class="number bad">~50MB</div>
+      <div class="desc">총 이미지 용량</div>
+    </div>
+    <div class="stat-item">
+      <div class="number bad">0점</div>
+      <div class="desc">SEO 점수</div>
+    </div>
+    <div class="stat-item">
+      <div class="number bad">0점</div>
+      <div class="desc">접근성 점수</div>
+    </div>
+  </div>
+
+  <p class="slide-desc" style="color: var(--red-500); font-weight: 600; margin-bottom: 0;">
+    Google이 인식하는 상세 설명 내용: <strong>없음</strong>
+  </p>
+</section>
+
+<!-- ═══════════════════════ SLIDE 3: HTML 비교 ═══════════════════════ -->
+<section class="slide" id="s3">
+  <span class="slide-label">HTML 구조</span>
+  <h2>같은 콘텐츠, 다른 <em>코드</em></h2>
+  <p class="slide-desc">상세 설명의 "이우환 미술관" 스팟 1개를 HTML로 비교합니다</p>
+
+  <div class="code-compare">
+    <div class="code-block">
+      <div class="code-header"><span class="dot red"></span> BEFORE — 통이미지</div>
+      <pre><span class="tag">&lt;section</span> <span class="attr">class=</span><span class="str">"css-1bwjzr3 e1qed19x1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span>
+    <span class="attr">alt=</span><span class="str">"<span class="warn">MO_3.jpg</span>"</span>
+    <span class="attr">width=</span><span class="str">"1001"</span>
+    <span class="attr">loading=</span><span class="str">"lazy"</span>
+    <span class="attr">class=</span><span class="str">"css-xxtl94"</span>
+  <span class="tag">/&gt;</span>
+<span class="tag">&lt;/section&gt;</span>
+
+<span class="comment">&lt;!-- 텍스트 0개. SEO 0점.
+     alt="MO_3.jpg" — 검색엔진이
+     내용을 파악할 수 없음. --&gt;</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="dot blue"></span> AFTER — Hybrid HTML</div>
+      <pre><span class="tag">&lt;article</span> <span class="attr">class=</span><span class="str">"program-card"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span>
+    <span class="attr">src=</span><span class="str">"lee-ufan-museum.jpg"</span>
+    <span class="attr">alt=</span><span class="str">"<span class="highlight">이우환 미술관 외관</span>"</span>
+    <span class="attr">width=</span><span class="str">"342"</span>
+    <span class="attr">loading=</span><span class="str">"lazy"</span>
+  <span class="tag">/&gt;</span>
+  <span class="tag">&lt;h3&gt;</span><span class="highlight">이우환 미술관</span><span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class=</span><span class="str">"duration"</span><span class="tag">&gt;</span>30분<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;p&gt;</span><span class="highlight">세계적인 현대미술 거장
+  이우환의 작품 세계를 만나는
+  안도 타다오 건축 미술관</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/article&gt;</span>
+
+<span class="comment">&lt;!-- h3, p, span 텍스트 노출
+     Google "나오시마 이우환" 검색 가능 --&gt;</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 4: 전후 비교표 ═══════════════════════ -->
+<section class="slide" id="s4">
+  <span class="slide-label">비교</span>
+  <h2>Before / <em>After</em></h2>
+  <p class="slide-desc">동일한 나오시마 PDP 기준, 렌더링 방식 전환 시 변화</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>항목</th>
+        <th>BEFORE (통이미지)</th>
+        <th>AFTER (하이브리드)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>상세 설명 텍스트</td>
+        <td>이미지 안 (크롤링 불가)</td>
+        <td>HTML 텍스트 (크롤링 가능)</td>
+      </tr>
+      <tr>
+        <td>SEO 점수</td>
+        <td>0점</td>
+        <td>80점 이상</td>
+      </tr>
+      <tr>
+        <td>접근성 점수</td>
+        <td>0점</td>
+        <td>70점 이상</td>
+      </tr>
+      <tr>
+        <td>요소별 로그 추적</td>
+        <td>불가능 (스크롤만)</td>
+        <td>클릭, 체류시간, 전환 기여도</td>
+      </tr>
+      <tr>
+        <td>초기 로드 용량</td>
+        <td>~50MB (913개 이미지)</td>
+        <td>~5MB (사진만 이미지)</td>
+      </tr>
+      <tr>
+        <td>오탈자/가격 수정</td>
+        <td>피그마 재작업 → 이미지 재업로드</td>
+        <td>텍스트만 수정 → 즉시 반영</td>
+      </tr>
+      <tr>
+        <td>반응형 대응</td>
+        <td>불가능</td>
+        <td>CSS 기반 완전 반응형</td>
+      </tr>
+      <tr>
+        <td>다국어 번역</td>
+        <td>불가능 (이미지 내 한국어)</td>
+        <td>텍스트 치환으로 가능</td>
+      </tr>
+      <tr>
+        <td>schema.org 마크업</td>
+        <td>없음</td>
+        <td>가격, 일정, 가이드 구조화 데이터</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════ SLIDE 5: 핵심 효과 ═══════════════════════ -->
+<section class="slide" id="s5">
+  <span class="slide-label">효과</span>
+  <h2><em>3대 핵심 효과</em></h2>
+  <p class="slide-desc">텍스트를 이미지에서 꺼내면 발생하는 핵심 변화</p>
+
+  <div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="compare-col after">
+      <span class="col-badge">SEO</span>
+      <h3>검색 노출</h3>
+      <p>이미지 안에 갇혀 있던 "나오시마 워킹투어", "이우환 미술관", "지중미술관" 등 핵심 키워드가 Google에 인덱싱됩니다.</p>
+      <div class="metrics" style="grid-template-columns: 1fr;">
+        <div class="metric">
+          <div class="value">15+</div>
+          <div class="label">신규 노출 키워드 수</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-col after">
+      <span class="col-badge">ANALYTICS</span>
+      <h3>요소별 추적</h3>
+      <p>programCard별 체류 시간, trustPoints 항목별 시선, 인스타그램 링크 클릭률, 가격 옵션 조회 등 세밀한 데이터 수집이 가능합니다.</p>
+      <div class="metrics" style="grid-template-columns: 1fr;">
+        <div class="metric">
+          <div class="value">10x</div>
+          <div class="label">추적 가능 이벤트 증가</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-col after">
+      <span class="col-badge">PERFORMANCE</span>
+      <h3>로딩 속도</h3>
+      <p>50MB 이미지 → 5MB(사진만)로 10배 경량화. lazy loading + 텍스트 우선 렌더링으로 체감 속도 대폭 개선.</p>
+      <div class="metrics" style="grid-template-columns: 1fr;">
+        <div class="metric">
+          <div class="value">90%↓</div>
+          <div class="label">페이지 용량 감소</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 6: Google 검색 시뮬레이션 ═══════════════════════ -->
+<section class="slide" id="s6">
+  <span class="slide-label">SEO 체감</span>
+  <h2>Google에서 <em>이렇게 보입니다</em></h2>
+  <p class="slide-desc">같은 상품이 통이미지 vs 블록 HTML일 때, Google 검색 결과가 어떻게 달라지는지 비교해보세요</p>
+
+  <div class="compare-grid">
+    <!-- BEFORE: 통이미지 검색 결과 -->
+    <div class="compare-col before">
+      <span class="col-badge">BEFORE — 통이미지</span>
+      <div class="google-result">
+        <div class="g-url">experiences.myrealtrip.com › products › 5569978</div>
+        <div class="g-title">나오시마 워킹투어 | 마이리얼트립</div>
+        <div class="g-desc">상세 설명을 확인해보세요. 이미지로 제공되는 콘텐츠입니다.</div>
+      </div>
+      <div style="margin-top: 24px; padding: 16px; background: rgba(236,73,55,0.08); border-radius: 8px;">
+        <div style="font-size: 13px; color: var(--red-500); font-weight: 600; margin-bottom: 8px;">Google이 읽을 수 있는 정보</div>
+        <div style="font-size: 13px; color: var(--gray-500); line-height: 1.7;">
+          · 페이지 제목 (title 태그)<br>
+          · 이미지 파일명 "MO_3.jpg"<br>
+          · 가격, 일정, 가이드 정보 → <span style="color: var(--red-500); font-weight: 600;">전부 이미지 안에 갇혀 읽을 수 없음</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFTER: 블록 HTML 검색 결과 (리치 결과) -->
+    <div class="compare-col after">
+      <span class="col-badge">AFTER — 블록 HTML</span>
+      <div class="google-result rich">
+        <div class="g-url">experiences.myrealtrip.com › products › 5569978</div>
+        <div class="g-title">나오시마 워킹투어 — 아트의 섬을 걸어서 만나는 하루</div>
+        <div class="g-rating">
+          <span class="g-stars">★★★★★</span>
+          <span class="g-rating-text">4.9 (128) · ₩128,000–₩323,000</span>
+        </div>
+        <div class="g-desc">세토내해의 예술 섬 나오시마를 한국어 가이드와 함께 걸으며 탐험합니다. 이우환 미술관, 지중미술관, 베네세하우스 등 6시간 코스.</div>
+        <div class="g-faq">
+          <div class="g-faq-item">▸ 비가 와도 투어가 진행되나요?</div>
+          <div class="g-faq-item">▸ 점심은 어디서 먹나요?</div>
+          <div class="g-faq-item">▸ 미술관 입장료가 포함인가요?</div>
+        </div>
+      </div>
+      <div style="margin-top: 24px; padding: 16px; background: rgba(21,131,219,0.08); border-radius: 8px;">
+        <div style="font-size: 13px; color: var(--blue-600); font-weight: 600; margin-bottom: 8px;">schema.org 구조화 데이터 효과</div>
+        <div style="font-size: 13px; color: var(--gray-400); line-height: 1.7;">
+          · ⭐ 별점 + 리뷰 수 노출<br>
+          · 💰 가격 범위 표시<br>
+          · ❓ FAQ 아코디언 3개 노출<br>
+          · 📍 장소, 일정 등 리치 스니펫
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 7: 텍스트 검색 데모 ═══════════════════════ -->
+<section class="slide" id="s7">
+  <span class="slide-label">텍스트 검색</span>
+  <h2>Ctrl+F로 <em>"이우환"</em>을 찾아보세요</h2>
+  <p class="slide-desc">통이미지에서는 텍스트 검색이 불가능합니다. 블록 HTML에서는 모든 텍스트를 검색할 수 있습니다.</p>
+
+  <div class="compare-grid">
+    <!-- BEFORE: 이미지 속 텍스트 -->
+    <div class="compare-col before">
+      <span class="col-badge">BEFORE — 통이미지</span>
+      <div class="search-demo">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <span class="search-text">이우환</span>
+          <span class="search-result-badge bad">0건</span>
+        </div>
+        <div class="image-placeholder">
+          <div class="img-label">programCard_03.jpg</div>
+          <div class="img-content">
+            <div class="fake-img-text">이우환 미술관</div>
+            <div class="fake-img-text small">30분 소요</div>
+            <div class="fake-img-text small">세계적인 현대미술 거장의 작품세계...</div>
+          </div>
+          <div class="img-overlay">
+            <span>이미지 안 텍스트<br>검색 불가 ✕</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFTER: HTML 텍스트 -->
+    <div class="compare-col after">
+      <span class="col-badge">AFTER — 블록 HTML</span>
+      <div class="search-demo">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <span class="search-text">이우환</span>
+          <span class="search-result-badge good">3건</span>
+        </div>
+        <div class="html-placeholder">
+          <div class="html-line"><span class="html-tag">&lt;h3&gt;</span><span class="html-found">이우환</span> 미술관<span class="html-tag">&lt;/h3&gt;</span> <span class="found-badge">1</span></div>
+          <div class="html-line"><span class="html-tag">&lt;span&gt;</span>30분 소요<span class="html-tag">&lt;/span&gt;</span></div>
+          <div class="html-line"><span class="html-tag">&lt;p&gt;</span>세계적인 현대미술 거장 <span class="html-found">이우환</span>의<span class="html-tag">&lt;/p&gt;</span> <span class="found-badge">2</span></div>
+          <div class="html-line"><span class="html-tag">&lt;meta&gt;</span>"<span class="html-found">이우환</span> 미술관 외관"<span class="html-tag">&lt;/meta&gt;</span> <span class="found-badge">3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row" style="margin-top: 48px;">
+    <div class="stat-item">
+      <div class="number bad">0</div>
+      <div class="desc">통이미지에서 검색 가능한 키워드</div>
+    </div>
+    <div class="stat-item">
+      <div class="number good">45+</div>
+      <div class="desc">블록 HTML에서 검색 가능한 키워드</div>
+    </div>
+    <div class="stat-item">
+      <div class="number good">6</div>
+      <div class="desc">schema.org 구조화 엔티티</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 8: 17 블록 시스템 ═══════════════════════ -->
+<section class="slide" id="s8">
+  <span class="slide-label">블록 시스템</span>
+  <h2><em>17개 블록</em>으로 모든 PDP를 조립</h2>
+  <p class="slide-desc">각 블록은 renderMode (structured / hybrid / image)로 구분됩니다</p>
+
+  <div class="block-grid">
+    <div class="block-card">
+      <div class="block-name">exclusiveHeader</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">heroImage</div>
+      <span class="block-mode image">image</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">introSection</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">painPointCards</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">guideProfile</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">recommendBox</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">sectionHeader</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">programCard</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">visualTimeline</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">highlightCallout</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">trustPoints</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">numberedList</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">notice</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">priceTable</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">imageGrid</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">customerReview</div>
+      <span class="block-mode structured">structured</span>
+    </div>
+    <div class="block-card">
+      <div class="block-name">guideIntro</div>
+      <span class="block-mode hybrid">hybrid</span>
+    </div>
+  </div>
+
+  <div class="stats-row" style="margin-top: 40px;">
+    <div class="stat-item">
+      <div class="number good">9</div>
+      <div class="desc">structured (HTML/CSS only)</div>
+    </div>
+    <div class="stat-item">
+      <div class="number" style="color: var(--yellow-warm);">7</div>
+      <div class="desc">hybrid (HTML + image)</div>
+    </div>
+    <div class="stat-item">
+      <div class="number" style="color: var(--gray-400);">1</div>
+      <div class="desc">image (순수 사진)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 9: 전환 예시 ═══════════════════════ -->
+<section class="slide" id="s9">
+  <span class="slide-label">전환 예시</span>
+  <h2>programCard <em>1장의 변화</em></h2>
+  <p class="slide-desc">PDP에서 8~10회 반복되는 핵심 블록. SEO 효과가 가장 큰 블록입니다.</p>
+
+  <div class="compare-grid">
+    <div class="compare-col before">
+      <span class="col-badge">BEFORE</span>
+      <h3>통이미지 1장</h3>
+      <p>342×254px 이미지 안에 사진 + 제목 + 시간 + 설명이 모두 포함.</p>
+      <div class="metrics">
+        <div class="metric">
+          <div class="value">~200KB</div>
+          <div class="label">이미지 용량</div>
+        </div>
+        <div class="metric">
+          <div class="value">0개</div>
+          <div class="label">검색 가능 텍스트</div>
+        </div>
+        <div class="metric">
+          <div class="value">0개</div>
+          <div class="label">추적 가능 이벤트</div>
+        </div>
+        <div class="metric">
+          <div class="value">불가</div>
+          <div class="label">텍스트 수정</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-col after">
+      <span class="col-badge">AFTER</span>
+      <h3>Hybrid programCard</h3>
+      <p>사진만 이미지. 제목(&lt;h3&gt;), 시간(&lt;span&gt;), 설명(&lt;p&gt;)은 HTML 텍스트.</p>
+      <div class="metrics">
+        <div class="metric">
+          <div class="value">~80KB</div>
+          <div class="label">사진 + HTML</div>
+        </div>
+        <div class="metric">
+          <div class="value">3개</div>
+          <div class="label">검색 가능 텍스트</div>
+        </div>
+        <div class="metric">
+          <div class="value">4개</div>
+          <div class="label">추적 가능 이벤트</div>
+        </div>
+        <div class="metric">
+          <div class="value">즉시</div>
+          <div class="label">텍스트 수정</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SLIDE 10: 로드맵 ═══════════════════════ -->
+<section class="slide" id="s10">
+  <span class="slide-label">로드맵</span>
+  <h2>전환 <em>로드맵</em></h2>
+  <p class="slide-desc">데이터 레이어 구축 → 피그마 플러그인 → PoC → 전체 적용</p>
+
+  <div class="timeline">
+    <div class="timeline-item active">
+      <div class="tl-title">Phase 1</div>
+      <div class="tl-desc">JSON 스키마<br>데이터 레이어 구축<br><strong>완료</strong></div>
+    </div>
+    <div class="timeline-item active">
+      <div class="tl-title">Phase 2</div>
+      <div class="tl-desc">렌더링 전략표<br>블록별 output 태그<br><strong>완료</strong></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Phase 3</div>
+      <div class="tl-desc">피그마 플러그인<br>JSON 기반 블록 생성</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Phase 4</div>
+      <div class="tl-desc">나오시마 PoC<br>하이브리드 HTML 적용</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">Phase 5</div>
+      <div class="tl-desc">전체 PDP 확대<br>카테고리별 롤아웃</div>
+    </div>
+  </div>
+
+  <div class="arrow-section" style="margin-top: 56px;">
+    <div class="arrow-box from">
+      <div class="arrow-label">현재</div>
+      <div class="arrow-value">118개 이미지</div>
+    </div>
+    <div class="arrow-icon">→</div>
+    <div class="arrow-box to">
+      <div class="arrow-label">목표</div>
+      <div class="arrow-value">17개 블록 조립</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Slide navigation dots
+  const slides = document.querySelectorAll('.slide');
+  const navDots = document.getElementById('navDots');
+
+  slides.forEach((slide, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.title = `Slide ${i + 1}`;
+    dot.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
+    navDots.appendChild(dot);
+  });
+
+  // Active dot tracking
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = [...slides].indexOf(entry.target);
+        document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Scroll snap
+  document.body.style.scrollSnapType = 'y mandatory';
+  document.body.style.overflowY = 'scroll';
+  document.body.style.height = '100vh';
+</script>
+</body>
+</html>
