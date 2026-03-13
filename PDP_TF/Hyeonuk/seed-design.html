@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRT Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  /* Brand */
+  --primary: #51abf3;
+  --primary-100: #e8f4fd;
+  --primary-200: #c5e2f9;
+  --primary-300: #9acef5;
+  --primary-400: #6fbaf1;
+  --primary-500: #51abf3;
+  --primary-600: #2b96ed;
+  --primary-700: #1a72bc;
+  --primary-800: #0d5490;
+  --primary-900: #063964;
+
+  --secondary: #33b893;
+  --secondary-100: #e6f8f3;
+  --secondary-200: #b3eadb;
+  --secondary-300: #80dcc3;
+  --secondary-400: #4dceab;
+  --secondary-500: #33b893;
+  --secondary-600: #289275;
+  --secondary-700: #1e6d58;
+  --secondary-800: #14493b;
+  --secondary-900: #0a261e;
+
+  --warning: #ffbf00;
+  --warning-100: #fff9e6;
+  --warning-500: #ffbf00;
+  --warning-700: #cc9900;
+
+  --error: #fa5b4a;
+  --error-100: #fff0ee;
+  --error-500: #fa5b4a;
+  --error-700: #d63a28;
+  --discount: #ec4937; /* 할인율 표시 전용 — 실제 myrealtrip.com */
+
+  /* 특수 태그 (실제 myrealtrip.com 교차 검증값) */
+  --tag-pink-bg: #FFF1F4;
+  --tag-pink-text: #FF4EDB;
+  --tag-orange-bg: #fff2c6;
+  --tag-orange-text: #f78000;
+  --tag-purple-bg: #ede0ff;
+  --tag-purple-text: #8238fa;
+
+  /* Gray */
+  --gray-50: #f8f9fa;
+  --gray-60: #f5f6f7;
+  --gray-80: #f1f3f5;
+  --gray-100: #e9ecef;
+  --gray-200: #dee2e6;
+  --gray-300: #ced4da;
+  --gray-400: #adb5bd;
+  --gray-500: #848c94;
+  --gray-600: #666d75;
+  --gray-700: #495056;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --gray-950: #101418; /* 실제 myrealtrip.com 최고대비 텍스트 */
+
+  /* Semantic */
+  --bg: #ffffff;
+  --bg-subtle: #f8f9fa;
+  --bg-muted: #f1f3f5;
+  --surface: #ffffff;
+  --border: #dee2e6;
+  --border-strong: #ced4da;
+  --text: #212529;
+  --text-muted: #666d75;
+  --text-subtle: #adb5bd;
+  /* CTA 버튼은 primary-600(#2b96ed) 사용 — 실제 myrealtrip.com 기준 */
+  --brand: #2b96ed;
+  --brand-hover: #1a72bc;
+
+  /* Radius */
+  --r1: 4px;
+  --r2: 8px;
+  --r3: 12px;
+  --r4: 16px;
+  --r-full: 9999px;
+
+  /* Spacing */
+  --x1: 4px; --x2: 8px; --x3: 12px; --x4: 16px;
+  --x5: 20px; --x6: 24px; --x8: 32px; --x10: 40px;
+  --x12: 48px; --x16: 64px;
+
+  /* Elevation */
+  /* 실제 myrealtrip.com 카드 shadow 교차 검증값 */
+  --elevation-z1: 0 1px 2px rgba(0,0,0,.05), 0 4px 14px rgba(0,0,0,.10);
+  --elevation-z2: 0 2px 4px rgba(33,37,41,.08), 0 6px 20px rgba(33,37,41,.12);
+  --elevation-z3: 0 4px 8px rgba(33,37,41,.10), 0 12px 32px rgba(33,37,41,.14);
+  --elevation-z4: 0 8px 16px rgba(33,37,41,.12), 0 24px 48px rgba(33,37,41,.18);
+
+  /* Typography */
+  --font: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  --t1: 11px; --t2: 12px; --t3: 13px; --t4: 14px;
+  --t5: 16px; --t6: 18px; --t7: 20px; --t8: 22px;
+  --t9: 24px; --t10: 28px;
+
+  /* Layout */
+  --sidebar-w: 240px;
+  --toc-w: 200px;
+  --header-h: 56px;
+}
+
+[data-theme="dark"] {
+  --bg: #1a1d21;
+  --bg-subtle: #22262b;
+  --bg-muted: #2a2f35;
+  --surface: #22262b;
+  --border: #383e46;
+  --border-strong: #4a5260;
+  --text: #e9ecef;
+  --text-muted: #adb5bd;
+  --text-subtle: #666d75;
+  --brand: #6bbff5;
+  --brand-hover: #8ecef8;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  font-size: var(--t4);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  transition: background .2s, color .2s;
+}
+a { color: var(--brand); text-decoration: none; }
+a:hover { color: var(--brand-hover); }
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.header {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 var(--x6);
+  z-index: 100;
+  box-shadow: var(--elevation-z1);
+}
+.header-logo {
+  display: flex; align-items: center; gap: var(--x2);
+  font-size: var(--t5); font-weight: 700;
+  color: var(--text); text-decoration: none;
+  margin-right: var(--x8);
+  flex-shrink: 0;
+}
+.header-logo svg { color: var(--brand); }
+.header-tabs {
+  display: flex; gap: 2px; flex: 1;
+}
+.header-tab {
+  padding: var(--x2) var(--x3);
+  border-radius: var(--r2);
+  font-size: var(--t3);
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none; background: none;
+  transition: all .15s;
+}
+.header-tab:hover { background: var(--bg-muted); color: var(--text); }
+.header-tab.active {
+  background: var(--primary-100);
+  color: var(--brand);
+}
+[data-theme="dark"] .header-tab.active {
+  background: rgba(81,171,243,.15);
+}
+.header-actions {
+  display: flex; align-items: center; gap: var(--x2);
+  margin-left: auto;
+}
+.btn-search {
+  display: flex; align-items: center; gap: var(--x2);
+  padding: var(--x2) var(--x3);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  font-size: var(--t3);
+  cursor: pointer;
+  transition: all .15s;
+  min-width: 160px;
+}
+.btn-search:hover { border-color: var(--border-strong); color: var(--text); }
+.btn-search kbd {
+  margin-left: auto;
+  font-size: 10px;
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: inherit;
+}
+.btn-icon {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: var(--r2);
+  background: none; cursor: pointer; color: var(--text-muted);
+  transition: all .15s;
+}
+.btn-icon:hover { background: var(--bg-muted); color: var(--text); }
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.layout {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: var(--header-h); left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  padding: var(--x4) 0;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.nav-section { margin-bottom: var(--x2); }
+.nav-section-title {
+  padding: var(--x2) var(--x4);
+  font-size: var(--t2);
+  font-weight: 600;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.nav-group { }
+.nav-group-toggle {
+  width: 100%;
+  display: flex; align-items: center; gap: var(--x2);
+  padding: var(--x2) var(--x4);
+  background: none; border: none;
+  font-size: var(--t4); font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: all .15s;
+  border-radius: 0;
+}
+.nav-group-toggle:hover { color: var(--text); background: var(--bg-subtle); }
+.nav-group-toggle .chevron {
+  margin-left: auto;
+  transition: transform .2s;
+  font-size: 10px;
+}
+.nav-group.open .chevron { transform: rotate(90deg); }
+.nav-group-items {
+  display: none;
+  padding-left: var(--x4);
+}
+.nav-group.open .nav-group-items { display: block; }
+.nav-item {
+  display: block;
+  padding: 6px var(--x4);
+  font-size: var(--t3);
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 0;
+  transition: all .15s;
+  border: none; background: none;
+  width: 100%; text-align: left;
+}
+.nav-item:hover { color: var(--text); background: var(--bg-subtle); }
+.nav-item.active {
+  color: var(--brand);
+  background: var(--primary-100);
+  font-weight: 500;
+}
+[data-theme="dark"] .nav-item.active { background: rgba(81,171,243,.1); }
+
+/* ═══════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-right: var(--toc-w);
+  flex: 1;
+  min-width: 0;
+  padding: var(--x10) var(--x8);
+  max-width: 860px;
+}
+
+/* ═══════════════════════════════════════════
+   TOC
+═══════════════════════════════════════════ */
+.toc {
+  position: fixed;
+  top: var(--header-h); right: 0;
+  width: var(--toc-w);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  padding: var(--x6) var(--x4);
+  border-left: 1px solid var(--border);
+}
+.toc-title {
+  font-size: var(--t2);
+  font-weight: 600;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: var(--x3);
+}
+.toc-link {
+  display: block;
+  padding: 4px var(--x2);
+  font-size: var(--t2);
+  color: var(--text-subtle);
+  border-left: 2px solid transparent;
+  transition: all .15s;
+  margin-left: -2px;
+}
+.toc-link:hover { color: var(--text); border-left-color: var(--border-strong); }
+.toc-link.active { color: var(--brand); border-left-color: var(--brand); }
+.toc-link.h3 { padding-left: var(--x4); font-size: 11px; }
+
+/* ═══════════════════════════════════════════
+   PAGE CONTENT COMMON
+═══════════════════════════════════════════ */
+.page { display: none; }
+.page.active { display: block; }
+
+.page-header { margin-bottom: var(--x10); }
+.page-title {
+  font-size: var(--t10);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--x2);
+  line-height: 1.3;
+}
+.page-subtitle {
+  font-size: var(--t6);
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.section { margin-bottom: var(--x12); scroll-margin-top: 80px; }
+.section-title {
+  font-size: var(--t8);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--x6);
+  padding-bottom: var(--x3);
+  border-bottom: 1px solid var(--border);
+}
+.section-subtitle {
+  font-size: var(--t6);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--x4);
+  margin-top: var(--x8);
+}
+.desc {
+  font-size: var(--t4);
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: var(--x6);
+}
+
+/* ═══════════════════════════════════════════
+   OVERVIEW PAGE
+═══════════════════════════════════════════ */
+.overview-hero {
+  background: linear-gradient(135deg, var(--primary-100) 0%, var(--secondary-100) 100%);
+  border-radius: var(--r4);
+  padding: var(--x16) var(--x10);
+  margin-bottom: var(--x10);
+  text-align: center;
+}
+[data-theme="dark"] .overview-hero {
+  background: linear-gradient(135deg, rgba(81,171,243,.15) 0%, rgba(51,184,147,.15) 100%);
+}
+.overview-hero-badge {
+  display: inline-block;
+  background: var(--brand);
+  color: white;
+  font-size: var(--t2);
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  margin-bottom: var(--x4);
+  letter-spacing: .04em;
+}
+.overview-hero-title {
+  font-size: 36px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--x3);
+  line-height: 1.2;
+}
+.overview-hero-sub {
+  font-size: var(--t5);
+  color: var(--text-muted);
+  max-width: 480px; margin: 0 auto;
+}
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--x4);
+  margin-bottom: var(--x10);
+}
+.overview-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: var(--x6);
+  cursor: pointer;
+  transition: all .2s;
+}
+.overview-card:hover {
+  border-color: var(--brand);
+  box-shadow: var(--elevation-z2);
+  transform: translateY(-2px);
+}
+.overview-card-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--r2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: var(--x3);
+}
+.overview-card-title { font-size: var(--t5); font-weight: 600; margin-bottom: var(--x1); }
+.overview-card-desc { font-size: var(--t3); color: var(--text-muted); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════
+   COLOR SWATCHES
+═══════════════════════════════════════════ */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--x3);
+  margin-bottom: var(--x6);
+}
+.color-swatch {
+  border-radius: var(--r2);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.color-swatch-preview {
+  height: 64px;
+  width: 100%;
+}
+.color-swatch-info {
+  padding: var(--x2) var(--x3);
+  background: var(--surface);
+}
+.color-swatch-name { font-size: var(--t2); font-weight: 600; color: var(--text); }
+.color-swatch-hex { font-size: 11px; color: var(--text-subtle); font-family: monospace; }
+
+.color-palette-row {
+  display: flex; gap: 2px; margin-bottom: var(--x6);
+  border-radius: var(--r2); overflow: hidden;
+}
+.color-palette-cell {
+  flex: 1; height: 48px;
+  display: flex; align-items: flex-end;
+  padding: 4px;
+  cursor: pointer;
+  transition: flex .2s;
+  position: relative;
+}
+.color-palette-cell:hover { flex: 2; }
+.color-palette-label {
+  font-size: 10px; font-weight: 600;
+  opacity: 0; transition: opacity .2s;
+  white-space: nowrap;
+}
+.color-palette-cell:hover .color-palette-label { opacity: 1; }
+
+.semantic-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--x6);
+}
+.semantic-table th {
+  text-align: left;
+  font-size: var(--t2);
+  font-weight: 600;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: var(--x2) var(--x4);
+  border-bottom: 1px solid var(--border);
+}
+.semantic-table td {
+  padding: var(--x3) var(--x4);
+  font-size: var(--t3);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.semantic-table tr:hover td { background: var(--bg-subtle); }
+.token-chip {
+  font-family: monospace;
+  font-size: var(--t2);
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--r1);
+  padding: 2px 6px;
+  color: var(--brand);
+}
+.color-dot {
+  width: 20px; height: 20px;
+  border-radius: var(--r1);
+  border: 1px solid var(--border);
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: var(--x2);
+}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY SPECIMENS
+═══════════════════════════════════════════ */
+.type-scale-row {
+  display: flex; align-items: baseline; gap: var(--x6);
+  padding: var(--x4) 0;
+  border-bottom: 1px solid var(--border);
+}
+.type-scale-meta { width: 120px; flex-shrink: 0; }
+.type-scale-token { font-size: var(--t2); color: var(--text-subtle); font-family: monospace; }
+.type-scale-size { font-size: var(--t2); color: var(--text-muted); }
+.type-specimen { color: var(--text); }
+
+/* ═══════════════════════════════════════════
+   SPACING TOKENS
+═══════════════════════════════════════════ */
+.spacing-row {
+  display: flex; align-items: center; gap: var(--x4);
+  padding: var(--x3) 0;
+  border-bottom: 1px solid var(--border);
+}
+.spacing-bar {
+  background: var(--primary-200);
+  border-radius: 2px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.spacing-meta { display: flex; gap: var(--x4); font-size: var(--t3); color: var(--text-muted); }
+.spacing-token { font-family: monospace; color: var(--brand); }
+
+/* ═══════════════════════════════════════════
+   RADIUS DEMO
+═══════════════════════════════════════════ */
+.radius-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--x4);
+}
+.radius-item { text-align: center; }
+.radius-preview {
+  width: 80px; height: 80px;
+  background: var(--primary-200);
+  border: 2px solid var(--primary-400);
+  margin: 0 auto var(--x2);
+}
+.radius-label { font-size: var(--t2); color: var(--text-muted); }
+.radius-token { font-size: var(--t2); font-family: monospace; color: var(--brand); }
+
+/* ═══════════════════════════════════════════
+   ELEVATION DEMO
+═══════════════════════════════════════════ */
+.elevation-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--x6);
+  margin-bottom: var(--x6);
+}
+.elevation-card {
+  background: var(--surface);
+  border-radius: var(--r3);
+  padding: var(--x6);
+  text-align: center;
+}
+.elevation-label { font-size: var(--t3); font-weight: 600; margin-bottom: var(--x1); }
+.elevation-token { font-size: var(--t2); font-family: monospace; color: var(--brand); }
+
+/* ═══════════════════════════════════════════
+   COMPONENTS — BUTTONS
+═══════════════════════════════════════════ */
+.component-demo {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: var(--x8);
+  margin-bottom: var(--x4);
+  display: flex; flex-wrap: wrap; gap: var(--x3); align-items: center;
+}
+.component-code {
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  padding: var(--x4) var(--x6);
+  font-family: monospace;
+  font-size: var(--t3);
+  color: var(--text-muted);
+  margin-bottom: var(--x8);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--x2);
+  font-family: var(--font);
+  font-weight: 500;
+  border: none; cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* 실제 myrealtrip.com: 버튼 border-radius = 12px(--r3) */
+.btn-sm { padding: 6px 14px; font-size: var(--t3); border-radius: var(--r3); }
+.btn-md { padding: 10px 20px; font-size: var(--t4); border-radius: var(--r3); }
+.btn-lg { padding: 14px 28px; font-size: var(--t5); border-radius: var(--r3); }
+.btn-xl { padding: 16px 32px; font-size: var(--t6); border-radius: var(--r3); }
+
+.btn-primary { background: var(--brand); color: white; }
+.btn-primary:hover { background: var(--brand-hover); }
+
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-secondary:hover { background: var(--secondary-600); }
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--brand);
+  color: var(--brand);
+}
+.btn-outline:hover { background: var(--primary-100); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+}
+.btn-ghost:hover { background: var(--bg-muted); }
+
+.btn-danger { background: var(--error); color: white; }
+.btn-danger:hover { background: var(--error-700); }
+
+.btn-r-full { border-radius: var(--r-full) !important; }
+
+/* ═══════════════════════════════════════════
+   BADGES & TAGS
+═══════════════════════════════════════════ */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  font-size: var(--t2); font-weight: 600;
+}
+.badge-primary { background: var(--primary-100); color: var(--primary-700); }
+.badge-secondary { background: var(--secondary-100); color: var(--secondary-700); }
+.badge-warning { background: var(--warning-100); color: var(--warning-700); }
+.badge-error { background: var(--error-100); color: var(--error-700); }
+.badge-gray { background: var(--gray-100); color: var(--gray-700); }
+/* 실제 myrealtrip.com 특수 태그 */
+.badge-new { background: var(--tag-purple-bg); color: var(--tag-purple-text); }
+.badge-special { background: var(--tag-pink-bg); color: var(--tag-pink-text); }
+.badge-sale { background: var(--tag-orange-bg); color: var(--tag-orange-text); }
+.badge-discount { background: var(--error-100); color: var(--discount); font-weight: 700; }
+.badge-dot::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: currentColor;
+  display: inline-block;
+}
+
+/* ═══════════════════════════════════════════
+   AVATAR
+═══════════════════════════════════════════ */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-weight: 600; color: white;
+  flex-shrink: 0;
+  background: var(--brand);
+}
+.avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+.avatar-sm { width: 32px; height: 32px; font-size: var(--t2); }
+.avatar-md { width: 40px; height: 40px; font-size: var(--t4); }
+.avatar-lg { width: 48px; height: 48px; font-size: var(--t5); }
+.avatar-xl { width: 64px; height: 64px; font-size: var(--t7); }
+
+/* ═══════════════════════════════════════════
+   FORM CONTROLS
+═══════════════════════════════════════════ */
+.input-group { margin-bottom: var(--x4); }
+.input-label {
+  display: block;
+  font-size: var(--t3); font-weight: 500;
+  color: var(--text); margin-bottom: var(--x1);
+}
+.input-hint { font-size: var(--t2); color: var(--text-muted); margin-top: 4px; }
+.input-error-msg { font-size: var(--t2); color: var(--error); margin-top: 4px; }
+
+.input {
+  width: 100%;
+  padding: 10px var(--x3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--t4); font-family: var(--font);
+  transition: all .15s;
+  outline: none;
+}
+.input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(81,171,243,.15); }
+.input::placeholder { color: var(--text-subtle); }
+.input.error { border-color: var(--error); }
+.input.error:focus { box-shadow: 0 0 0 3px rgba(250,91,74,.15); }
+.input.success { border-color: var(--secondary); }
+
+.input-addon-wrap {
+  position: relative;
+}
+.input-addon-wrap .input { padding-left: 40px; }
+.input-addon-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-subtle); font-size: 16px;
+}
+
+/* Select */
+.select {
+  width: 100%;
+  padding: 10px var(--x3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--t4); font-family: var(--font);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23adb5bd' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+.select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(81,171,243,.15); }
+
+/* Checkbox & Radio */
+.check-group {
+  display: flex; align-items: center; gap: var(--x2);
+  cursor: pointer;
+  user-select: none;
+}
+.check-input { display: none; }
+.check-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r1);
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.check-input:checked + .check-box {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+.check-input:checked + .check-box::after {
+  content: '';
+  width: 10px; height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translate(1px, -1px);
+  display: block;
+}
+.radio-box {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.check-input:checked + .radio-box {
+  border-color: var(--brand);
+}
+.check-input:checked + .radio-box::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--brand);
+  display: block;
+}
+.check-label { font-size: var(--t4); color: var(--text); }
+
+/* Toggle */
+.toggle-wrap {
+  display: inline-flex; align-items: center; gap: var(--x2); cursor: pointer;
+}
+.toggle-input { display: none; }
+.toggle-track {
+  width: 40px; height: 22px;
+  background: var(--gray-300);
+  border-radius: var(--r-full);
+  position: relative; transition: background .2s;
+}
+.toggle-input:checked ~ .toggle-track { background: var(--brand); }
+.toggle-thumb {
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute; top: 2px; left: 2px;
+  transition: left .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-input:checked ~ .toggle-track .toggle-thumb { left: 20px; }
+
+/* ═══════════════════════════════════════════
+   CALLOUT
+═══════════════════════════════════════════ */
+.callout {
+  display: flex; gap: var(--x3);
+  padding: var(--x4) var(--x5);
+  border-radius: var(--r2);
+  border-left: 3px solid;
+  margin-bottom: var(--x4);
+}
+.callout-info { background: var(--primary-100); border-color: var(--brand); }
+.callout-success { background: var(--secondary-100); border-color: var(--secondary); }
+.callout-warning { background: var(--warning-100); border-color: var(--warning); }
+.callout-error { background: var(--error-100); border-color: var(--error); }
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout-title { font-size: var(--t4); font-weight: 600; margin-bottom: 4px; }
+.callout-desc { font-size: var(--t3); color: var(--text-muted); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+.toast-demo { display: flex; flex-direction: column; gap: var(--x2); }
+.toast {
+  display: flex; align-items: center; gap: var(--x3);
+  padding: var(--x3) var(--x4);
+  background: var(--gray-900);
+  color: white;
+  border-radius: var(--r2);
+  font-size: var(--t3);
+  box-shadow: var(--elevation-z3);
+  max-width: 360px;
+}
+[data-theme="dark"] .toast { background: var(--gray-700); }
+.toast-icon { font-size: 16px; flex-shrink: 0; }
+.toast-msg { flex: 1; }
+.toast-close {
+  background: none; border: none; color: white;
+  cursor: pointer; font-size: 16px; opacity: .6;
+  padding: 2px; line-height: 1;
+}
+.toast-success { background: var(--secondary-600); }
+.toast-warning { background: var(--warning-700); }
+.toast-error { background: var(--error-700); }
+
+/* ═══════════════════════════════════════════
+   CARD
+═══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r3);
+  overflow: hidden;
+}
+.card-img { width: 100%; height: 160px; object-fit: cover; background: var(--primary-100); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.card-body { padding: var(--x4); }
+.card-title { font-size: var(--t5); font-weight: 600; margin-bottom: var(--x1); }
+.card-desc { font-size: var(--t3); color: var(--text-muted); line-height: 1.6; }
+.card-footer {
+  padding: var(--x3) var(--x4);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: var(--x2);
+}
+
+/* ═══════════════════════════════════════════
+   TABS NAV
+═══════════════════════════════════════════ */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: var(--x6);
+  gap: 0;
+}
+.tab {
+  padding: var(--x3) var(--x5);
+  font-size: var(--t4); font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none; background: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all .15s;
+  font-family: var(--font);
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.divider { height: 1px; background: var(--border); margin: var(--x6) 0; }
+.divider-label {
+  display: flex; align-items: center; gap: var(--x3);
+  font-size: var(--t2); color: var(--text-subtle);
+  margin: var(--x6) 0;
+}
+.divider-label::before, .divider-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ═══════════════════════════════════════════
+   SPEC TABLE
+═══════════════════════════════════════════ */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t3);
+  margin-bottom: var(--x6);
+}
+.spec-table th {
+  text-align: left;
+  background: var(--bg-subtle);
+  padding: var(--x2) var(--x4);
+  font-size: var(--t2); font-weight: 600;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--border);
+}
+.spec-table td {
+  padding: var(--x3) var(--x4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.spec-table tr:hover td { background: var(--bg-subtle); }
+
+/* ═══════════════════════════════════════════
+   DO / DON'T
+═══════════════════════════════════════════ */
+.do-dont {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--x4); margin-bottom: var(--x6);
+}
+.do-box, .dont-box {
+  border-radius: var(--r3); overflow: hidden;
+  border: 1.5px solid;
+}
+.do-box { border-color: var(--secondary); }
+.dont-box { border-color: var(--error); }
+.do-box-header, .dont-box-header {
+  padding: var(--x2) var(--x4);
+  font-size: var(--t2); font-weight: 700;
+  display: flex; align-items: center; gap: var(--x1);
+}
+.do-box-header { background: var(--secondary-100); color: var(--secondary-700); }
+.dont-box-header { background: var(--error-100); color: var(--error-700); }
+.do-box-body, .dont-box-body {
+  padding: var(--x4);
+  background: var(--bg-subtle);
+  min-height: 80px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════════════
+   SEARCH MODAL
+═══════════════════════════════════════════ */
+.search-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 200;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 120px;
+  backdrop-filter: blur(4px);
+}
+.search-overlay.open { display: flex; }
+.search-modal {
+  background: var(--surface);
+  border-radius: var(--r3);
+  border: 1px solid var(--border);
+  width: 560px;
+  box-shadow: var(--elevation-z4);
+  overflow: hidden;
+}
+.search-input-wrap {
+  display: flex; align-items: center; gap: var(--x3);
+  padding: var(--x4) var(--x5);
+  border-bottom: 1px solid var(--border);
+}
+.search-input-wrap svg { color: var(--text-subtle); flex-shrink: 0; }
+.search-modal-input {
+  flex: 1; border: none; outline: none;
+  font-size: var(--t5); background: none;
+  color: var(--text); font-family: var(--font);
+}
+.search-modal-input::placeholder { color: var(--text-subtle); }
+.search-results {
+  max-height: 360px; overflow-y: auto;
+  padding: var(--x2) 0;
+}
+.search-result-item {
+  display: flex; align-items: center; gap: var(--x3);
+  padding: var(--x3) var(--x5);
+  cursor: pointer; transition: background .1s;
+}
+.search-result-item:hover { background: var(--bg-subtle); }
+.search-result-icon { color: var(--text-subtle); font-size: 14px; }
+.search-result-text { font-size: var(--t4); color: var(--text); }
+.search-result-path { font-size: var(--t2); color: var(--text-subtle); }
+
+/* ═══════════════════════════════════════════
+   PROGRESS BOARD
+═══════════════════════════════════════════ */
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--x3);
+}
+.progress-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: var(--x4);
+  display: flex; flex-direction: column; gap: var(--x2);
+}
+.progress-name { font-size: var(--t4); font-weight: 500; }
+.progress-platforms { display: flex; gap: var(--x1); }
+.progress-platform {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 6px; border-radius: var(--r-full);
+  background: var(--secondary-100); color: var(--secondary-700);
+}
+.progress-platform.na {
+  background: var(--gray-100); color: var(--gray-500);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .toc { display: none; }
+  .main { margin-right: 0; }
+}
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); transition: transform .25s; z-index: 50; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: var(--x6) var(--x4); }
+  .overview-cards { grid-template-columns: 1fr; }
+  .do-dont { grid-template-columns: 1fr; }
+  .elevation-row { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- SEARCH MODAL -->
+<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-modal-input" id="searchInput" placeholder="검색..." oninput="filterSearch(this.value)">
+      <button class="btn-icon" onclick="closeSearch()">Esc</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <a class="header-logo" href="#" onclick="navigate('overview')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    </svg>
+    MRT Design
+  </a>
+  <nav class="header-tabs">
+    <button class="header-tab active">Docs</button>
+    <button class="header-tab">Web</button>
+    <button class="header-tab">iOS</button>
+    <button class="header-tab">Android</button>
+    <button class="header-tab">AI Ready</button>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-search" onclick="openSearch()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      검색...
+      <kbd>⌘K</kbd>
+    </button>
+    <button class="btn-icon" id="themeBtn" onclick="toggleTheme()" title="다크모드">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a class="btn-icon" href="https://github.com/myrealtrip" target="_blank" title="GitHub">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="nav-section">
+      <button class="nav-item" onclick="navigate('overview')" id="nav-overview">Overview</button>
+      <button class="nav-item" onclick="navigate('progress')" id="nav-progress">Progress Board</button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Foundation</div>
+      <div class="nav-group open" id="grp-foundation">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-foundation')">
+          Foundation <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('colors')" id="nav-colors">Colors</button>
+          <button class="nav-item" onclick="navigate('typography')" id="nav-typography">Typography</button>
+          <button class="nav-item" onclick="navigate('spacing')" id="nav-spacing">Spacing</button>
+          <button class="nav-item" onclick="navigate('radius')" id="nav-radius">Radius</button>
+          <button class="nav-item" onclick="navigate('elevation')" id="nav-elevation">Elevation</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-title">Components</div>
+      <div class="nav-group open" id="grp-buttons">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-buttons')">
+          Buttons <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('button')" id="nav-button">Button</button>
+        </div>
+      </div>
+      <div class="nav-group" id="grp-controls">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-controls')">
+          Controls <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('input')" id="nav-input">Input</button>
+          <button class="nav-item" onclick="navigate('checkbox')" id="nav-checkbox">Checkbox & Radio</button>
+          <button class="nav-item" onclick="navigate('toggle')" id="nav-toggle">Toggle</button>
+          <button class="nav-item" onclick="navigate('select')" id="nav-select">Select</button>
+        </div>
+      </div>
+      <div class="nav-group" id="grp-display">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-display')">
+          Display <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('badge')" id="nav-badge">Badge & Tag</button>
+          <button class="nav-item" onclick="navigate('avatar')" id="nav-avatar">Avatar</button>
+          <button class="nav-item" onclick="navigate('divider')" id="nav-divider">Divider</button>
+          <button class="nav-item" onclick="navigate('card')" id="nav-card">Card</button>
+        </div>
+      </div>
+      <div class="nav-group" id="grp-feedback">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-feedback')">
+          Feedback <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('callout')" id="nav-callout">Callout</button>
+          <button class="nav-item" onclick="navigate('toast')" id="nav-toast">Toast</button>
+        </div>
+      </div>
+      <div class="nav-group" id="grp-navigation">
+        <button class="nav-group-toggle" onclick="toggleGroup('grp-navigation')">
+          Navigation <span class="chevron">▶</span>
+        </button>
+        <div class="nav-group-items">
+          <button class="nav-item" onclick="navigate('tabs')" id="nav-tabs">Tabs</button>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="mainContent">
+
+    <!-- ═══ OVERVIEW ═══ -->
+    <div class="page active" id="page-overview">
+      <div class="overview-hero">
+        <span class="overview-hero-badge">v1.0</span>
+        <h1 class="overview-hero-title">MRT Design System</h1>
+        <p class="overview-hero-sub">마이리얼트립 제품 팀을 위한 디자인 언어와 컴포넌트 라이브러리입니다.</p>
+      </div>
+
+      <div class="overview-cards">
+        <div class="overview-card" onclick="navigate('colors')">
+          <div class="overview-card-icon" style="background:var(--primary-100)">🎨</div>
+          <div class="overview-card-title">Foundation</div>
+          <div class="overview-card-desc">컬러, 타이포그래피, 스페이싱 등 기본 디자인 토큰을 정의합니다.</div>
+        </div>
+        <div class="overview-card" onclick="navigate('button')">
+          <div class="overview-card-icon" style="background:var(--secondary-100)">🧩</div>
+          <div class="overview-card-title">Components</div>
+          <div class="overview-card-desc">Button, Input, Badge 등 재사용 가능한 UI 컴포넌트 모음입니다.</div>
+        </div>
+        <div class="overview-card" onclick="navigate('progress')">
+          <div class="overview-card-icon" style="background:var(--warning-100)">📋</div>
+          <div class="overview-card-title">Progress Board</div>
+          <div class="overview-card-desc">플랫폼별 컴포넌트 구현 현황을 확인할 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="section" id="s-principles">
+        <h2 class="section-title">디자인 원칙</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--x4)">
+          <div style="padding:var(--x5);border:1px solid var(--border);border-radius:var(--r3)">
+            <div style="font-size:24px;margin-bottom:var(--x2)">✈️</div>
+            <h3 style="font-size:var(--t5);font-weight:600;margin-bottom:var(--x2)">여행자 중심</h3>
+            <p class="desc" style="margin:0">모든 결정은 여행자의 경험을 최우선으로 합니다. 복잡한 여행 정보를 명확하고 직관적으로 전달합니다.</p>
+          </div>
+          <div style="padding:var(--x5);border:1px solid var(--border);border-radius:var(--r3)">
+            <div style="font-size:24px;margin-bottom:var(--x2)">⚡</div>
+            <h3 style="font-size:var(--t5);font-weight:600;margin-bottom:var(--x2)">효율적 소통</h3>
+            <p class="desc" style="margin:0">불필요한 정보를 줄이고, 핵심 메시지가 빠르게 전달되도록 레이아웃과 타이포그래피를 설계합니다.</p>
+          </div>
+          <div style="padding:var(--x5);border:1px solid var(--border);border-radius:var(--r3)">
+            <div style="font-size:24px;margin-bottom:var(--x2)">🔗</div>
+            <h3 style="font-size:var(--t5);font-weight:600;margin-bottom:var(--x2)">일관된 경험</h3>
+            <p class="desc" style="margin:0">Web, iOS, Android 전 플랫폼에서 동일한 디자인 언어를 사용하여 브랜드 일관성을 유지합니다.</p>
+          </div>
+          <div style="padding:var(--x5);border:1px solid var(--border);border-radius:var(--r3)">
+            <div style="font-size:24px;margin-bottom:var(--x2)">♿</div>
+            <h3 style="font-size:var(--t5);font-weight:600;margin-bottom:var(--x2)">접근성</h3>
+            <p class="desc" style="margin:0">모든 사용자가 서비스를 이용할 수 있도록 WCAG 2.1 AA 기준 이상의 접근성을 보장합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PROGRESS BOARD ═══ -->
+    <div class="page" id="page-progress">
+      <div class="page-header">
+        <h1 class="page-title">Progress Board</h1>
+        <p class="page-subtitle">플랫폼별 컴포넌트 구현 현황</p>
+      </div>
+      <div class="progress-grid">
+        <div class="progress-item">
+          <span class="progress-name">Button</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform">iOS</span>
+            <span class="progress-platform">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Input</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform">iOS</span>
+            <span class="progress-platform na">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Badge</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform na">iOS</span>
+            <span class="progress-platform na">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Toggle</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform">iOS</span>
+            <span class="progress-platform">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Callout</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform na">iOS</span>
+            <span class="progress-platform na">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Tabs</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform">iOS</span>
+            <span class="progress-platform na">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Avatar</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform">iOS</span>
+            <span class="progress-platform">Android</span>
+          </div>
+        </div>
+        <div class="progress-item">
+          <span class="progress-name">Toast</span>
+          <div class="progress-platforms">
+            <span class="progress-platform">Web</span>
+            <span class="progress-platform na">iOS</span>
+            <span class="progress-platform na">Android</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ COLORS ═══ -->
+    <div class="page" id="page-colors">
+      <div class="page-header">
+        <h1 class="page-title">Colors</h1>
+        <p class="page-subtitle">마이리얼트립 브랜드 컬러 시스템 — 팔레트와 시맨틱 역할 토큰</p>
+      </div>
+
+      <div class="section" id="s-brand-color">
+        <h2 class="section-title">Brand Colors</h2>
+        <p class="desc">마이리얼트립의 핵심 브랜드 컬러입니다. Primary Blue는 주요 CTA와 인터랙션 요소에, Secondary Green은 성공 상태와 보조 액션에 사용합니다.</p>
+        <div class="color-grid">
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#51abf3"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Primary</div>
+              <div class="color-swatch-hex">#51abf3</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#33b893"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Secondary</div>
+              <div class="color-swatch-hex">#33b893</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#ffbf00"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Warning</div>
+              <div class="color-swatch-hex">#ffbf00</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch-preview" style="background:#fa5b4a"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Error</div>
+              <div class="color-swatch-hex">#fa5b4a</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="s-palette">
+        <h2 class="section-title">Palette</h2>
+        <h3 class="section-subtitle">Primary Blue</h3>
+        <div class="color-palette-row">
+          <div class="color-palette-cell" style="background:#e8f4fd"><span class="color-palette-label" style="color:#1a72bc">100</span></div>
+          <div class="color-palette-cell" style="background:#c5e2f9"><span class="color-palette-label" style="color:#1a72bc">200</span></div>
+          <div class="color-palette-cell" style="background:#9acef5"><span class="color-palette-label" style="color:#1a72bc">300</span></div>
+          <div class="color-palette-cell" style="background:#6fbaf1"><span class="color-palette-label" style="color:#1a72bc">400</span></div>
+          <div class="color-palette-cell" style="background:#51abf3"><span class="color-palette-label" style="color:white">500</span></div>
+          <div class="color-palette-cell" style="background:#2e90e0"><span class="color-palette-label" style="color:white">600</span></div>
+          <div class="color-palette-cell" style="background:#1a72bc"><span class="color-palette-label" style="color:white">700</span></div>
+          <div class="color-palette-cell" style="background:#0d5490"><span class="color-palette-label" style="color:white">800</span></div>
+          <div class="color-palette-cell" style="background:#063964"><span class="color-palette-label" style="color:white">900</span></div>
+        </div>
+
+        <h3 class="section-subtitle">Secondary Green</h3>
+        <div class="color-palette-row">
+          <div class="color-palette-cell" style="background:#e6f8f3"><span class="color-palette-label" style="color:#1e6d58">100</span></div>
+          <div class="color-palette-cell" style="background:#b3eadb"><span class="color-palette-label" style="color:#1e6d58">200</span></div>
+          <div class="color-palette-cell" style="background:#80dcc3"><span class="color-palette-label" style="color:#1e6d58">300</span></div>
+          <div class="color-palette-cell" style="background:#4dceab"><span class="color-palette-label" style="color:white">400</span></div>
+          <div class="color-palette-cell" style="background:#33b893"><span class="color-palette-label" style="color:white">500</span></div>
+          <div class="color-palette-cell" style="background:#289275"><span class="color-palette-label" style="color:white">600</span></div>
+          <div class="color-palette-cell" style="background:#1e6d58"><span class="color-palette-label" style="color:white">700</span></div>
+          <div class="color-palette-cell" style="background:#14493b"><span class="color-palette-label" style="color:white">800</span></div>
+          <div class="color-palette-cell" style="background:#0a261e"><span class="color-palette-label" style="color:white">900</span></div>
+        </div>
+
+        <h3 class="section-subtitle">Gray</h3>
+        <div class="color-palette-row">
+          <div class="color-palette-cell" style="background:#f8f9fa;border:1px solid #eee"><span class="color-palette-label" style="color:#495056">50</span></div>
+          <div class="color-palette-cell" style="background:#f1f3f5"><span class="color-palette-label" style="color:#495056">80</span></div>
+          <div class="color-palette-cell" style="background:#e9ecef"><span class="color-palette-label" style="color:#495056">100</span></div>
+          <div class="color-palette-cell" style="background:#dee2e6"><span class="color-palette-label" style="color:#495056">200</span></div>
+          <div class="color-palette-cell" style="background:#ced4da"><span class="color-palette-label" style="color:#495056">300</span></div>
+          <div class="color-palette-cell" style="background:#adb5bd"><span class="color-palette-label" style="color:white">400</span></div>
+          <div class="color-palette-cell" style="background:#848c94"><span class="color-palette-label" style="color:white">500</span></div>
+          <div class="color-palette-cell" style="background:#666d75"><span class="color-palette-label" style="color:white">600</span></div>
+          <div class="color-palette-cell" style="background:#495056"><span class="color-palette-label" style="color:white">700</span></div>
+          <div class="color-palette-cell" style="background:#343a40"><span class="color-palette-label" style="color:white">800</span></div>
+          <div class="color-palette-cell" style="background:#212529"><span class="color-palette-label" style="color:white">900</span></div>
+        </div>
+      </div>
+
+      <div class="section" id="s-semantic">
+        <h2 class="section-title">Semantic Roles</h2>
+        <p class="desc">시맨틱 토큰은 색상의 역할을 이름으로 표현합니다. 다크모드 전환 시에도 역할 토큰은 동일하게 유지됩니다.</p>
+        <table class="semantic-table">
+          <thead><tr><th>토큰</th><th>미리보기</th><th>Light</th><th>Dark</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><code class="token-chip">--text</code></td><td><span class="color-dot" style="background:#212529"></span></td><td>#212529</td><td>#e9ecef</td><td>기본 텍스트</td></tr>
+            <tr><td><code class="token-chip">--text-muted</code></td><td><span class="color-dot" style="background:#666d75"></span></td><td>#666d75</td><td>#adb5bd</td><td>보조 텍스트</td></tr>
+            <tr><td><code class="token-chip">--bg</code></td><td><span class="color-dot" style="background:#ffffff;border:1px solid #dee2e6"></span></td><td>#ffffff</td><td>#1a1d21</td><td>페이지 배경</td></tr>
+            <tr><td><code class="token-chip">--surface</code></td><td><span class="color-dot" style="background:#ffffff;border:1px solid #dee2e6"></span></td><td>#ffffff</td><td>#22262b</td><td>카드·모달 배경</td></tr>
+            <tr><td><code class="token-chip">--border</code></td><td><span class="color-dot" style="background:#dee2e6"></span></td><td>#dee2e6</td><td>#383e46</td><td>경계선</td></tr>
+            <tr><td><code class="token-chip">--brand</code></td><td><span class="color-dot" style="background:#51abf3"></span></td><td>#51abf3</td><td>#6bbff5</td><td>브랜드 포인트</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ TYPOGRAPHY ═══ -->
+    <div class="page" id="page-typography">
+      <div class="page-header">
+        <h1 class="page-title">Typography</h1>
+        <p class="page-subtitle">Pretendard 기반 타입 스케일 — t1(11px)부터 t10(28px)까지</p>
+      </div>
+
+      <div class="section" id="s-font-family">
+        <h2 class="section-title">Font Family</h2>
+        <div style="padding:var(--x6);border:1px solid var(--border);border-radius:var(--r3);margin-bottom:var(--x6)">
+          <div style="font-size:var(--t2);color:var(--text-subtle);margin-bottom:var(--x2);font-family:monospace">font-family</div>
+          <div style="font-size:var(--t7);font-weight:500">'Noto Sans KR', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif</div>
+        </div>
+        <p class="desc">기본 폰트는 Pretendard(웹 CDN) → Noto Sans KR → 시스템 폰트 순으로 폴백됩니다. 한글 지원을 최우선으로 하며, 영문은 -apple-system 폰트를 활용합니다.</p>
+      </div>
+
+      <div class="section" id="s-type-scale">
+        <h2 class="section-title">Type Scale</h2>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t10</div><div class="type-scale-size">28px / Bold</div></div>
+          <div class="type-specimen" style="font-size:28px;font-weight:700">마이리얼트립 MRT</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t9</div><div class="type-scale-size">24px / Bold</div></div>
+          <div class="type-specimen" style="font-size:24px;font-weight:700">마이리얼트립 MRT</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t8</div><div class="type-scale-size">22px / SemiBold</div></div>
+          <div class="type-specimen" style="font-size:22px;font-weight:600">마이리얼트립 MRT</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t7</div><div class="type-scale-size">20px / Medium</div></div>
+          <div class="type-specimen" style="font-size:20px;font-weight:500">마이리얼트립 MRT</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t6</div><div class="type-scale-size">18px / Regular</div></div>
+          <div class="type-specimen" style="font-size:18px">마이리얼트립 MRT</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t5</div><div class="type-scale-size">16px / Regular</div></div>
+          <div class="type-specimen" style="font-size:16px">마이리얼트립 MRT — Body default</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t4</div><div class="type-scale-size">14px / Regular</div></div>
+          <div class="type-specimen" style="font-size:14px">마이리얼트립 MRT — 기본 본문 크기</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t3</div><div class="type-scale-size">13px / Regular</div></div>
+          <div class="type-specimen" style="font-size:13px">마이리얼트립 MRT — 보조 텍스트</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t2</div><div class="type-scale-size">12px / Regular</div></div>
+          <div class="type-specimen" style="font-size:12px">마이리얼트립 MRT — 레이블, 캡션</div>
+        </div>
+        <div class="type-scale-row">
+          <div class="type-scale-meta"><div class="type-scale-token">--t1</div><div class="type-scale-size">11px / Regular</div></div>
+          <div class="type-specimen" style="font-size:11px">마이리얼트립 MRT — 최소 크기 (배지)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SPACING ═══ -->
+    <div class="page" id="page-spacing">
+      <div class="page-header">
+        <h1 class="page-title">Spacing</h1>
+        <p class="page-subtitle">4px 베이스 스페이싱 시스템</p>
+      </div>
+      <div class="section" id="s-spacing-scale">
+        <h2 class="section-title">Spacing Scale</h2>
+        <p class="desc">모든 간격은 4px 단위의 배수로 정의됩니다. 일관된 여백 체계로 레이아웃의 리듬감을 만들어냅니다.</p>
+        <div class="spacing-row"><div class="spacing-bar" style="width:4px"></div><div class="spacing-meta"><span class="spacing-token">--x1</span><span>4px</span><span style="color:var(--text-subtle)">아이콘 내부 간격</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:8px"></div><div class="spacing-meta"><span class="spacing-token">--x2</span><span>8px</span><span style="color:var(--text-subtle)">인라인 요소 간격</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:12px"></div><div class="spacing-meta"><span class="spacing-token">--x3</span><span>12px</span><span style="color:var(--text-subtle)">컴포넌트 내부 패딩</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:16px"></div><div class="spacing-meta"><span class="spacing-token">--x4</span><span>16px</span><span style="color:var(--text-subtle)">카드 패딩, 섹션 간격</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:20px"></div><div class="spacing-meta"><span class="spacing-token">--x5</span><span>20px</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:24px"></div><div class="spacing-meta"><span class="spacing-token">--x6</span><span>24px</span><span style="color:var(--text-subtle)">섹션 내부 여백</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:32px"></div><div class="spacing-meta"><span class="spacing-token">--x8</span><span>32px</span><span style="color:var(--text-subtle)">레이아웃 패딩</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:40px"></div><div class="spacing-meta"><span class="spacing-token">--x10</span><span>40px</span><span style="color:var(--text-subtle)">페이지 상단 여백</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:48px"></div><div class="spacing-meta"><span class="spacing-token">--x12</span><span>48px</span><span style="color:var(--text-subtle)">섹션 구분</span></div></div>
+        <div class="spacing-row"><div class="spacing-bar" style="width:64px"></div><div class="spacing-meta"><span class="spacing-token">--x16</span><span>64px</span><span style="color:var(--text-subtle)">히어로 여백</span></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ RADIUS ═══ -->
+    <div class="page" id="page-radius">
+      <div class="page-header">
+        <h1 class="page-title">Radius</h1>
+        <p class="page-subtitle">컴포넌트 모서리 둥글기 토큰</p>
+      </div>
+      <div class="section" id="s-radius-scale">
+        <h2 class="section-title">Border Radius Scale</h2>
+        <div class="radius-grid">
+          <div class="radius-item">
+            <div class="radius-preview" style="border-radius:4px"></div>
+            <div class="radius-label">--r1</div>
+            <div class="radius-token">4px</div>
+          </div>
+          <div class="radius-item">
+            <div class="radius-preview" style="border-radius:8px"></div>
+            <div class="radius-label">--r2</div>
+            <div class="radius-token">8px</div>
+          </div>
+          <div class="radius-item">
+            <div class="radius-preview" style="border-radius:12px"></div>
+            <div class="radius-label">--r3</div>
+            <div class="radius-token">12px</div>
+          </div>
+          <div class="radius-item">
+            <div class="radius-preview" style="border-radius:16px"></div>
+            <div class="radius-label">--r4</div>
+            <div class="radius-token">16px</div>
+          </div>
+          <div class="radius-item">
+            <div class="radius-preview" style="border-radius:9999px"></div>
+            <div class="radius-label">--r-full</div>
+            <div class="radius-token">9999px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ELEVATION ═══ -->
+    <div class="page" id="page-elevation">
+      <div class="page-header">
+        <h1 class="page-title">Elevation</h1>
+        <p class="page-subtitle">깊이감을 표현하는 4단계 그림자 시스템</p>
+      </div>
+      <div class="section" id="s-elevation-scale">
+        <h2 class="section-title">Shadow Scale</h2>
+        <div class="elevation-row">
+          <div class="elevation-card" style="box-shadow:var(--elevation-z1)">
+            <div class="elevation-label">Z1</div>
+            <div class="elevation-token">--elevation-z1</div>
+            <div style="font-size:var(--t2);color:var(--text-subtle);margin-top:4px">드롭다운, 툴팁</div>
+          </div>
+          <div class="elevation-card" style="box-shadow:var(--elevation-z2)">
+            <div class="elevation-label">Z2</div>
+            <div class="elevation-token">--elevation-z2</div>
+            <div style="font-size:var(--t2);color:var(--text-subtle);margin-top:4px">카드 호버</div>
+          </div>
+          <div class="elevation-card" style="box-shadow:var(--elevation-z3)">
+            <div class="elevation-label">Z3</div>
+            <div class="elevation-token">--elevation-z3</div>
+            <div style="font-size:var(--t2);color:var(--text-subtle);margin-top:4px">모달, 토스트</div>
+          </div>
+          <div class="elevation-card" style="box-shadow:var(--elevation-z4)">
+            <div class="elevation-label">Z4</div>
+            <div class="elevation-token">--elevation-z4</div>
+            <div style="font-size:var(--t2);color:var(--text-subtle);margin-top:4px">검색 모달</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BUTTON ═══ -->
+    <div class="page" id="page-button">
+      <div class="page-header">
+        <h1 class="page-title">Button</h1>
+        <p class="page-subtitle">명확한 액션을 유도하는 버튼 컴포넌트</p>
+      </div>
+
+      <div class="section" id="s-btn-variant">
+        <h2 class="section-title">Variants</h2>
+        <div class="component-demo">
+          <button class="btn btn-primary btn-md">Primary</button>
+          <button class="btn btn-secondary btn-md">Secondary</button>
+          <button class="btn btn-outline btn-md">Outline</button>
+          <button class="btn btn-ghost btn-md">Ghost</button>
+          <button class="btn btn-danger btn-md">Danger</button>
+        </div>
+        <pre class="component-code">&lt;button class="btn btn-primary btn-md"&gt;Primary&lt;/button&gt;
+&lt;button class="btn btn-secondary btn-md"&gt;Secondary&lt;/button&gt;
+&lt;button class="btn btn-outline btn-md"&gt;Outline&lt;/button&gt;
+&lt;button class="btn btn-ghost btn-md"&gt;Ghost&lt;/button&gt;
+&lt;button class="btn btn-danger btn-md"&gt;Danger&lt;/button&gt;</pre>
+      </div>
+
+      <div class="section" id="s-btn-size">
+        <h2 class="section-title">Sizes</h2>
+        <div class="component-demo">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary btn-md">Medium</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+          <button class="btn btn-primary btn-xl">XLarge</button>
+        </div>
+      </div>
+
+      <div class="section" id="s-btn-state">
+        <h2 class="section-title">States</h2>
+        <div class="component-demo">
+          <button class="btn btn-primary btn-md">Enabled</button>
+          <button class="btn btn-primary btn-md" disabled>Disabled</button>
+          <button class="btn btn-primary btn-md btn-r-full">Rounded</button>
+        </div>
+      </div>
+
+      <div class="section" id="s-btn-spec">
+        <h2 class="section-title">Specification</h2>
+        <table class="spec-table">
+          <thead><tr><th>Size</th><th>Height</th><th>Padding</th><th>Font Size</th><th>Radius</th></tr></thead>
+          <tbody>
+            <tr><td>sm</td><td>30px</td><td>6px 14px</td><td><code class="token-chip">--t3</code> 13px</td><td><code class="token-chip">--r2</code></td></tr>
+            <tr><td>md</td><td>40px</td><td>10px 20px</td><td><code class="token-chip">--t4</code> 14px</td><td><code class="token-chip">--r2</code></td></tr>
+            <tr><td>lg</td><td>50px</td><td>14px 28px</td><td><code class="token-chip">--t5</code> 16px</td><td><code class="token-chip">--r2</code></td></tr>
+            <tr><td>xl</td><td>56px</td><td>16px 32px</td><td><code class="token-chip">--t6</code> 18px</td><td><code class="token-chip">--r3</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section" id="s-btn-guideline">
+        <h2 class="section-title">Guidelines</h2>
+        <div class="do-dont">
+          <div class="do-box">
+            <div class="do-box-header">✅ Do</div>
+            <div class="do-box-body">
+              <button class="btn btn-primary btn-md">투어 예약하기</button>
+            </div>
+          </div>
+          <div class="dont-box">
+            <div class="dont-box-header">❌ Don't</div>
+            <div class="dont-box-body">
+              <button class="btn btn-primary btn-md" style="background:purple">클릭</button>
+            </div>
+          </div>
+        </div>
+        <p class="desc">버튼 레이블은 동사형으로 작성하고, 사용자가 수행할 액션을 명확히 설명합니다. 임의 색상 사용을 금지하며, 반드시 디자인 토큰을 사용하세요.</p>
+      </div>
+    </div>
+
+    <!-- ═══ INPUT ═══ -->
+    <div class="page" id="page-input">
+      <div class="page-header">
+        <h1 class="page-title">Input</h1>
+        <p class="page-subtitle">텍스트 입력 필드 컴포넌트</p>
+      </div>
+      <div class="section" id="s-input-default">
+        <h2 class="section-title">Default</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:stretch;max-width:400px">
+          <div class="input-group">
+            <label class="input-label">이름</label>
+            <input class="input" type="text" placeholder="홍길동">
+            <div class="input-hint">실명을 입력해주세요.</div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">이메일</label>
+            <input class="input error" type="email" value="invalid@">
+            <div class="input-error-msg">올바른 이메일 형식이 아닙니다.</div>
+          </div>
+          <div class="input-group">
+            <label class="input-label">검색</label>
+            <div class="input-addon-wrap">
+              <span class="input-addon-icon">🔍</span>
+              <input class="input" type="text" placeholder="여행지를 검색하세요">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CHECKBOX & RADIO ═══ -->
+    <div class="page" id="page-checkbox">
+      <div class="page-header">
+        <h1 class="page-title">Checkbox & Radio</h1>
+        <p class="page-subtitle">선택 컨트롤 컴포넌트</p>
+      </div>
+      <div class="section" id="s-checkbox">
+        <h2 class="section-title">Checkbox</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:flex-start;gap:var(--x3)">
+          <label class="check-group">
+            <input class="check-input" type="checkbox" checked>
+            <span class="check-box"></span>
+            <span class="check-label">서울 투어 (선택됨)</span>
+          </label>
+          <label class="check-group">
+            <input class="check-input" type="checkbox">
+            <span class="check-box"></span>
+            <span class="check-label">부산 투어</span>
+          </label>
+          <label class="check-group">
+            <input class="check-input" type="checkbox" disabled>
+            <span class="check-box"></span>
+            <span class="check-label" style="opacity:.4">제주 투어 (비활성)</span>
+          </label>
+        </div>
+      </div>
+      <div class="section" id="s-radio">
+        <h2 class="section-title">Radio</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:flex-start;gap:var(--x3)">
+          <label class="check-group">
+            <input class="check-input" type="radio" name="demo" checked>
+            <span class="radio-box"></span>
+            <span class="check-label">1일 투어 (선택됨)</span>
+          </label>
+          <label class="check-group">
+            <input class="check-input" type="radio" name="demo">
+            <span class="radio-box"></span>
+            <span class="check-label">2일 투어</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TOGGLE ═══ -->
+    <div class="page" id="page-toggle">
+      <div class="page-header">
+        <h1 class="page-title">Toggle</h1>
+        <p class="page-subtitle">켜기/끄기 상태를 전환하는 스위치 컴포넌트</p>
+      </div>
+      <div class="section" id="s-toggle-demo">
+        <h2 class="section-title">Demo</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:flex-start;gap:var(--x4)">
+          <label class="toggle-wrap">
+            <input class="toggle-input" type="checkbox" checked>
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            <span class="check-label">알림 허용</span>
+          </label>
+          <label class="toggle-wrap">
+            <input class="toggle-input" type="checkbox">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            <span class="check-label">마케팅 수신</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SELECT ═══ -->
+    <div class="page" id="page-select">
+      <div class="page-header">
+        <h1 class="page-title">Select</h1>
+        <p class="page-subtitle">목록에서 하나를 선택하는 드롭다운 컴포넌트</p>
+      </div>
+      <div class="section" id="s-select-demo">
+        <h2 class="section-title">Demo</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:flex-start;max-width:300px">
+          <div class="input-group" style="width:100%">
+            <label class="input-label">도시 선택</label>
+            <select class="select">
+              <option>도시를 선택하세요</option>
+              <option>서울</option>
+              <option>부산</option>
+              <option>제주</option>
+              <option>도쿄</option>
+              <option>오사카</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ BADGE ═══ -->
+    <div class="page" id="page-badge">
+      <div class="page-header">
+        <h1 class="page-title">Badge & Tag</h1>
+        <p class="page-subtitle">상태, 카테고리, 속성을 표시하는 인라인 레이블 컴포넌트</p>
+      </div>
+      <div class="section" id="s-badge-variant">
+        <h2 class="section-title">Variants</h2>
+        <div class="component-demo">
+          <span class="badge badge-primary">Primary</span>
+          <span class="badge badge-secondary">Secondary</span>
+          <span class="badge badge-warning">Warning</span>
+          <span class="badge badge-error">Error</span>
+          <span class="badge badge-gray">Gray</span>
+        </div>
+        <div class="component-demo">
+          <span class="badge badge-primary badge-dot">진행중</span>
+          <span class="badge badge-error badge-dot">취소됨</span>
+          <span class="badge badge-secondary badge-dot">완료</span>
+          <span class="badge badge-gray badge-dot">대기중</span>
+        </div>
+      </div>
+      <div class="section" id="s-badge-mrt">
+        <h2 class="section-title">MRT 전용 태그 (교차 검증)</h2>
+        <p class="desc">실제 myrealtrip.com에서 추출한 특수 태그입니다. 상품 카드, 프로모션 배너 등에 사용됩니다.</p>
+        <div class="component-demo">
+          <span class="badge badge-new">NEW</span>
+          <span class="badge badge-special">특가</span>
+          <span class="badge badge-sale">타임세일</span>
+          <span class="badge badge-discount">-30%</span>
+        </div>
+        <table class="spec-table" style="margin-top:var(--x4)">
+          <thead><tr><th>토큰</th><th>배경</th><th>텍스트</th><th>사용 예시</th></tr></thead>
+          <tbody>
+            <tr><td><code class="token-chip">badge-new</code></td><td><span class="color-dot" style="background:#ede0ff"></span>#ede0ff</td><td><span style="color:#8238fa">#8238fa</span></td><td>신규 항목, NEW 배지</td></tr>
+            <tr><td><code class="token-chip">badge-special</code></td><td><span class="color-dot" style="background:#FFF1F4"></span>#FFF1F4</td><td><span style="color:#FF4EDB">#FF4EDB</span></td><td>특가 프로모션</td></tr>
+            <tr><td><code class="token-chip">badge-sale</code></td><td><span class="color-dot" style="background:#fff2c6"></span>#fff2c6</td><td><span style="color:#f78000">#f78000</span></td><td>타임세일, 한정 할인</td></tr>
+            <tr><td><code class="token-chip">badge-discount</code></td><td><span class="color-dot" style="background:#fff0ee"></span>#fff0ee</td><td><span style="color:#ec4937">#ec4937</span></td><td>할인율 표시 (-30%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ AVATAR ═══ -->
+    <div class="page" id="page-avatar">
+      <div class="page-header">
+        <h1 class="page-title">Avatar</h1>
+        <p class="page-subtitle">사용자 프로필 이미지를 표시하는 컴포넌트</p>
+      </div>
+      <div class="section" id="s-avatar-size">
+        <h2 class="section-title">Sizes</h2>
+        <div class="component-demo">
+          <span class="avatar avatar-xs">M</span>
+          <span class="avatar avatar-sm" style="background:var(--secondary)">김</span>
+          <span class="avatar avatar-md" style="background:var(--warning);color:#333">여</span>
+          <span class="avatar avatar-lg" style="background:var(--error)">박</span>
+          <span class="avatar avatar-xl" style="background:var(--gray-700)">이</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DIVIDER ═══ -->
+    <div class="page" id="page-divider">
+      <div class="page-header">
+        <h1 class="page-title">Divider</h1>
+        <p class="page-subtitle">콘텐츠 영역을 구분하는 구분선 컴포넌트</p>
+      </div>
+      <div class="section" id="s-divider-demo">
+        <h2 class="section-title">Demo</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:stretch">
+          <p style="font-size:var(--t4);color:var(--text-muted)">위 콘텐츠</p>
+          <div class="divider"></div>
+          <p style="font-size:var(--t4);color:var(--text-muted)">아래 콘텐츠</p>
+          <div class="divider-label">또는</div>
+          <p style="font-size:var(--t4);color:var(--text-muted)">다른 콘텐츠</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CARD ═══ -->
+    <div class="page" id="page-card">
+      <div class="page-header">
+        <h1 class="page-title">Card</h1>
+        <p class="page-subtitle">콘텐츠를 그룹화하는 카드 컴포넌트</p>
+      </div>
+      <div class="section" id="s-card-demo">
+        <h2 class="section-title">Demo</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:var(--x4);max-width:600px">
+          <div class="card">
+            <div class="card-img">🗼</div>
+            <div class="card-body">
+              <div class="card-title">도쿄 타워 투어</div>
+              <div class="card-desc">도쿄의 상징 도쿄타워를 가이드와 함께 탐방하는 반일 투어입니다.</div>
+            </div>
+            <div class="card-footer">
+              <span class="badge badge-secondary">추천</span>
+              <span style="margin-left:auto;font-size:var(--t4);font-weight:600;color:var(--brand)">₩45,000</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-img">⛩️</div>
+            <div class="card-body">
+              <div class="card-title">교토 신사 투어</div>
+              <div class="card-desc">천 년 고도 교토의 신사와 사찰을 둘러보는 풀데이 투어입니다.</div>
+            </div>
+            <div class="card-footer">
+              <span class="badge badge-primary">인기</span>
+              <span style="margin-left:auto;font-size:var(--t4);font-weight:600;color:var(--brand)">₩72,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CALLOUT ═══ -->
+    <div class="page" id="page-callout">
+      <div class="page-header">
+        <h1 class="page-title">Callout</h1>
+        <p class="page-subtitle">중요 정보나 경고를 강조하는 인라인 알림 컴포넌트</p>
+      </div>
+      <div class="section" id="s-callout-demo">
+        <h2 class="section-title">Variants</h2>
+        <div class="callout callout-info">
+          <div class="callout-icon">ℹ️</div>
+          <div>
+            <div class="callout-title">안내</div>
+            <div class="callout-desc">예약 완료 후 24시간 이내 무료 취소가 가능합니다.</div>
+          </div>
+        </div>
+        <div class="callout callout-success">
+          <div class="callout-icon">✅</div>
+          <div>
+            <div class="callout-title">예약 완료</div>
+            <div class="callout-desc">투어 예약이 성공적으로 완료되었습니다. 확인 이메일을 확인해주세요.</div>
+          </div>
+        </div>
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div>
+            <div class="callout-title">주의사항</div>
+            <div class="callout-desc">출발 2시간 전까지 집결지에 도착해주세요. 지각 시 투어 참여가 불가합니다.</div>
+          </div>
+        </div>
+        <div class="callout callout-error">
+          <div class="callout-icon">❌</div>
+          <div>
+            <div class="callout-title">오류 발생</div>
+            <div class="callout-desc">결제 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TOAST ═══ -->
+    <div class="page" id="page-toast">
+      <div class="page-header">
+        <h1 class="page-title">Toast</h1>
+        <p class="page-subtitle">일시적인 피드백 메시지를 표시하는 컴포넌트</p>
+      </div>
+      <div class="section" id="s-toast-demo">
+        <h2 class="section-title">Variants</h2>
+        <div class="toast-demo">
+          <div class="toast">
+            <span class="toast-icon">📋</span>
+            <span class="toast-msg">링크가 클립보드에 복사되었습니다.</span>
+            <button class="toast-close">×</button>
+          </div>
+          <div class="toast toast-success">
+            <span class="toast-icon">✅</span>
+            <span class="toast-msg">위시리스트에 추가되었습니다.</span>
+            <button class="toast-close">×</button>
+          </div>
+          <div class="toast toast-warning">
+            <span class="toast-icon">⚠️</span>
+            <span class="toast-msg">잔여 좌석이 2개 남았습니다.</span>
+            <button class="toast-close">×</button>
+          </div>
+          <div class="toast toast-error">
+            <span class="toast-icon">❌</span>
+            <span class="toast-msg">결제에 실패했습니다. 다시 시도해주세요.</span>
+            <button class="toast-close">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TABS ═══ -->
+    <div class="page" id="page-tabs">
+      <div class="page-header">
+        <h1 class="page-title">Tabs</h1>
+        <p class="page-subtitle">콘텐츠를 카테고리별로 전환하는 탭 컴포넌트</p>
+      </div>
+      <div class="section" id="s-tabs-demo">
+        <h2 class="section-title">Demo</h2>
+        <div class="component-demo" style="flex-direction:column;align-items:stretch">
+          <div class="tabs">
+            <button class="tab active">투어 정보</button>
+            <button class="tab">후기 (128)</button>
+            <button class="tab">취소·환불 정책</button>
+            <button class="tab">FAQ</button>
+          </div>
+          <div style="padding:var(--x4);font-size:var(--t4);color:var(--text-muted)">탭 콘텐츠 영역</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- TOC -->
+  <aside class="toc" id="toc">
+    <div class="toc-title">On this page</div>
+    <div id="tocLinks"></div>
+  </aside>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+const pages = ['overview','progress','colors','typography','spacing','radius','elevation',
+  'button','input','checkbox','toggle','select','badge','avatar','divider','card','callout','toast','tabs'];
+
+function navigate(id) {
+  // hide all pages
+  pages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) el.classList.remove('active');
+    const nav = document.getElementById('nav-' + p);
+    if (nav) nav.classList.remove('active');
+  });
+  // show target
+  const target = document.getElementById('page-' + id);
+  if (target) target.classList.add('active');
+  const navItem = document.getElementById('nav-' + id);
+  if (navItem) navItem.classList.add('active');
+  // update TOC
+  buildTOC(id);
+  // scroll to top
+  document.getElementById('mainContent').scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+function toggleGroup(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════
+// TOC
+// ═══════════════════════════════════════════
+function buildTOC(pageId) {
+  const page = document.getElementById('page-' + pageId);
+  const container = document.getElementById('tocLinks');
+  if (!page || !container) return;
+  const headings = page.querySelectorAll('h2[id], h3[id]');
+  if (headings.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = Array.from(headings).map(h => {
+    const cls = h.tagName === 'H3' ? 'toc-link h3' : 'toc-link';
+    return `<a class="${cls}" href="#${h.id}" onclick="scrollToSection('${h.id}')">${h.textContent}</a>`;
+  }).join('');
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ═══════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('mrt-theme', isDark ? 'light' : 'dark');
+}
+// load saved theme
+const saved = localStorage.getItem('mrt-theme');
+if (saved) document.documentElement.setAttribute('data-theme', saved);
+
+// ═══════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════
+const searchData = [
+  { text: 'Overview', path: 'Foundation', id: 'overview' },
+  { text: 'Colors', path: 'Foundation', id: 'colors' },
+  { text: 'Typography', path: 'Foundation', id: 'typography' },
+  { text: 'Spacing', path: 'Foundation', id: 'spacing' },
+  { text: 'Radius', path: 'Foundation', id: 'radius' },
+  { text: 'Elevation', path: 'Foundation', id: 'elevation' },
+  { text: 'Button', path: 'Components / Buttons', id: 'button' },
+  { text: 'Input', path: 'Components / Controls', id: 'input' },
+  { text: 'Checkbox & Radio', path: 'Components / Controls', id: 'checkbox' },
+  { text: 'Toggle', path: 'Components / Controls', id: 'toggle' },
+  { text: 'Select', path: 'Components / Controls', id: 'select' },
+  { text: 'Badge & Tag', path: 'Components / Display', id: 'badge' },
+  { text: 'Avatar', path: 'Components / Display', id: 'avatar' },
+  { text: 'Divider', path: 'Components / Display', id: 'divider' },
+  { text: 'Card', path: 'Components / Display', id: 'card' },
+  { text: 'Callout', path: 'Components / Feedback', id: 'callout' },
+  { text: 'Toast', path: 'Components / Feedback', id: 'toast' },
+  { text: 'Tabs', path: 'Components / Navigation', id: 'tabs' },
+];
+
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('searchInput').focus(), 50);
+  filterSearch('');
+}
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchInput').value = '';
+}
+function filterSearch(q) {
+  const results = q
+    ? searchData.filter(d => d.text.toLowerCase().includes(q.toLowerCase()) || d.path.toLowerCase().includes(q.toLowerCase()))
+    : searchData;
+  document.getElementById('searchResults').innerHTML = results.map(d =>
+    `<div class="search-result-item" onclick="navigate('${d.id}');closeSearch()">
+      <span class="search-result-icon">📄</span>
+      <div>
+        <div class="search-result-text">${d.text}</div>
+        <div class="search-result-path">${d.path}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+// keyboard shortcut
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// init
+navigate('overview');
+</script>
+</body>
+</html>
