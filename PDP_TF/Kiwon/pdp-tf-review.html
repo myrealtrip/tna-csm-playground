@@ -1179,6 +1179,37 @@ details[open] summary { border-bottom: 1px solid #F1F5F9; }
         </div>
         <div class="lesson-highlight">기존 보존 + 신규부터 적용</div>
       </div>
+
+      <div class="lesson-card lesson-card--method">
+        <div class="lesson-phase">Phase 3 &middot; 첫 PoC</div>
+        <div class="lesson-title">스펙의 빈틈은 실제 상품에서만 보인다</div>
+        <div class="lesson-body">
+          나오시마·구마모토 PDP로 첫 하이브리드 렌더링을 검증했을 때, 설계 단계에서 미처 예상하지 못한 블록 구성 문제가 드러났습니다.
+          문서로 된 스펙은 <strong>첫 PoC가 발견하지 못한 것을 발견하지 못합니다.</strong>
+        </div>
+        <div class="lesson-highlight">PoC는 스펙 검증기</div>
+      </div>
+
+      <div class="lesson-card lesson-card--insight">
+        <div class="lesson-phase">Phase 7&ndash;9 &middot; 자동 생성</div>
+        <div class="lesson-title">상품 데이터는 이미 JSON으로 정제되어 있었다</div>
+        <div class="lesson-body">
+          별도 API 없이 MRT 상품 페이지 내 <strong><code>__NEXT_DATA__</code></strong>에 이미지 98장, 가격, 코스, 리뷰까지 모두 담겨 있었습니다.
+          크롤링이 아니라 JSON 파싱으로 E2E 자동 생성이 가능했습니다.
+        </div>
+        <div class="lesson-highlight">__NEXT_DATA__ = 숨겨진 API</div>
+      </div>
+
+      <div class="lesson-card lesson-card--pivot">
+        <div class="lesson-phase">Phase 8 &middot; 템플릿 추출</div>
+        <div class="lesson-title">파일럿과 템플릿은 역할이 다르다</div>
+        <div class="lesson-body">
+          실제 데이터가 들어간 파일럿은 &ldquo;무엇이 가능한지&rdquo;를 보여주는 <strong>골든 샘플</strong>로 보존했고,
+          빈 플레이스홀더 구조로 분리한 템플릿은 자동 생성의 <strong>재료</strong>로 사용했습니다.
+          같은 파일 하나로 두 역할을 함께 하면 둘 다 망가집니다.
+        </div>
+        <div class="lesson-highlight">골든 샘플 ≠ 재사용 템플릿</div>
+      </div>
     </div>
 
     <details style="margin-top:24px;">
