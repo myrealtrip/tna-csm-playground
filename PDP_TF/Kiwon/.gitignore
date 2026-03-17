@@ -1,0 +1,14 @@
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+/tmp/
+*.log
+
+# Claude memory (user-specific)
+.claude/memory/
+.claude/projects/
