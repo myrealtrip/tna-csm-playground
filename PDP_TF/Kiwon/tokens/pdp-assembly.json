@@ -1,0 +1,500 @@
+{
+  "$meta": {
+    "name": "PDP Assembly Rules",
+    "version": "3.0.0",
+    "blocks": "./pdp-blocks.json",
+    "tokens": "./pdp-tokens.json",
+    "updatedAt": "2026-03-11",
+    "note": "v3: includeExclude 블록 추가. 포함/불포함을 notice에서 분리하여 전 카테고리 통일 마크업 적용."
+  },
+
+  "canvas": {
+    "width": 390,
+    "background": "#FFFFFF",
+    "fontFamily": "'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif"
+  },
+
+  "divider": {
+    "type": "FRAME",
+    "height": 8,
+    "background": "#F1F3F5",
+    "insertBetween": "sections",
+    "note": "섹션 사이 자동 삽입. exclusiveHeader, heroImage 사이에는 삽입하지 않음."
+  },
+
+  "categories": {
+    "PB_EXCLUSIVE": {
+      "name": "PB Exclusive",
+      "description": "PB 자체 기획 상품 — 워킹투어, 체험, 패키지 등. 기존 PB_TOUR + PB_PACKAGE 통합.",
+      "tier": "exclusive",
+      "required": [
+        "exclusiveHeader",
+        "heroImage",
+        "introSection",
+        "sectionHeader",
+        "programCard",
+        "trustPoints"
+      ],
+      "recommended": [
+        "painPointCards",
+        "guideProfile",
+        "recommendBox",
+        "visualTimeline",
+        "highlightCallout",
+        "priceTable",
+        "includeExclude",
+        "notice"
+      ],
+      "optional": [
+        "numberedList",
+        "imageGrid",
+        "customerReview"
+      ],
+      "notApplicable": [
+        "guideIntro"
+      ]
+    },
+    "TICKET": {
+      "name": "티켓/입장권",
+      "description": "테마파크, 전시, 공연, 교통패스 등",
+      "tier": "generic",
+      "subtypes": [
+        { "id": "THEME_PARK", "name": "테마파크", "examples": "USJ, 디즈니, 해리포터 스튜디오" },
+        { "id": "TRANSPORT", "name": "교통", "examples": "JR패스, 이코카, 스이카" },
+        { "id": "CITY_PASS", "name": "시티패스", "examples": "오사카 주유패스, 도쿄 서브웨이 패스" },
+        { "id": "CRUISE_SHOW", "name": "유람선·공연", "examples": "하롱베이 크루즈, 쇼 입장권" }
+      ],
+      "subtypeNote": "서브타입 간 블록 조합 차이 없음. 상품 분류·검색 용도로만 구분.",
+      "required": [
+        "heroImage",
+        "introSection",
+        "numberedList"
+      ],
+      "recommended": [
+        "priceTable",
+        "includeExclude",
+        "notice",
+        "imageGrid",
+        "customerReview"
+      ],
+      "optional": [
+        "highlightCallout",
+        "sectionHeader",
+        "recommendBox"
+      ],
+      "notApplicable": [
+        "exclusiveHeader",
+        "guideProfile",
+        "guideIntro",
+        "painPointCards",
+        "trustPoints",
+        "visualTimeline",
+        "programCard"
+      ]
+    },
+    "TOUR": {
+      "name": "일반 투어/체험",
+      "description": "PB Exclusive가 아닌 일반 투어 상품",
+      "tier": "generic",
+      "subtypes": [
+        { "id": "GUIDED_TOUR", "name": "가이드 투어", "examples": "시내 워킹투어, 야경투어", "blockHint": "guideIntro 권장" },
+        { "id": "EXPERIENCE", "name": "스냅·스파·미식", "examples": "스냅촬영, 온천 스파, 쿠킹클래스", "blockHint": "imageGrid 중심" },
+        { "id": "SPECIAL", "name": "골프·특수투어", "examples": "골프, 다이빙, 스카이다이빙", "blockHint": "notice 블록 강조" }
+      ],
+      "subtypeNote": "블록 조합은 동일. 서브타입별 권장 강조 블록이 다름 (blockHint 참고).",
+      "required": [
+        "heroImage",
+        "introSection",
+        "numberedList"
+      ],
+      "recommended": [
+        "imageGrid",
+        "includeExclude",
+        "notice",
+        "priceTable",
+        "customerReview",
+        "guideIntro"
+      ],
+      "optional": [
+        "sectionHeader",
+        "highlightCallout",
+        "recommendBox",
+        "programCard",
+        "visualTimeline"
+      ],
+      "notApplicable": [
+        "exclusiveHeader",
+        "painPointCards",
+        "trustPoints",
+        "guideProfile"
+      ]
+    },
+    "SEMI_PACKAGE": {
+      "name": "세미패키지",
+      "description": "호텔 포함 다일정 상품. packageOverview + Day별 일정 + 호텔 안내 + FAQ가 핵심 차별 섹션.",
+      "tier": "generic",
+      "example": "상하이 3박4일 (Figma 281:13219), 미서부 9박11일 (experiences.myrealtrip.com/products/3441658)",
+      "required": [
+        "heroImage",
+        "introSection",
+        "packageOverview",
+        "dayItinerary",
+        "hotelInfo",
+        "numberedList",
+        "priceTable"
+      ],
+      "recommended": [
+        "faqAccordion",
+        "imageGrid",
+        "includeExclude",
+        "notice",
+        "customerReview",
+        "highlightCallout"
+      ],
+      "optional": [
+        "sectionHeader",
+        "recommendBox",
+        "guideIntro",
+        "programCard",
+        "visualTimeline"
+      ],
+      "notApplicable": [
+        "exclusiveHeader",
+        "painPointCards",
+        "trustPoints",
+        "guideProfile"
+      ],
+      "designNote": "surchargeTable은 priceTable의 행(싱글룸 추가요금)으로 흡수. 별도 블록 불필요."
+    },
+    "ACTIVITY": {
+      "name": "액티비티/체험",
+      "description": "쿠킹클래스, 스냅촬영, 스파, 다이빙, 스노클링 등 체험 상품. MRT 분류 ACTIVITY + CLASS 통합. v2: 감성 64% 구조로 재설계.",
+      "tier": "generic",
+      "mrtMapping": ["ACTIVITY", "CLASS"],
+      "designNote": "CVR 분석 결과 ACTIVITY가 디자인 품질에 가장 민감 (9/9개월 양의 효과). Zone 1(욕망 65%) + Zone 2(확인 35%) 2-zone 구조. 임계점 7,000px+.",
+      "required": [
+        "heroImage",
+        "introSection",
+        "visualTimeline"
+      ],
+      "recommended": [
+        "imageGrid",
+        "highlightCallout",
+        "sectionImage",
+        "operationTable",
+        "recommendBox",
+        "includeExclude",
+        "notice",
+        "customerReview"
+      ],
+      "optional": [
+        "sectionHeader",
+        "priceTable",
+        "guideIntro"
+      ],
+      "notApplicable": [
+        "exclusiveHeader",
+        "painPointCards",
+        "trustPoints",
+        "guideProfile",
+        "programCard",
+        "numberedList"
+      ],
+      "zoneStructure": {
+        "zone1_desire": {
+          "description": "욕망 영역 — '이 체험을 하면 이런 경험을 할 수 있어요'",
+          "targetRatio": "65%",
+          "blocks": ["heroImage", "introSection", "introSection(2nd)", "imageGrid", "visualTimeline", "highlightCallout", "sectionImage"]
+        },
+        "zone2_confirm": {
+          "description": "확인 영역 — '사기로 했으니 이것만 확인하세요'",
+          "targetRatio": "35%",
+          "blocks": ["operationTable", "recommendBox", "notice", "customerReview"]
+        }
+      }
+    },
+    "CONVENIENCE": {
+      "name": "편의/서비스",
+      "description": "유심, 포켓와이파이, 수하물배송 등",
+      "tier": "generic",
+      "required": [
+        "heroImage",
+        "introSection",
+        "numberedList"
+      ],
+      "recommended": [
+        "priceTable",
+        "includeExclude",
+        "notice",
+        "customerReview"
+      ],
+      "optional": [
+        "imageGrid",
+        "sectionHeader",
+        "recommendBox",
+        "highlightCallout"
+      ],
+      "notApplicable": [
+        "exclusiveHeader",
+        "painPointCards",
+        "guideProfile",
+        "guideIntro",
+        "trustPoints",
+        "visualTimeline",
+        "programCard"
+      ]
+    }
+  },
+
+  "ordering": {
+    "description": "블록 배치 순서 규칙. PB Exclusive는 실제 나오시마·구마모토 PDP 프레임 구조에서 추출.",
+
+    "constraints": [
+      {
+        "rule": "exclusiveHeader는 반드시 첫 번째",
+        "block": "exclusiveHeader",
+        "position": "first",
+        "appliesTo": ["PB_EXCLUSIVE"]
+      },
+      {
+        "rule": "heroImage는 exclusiveHeader 직후",
+        "block": "heroImage",
+        "position": "second",
+        "note": "사이에 divider 삽입하지 않음"
+      },
+      {
+        "rule": "trustPoints는 반드시 마지막",
+        "block": "trustPoints",
+        "position": "last",
+        "appliesTo": ["PB_EXCLUSIVE"]
+      },
+      {
+        "rule": "notice는 trustPoints 바로 앞",
+        "block": "notice",
+        "position": "before-last",
+        "before": "trustPoints"
+      },
+      {
+        "rule": "includeExclude는 notice 직전 배치",
+        "block": "includeExclude",
+        "before": "notice",
+        "note": "포함/불포함을 먼저 보여주고, 주의사항(notice)은 그 뒤에 배치"
+      },
+      {
+        "rule": "introSection은 heroImage 직후",
+        "block": "introSection",
+        "after": "heroImage"
+      },
+      {
+        "rule": "painPointCards는 introSection 직후",
+        "block": "painPointCards",
+        "after": "introSection",
+        "appliesTo": ["PB_EXCLUSIVE"]
+      },
+      {
+        "rule": "programCard 앞에 반드시 sectionHeader",
+        "block": "programCard",
+        "requiresBefore": "sectionHeader"
+      }
+    ],
+
+    "recommendedOrder": {
+      "PB_EXCLUSIVE": [
+        "exclusiveHeader",
+        "heroImage",
+        "introSection",
+        "painPointCards",
+        "guideProfile",
+        "recommendBox",
+        "--- divider ---",
+        "sectionHeader (프로그램 1)",
+        "programCard (반복)",
+        "--- divider ---",
+        "sectionHeader (프로그램 2)",
+        "programCard (반복)",
+        "highlightCallout",
+        "--- divider ---",
+        "visualTimeline",
+        "--- divider ---",
+        "priceTable",
+        "numberedList",
+        "imageGrid",
+        "includeExclude",
+        "notice",
+        "trustPoints"
+      ],
+      "TICKET": [
+        "heroImage",
+        "introSection",
+        "numberedList",
+        "imageGrid",
+        "priceTable",
+        "highlightCallout",
+        "includeExclude",
+        "notice"
+      ],
+      "TOUR": [
+        "heroImage",
+        "introSection",
+        "numberedList",
+        "imageGrid",
+        "recommendBox",
+        "sectionHeader",
+        "highlightCallout",
+        "includeExclude",
+        "notice"
+      ],
+      "SEMI_PACKAGE": [
+        "heroImage",
+        "introSection",
+        "packageOverview",
+        "--- divider ---",
+        "dayItinerary",
+        "--- divider ---",
+        "hotelInfo",
+        "--- divider ---",
+        "imageGrid",
+        "highlightCallout",
+        "--- divider ---",
+        "priceTable",
+        "numberedList",
+        "--- divider ---",
+        "faqAccordion",
+        "includeExclude",
+        "notice",
+        "customerReview"
+      ],
+      "ACTIVITY": [
+        "heroImage",
+        "introSection (핵심 매력)",
+        "introSection (두 번째 감성 훅, optional)",
+        "imageGrid (체험 분위기 사진)",
+        "--- divider ---",
+        "visualTimeline (체험 시뮬레이션)",
+        "--- divider ---",
+        "highlightCallout (왜 이 상품?)",
+        "sectionImage (마무리 감성)",
+        "═══ Zone 전환 ═══",
+        "operationTable (운영 정보)",
+        "--- divider ---",
+        "recommendBox",
+        "--- divider ---",
+        "includeExclude (포함/불포함)",
+        "notice (주의사항)",
+        "--- divider ---",
+        "customerReview"
+      ],
+      "CONVENIENCE": [
+        "heroImage",
+        "introSection",
+        "numberedList",
+        "priceTable",
+        "imageGrid",
+        "includeExclude",
+        "notice"
+      ]
+    }
+  },
+
+  "composition": {
+    "description": "블록 간 조합 규칙",
+    "rules": [
+      {
+        "name": "programCard 반복 사용",
+        "block": "programCard",
+        "maxInstances": 12,
+        "note": "투어 프로그램의 각 스팟/활동마다 1장. 나오시마 8개, 구마모토 10개 사용 확인."
+      },
+      {
+        "name": "sectionHeader 반복 사용",
+        "block": "sectionHeader",
+        "maxInstances": 5,
+        "note": "programCard 그룹마다 앞에 1개씩. 프로그램 섹션 구분 용도."
+      },
+      {
+        "name": "programCard 그룹핑",
+        "blocks": ["sectionHeader", "programCard"],
+        "rule": "sectionHeader 1개 + programCard N개가 하나의 프로그램 섹션을 구성",
+        "note": "나오시마: '나오시마 워킹투어' 섹션 1개. 구마모토: '수향마을 산책' + '구마모토 시내 탐방' 2개 섹션."
+      },
+      {
+        "name": "exclusiveHeader 2회 사용",
+        "block": "exclusiveHeader",
+        "exactInstances": 2,
+        "note": "PDP 최상단(heroImage 전) + 최하단(trustPoints 후). 브랜딩 북엔드 구조.",
+        "appliesTo": ["PB_EXCLUSIVE"]
+      },
+      {
+        "name": "highlightCallout 위치 제한",
+        "block": "highlightCallout",
+        "maxInstances": 2,
+        "note": "프로그램 카드 사이 또는 직후에 배치. 핵심 차별점 강조."
+      },
+      {
+        "name": "visualTimeline 단독 사용",
+        "block": "visualTimeline",
+        "maxInstances": 1,
+        "note": "하루 일정 전체를 한 블록으로 요약. programCard 그룹 이후에 배치."
+      },
+      {
+        "name": "guideProfile 단독 사용",
+        "block": "guideProfile",
+        "maxInstances": 1,
+        "note": "가이드 소개는 1회. introSection 이후, programCard 이전에 배치."
+      },
+      {
+        "name": "painPointCards 단독 사용",
+        "block": "painPointCards",
+        "maxInstances": 1,
+        "note": "고객 불안 해소 카드. introSection 직후 배치."
+      },
+      {
+        "name": "trustPoints 단독 사용",
+        "block": "trustPoints",
+        "maxInstances": 1,
+        "note": "PDP 최하단 신뢰 지표. 어두운 배경으로 마무리."
+      },
+      {
+        "name": "generic 블록은 exclusive 블록 사이에 배치",
+        "blocks": ["numberedList", "priceTable", "imageGrid", "notice"],
+        "rule": "PB_EXCLUSIVE에서 사용 시, programCard 그룹과 trustPoints 사이에 배치",
+        "enforcement": "warning"
+      }
+    ],
+    "minimumBlocks": {
+      "PB_EXCLUSIVE": 7,
+      "TICKET": 3,
+      "TOUR": 3,
+      "ACTIVITY": 5,
+      "SEMI_PACKAGE": 7,
+      "CONVENIENCE": 3
+    },
+    "maximumBlocks": {
+      "PB_EXCLUSIVE": 25,
+      "TICKET": 10,
+      "TOUR": 12,
+      "ACTIVITY": 14,
+      "SEMI_PACKAGE": 18,
+      "CONVENIENCE": 8
+    },
+    "note": "PB Exclusive는 programCard 반복으로 블록 수가 많음. 나오시마 실제 PDP는 약 20개 블록."
+  },
+
+  "noDividerPairs": [
+    ["exclusiveHeader", "heroImage"],
+    ["heroImage", "introSection"]
+  ],
+
+  "deprecated": {
+    "note": "v1.0.0에서 사용하던 블록 ID → v2.0.0 대응표",
+    "mapping": {
+      "hero": "heroImage",
+      "titleParagraph": "introSection 또는 sectionHeader",
+      "step": "삭제 (programCard로 대체)",
+      "fullbleed": "삭제 (heroImage로 통합)",
+      "recommend": "recommendBox",
+      "imageText": "삭제 (programCard로 대체)",
+      "daySchedule": "visualTimeline"
+    }
+  }
+}

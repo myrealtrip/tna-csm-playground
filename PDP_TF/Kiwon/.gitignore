@@ -1,0 +1,13 @@
+# 생성된 PDP (meta.json만 무시, HTML은 커밋)
+output/*.meta.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/

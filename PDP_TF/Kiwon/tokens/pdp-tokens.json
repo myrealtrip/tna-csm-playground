@@ -1,0 +1,276 @@
+{
+  "$meta": {
+    "name": "PDP Design Tokens",
+    "version": "3.0.0",
+    "source": [
+      "Figma Y4hdz876GlG9d9XGGKYpIY (T&A 상세페이지 디자인 가이드)",
+      "Figma vlx4zUQBbGVQ5lCYdBADcb (PB 나오시마 & 구마모토)",
+      "Figma t5puxjR1ZoPMJMP1ug0sck (MRT Design System 2023)"
+    ],
+    "updatedAt": "2026-03-13",
+    "note": "v3: MRT DS 비교 분석 기반 일관성 개선. 텍스트 컬러 4단계 정리, 컴포넌트 간격/이미지 규격 토큰 추가, heading weight 700 통일. 프롬프트 기반 생성 일관성을 위한 규칙 명시화."
+  },
+
+  "primitive": {
+    "color": {
+      "gray": {
+        "1000": "#141619",
+        "950":  "#141719",
+        "900":  "#101418",
+        "850":  "#212529",
+        "800":  "#343A40",
+        "700":  "#495056",
+        "600":  "#636363",
+        "550":  "#595959",
+        "500":  "#848C94",
+        "400":  "#ADB5BD",
+        "200":  "#DEE2E6",
+        "100":  "#E5E5E5",
+        "80":   "#F1F3F5",
+        "50":   "#F5F6F7"
+      },
+      "blue": {
+        "600": "#1583DB",
+        "80":  "#E7F4FD",
+        "dark": "#001227"
+      },
+      "red": {
+        "500": "#EC4937"
+      },
+      "yellow": {
+        "200": "#FFF2C6",
+        "100": "#FBFFE7",
+        "50":  "#FDF1B5",
+        "warm": "#FFE390"
+      },
+      "white": "#FFFFFF",
+      "black": "#000000"
+    },
+    "typography": {
+      "fontFamily": "'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif",
+      "fontSize": {
+        "2xs": 11,
+        "xs":  12,
+        "sm":  13,
+        "md":  14,
+        "base": 15,
+        "lg":  16,
+        "xl":  18,
+        "2xl": 19,
+        "3xl": 20,
+        "4xl": 24,
+        "5xl": 26,
+        "6xl": 28
+      },
+      "fontWeight": {
+        "regular":  400,
+        "medium":   500,
+        "semibold": 600,
+        "bold":     700
+      },
+      "lineHeight": {
+        "none":     1.0,
+        "tight":    1.24,
+        "snug":     1.35,
+        "normal":   1.38,
+        "relaxed":  1.44,
+        "loose":    1.52,
+        "looser":   1.65,
+        "spacious": 1.72
+      },
+      "letterSpacing": {
+        "tight":  -0.56,
+        "snug":   -0.32,
+        "normal": -0.16,
+        "none":   0
+      }
+    },
+    "spacing": {
+      "2":  2,
+      "3":  3,
+      "4":  4,
+      "6":  6,
+      "7":  7,
+      "8":  8,
+      "10": 10,
+      "12": 12,
+      "14": 14,
+      "16": 16,
+      "18": 18,
+      "20": 20,
+      "24": 24,
+      "28": 28,
+      "30": 30,
+      "32": 32,
+      "40": 40,
+      "50": 50,
+      "55": 55
+    },
+    "radius": {
+      "xs":   5,
+      "sm":   6,
+      "md":   8,
+      "lg":   10,
+      "xl":   12,
+      "2xl":  24,
+      "full": 9999
+    },
+    "size": {
+      "canvasWidth": 390,
+      "contentWidth": 350,
+      "contentInset": 342,
+      "dividerHeight": 8
+    }
+  },
+
+  "semantic": {
+    "color": {
+      "_v3_migration": {
+        "note": "v3에서 텍스트 컬러를 7단계→4단계로 축소. 기존 토큰은 하위호환을 위해 유지하되, 신규 생성 시 반드시 4단계 체계를 사용할 것.",
+        "mapping": {
+          "text-primary":   "← text-head, text, text-dark 통합. 제목/강조 텍스트.",
+          "text-secondary": "← text-sub, text-body 통합. 본문/설명 텍스트.",
+          "text-tertiary":  "← text-muted, text-dim 통합. 보조 정보/캡션.",
+          "text-on-dark":   "← text-white. 어두운 배경 위 텍스트."
+        }
+      },
+
+      "text-primary":   { "$ref": "primitive.color.gray.1000", "value": "#141619", "usage": "제목, 강조 텍스트. Bold/SemiBold와 함께 사용." },
+      "text-secondary": { "$ref": "primitive.color.gray.800",  "value": "#343A40", "usage": "본문, 설명. 기본 텍스트 색상." },
+      "text-tertiary":  { "$ref": "primitive.color.gray.500",  "value": "#848C94", "usage": "보조 정보, 날짜, 캡션, 비활성 텍스트." },
+      "text-on-dark":   { "$ref": "primitive.color.white",     "value": "#FFFFFF", "usage": "어두운 배경(bg-dark, heroImage overlay) 위 텍스트." },
+
+      "text-head":    { "$ref": "primitive.color.gray.1000", "value": "#141619", "_deprecated": "v3: text-primary 사용 권장" },
+      "text":         { "$ref": "primitive.color.gray.900",  "value": "#101418", "_deprecated": "v3: text-primary 사용 권장" },
+      "text-dark":    { "$ref": "primitive.color.gray.850",  "value": "#212529", "_deprecated": "v3: text-primary 사용 권장" },
+      "text-sub":     { "$ref": "primitive.color.gray.800",  "value": "#343A40", "_deprecated": "v3: text-secondary 사용 권장" },
+      "text-body":    { "$ref": "primitive.color.gray.700",  "value": "#495056", "_deprecated": "v3: text-secondary 사용 권장" },
+      "text-muted":   { "$ref": "primitive.color.gray.500",  "value": "#848C94", "_deprecated": "v3: text-tertiary 사용 권장" },
+      "text-dim":     { "$ref": "primitive.color.gray.400",  "value": "#ADB5BD", "_deprecated": "v3: text-tertiary 사용 권장" },
+      "text-white":   { "$ref": "primitive.color.white",     "value": "#FFFFFF", "_deprecated": "v3: text-on-dark 사용 권장" },
+
+      "bg":           { "$ref": "primitive.color.white",     "value": "#FFFFFF" },
+      "bg-sub":       { "$ref": "primitive.color.gray.80",   "value": "#F1F3F5", "usage": "독립 섹션 배경, 구조적 영역 (디바이더, 가이드 프로필 카드)" },
+      "bg-card":      { "$ref": "primitive.color.gray.50",   "value": "#F5F6F7", "usage": "인라인 카드/박스 (추천 박스, 리뷰 카드, FAQ 영역)" },
+      "bg-dark":      { "$ref": "primitive.color.gray.900",  "value": "#101418" },
+
+      "border":       { "$ref": "primitive.color.gray.200",  "value": "#DEE2E6" },
+      "border-light": { "$ref": "primitive.color.gray.100",  "value": "#E5E5E5" },
+
+      "accent":       { "$ref": "primitive.color.blue.600",  "value": "#1583DB" },
+      "accent-soft":  { "$ref": "primitive.color.blue.80",   "value": "#E7F4FD" },
+      "caution":      { "$ref": "primitive.color.red.500",   "value": "#EC4937" },
+
+      "badge-am":     { "$ref": "primitive.color.blue.80",   "value": "#E7F4FD" },
+      "badge-pm":     { "$ref": "primitive.color.yellow.200","value": "#FFF2C6" }
+    },
+    "typography": {
+      "display": {
+        "fontSize": 28, "fontWeight": 700, "lineHeight": 1.24,
+        "letterSpacing": -0.56, "color": "#000000"
+      },
+      "hero-title": {
+        "fontSize": 26, "fontWeight": 700, "lineHeight": 1.24,
+        "letterSpacing": -0.52, "color": "#101418"
+      },
+      "section-title": {
+        "fontSize": 24, "fontWeight": 700, "lineHeight": 1.24,
+        "letterSpacing": -0.48, "color": "#000000"
+      },
+      "heading": {
+        "fontSize": 20, "fontWeight": 700, "lineHeight": 1.38,
+        "color": "#141619",
+        "_v3_change": "fontWeight 600→700. MRT DS Headline=Bold 기준 + subheading(700)과의 위계 역전 해소."
+      },
+      "subheading": {
+        "fontSize": 19, "fontWeight": 700, "lineHeight": 1.38,
+        "letterSpacing": -0.19, "color": "#141719"
+      },
+      "body-lg": {
+        "fontSize": 16, "fontWeight": 500, "lineHeight": 1.38,
+        "letterSpacing": -0.16, "color": "#212529"
+      },
+      "body": {
+        "fontSize": 15, "fontWeight": 500, "lineHeight": 1.44,
+        "letterSpacing": -0.3, "color": "#495056"
+      },
+      "body-dark": {
+        "fontSize": 14, "fontWeight": 500, "lineHeight": 1.52,
+        "color": "#343A40"
+      },
+      "caption": {
+        "fontSize": 13, "fontWeight": 500, "lineHeight": 1.38,
+        "color": "#343A40"
+      },
+      "caption-bold": {
+        "fontSize": 13, "fontWeight": 600, "lineHeight": 1.38,
+        "color": "#101418"
+      },
+      "small": {
+        "fontSize": 12, "fontWeight": 400, "lineHeight": 1.24,
+        "color": "#ADB5BD"
+      },
+      "stat-value": {
+        "fontSize": 15, "fontWeight": 700, "lineHeight": 1.24,
+        "color": "#000000"
+      },
+      "stat-label": {
+        "fontSize": 11, "fontWeight": 500, "lineHeight": 1.35,
+        "color": "#495056"
+      },
+      "trust-title": {
+        "fontSize": 18, "fontWeight": 700, "lineHeight": 1.35,
+        "color": "#FFFFFF"
+      },
+      "trust-desc": {
+        "fontSize": 14, "fontWeight": 500, "lineHeight": 1.34,
+        "letterSpacing": -0.28, "color": "#ADB5BD"
+      },
+      "duration": {
+        "fontSize": 15, "fontWeight": 600, "lineHeight": 1.38,
+        "letterSpacing": -0.15, "color": "#848C94"
+      },
+      "program-desc": {
+        "fontSize": 16, "fontWeight": 500, "lineHeight": 1.38,
+        "letterSpacing": -0.16, "color": "#343A40"
+      }
+    },
+    "layout": {
+      "sectionPadding": [32, 20, 24],
+      "contentPaddingH": 20,
+      "contentInsetH": 24,
+      "dividerHeight": 8
+    },
+
+    "spacing": {
+      "_note": "v3 추가. 컴포넌트 레벨 간격 토큰 — AI 생성 시 매번 동일한 값을 사용하기 위한 규칙.",
+      "section-pt":    32,
+      "section-pb":    24,
+      "title-gap":     14,
+      "item-gap":      24,
+      "card-padding":  20,
+      "img-gap":       12,
+      "block-gap":     16,
+      "padding-h":     20,
+      "_usage": {
+        "section-pt":   "섹션 상단 패딩. 모든 카테고리 동일.",
+        "section-pb":   "섹션 하단 패딩. 모든 카테고리 동일.",
+        "title-gap":    "제목(h2/h3) → 바로 아래 본문/리스트 사이 간격.",
+        "item-gap":     "리스트 아이템(스텝, 코스, 포함/불포함) 사이 간격.",
+        "card-padding": "카드/박스 내부 패딩 (추천박스, 리뷰카드, FAQ).",
+        "img-gap":      "이미지 → 바로 아래 텍스트 사이 간격.",
+        "block-gap":    "블록 내 요소 간 기본 간격.",
+        "padding-h":    "콘텐츠 좌우 패딩."
+      }
+    },
+
+    "image": {
+      "_note": "v3 추가. 이미지 규격 토큰 — 높이와 border-radius를 통일.",
+      "hero":     { "height": 458, "radius": 0,  "usage": "히어로 배너. 전체 너비, 하단 그래디언트 오버레이." },
+      "section":  { "height": 232, "radius": 10, "usage": "섹션 대표 이미지 (감성 이미지, 분위기 컷)." },
+      "step":     { "height": 180, "radius": 10, "usage": "코스/스텝 이미지 (numberedList, programCard 내 이미지)." },
+      "grid":     { "height": 160, "radius": 10, "usage": "이미지 그리드 썸네일 (imageGrid 블록)." },
+      "card-lg":  { "height": 254, "radius": 24, "usage": "PB Exclusive programCard 전용. 큰 카드 이미지." }
+    }
+  }
+}
