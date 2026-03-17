@@ -48,7 +48,7 @@ lw_start = lw_end - timedelta(days=6)   # 저번주 월요일
 
 ```
 REDASH_KEY = j3cVHlqTLd6zHzzyTCWB830FqL4n4H9g86vKlEmH
-CITIES = 'Hong Kong','Macau','Singapore','Taipei','Shanghai','Beijing','Xian','Qingdao','Dalian','Xiamen','Harbin','Chongqing','Shenzhen','Taichung','Yanji'
+CITIES = 'Hong Kong','Macau','Singapore','Taipei','Shanghai','Beijing','Zhangjiajie','Xian','Qingdao','Dalian','Xiamen','Lijiang','Harbin','Chongqing','Shenzhen','Taichung','Gāoxióng','Yanji'
 ```
 
 **요청 파라미터:**
