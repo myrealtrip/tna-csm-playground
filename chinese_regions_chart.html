@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>중화권 지역별 T&A 카테고리 월별 GMV/CM 추이</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Malgun Gothic', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+
+  /* 상단 헤더 */
+  .page-header { background: #1e293b; color: #fff; padding: 16px 32px 14px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+  .page-header h2 { margin: 0 0 2px; font-size: 18px; }
+  .page-header p { margin: 0 0 10px; font-size: 12px; color: #94a3b8; }
+
+  /* 필터 바 */
+  .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .filter-label { font-size: 11px; color: #94a3b8; white-space: nowrap; }
+  .filter-select { background: #334155; color: #fff; border: 1px solid #475569; border-radius: 6px;
+    padding: 4px 8px; font-size: 12px; font-family: 'Malgun Gothic', sans-serif; cursor: pointer; outline: none; }
+  .filter-select:focus { border-color: #94a3b8; }
+  .filter-sep { color: #475569; font-size: 12px; }
+  .filter-dateby { display: flex; gap: 4px; }
+  .dateby-btn { padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;
+    border: 1.5px solid #475569; background: transparent; color: #94a3b8;
+    cursor: pointer; font-family: 'Malgun Gothic', sans-serif; transition: all 0.12s; }
+  .dateby-btn:hover { border-color: #94a3b8; color: #fff; }
+  .dateby-btn.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  .apply-btn { padding: 4px 14px; border-radius: 6px; font-size: 12px; font-weight: bold;
+    background: #f87171; border: none; color: #fff; cursor: pointer;
+    font-family: 'Malgun Gothic', sans-serif; transition: background 0.12s; }
+  .apply-btn:hover { background: #ef4444; }
+
+  /* 도시 네비게이션 */
+  .nav-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .nav-tab { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold;
+    cursor: pointer; text-decoration: none; color: #fff; opacity: 0.5;
+    transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+    border: 1.5px solid rgba(255,255,255,0.25); }
+  .nav-tab:hover { opacity: 0.85; transform: translateY(-1px); }
+  .nav-tab.active { opacity: 1; transform: translateY(-1px); box-shadow: 0 0 0 2px #fff; }
+
+  /* 컨텐츠 */
+  .content { padding: 28px 32px; }
+  .city-section { margin-bottom: 48px; display: none; }
+  .city-section.visible { display: block; }
+  .city-title { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 14px;
+    padding: 8px 18px; border-radius: 6px; display: inline-block; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .chart-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 14px 16px 10px; }
+  .chart-title { font-size: 13px; font-weight: bold; color: #333; margin-bottom: 2px; }
+  .chart-sub { font-size: 11px; color: #bbb; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h2>중화권 지역별 T&amp;A 카테고리 월별 GMV / CM 추이</h2>
+  <p>단위: 만원 &nbsp;|&nbsp; GMV 막대(좌축) / CM 막대(우축) &nbsp;|&nbsp; CM 음수: <b style="color:#fca5a5">(−)</b> 표시</p>
+  <div class="filter-bar">
+    <span class="filter-label">기간</span>
+    <select class="filter-select" id="selStart"></select>
+    <span class="filter-sep">~</span>
+    <select class="filter-select" id="selEnd"></select>
+    <span class="filter-sep" style="margin-left:8px;">단위</span>
+    <div class="filter-dateby">
+      <button class="dateby-btn active" data-by="month">월별</button>
+      <button class="dateby-btn" data-by="quarter">분기별</button>
+    </div>
+    <button class="apply-btn" id="applyBtn">적용</button>
+    <span class="filter-label" id="filterInfo" style="margin-left:4px;"></span>
+  </div>
+  <nav class="nav-tabs" id="navTabs"></nav>
+</div>
+
+<div class="content" id="content"></div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const ALL_MONTHS = ['25-03','25-04','25-05','25-06','25-07','25-08','25-09','25-10','25-11','25-12','26-01','26-02','26-03'];
+const MONTH_LABELS = {
+  '25-03':'2025.03','25-04':'2025.04','25-05':'2025.05','25-06':'2025.06',
+  '25-07':'2025.07','25-08':'2025.08','25-09':'2025.09','25-10':'2025.10',
+  '25-11':'2025.11','25-12':'2025.12','26-01':'2026.01','26-02':'2026.02','26-03':'2026.03'
+};
+
+// 분기 매핑 (월 → 분기 키)
+const QUARTER_OF = {
+  '25-03':'25-Q1','25-04':'25-Q2','25-05':'25-Q2','25-06':'25-Q2',
+  '25-07':'25-Q3','25-08':'25-Q3','25-09':'25-Q3','25-10':'25-Q4',
+  '25-11':'25-Q4','25-12':'25-Q4','26-01':'26-Q1','26-02':'26-Q1','26-03':'26-Q1'
+};
+
+// 필터 상태
+let filterStart = ALL_MONTHS[0];
+let filterEnd   = ALL_MONTHS[ALL_MONTHS.length - 1];
+let filterBy    = 'month'; // 'month' | 'quarter'
+
+// 차트 인스턴스 저장 (id → Chart)
+const chartInstances = {};
+
+// ── 필터 적용 후 사용할 labels / 인덱스 계산 ──────────────────
+function getFilteredSlice() {
+  const si = ALL_MONTHS.indexOf(filterStart);
+  const ei = ALL_MONTHS.indexOf(filterEnd);
+  const sliced = ALL_MONTHS.slice(si, ei + 1);
+
+  if (filterBy === 'month') {
+    return { labels: sliced.map(m => MONTH_LABELS[m]), indices: sliced.map((_, i) => si + i) };
+  }
+  // 분기별: 슬라이스된 월들을 분기로 묶기
+  const qMap = {}; // 분기 키 → 원본 인덱스 배열
+  sliced.forEach((m, i) => {
+    const q = QUARTER_OF[m];
+    if (!qMap[q]) qMap[q] = [];
+    qMap[q].push(si + i);
+  });
+  const labels = Object.keys(qMap);
+  return { labels, indices: null, qMap };
+}
+
+// 데이터 집계 (분기별은 합산)
+function aggregateData(rawArr, slice) {
+  if (filterBy === 'month') {
+    return slice.indices.map(i => rawArr[i]);
+  }
+  return Object.values(slice.qMap).map(idxs => idxs.reduce((s, i) => s + rawArr[i], 0));
+}
+
+function syncZeroAxes(gmvData, cmData) {
+  const nonZeroGmv = gmvData.filter(v => v !== 0);
+  const gmvMax = (nonZeroGmv.length ? Math.max(...gmvData) : 1) * 1.1;
+  const cmRawMax = Math.max(...cmData);
+  const cmRawMin = Math.min(...cmData);
+  const cmMax = cmRawMax > 0 ? cmRawMax * 1.1 : gmvMax * 0.05;
+  const cmMin = cmRawMin < 0 ? cmRawMin * 1.1 : 0;
+  if (cmMin >= 0) return { gmvMin: 0, gmvMax, cmMin: 0, cmMax };
+  const frac = -cmMin / (cmMax - cmMin);
+  const gmvMin = -(frac / (1 - frac)) * gmvMax;
+  return { gmvMin, gmvMax, cmMin, cmMax };
+}
+
+function renderChart(id, gmvRaw, cmRaw, gmvColor) {
+  // 기존 차트 제거
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+
+  const slice = getFilteredSlice();
+  const gmvData = aggregateData(gmvRaw, slice);
+  const cmData  = aggregateData(cmRaw,  slice);
+  const labels  = slice.labels;
+
+  const axes = syncZeroAxes(gmvData, cmData);
+  chartInstances[id] = new Chart(document.getElementById(id), {
+    data: {
+      labels,
+      datasets: [
+        {
+          type: 'bar', label: 'GMV (만원)', data: gmvData,
+          backgroundColor: gmvColor, borderWidth: 0,
+          yAxisID: 'yGMV', order: 2, datalabels: { display: false }
+        },
+        {
+          type: 'bar', label: 'CM (만원)', data: cmData,
+          backgroundColor: cmData.map(v => v >= 0 ? 'rgba(99,120,220,0.85)' : 'rgba(99,120,220,0.7)'),
+          borderColor: cmData.map(v => v >= 0 ? 'rgba(80,100,200,0.9)' : 'rgba(70,90,200,0.9)'),
+          borderWidth: 1, yAxisID: 'yCM', order: 1,
+          datalabels: {
+            display: ctx => cmData[ctx.dataIndex] < 0,
+            formatter: () => '(−)',
+            color: 'rgb(220,38,38)',
+            font: { size: 9, weight: 'bold' },
+            anchor: 'end', align: 'bottom', offset: 1
+          }
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 10, padding: 6 } },
+        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}만원` } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+        yGMV: {
+          type: 'linear', position: 'left', min: axes.gmvMin, max: axes.gmvMax,
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { size: 9 }, callback: v => v === 0 ? '0' : (v/10000).toFixed(1)+'억' },
+          title: { display: true, text: 'GMV', font: { size: 9 }, color: '#aaa' }
+        },
+        yCM: {
+          type: 'linear', position: 'right', min: axes.cmMin, max: axes.cmMax,
+          grid: { drawOnChartArea: false },
+          ticks: { font: { size: 9 }, callback: v => v === 0 ? '0' : v.toLocaleString() },
+          title: { display: true, text: 'CM (만원)', font: { size: 9 }, color: '#aaa' }
+        }
+      }
+    }
+  });
+}
+
+const cities = [
+  {
+    id: 'shanghai', name: '🌆 중국 (상하이)', bgColor: '#7c3aed', navColor: '#7c3aed',
+    color: 'rgba(153,102,255,0.75)',
+    cats: [
+      { name: '🎡 디즈니랜드',    id:'sh0', gmv:[43236,50501,48085,38691,65181,79474,76094,61908,54402,109041,143938,83646,37902], cm:[-1265,-1124,-309,-1099,-1281,-2557,-1159,-1596,-199,-1053,-4262,-2689,-595] },
+      { name: '🏘️ 우전 수향마을', id:'sh1', gmv:[24305,26321,17714,12098,17611,19759,27723,29812,28315,32210,33762,26383,19791], cm:[3584,3798,2676,1781,1938,2905,3028,2736,2607,3109,4595,3713,2375] },
+      { name: '⛴️ 황푸강 유람선', id:'sh2', gmv:[6184,9561,10464,6508,8101,9684,9761,12389,11089,12360,14500,10039,6776], cm:[378,603,622,410,514,633,730,907,815,902,1048,746,473] },
+      { name: '🎪 마시청 서커스',  id:'sh3', gmv:[7978,8453,7701,5285,8425,7946,11019,12358,10444,11665,11554,6874,4520], cm:[472,487,441,318,545,573,774,880,751,878,842,518,322] },
+      { name: '💆 마사지',         id:'sh4', gmv:[2372,4377,4622,3759,5256,8135,9155,10613,10817,13349,14301,11560,7667], cm:[177,291,314,259,303,486,591,622,751,832,985,849,535] },
+      { name: '🚗 픽업 샌딩',      id:'sh5', gmv:[2400,4359,4426,2101,3244,3098,5115,6212,5913,5993,7566,6190,3638], cm:[337,602,632,286,414,419,733,819,797,802,983,866,513] }
+    ]
+  },
+  {
+    id: 'beijing', name: '🏯 중국 (베이징)', bgColor: '#dc2626', navColor: '#dc2626',
+    color: 'rgba(255,99,132,0.75)',
+    cats: [
+      { name: '🧱 만리장성',            id:'bj0', gmv:[8058,16165,13094,7238,6254,10750,10491,10441,9872,10692,9186,11302,7763], cm:[746,1304,994,636,785,931,832,946,962,1020,822,950,737] },
+      { name: '🏛️ 자금성/천안문',       id:'bj1', gmv:[3168,4033,4897,2224,3607,4391,7182,5212,4937,4173,3263,3383,2703], cm:[373,619,504,253,425,541,729,516,487,391,310,336,273] },
+      { name: '🎡 유니버셜 스튜디오',    id:'bj2', gmv:[1703,3103,1520,2114,2768,2348,3179,2985,2637,2644,2541,1488,541], cm:[-12,-47,-7,-59,-78,-125,-116,-186,-112,-115,-136,-18,-3] },
+      { name: '📱 유심/와이파이',        id:'bj3', gmv:[612,869,834,672,1585,618,679,748,663,640,519,238,119], cm:[54,98,78,66,30,104,122,102,64,57,48,18,9] },
+      { name: '🎟️ 티켓/입장권',         id:'bj4', gmv:[321,600,505,488,547,511,1639,623,477,485,967,349,440], cm:[37,100,58,49,49,43,53,60,53,59,5,52,22] },
+      { name: '🎭 금면왕조',             id:'bj5', gmv:[854,1093,1295,868,1187,289,0,0,0,0,0,0,0], cm:[45,77,96,64,104,72,66,10,4,1,2,0,0] }
+    ]
+  },
+  {
+    id: 'qingdao', name: '🌊 중국 (칭다오)', bgColor: '#0284c7', navColor: '#0284c7',
+    color: 'rgba(54,162,235,0.75)',
+    cats: [
+      { name: '🍺 맥주박물관',  id:'qd0', gmv:[15,147,491,809,880,506,1161,1519,1686,1409,1306,1753,1824], cm:[1,6,17,20,34,41,71,93,108,87,53,22,31] },
+      { name: '🏙️ 시내투어',  id:'qd1', gmv:[450,234,821,931,688,1011,1221,547,1042,1403,1120,907,687], cm:[81,38,183,202,103,152,198,117,167,296,173,150,77] },
+      { name: '🚗 픽업 샌딩',  id:'qd2', gmv:[55,122,233,326,234,242,383,271,509,786,521,610,351], cm:[9,15,47,47,32,35,48,36,66,113,72,92,51] },
+      { name: '⛳ 골프',        id:'qd3', gmv:[156,264,182,306,470,400,165,166,168,147,0,30,332], cm:[23,43,71,49,37,27,12,12,11,10,19,2,23] },
+      { name: '📦 세미 패키지', id:'qd4', gmv:[0,0,240,0,0,533,380,0,250,320,0,0,0], cm:[0,0,39,0,0,4,117,0,15,56,45,0,0] },
+      { name: '🌄 노산(라오산)', id:'qd5', gmv:[0,17,120,52,140,0,0,46,0,27,33,158,102], cm:[0,10,35,13,18,0,14,12,0,10,5,38,13] }
+    ]
+  },
+  {
+    id: 'xian', name: '🏺 중국 (시안)', bgColor: '#16a34a', navColor: '#16a34a',
+    color: 'rgba(100,180,80,0.75)',
+    cats: [
+      { name: '🗿 병마용투어',  id:'xa0', gmv:[1058,1534,1880,2144,1742,1729,3421,2258,2252,3970,3144,2770,2495], cm:[152,207,248,341,245,248,454,413,318,540,495,335,318] },
+      { name: '⛰️ 화산투어',   id:'xa1', gmv:[136,642,127,509,306,204,493,574,280,460,33,682,416], cm:[61,80,20,74,37,61,162,146,73,108,46,79,76] },
+      { name: '🎟️ 티켓/입장권', id:'xa2', gmv:[337,352,307,223,219,179,519,356,599,699,337,456,225], cm:[32,33,29,19,21,17,44,36,55,61,34,44,17] },
+      { name: '🏙️ 시내투어',   id:'xa3', gmv:[0,52,0,24,76,0,24,101,18,148,45,0,176], cm:[4,13,0,5,10,0,3,12,2,22,5,8,22] },
+      { name: '🚌 이동·교통',   id:'xa4', gmv:[0,11,6,4,16,0,6,31,24,25,82,86,7], cm:[0,1,1,1,2,1,1,4,5,5,15,13,2] },
+      { name: '🌿 근교투어',    id:'xa5', gmv:[0,0,0,0,0,0,0,0,0,201,0,0,0], cm:[0,0,0,0,0,0,0,0,0,32,0,0,0] }
+    ]
+  },
+  {
+    id: 'hongkong', name: '🏙️ 홍콩', bgColor: '#ea580c', navColor: '#ea580c',
+    color: 'rgba(255,159,64,0.75)',
+    cats: [
+      { name: '🌃 야경투어',   id:'hk0', gmv:[17384,15404,12668,7763,12805,12971,19141,19373,20263,33503,36966,21658,7510], cm:[2687,2420,2035,1288,2608,2246,3734,3567,3774,5169,5420,3208,1191] },
+      { name: '🎡 HKDL',       id:'hk1', gmv:[261,777,287,2621,1635,1578,9325,218,256,8425,368,47062,14236], cm:[9,33,14,59,0,2,-709,8,11,-387,11,179,525] },
+      { name: '📸 스냅',        id:'hk2', gmv:[3907,3965,2800,1738,2581,3219,3874,5654,5670,4562,5104,4417,1907], cm:[694,689,465,317,418,552,695,943,1021,809,817,772,402] },
+      { name: '🐙 옥토퍼스',   id:'hk3', gmv:[0,0,0,0,18,23,19,33,4,4971,22230,11180,5479], cm:[0,0,0,0,2,3,2,3,1,-206,-965,-430,-146] },
+      { name: '🏙️ 시내투어',  id:'hk4', gmv:[1170,1398,916,460,750,409,2321,1955,1159,2244,1679,858,511], cm:[270,348,235,94,218,195,462,367,269,438,292,181,94] },
+      { name: '🚌 빅버스',      id:'hk5', gmv:[0,0,0,0,0,0,0,0,0,1382,7319,4418,1441], cm:[0,0,0,0,0,0,0,0,0,33,160,115,39] }
+    ]
+  },
+  {
+    id: 'singapore', name: '🦁 싱가포르', bgColor: '#ca8a04', navColor: '#ca8a04',
+    color: 'rgba(234,179,8,0.8)',
+    cats: [
+      { name: '🎉 GBB',        id:'sg0', gmv:[6321,4813,6230,10129,19328,18696,11647,11533,9981,8705,16128,14526,3755], cm:[881,573,779,929,1554,1715,917,942,578,874,1059,1209,248] },
+      { name: '🌃 야경투어',   id:'sg1', gmv:[4088,4962,6441,5837,12161,8665,8163,5895,4292,6590,9718,9016,2874], cm:[805,1019,1231,1011,2258,1552,1568,1224,881,1010,1500,1594,558] },
+      { name: '🏙️ 시내투어',  id:'sg2', gmv:[2386,3949,5062,4024,8334,6574,7278,4957,4677,5111,10333,6589,1574], cm:[621,971,1130,928,1752,1399,1454,1111,1026,925,1918,1375,361] },
+      { name: '🏎️ F1',         id:'sg3', gmv:[2691,3126,1858,3171,16603,6580,14523,1521,0,175,0,0,0], cm:[123,117,78,120,503,193,483,39,18,3,0,0,153] },
+      { name: '🎡 USS',         id:'sg4', gmv:[862,2192,2057,3286,17859,8435,1265,1830,812,1719,2019,4775,1556], cm:[42,125,79,121,178,63,26,24,22,8,7,18,77] },
+      { name: '🚡 케이블카',   id:'sg5', gmv:[1168,809,1041,1458,1956,2140,341,682,544,571,1071,994,716], cm:[44,23,26,60,36,138,45,19,15,22,36,35,37] }
+    ]
+  },
+  {
+    id: 'macau', name: '🎰 마카오', bgColor: '#0f766e', navColor: '#0f766e',
+    color: 'rgba(75,192,192,0.75)',
+    cats: [
+      { name: '🚌 단독투어',          id:'mc0', gmv:[4045,5169,6703,3217,7055,5543,10331,9234,8712,11605,13662,9410,1903], cm:[735,981,1147,538,1472,1257,1972,1760,1575,2115,2643,1634,386] },
+      { name: '💃 하우스오브댄싱워터', id:'mc1', gmv:[0,0,231,1898,1648,376,11068,1836,847,21571,541,14060,5006], cm:[0,8,59,778,686,109,846,-12,60,1693,32,1087,141] },
+      { name: '🏙️ 시내투어',          id:'mc2', gmv:[2866,3278,3513,1480,3949,3751,3407,6053,5571,6333,6706,4497,1158], cm:[505,583,675,264,830,738,675,1131,978,1013,1281,833,209] },
+      { name: '⛴️ 페리',               id:'mc3', gmv:[0,671,1561,2102,2976,2639,3703,4438,5086,4221,4094,1411,2628], cm:[0,26,64,70,64,75,81,68,87,26,148,57,81] },
+      { name: '🍽️ 미식/식사권',        id:'mc4', gmv:[60,325,1228,1198,2316,2248,2231,2722,2613,2518,4098,2177,1228], cm:[3,12,5,-12,76,67,55,71,63,80,119,66,39] },
+      { name: '🚌 오픈탑버스투어',      id:'mc5', gmv:[0,0,0,0,0,0,0,0,0,1887,6249,381,1436], cm:[0,0,0,0,0,0,0,0,0,7,31,5,15] }
+    ]
+  },
+  {
+    id: 'taipei', name: '🌸 대만 (타이베이)', bgColor: '#be123c', navColor: '#be123c',
+    color: 'rgba(255,99,71,0.75)',
+    cats: [
+      { name: '🚕 예스진지택시투어',  id:'tw0', gmv:[24081,24459,14997,10238,14463,18755,29998,23007,25219,33947,36245,26656,14967], cm:[3003,3619,2376,1629,2159,3249,5222,3875,4029,5852,6165,4623,2438] },
+      { name: '🚌 예스진지버스투어',  id:'tw1', gmv:[14316,14846,11078,8040,13324,13347,22156,19254,20875,24902,24828,19539,8937], cm:[1297,1321,1049,727,1321,1359,2068,1758,1515,2326,2271,1779,799] },
+      { name: '🏛️ 고궁박물관투어',   id:'tw2', gmv:[6612,8470,5494,2882,4555,5276,9972,9977,11801,14682,17015,12780,4164], cm:[822,1063,785,413,654,798,1574,1532,1574,2053,2498,1825,589] },
+      { name: '🔭 타이베이101',       id:'tw3', gmv:[5717,5504,3599,2462,3421,4761,6440,7684,7612,9155,9575,9532,2732], cm:[442,472,425,146,224,280,416,418,484,337,394,1075,359] },
+      { name: '🥟 딘타이펑',          id:'tw4', gmv:[35,3165,3010,2131,747,2806,6334,7356,5214,12755,13050,13458,6084], cm:[5,238,332,236,91,382,782,675,501,1392,1668,1323,770] },
+      { name: '🏞️ 이란투어',          id:'tw5', gmv:[3499,3584,2366,1503,2632,2862,4810,4312,4427,5848,5256,5184,2214], cm:[649,658,474,294,505,647,1142,1006,776,1026,970,1039,414] }
+    ]
+  }
+];
+
+// ── 섹션 생성 ─────────────────────────────────────────────────
+const contentEl = document.getElementById('content');
+cities.forEach(city => {
+  const section = document.createElement('div');
+  section.className = 'city-section';
+  section.id = city.id;
+
+  const title = document.createElement('div');
+  title.className = 'city-title';
+  title.style.background = city.bgColor;
+  title.textContent = city.name;
+  section.appendChild(title);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid2';
+  city.cats.forEach(cat => {
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-wrap';
+    wrap.innerHTML = `<div class="chart-title">${cat.name}</div><div class="chart-sub">GMV 좌축 | CM 우축</div><canvas id="${cat.id}"></canvas>`;
+    grid.appendChild(wrap);
+  });
+
+  section.appendChild(grid);
+  contentEl.appendChild(section);
+});
+
+// ── 현재 활성 도시 추적 ────────────────────────────────────────
+let activeCityId = cities[0].id;
+
+// ── 도시 전환 ─────────────────────────────────────────────────
+function showCity(cityId) {
+  activeCityId = cityId;
+  document.querySelectorAll('.city-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+  const section = document.getElementById(cityId);
+  section.classList.add('visible');
+  document.querySelector(`.nav-tab[data-city="${cityId}"]`).classList.add('active');
+
+  const city = cities.find(c => c.id === cityId);
+  city.cats.forEach(cat => renderChart(cat.id, cat.gmv, cat.cm, city.color));
+}
+
+// ── 필터 적용 ─────────────────────────────────────────────────
+function applyFilter() {
+  const si = ALL_MONTHS.indexOf(filterStart);
+  const ei = ALL_MONTHS.indexOf(filterEnd);
+  if (si > ei) { alert('종료월이 시작월보다 앞설 수 없습니다.'); return; }
+  document.getElementById('filterInfo').textContent =
+    `${MONTH_LABELS[filterStart]} ~ ${MONTH_LABELS[filterEnd]} / ${filterBy === 'month' ? '월별' : '분기별'}`;
+  showCity(activeCityId);
+}
+
+// ── 필터 UI 초기화 ────────────────────────────────────────────
+const selStart = document.getElementById('selStart');
+const selEnd   = document.getElementById('selEnd');
+ALL_MONTHS.forEach(m => {
+  selStart.innerHTML += `<option value="${m}">${MONTH_LABELS[m]}</option>`;
+  selEnd.innerHTML   += `<option value="${m}">${MONTH_LABELS[m]}</option>`;
+});
+selEnd.value = ALL_MONTHS[ALL_MONTHS.length - 1]; // 기본값: 마지막 월
+
+selStart.addEventListener('change', () => { filterStart = selStart.value; });
+selEnd.addEventListener('change',   () => { filterEnd   = selEnd.value; });
+
+document.querySelectorAll('.dateby-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.dateby-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterBy = btn.dataset.by;
+  });
+});
+
+document.getElementById('applyBtn').addEventListener('click', applyFilter);
+
+// ── 네비게이션 생성 ───────────────────────────────────────────
+const navEl = document.getElementById('navTabs');
+cities.forEach(city => {
+  const a = document.createElement('a');
+  a.className = 'nav-tab';
+  a.dataset.city = city.id;
+  a.textContent = city.name;
+  a.style.background = city.navColor;
+  a.addEventListener('click', e => { e.preventDefault(); showCity(city.id); });
+  navEl.appendChild(a);
+});
+
+// ── 초기 렌더 ─────────────────────────────────────────────────
+document.getElementById('filterInfo').textContent =
+  `${MONTH_LABELS[filterStart]} ~ ${MONTH_LABELS[filterEnd]} / 월별`;
+showCity(cities[0].id);
+</script>
+</body>
+</html>
