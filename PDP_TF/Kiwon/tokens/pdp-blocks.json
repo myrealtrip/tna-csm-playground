@@ -495,7 +495,7 @@
         },
         "items": {
           "type": "array",
-          "items": 3,
+          "minItems": 3,
           "items": {
             "icon": { "type": "image", "output": "svg", "size": [40, 40] },
             "title": { "type": "string", "output": "html", "required": true },

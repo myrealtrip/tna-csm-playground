@@ -180,7 +180,6 @@
       "recommended": [
         "imageGrid",
         "highlightCallout",
-        "sectionImage",
         "operationTable",
         "recommendBox",
         "includeExclude",
@@ -204,7 +203,7 @@
         "zone1_desire": {
           "description": "욕망 영역 — '이 체험을 하면 이런 경험을 할 수 있어요'",
           "targetRatio": "65%",
-          "blocks": ["heroImage", "introSection", "introSection(2nd)", "imageGrid", "visualTimeline", "highlightCallout", "sectionImage"]
+          "blocks": ["heroImage", "introSection", "introSection(2nd)", "imageGrid", "visualTimeline", "highlightCallout"]
         },
         "zone2_confirm": {
           "description": "확인 영역 — '사기로 했으니 이것만 확인하세요'",
@@ -260,6 +259,7 @@
         "rule": "heroImage는 exclusiveHeader 직후",
         "block": "heroImage",
         "position": "second",
+        "appliesTo": ["PB_EXCLUSIVE"],
         "note": "사이에 divider 삽입하지 않음"
       },
       {
@@ -272,7 +272,8 @@
         "rule": "notice는 trustPoints 바로 앞",
         "block": "notice",
         "position": "before-last",
-        "before": "trustPoints"
+        "before": "trustPoints",
+        "appliesTo": ["PB_EXCLUSIVE"]
       },
       {
         "rule": "includeExclude는 notice 직전 배치",
@@ -418,10 +419,10 @@
         "note": "나오시마: '나오시마 워킹투어' 섹션 1개. 구마모토: '수향마을 산책' + '구마모토 시내 탐방' 2개 섹션."
       },
       {
-        "name": "exclusiveHeader 2회 사용",
+        "name": "exclusiveHeader 사용",
         "block": "exclusiveHeader",
-        "exactInstances": 2,
-        "note": "PDP 최상단(heroImage 전) + 최하단(trustPoints 후). 브랜딩 북엔드 구조.",
+        "exactInstances": 1,
+        "note": "PDP 최상단(heroImage 전). recommendedOrder에 맞춰 1회 사용.",
         "appliesTo": ["PB_EXCLUSIVE"]
       },
       {
@@ -490,10 +491,10 @@
     "mapping": {
       "hero": "heroImage",
       "titleParagraph": "introSection 또는 sectionHeader",
-      "step": "삭제 (programCard로 대체)",
-      "fullbleed": "삭제 (heroImage로 통합)",
+      "step": "visualTimeline",
+      "fullbleed": "heroImage",
       "recommend": "recommendBox",
-      "imageText": "삭제 (programCard로 대체)",
+      "imageText": "guideProfile",
       "daySchedule": "visualTimeline"
     }
   }
