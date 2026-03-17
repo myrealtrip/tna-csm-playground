@@ -406,24 +406,37 @@ utm_source별 유입을 MONTH 기준으로 조회해 주요 채널 WoW 변화를
 
 ---
 
-## 11단계: 상품별 퍼널 이탈률 분석
-
-> ⚠️ 퍼널 이탈률 전용 Redash 쿼리 ID는 추후 확정 예정. 현재는 쿼리 32100(UV/CVR) 데이터를 활용해 아래 기준으로 추정한다.
+## 11단계: 상품별 퍼널 이탈률 분석 (Redash 쿼리 31780)
 
 **퍼널 단계:** Detail UV → Option UV → Checkout UV → Complete UV
 
+**요청 파라미터:**
+```json
+{
+  "parameters": {
+    "category_nm": "'ALL'",
+    "start_date": "LW_START",
+    "end_date": "TW_END",
+    "offer_id": "'ALL'",
+    "region/country/city": "<CITIES>"
+  },
+  "max_age": 0
+}
+```
+
+> `end_date`는 `d_yesterday` 대신 실제 날짜(TW_END)로 치환해 요청한다.
+
 **이탈률 계산:**
 ```python
-# 각 단계별 이탈률
-detail_to_option   = (1 - option_uv / detail_uv) * 100
-option_to_checkout = (1 - checkout_uv / option_uv) * 100
+detail_to_option     = (1 - option_uv / detail_uv) * 100
+option_to_checkout   = (1 - checkout_uv / option_uv) * 100
 checkout_to_complete = (1 - complete_uv / checkout_uv) * 100
 ```
 
 **분석 포인트:**
-- 상품(offer)별 이탈 병목 단계 식별
-- Detail UV 상위 20개 상품 기준 퍼널 이탈률 비교
-- 이탈률 높은 단계 → UX 개선 or 상품 정보 보완 액션 제안
+- Detail UV 상위 20개 상품 기준 단계별 이탈률 비교
+- 병목 단계(이탈률 가장 높은 구간) 식별 → UX 개선 or 상품 정보 보완 액션 제안
+- 저번주 vs 이번주 이탈률 WoW 비교 — 악화된 상품 플래그 (🚩)
 
 ---
 
