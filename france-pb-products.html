@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <title>파리·남프랑스 PB 상품 — 정희태 가이드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    :root {
+      --accent:      #2563EB;
+      --accent-light:#EFF6FF;
+      --accent-mid:  #DBEAFE;
+      --text:        #18181B;
+      --text-sub:    #71717A;
+      --border:      #E4E4E7;
+      --bg:          #F4F4F5;
+      --surface:     #FFFFFF;
+      --slate-900:   #0F172A;
+      --slate-800:   #1E293B;
+      --warn-bg:     #FFFBEB;
+      --warn-border: #F59E0B;
+      --warn-text:   #78350F;
+      --warn-val:    #B45309;
+      --ok-bg:       #F0FDF4;
+      --ok-text:     #166534;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── 래퍼 ── */
+    .wrap { max-width: 520px; margin: 0 auto; }
+
+    /* ── 헤더 ── */
+    .header {
+      background: var(--slate-900);
+      padding: calc(env(safe-area-inset-top) + 28px) 20px 24px;
+    }
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #60A5FA;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #F8FAFC;
+      line-height: 1.3;
+    }
+    .header-sub {
+      font-size: 13px;
+      color: #94A3B8;
+      margin-top: 6px;
+    }
+    .header-chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      color: #CBD5E1;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── 섹션 ── */
+    .section { padding: 24px 16px 0; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    /* ── 요약 그리드 ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .summary-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .summary-cell-label {
+      font-size: 11.5px;
+      color: var(--text-sub);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .summary-cell-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .summary-cell-unit {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-sub);
+      margin-left: 1px;
+    }
+
+    /* ── 구분선 ── */
+    .divider {
+      height: 8px;
+      background: var(--bg);
+      margin: 8px 0 0;
+    }
+
+    /* ── 상품 카드 ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+    }
+
+    /* 카드 헤더 */
+    .card-head {
+      padding: 16px 16px 13px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .price {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tags {
+      display: flex;
+      gap: 5px;
+      margin-top: 9px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.01em;
+    }
+    .tag-neutral { background: #F1F5F9; color: #475569; }
+    .tag-accent  { background: var(--accent-light); color: var(--accent); }
+    .tag-warn    { background: var(--warn-bg); color: var(--warn-val); }
+    .tag-ok      { background: var(--ok-bg); color: var(--ok-text); }
+
+    /* 카드 바디 */
+    .card-body { padding: 13px 16px 15px; }
+
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #F1F5F9;
+      gap: 8px;
+    }
+    .info-row:last-of-type { border-bottom: none; }
+    .info-label {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .info-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
+    .info-val.muted { color: var(--text-sub); font-weight: 400; }
+    .info-val.warn  { color: var(--warn-val); }
+
+    /* 코스 블록 */
+    .block {
+      background: #F8FAFC;
+      border-radius: 10px;
+      padding: 11px 13px;
+      margin-top: 11px;
+    }
+    .block-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .step {
+      display: flex;
+      gap: 10px;
+      padding: 3px 0;
+    }
+    .step-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      width: 44px;
+      flex-shrink: 0;
+      line-height: 1.5;
+    }
+    .step-desc {
+      font-size: 12.5px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* 비용 블록 */
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      padding: 2px 0;
+    }
+    .cost-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+      margin-top: 7px;
+      padding-top: 7px;
+    }
+    .cost-bep {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      border-top: 1px solid var(--accent-mid);
+      margin-top: 7px;
+      padding-top: 7px;
+    }
+
+    /* 주의 블록 */
+    .notice {
+      background: var(--warn-bg);
+      border-left: 3px solid var(--warn-border);
+      border-radius: 0 8px 8px 0;
+      padding: 9px 12px;
+      margin-top: 11px;
+    }
+    .notice p {
+      font-size: 12.5px;
+      color: var(--warn-text);
+      line-height: 1.65;
+    }
+
+    /* MRT 링크 */
+    .mrt-link {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 9px 12px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      margin-top: 11px;
+      transition: background 0.15s;
+    }
+    .mrt-link:hover { background: var(--accent-mid); }
+
+    /* 푸터 */
+    .footer {
+      padding: 28px 20px calc(env(safe-area-inset-bottom) + 28px);
+      text-align: center;
+    }
+    .footer p {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+
+    /* 진입 애니메이션 */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .header h1        { animation: fadeUp 0.35s ease both; }
+    .header-chips     { animation: fadeUp 0.35s ease 0.1s both; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header-eyebrow">PB 상품 기획안</div>
+    <h1>파리·남프랑스<br>PB 상품 정리</h1>
+    <p class="header-sub">정희태 가이드 제안 · 총 8개 상품</p>
+    <div class="header-chips">
+      <span class="chip">파리 도보 2종</span>
+      <span class="chip">파리 근교 3종</span>
+      <span class="chip">니스 3종</span>
+    </div>
+  </header>
+
+  <!-- 요약 -->
+  <div class="section" style="padding-top: 20px;">
+    <div class="summary-grid">
+      <div class="summary-cell">
+        <div class="summary-cell-label">최저 가격</div>
+        <div class="summary-cell-val">65,000<span class="summary-cell-unit">원</span></div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-cell-label">최고 가격</div>
+        <div class="summary-cell-val">400,000<span class="summary-cell-unit">원</span></div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-cell-label">MRT 등록 상품</div>
+        <div class="summary-cell-val">2<span class="summary-cell-unit">개</span></div>
+      </div>
+      <div class="summary-cell">
+        <div class="summary-cell-label">신규 기획 상품</div>
+        <div class="summary-cell-val">6<span class="summary-cell-unit">개</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider" style="margin-top: 20px;"></div>
+
+  <!-- ── 파리 도보 투어 ── -->
+  <section class="section">
+    <div class="section-label">파리 도보 투어</div>
+
+    <!-- 외방전교회 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">외방전교회 투어</div>
+          <div class="price">85,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-ok">MRT 등록</span>
+          <span class="tag tag-neutral">도보</span>
+          <span class="tag tag-neutral">입장료 없음</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">최대 인원</span>
+          <span class="info-val">10–15명</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">추가 입장료</span>
+          <span class="info-val muted">없음</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">고정 비용</span>
+          <span class="info-val muted">없음</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">가격 방향</span>
+          <span class="info-val warn">인하 검토 중 · 포토리뷰 20% 이벤트</span>
+        </div>
+        <a class="mrt-link" href="https://experiences.myrealtrip.com/products/3603757" target="_blank">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MRT 상품 보기 #3603757
+        </a>
+        <div class="notice">
+          <p>한국 가톨릭의 뿌리 외방전교회 방문 — 종교 유무 무관하게 감동 포인트. 모든 장소 입장료 없이 도보 이동.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 로댕 미술관 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">로댕 미술관 투어</div>
+          <div class="price">85,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-ok">MRT 등록</span>
+          <span class="tag tag-neutral">도보</span>
+          <span class="tag tag-warn">입장료 별도</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">최대 인원</span>
+          <span class="info-val warn">9명 (10명↑ 시 그룹권 구매 필요)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">입장료 (고객)</span>
+          <span class="info-val warn">15유로 · 불포함</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">고정 비용</span>
+          <span class="info-val muted">없음</span>
+        </div>
+        <a class="mrt-link" href="https://experiences.myrealtrip.com/products/3735762" target="_blank">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MRT 상품 보기 #3735762
+        </a>
+        <div class="notice">
+          <p>10명 초과 시 그룹권 구매 + 투어 시간 1시간으로 제한됨 — 인원 관리 중요. 파리에서 가장 아름다운 정원형 미술관.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 파리 근교 당일 투어 ── -->
+  <section class="section">
+    <div class="section-label">파리 근교 당일 투어</div>
+
+    <!-- 부르고뉴 와인 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">부르고뉴 와인 투어</div>
+          <div class="price">400,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">차량</span>
+          <span class="tag tag-neutral">소규모 프라이빗</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">인원</span>
+          <span class="info-val">최소 2인 · 최대 3–4인</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">이동</span>
+          <span class="info-val">차량 (9인승 확장 가능)</span>
+        </div>
+        <div class="block">
+          <div class="block-title">일정</div>
+          <div class="step"><span class="step-time">07:30</span><span class="step-desc">파리 출발</span></div>
+          <div class="step"><span class="step-time">11:00</span><span class="step-desc">Domaine Patriache 방문 — 6종 와인 시음 (25유로)</span></div>
+          <div class="step"><span class="step-time">12:30</span><span class="step-desc">점심 식사 + 본 시내 산책</span></div>
+          <div class="step"><span class="step-time">14:00</span><span class="step-desc">두 번째 와이너리 (시음 20–30유로, 예약에 따라 변동)</span></div>
+          <div class="step"><span class="step-time">15:30</span><span class="step-desc">로마네콩티 포도밭 방문</span></div>
+          <div class="step"><span class="step-time">16:00</span><span class="step-desc">파리 출발</span></div>
+          <div class="step"><span class="step-time">19:00</span><span class="step-desc">파리 도착</span></div>
+        </div>
+        <div class="block" style="margin-top: 8px;">
+          <div class="block-title">고정 비용 (가이드 부담)</div>
+          <div class="cost-row"><span>유류비</span><span>100유로</span></div>
+          <div class="cost-row"><span>톨비</span><span>60유로</span></div>
+          <div class="cost-row"><span>주차비</span><span>10유로</span></div>
+          <div class="cost-row"><span>가이드 식비 + 입장료</span><span>80유로</span></div>
+          <div class="cost-row"><span>차량 유지비</span><span style="color:var(--warn-val);">미확정</span></div>
+          <div class="cost-total"><span>소계</span><span>250유로 + 차량유지비</span></div>
+          <div class="cost-bep">약 450,000원↑ · 차량 유지비 확정 필요</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 샹파뉴 소규모 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">샹파뉴 와인 투어 <span style="font-size:13px;font-weight:500;">소규모</span></div>
+          <div class="price">400,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">차량</span>
+          <span class="tag tag-neutral">소규모 프라이빗</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">인원</span>
+          <span class="info-val">최소 2인 · 최대 3–4인</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">이동</span>
+          <span class="info-val">차량 (9인승 확장 가능)</span>
+        </div>
+        <div class="block">
+          <div class="block-title">일정</div>
+          <div class="step"><span class="step-time">07:30</span><span class="step-desc">파리 출발</span></div>
+          <div class="step"><span class="step-time">10:00</span><span class="step-desc">에페르네 샴페인 하우스 — 시음 30유로↑</span></div>
+          <div class="step"><span class="step-time">12:00</span><span class="step-desc">오빌리에 수도원 — 동페리뇽 수도사 조각상</span></div>
+          <div class="step"><span class="step-time">12:30</span><span class="step-desc">점심 식사</span></div>
+          <div class="step"><span class="step-time">14:00</span><span class="step-desc">랭스 이동 (포도밭 감상)</span></div>
+          <div class="step"><span class="step-time">15:00</span><span class="step-desc">랭스 대성당 투어</span></div>
+          <div class="step"><span class="step-time">16:00</span><span class="step-desc">파리 출발</span></div>
+          <div class="step"><span class="step-time">18:30</span><span class="step-desc">파리 도착</span></div>
+        </div>
+        <div class="block" style="margin-top: 8px;">
+          <div class="block-title">고정 비용 (가이드 부담)</div>
+          <div class="cost-row"><span>유류비</span><span>80유로</span></div>
+          <div class="cost-row"><span>톨비</span><span>40유로</span></div>
+          <div class="cost-row"><span>주차비</span><span>10유로</span></div>
+          <div class="cost-row"><span>가이드 식비 + 입장료</span><span>90유로</span></div>
+          <div class="cost-row"><span>차량 유지비</span><span style="color:var(--warn-val);">미확정</span></div>
+          <div class="cost-total"><span>소계</span><span>220유로 + 차량유지비</span></div>
+          <div class="cost-bep">약 400,000원↑ · 차량 유지비 확정 필요</div>
+        </div>
+        <div class="notice">
+          <p>현지 그룹 투어에 합류하는 방식이라 가이드 통역 시 눈치 보일 수 있음. 프라이빗은 1인 100유로 이상으로 비용 부담 큼.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 샴페인 버스투어 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">샴페인 버스투어 <span style="font-size:13px;font-weight:500;">대규모</span></div>
+          <div class="price">140,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">버스</span>
+          <span class="tag tag-neutral">최대 40인</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">인원</span>
+          <span class="info-val warn">최대 40인 (20인↑ 시 샴페인 하우스 분할 필요)</span>
+        </div>
+        <div class="block">
+          <div class="block-title">일정</div>
+          <div class="step"><span class="step-time">07:30</span><span class="step-desc">파리 출발</span></div>
+          <div class="step"><span class="step-time">10:00</span><span class="step-desc">메르시에 or 모에에샹동 샴페인 하우스</span></div>
+          <div class="step"><span class="step-time">12:00</span><span class="step-desc">점심 식사</span></div>
+          <div class="step"><span class="step-time">14:00</span><span class="step-desc">오빌리에 수도원 — 동페리뇽 조각상</span></div>
+          <div class="step"><span class="step-time">15:00</span><span class="step-desc">랭스 출발 → 15:45 랭스 대성당</span></div>
+          <div class="step"><span class="step-time">16:30</span><span class="step-desc">랭스 출발</span></div>
+          <div class="step"><span class="step-time">18:30</span><span class="step-desc">파리 도착</span></div>
+        </div>
+        <div class="block" style="margin-top: 8px;">
+          <div class="block-title">고정 비용</div>
+          <div class="cost-row"><span>버스비 (예상)</span><span>1,200유로</span></div>
+          <div class="cost-row"><span>가이드 식비 + 입장료</span><span>60유로</span></div>
+          <div class="cost-total"><span>소계</span><span>1,260유로 · 약 220만원</span></div>
+          <div class="cost-bep">손익 분기: 최소 16명 이상</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 니스 투어 ── -->
+  <section class="section">
+    <div class="section-label">니스 투어</div>
+
+    <!-- 구시가지 워킹 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">니스 구시가지 워킹 투어</div>
+          <div class="price">65,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">도보 + 트램</span>
+          <span class="tag tag-neutral">오전 9–12시</span>
+          <span class="tag tag-ok">고정 비용 없음</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">최대 인원</span>
+          <span class="info-val warn">15명 (골목이 좁아 그 이상 어려움)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">고정 비용</span>
+          <span class="info-val muted">없음</span>
+        </div>
+        <div class="block">
+          <div class="block-title">코스</div>
+          <div class="step"><span class="step-time">09:00</span><span class="step-desc">마세나 광장 미팅 → 트램 탑승</span></div>
+          <div class="step"><span class="step-time"></span><span class="step-desc">가리발디 광장 → 젤라토 맛집 → 생 프랑수와 광장</span></div>
+          <div class="step"><span class="step-time"></span><span class="step-desc">뤼 드루아트 거리 → 생 트레파라트 대성당 → 소카 맛집</span></div>
+          <div class="step"><span class="step-time">12:00</span><span class="step-desc">니스 해변 산책로에서 마무리</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 샤갈·마티스 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">샤갈·마티스 미술관 투어</div>
+          <div class="price">65,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">대중교통</span>
+          <span class="tag tag-neutral">오후 13–17:30</span>
+          <span class="tag tag-warn">입장료 별도</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">최대 인원</span>
+          <span class="info-val">15명</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">입장료 (고객)</span>
+          <span class="info-val warn">샤갈 10유로 + 마티스 10유로</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">고정 비용</span>
+          <span class="info-val warn">20유로 (가이드 입장료 · 약 35,000원)</span>
+        </div>
+        <div class="block">
+          <div class="block-title">코스</div>
+          <div class="step"><span class="step-time">13:00</span><span class="step-desc">마세나 광장 → 5번 버스</span></div>
+          <div class="step"><span class="step-time"></span><span class="step-desc">마티스 미술관 — 사전 설명 30분 + 자유관람 1시간</span></div>
+          <div class="step"><span class="step-time"></span><span class="step-desc">5번 버스 → 샤갈 미술관 — 사전 설명 30분 + 자유관람 1시간</span></div>
+          <div class="step"><span class="step-time">17:30</span><span class="step-desc">마세나 광장 복귀 마무리</span></div>
+        </div>
+        <div class="notice">
+          <p>마티스 미술관: 실외 공원만 있어 비 올 경우 사전 설명 장소 없음 — 악천후 대응 방안 사전 협의 필요.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 니스 근교 차량 투어 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title-row">
+          <div class="card-title">생폴드방스·애즈·앙티브<br>니스 근교 차량 투어</div>
+          <div class="price">140,000원</div>
+        </div>
+        <div class="tags">
+          <span class="tag tag-accent">신규 기획</span>
+          <span class="tag tag-neutral">버스</span>
+          <span class="tag tag-neutral">최대 40인</span>
+          <span class="tag tag-warn">입장료 별도</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <span class="info-label">인원</span>
+          <span class="info-val">최대 40인</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">입장료 (고객)</span>
+          <span class="info-val warn">피카소 미술관 12유로</span>
+        </div>
+        <div class="block">
+          <div class="block-title">코스</div>
+          <div class="step"><span class="step-time">09:00</span><span class="step-desc">마세나 광장 미팅</span></div>
+          <div class="step"><span class="step-time">09:40</span><span class="step-desc">애즈 도착 — 자유 시간</span></div>
+          <div class="step"><span class="step-time">12:00</span><span class="step-desc">생폴드방스 — 투어 + 샤갈 무덤 근처 점심</span></div>
+          <div class="step"><span class="step-time">15:00</span><span class="step-desc">앙티브 이동</span></div>
+          <div class="step"><span class="step-time">16:15</span><span class="step-desc">피카소 미술관 자유관람 1시간</span></div>
+          <div class="step"><span class="step-time">17:30</span><span class="step-desc">앙티브 출발</span></div>
+          <div class="step"><span class="step-time">18:30</span><span class="step-desc">니스 도착 마무리</span></div>
+        </div>
+        <div class="block" style="margin-top: 8px;">
+          <div class="block-title">고정 비용</div>
+          <div class="cost-row"><span>버스비 (예상)</span><span>1,000유로</span></div>
+          <div class="cost-row"><span>가이드 식비 + 입장료</span><span>42유로</span></div>
+          <div class="cost-total"><span>소계</span><span>1,042유로 · 약 182만원</span></div>
+          <div class="cost-bep">손익 분기: 최소 13명 이상</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>정희태 가이드 제안 자료 기반 · 2026년 3월<br>가격·운영 방식 협의 중 · 버스비·차량유지비는 추정치</p>
+  </footer>
+
+</div>
+</body>
+</html>
