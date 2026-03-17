@@ -3,6 +3,8 @@ name: weekly-kpi
 description: >
   중화권 주간 KPI(GMV, CM, CM%, 확정률, UV, CVR) 테이블을 Redash에서 자동으로 가져와
   Confluence 주간 회의록 '목표 달성 현황' 테이블에 업데이트한다.
+  외부유입(utm_source별, 쿼리 19774)·내부유입(유입경로별, 쿼리 22963) 분석과
+  상품별 퍼널 이탈률 분석도 함께 제공한다.
   "주간 KPI 업데이트", "위클리 KPI 채워줘", "KPI 테이블 자동 업데이트", "weekly KPI update",
   "이번주 KPI", "KPI 넣어줘", "지표 채워줘", "KPI 뽑아줘" 등의 요청 시 반드시 이 스킬을 사용할 것.
   날짜 기준은 항상 월~일요일 완성 주 기준이며, 오늘 날짜에서 자동 계산한다.
@@ -347,7 +349,85 @@ idx = body.find('역할 분리 한눈에 보기')
 
 ---
 
-## 9단계: 결과 출력
+## 9단계: 외부유입 분석 (Redash 쿼리 19774)
+
+utm_source별 유입을 MONTH 기준으로 조회해 주요 채널 WoW 변화를 확인한다.
+
+**요청 파라미터:**
+```json
+{
+  "parameters": {
+    "category_nm": "'ALL'",
+    "date_by": "MONTH",
+    "end_date": "TW_END",
+    "group_by": "[\"utm_source\"]",
+    "offer_id": "'ALL'",
+    "platform": "[\"web\",\"ios_mweb\",\"aos_mweb\",\"aos\",\"ios\"]",
+    "region/country/city": "<CITIES>",
+    "데이터 기준": "유저별 첫 유입 소스만 확인"
+  },
+  "max_age": 0
+}
+```
+
+**폴링 패턴:** 2단계와 동일 (POST → job 폴링 → GET result)
+
+**분석 포인트:**
+- utm_source별 UV WoW 변화 → 하락 채널 파악
+- 상위 5개 소스 기준 저번주 vs 이번주 비교
+- 특정 소스 급락 시 해당 채널 이슈 플래그 (🚩)
+
+---
+
+## 10단계: 내부유입 분석 (Redash 쿼리 22963)
+
+내부 유입경로(랭킹섹션, 통합검색, 홈 등)별 UV를 MONTH 기준으로 조회한다.
+
+**요청 파라미터:**
+```json
+{
+  "parameters": {
+    "category_nm": "'ALL'",
+    "start_date": "LW_START",
+    "end_date": "TW_END",
+    "offer_id": "'ALL'",
+    "platform": "[\"web\"]",
+    "region/country/city": "<CITIES>",
+    "trunc_by": "MONTH"
+  },
+  "max_age": 0
+}
+```
+
+**분석 포인트:**
+- 유입경로별 UV WoW 변화 → 랭킹섹션 / 통합검색 / 홈 등 경로별 이상 신호 확인
+- 내부유입 전체 합계 WoW 계산
+- 평소 대비 빠진 경로 식별 → 어떤 유입점으로 보강할지 제안
+
+---
+
+## 11단계: 상품별 퍼널 이탈률 분석
+
+> ⚠️ 퍼널 이탈률 전용 Redash 쿼리 ID는 추후 확정 예정. 현재는 쿼리 32100(UV/CVR) 데이터를 활용해 아래 기준으로 추정한다.
+
+**퍼널 단계:** Detail UV → Option UV → Checkout UV → Complete UV
+
+**이탈률 계산:**
+```python
+# 각 단계별 이탈률
+detail_to_option   = (1 - option_uv / detail_uv) * 100
+option_to_checkout = (1 - checkout_uv / option_uv) * 100
+checkout_to_complete = (1 - complete_uv / checkout_uv) * 100
+```
+
+**분석 포인트:**
+- 상품(offer)별 이탈 병목 단계 식별
+- Detail UV 상위 20개 상품 기준 퍼널 이탈률 비교
+- 이탈률 높은 단계 → UX 개선 or 상품 정보 보완 액션 제안
+
+---
+
+## 12단계: 결과 출력
 
 ```
 ✅ Confluence 업데이트 완료 (페이지: TITLE, 버전: N)
