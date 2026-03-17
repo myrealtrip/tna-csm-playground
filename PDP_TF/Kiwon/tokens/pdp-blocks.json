@@ -1,0 +1,1033 @@
+{
+  "$meta": {
+    "name": "PDP Block Schema",
+    "version": "2.1.0",
+    "tokens": "./pdp-tokens.json",
+    "source": "Figma vlx4zUQBbGVQ5lCYdBADcb (PB 나오시마 & 구마모토) + T&A 디자인 가이드",
+    "updatedAt": "2026-03-13",
+    "totalBlocks": 23,
+    "tiers": {
+      "exclusive": "PB Exclusive 전용 블록 (실제 PDP에서 확인, 1~11번)",
+      "generic": "범용 PDP 블록 (T&A 디자인 가이드 기반, 12~15번)"
+    },
+    "renderModes": {
+      "hybrid": "HTML 레이아웃 + 그래픽 요소만 이미지. 텍스트 검색·복사 가능, SEO 유리.",
+      "structured": "전체 HTML/CSS 코딩. 반응형, 요소별 로그 추적, 리치 스니펫 가능.",
+      "image": "통이미지형. 레거시 호환 전용, 신규 사용 지양."
+    },
+    "outputTypes": {
+      "html": "HTML 텍스트로 렌더링. 검색·복사·로그 추적 가능.",
+      "image": "이미지 파일로 삽입. 복잡한 그래픽·사진에 사용.",
+      "svg": "SVG로 렌더링. 아이콘·로고·간단한 일러스트에 사용.",
+      "css": "CSS만으로 구현. 배경·그래디언트·도형 등."
+    }
+  },
+
+  "blocks": {
+
+    "exclusiveHeader": {
+      "id": "exclusiveHeader",
+      "name": "Exclusive Header",
+      "tier": "exclusive",
+      "renderMode": "hybrid",
+      "renderNote": "배경 그래디언트+패턴은 이미지, 로고는 SVG, 텍스트는 HTML",
+      "description": "어두운 배경 + My Exclusive 로고 + 태그라인. PDP 최상단 브랜딩 영역.",
+      "required": true,
+      "frequency": "2회/상품 (상단 + 하단)",
+      "figmaRef": "NA_MO_0 상단, KU_MO0 상단",
+      "props": {
+        "backgroundGraphic": {
+          "type": "image",
+          "output": "image",
+          "description": "어두운 배경 + 그래디언트 오버레이 패턴"
+        },
+        "logo": {
+          "type": "image",
+          "output": "svg",
+          "description": "My Exclusive 로고"
+        },
+        "tagline": {
+          "type": "string",
+          "output": "html",
+          "default": "실패 없는 여행의 기준, 마이 익스클루시브",
+          "style": { "fontSize": 15, "fontWeight": 700, "color": "#FFFFFF", "letterSpacing": -0.3 }
+        },
+        "subtitle": {
+          "type": "string",
+          "output": "html",
+          "default": "마이리얼트립이 직접 기획하고 검증한, 퀄리티가 보장된 상품입니다.",
+          "style": { "fontSize": 12, "fontWeight": 400, "color": "#ADB5BD", "letterSpacing": -0.24 }
+        }
+      },
+      "layout": {
+        "width": 390,
+        "height": 102,
+        "background": "#101418",
+        "backgroundOverlay": "gradient + image",
+        "padding": [23, 20, 23, 20],
+        "logoSize": [75, 13]
+      }
+    },
+
+    "heroImage": {
+      "id": "heroImage",
+      "name": "Hero Image",
+      "tier": "exclusive",
+      "renderMode": "image",
+      "renderNote": "순수 사진 블록. 텍스트 없으므로 이미지가 최적.",
+      "description": "풀블리드 대형 히어로 이미지. 텍스트 없음.",
+      "required": true,
+      "frequency": "1회/상품",
+      "figmaRef": "NA_MO_0, KU_MO0 (Rectangle 1)",
+      "props": {
+        "image": {
+          "type": "image",
+          "output": "image",
+          "required": true,
+          "size": [390, 458]
+        }
+      },
+      "layout": {
+        "width": 390,
+        "height": 458,
+        "padding": 0
+      }
+    },
+
+    "introSection": {
+      "id": "introSection",
+      "name": "Intro Section",
+      "tier": "exclusive",
+      "renderMode": "structured",
+      "renderNote": "전체 텍스트 블록. CSS만으로 완전 구현 가능. SEO 핵심 영역.",
+      "description": "중앙 정렬 대형 제목 + 본문. Exclusive 로고 포함. 상품의 핵심 메시지 전달.",
+      "required": true,
+      "frequency": "1회/상품",
+      "figmaRef": "NA_MO_0 Frame 629375, KU_MO0 Frame 629375",
+      "props": {
+        "logo": {
+          "type": "image",
+          "output": "svg",
+          "description": "My Exclusive 로고"
+        },
+        "title": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "maxLength": 30,
+          "description": "메인 카피 (2줄 이내)",
+          "style": { "fontSize": 28, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.56, "lineHeight": 1.24, "textAlign": "center" }
+        },
+        "body": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "description": "보조 설명 (2~3줄)",
+          "style": { "fontSize": 15, "fontWeight": 500, "color": "#495056", "letterSpacing": -0.3, "lineHeight": 1.44, "textAlign": "center" }
+        }
+      },
+      "layout": {
+        "width": 390,
+        "background": "#FFFFFF",
+        "padding": [60, 20, 23, 20],
+        "titleBodyGap": 16,
+        "hasExclusiveLogo": true
+      }
+    },
+
+    "painPointCards": {
+      "id": "painPointCards",
+      "name": "Pain Point Cards",
+      "tier": "exclusive",
+      "renderMode": "structured",
+      "renderNote": "텍스트 카드 나열. CSS border-radius + background로 완전 구현.",
+      "description": "회색 라운드 카드로 고객 니즈/공감 포인트 나열. 중앙 정렬 텍스트.",
+      "required": true,
+      "frequency": "1회/상품 (3~4장)",
+      "figmaRef": "NA_MO_0 Frame 1618873461, KU_MO0 Frame 1618873461",
+      "props": {
+        "items": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 4,
+          "items": {
+            "text": { "type": "string", "output": "html", "required": true, "maxLength": 50 }
+          }
+        }
+      },
+      "layout": {
+        "cardBackground": "#F5F6F7",
+        "cardRadius": 12,
+        "cardPadding": [20, 30, 20, 30],
+        "cardGap": 10,
+        "containerPadding": [0, 20]
+      },
+      "style": {
+        "text": { "fontSize": 16, "fontWeight": 500, "color": "#212529", "letterSpacing": -0.32, "lineHeight": 1.35, "textAlign": "center" }
+      }
+    },
+
+    "guideProfile": {
+      "id": "guideProfile",
+      "name": "Guide Profile",
+      "tier": "exclusive",
+      "renderMode": "hybrid",
+      "renderNote": "사진은 이미지, 이름·소개·스탯은 HTML. 인스타 링크도 HTML 앵커.",
+      "description": "가이드 사진 + 이름 + 소개 + 3열 스탯 그리드. 1~2명 지원.",
+      "required": true,
+      "frequency": "1회/상품",
+      "figmaRef": "NA_MO_0 Frame 1618873457, KU_MO0 Frame 1618873457",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "default": "가이드 소개",
+          "style": { "fontSize": 24, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.48 }
+        },
+        "guides": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "photo": { "type": "image", "output": "image", "required": true },
+            "role": { "type": "string", "output": "html", "description": "한국인 도슨트, 현지인 가이드 등" },
+            "name": { "type": "string", "output": "html", "required": true },
+            "bio": { "type": "string", "output": "html", "required": true, "maxLength": 100 },
+            "instagram": { "type": "string", "output": "html", "required": false },
+            "stats": {
+              "type": "array",
+              "items": 3,
+              "description": "[{value, label}] 3열 그리드",
+              "example": [
+                { "value": "시각디자인", "label": "전문 분야" },
+                { "value": "한국어 강사 2년", "label": "경험" },
+                { "value": "한국어 6급", "label": "언어" }
+              ]
+            }
+          }
+        }
+      },
+      "variants": {
+        "single": {
+          "description": "나오시마형: 가이드 1명, 사진 풀너비 (350×170, radius 12)",
+          "photoSize": [350, 170],
+          "photoRadius": 12,
+          "nameStyle": { "fontSize": 18, "fontWeight": 700 },
+          "bioStyle": { "fontSize": 14, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.52 }
+        },
+        "dual": {
+          "description": "구마모토형: 가이드 2명, 사진 좌측 (110×80, radius 12) + 텍스트 우측, 구분선으로 분리",
+          "photoSize": [110, 80],
+          "photoRadius": 12,
+          "nameStyle": { "fontSize": 16, "fontWeight": 700 },
+          "bioStyle": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.35 },
+          "divider": { "color": "#E5E5E5", "width": 1 }
+        }
+      },
+      "layout": {
+        "statGrid": {
+          "columns": 3,
+          "valueStyle": { "fontSize": 15, "fontWeight": 700, "color": "#000000", "textAlign": "center" },
+          "labelStyle": { "fontSize": 11, "fontWeight": 500, "color": "#495056", "textAlign": "center" }
+        }
+      }
+    },
+
+    "recommendBox": {
+      "id": "recommendBox",
+      "name": "Recommend Box",
+      "tier": "exclusive",
+      "renderMode": "structured",
+      "renderNote": "텍스트 리스트 + CSS 배경. 이미지 없음, 완전 HTML/CSS 구현.",
+      "description": "회색 박스 안 추천 대상 리스트. 가이드 프로필 하단에 배치.",
+      "required": false,
+      "frequency": "1회/상품",
+      "figmaRef": "NA_MO_0 Frame 1618873366, KU_MO0 Frame 1618873366",
+      "props": {
+        "title": {
+          "type": "string",
+          "output": "html",
+          "default": "이런 분에게 추천해요"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "text": { "type": "string", "output": "html", "required": true }
+          }
+        }
+      },
+      "layout": {
+        "background": "#F5F6F7",
+        "radius": 10,
+        "padding": [10, 10],
+        "innerPadding": [10, 12]
+      },
+      "style": {
+        "text": { "fontSize": 14, "fontWeight": 500, "color": "#000000", "lineHeight": 1.72 }
+      }
+    },
+
+    "sectionHeader": {
+      "id": "sectionHeader",
+      "name": "Section Header + Tag",
+      "tier": "exclusive",
+      "renderMode": "structured",
+      "renderNote": "태그 배지(CSS) + 텍스트. 이미지 없음, 완전 HTML/CSS.",
+      "description": "검정 태그 배지 + 중앙 정렬 대형 제목. 프로그램 섹션의 헤더.",
+      "required": true,
+      "frequency": "2회/상품 (Highlight 1, 2)",
+      "figmaRef": "NA_MO_1, NA_MO_2, KU_MO1, KU_MO2 상단 텍스트 박스",
+      "props": {
+        "tag": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "description": "Highlight 1, Highlight 2 등",
+          "style": { "fontSize": 13, "fontWeight": 600, "color": "#FFFFFF", "letterSpacing": -0.13 }
+        },
+        "title": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "maxLength": 30,
+          "description": "섹션 메인 카피",
+          "style": { "fontSize": 26, "fontWeight": 700, "color": "#101418", "letterSpacing": -0.52, "lineHeight": 1.24, "textAlign": "center" }
+        }
+      },
+      "layout": {
+        "width": 390,
+        "height": 207,
+        "background": "#FFFFFF",
+        "padding": [50, 20, 33, 20],
+        "tagBackground": "#101418",
+        "tagRadius": 6,
+        "tagPadding": [2, 4],
+        "tagTitleGap": 18
+      }
+    },
+
+    "programCard": {
+      "id": "programCard",
+      "name": "Program Card",
+      "tier": "exclusive",
+      "renderMode": "hybrid",
+      "renderNote": "사진은 이미지, 제목·시간·설명은 HTML. PDP 핵심 블록으로 SEO 최우선.",
+      "description": "큰 라운드 이미지 + 제목 + 소요시간 + 설명. PDP의 핵심 반복 블록.",
+      "required": true,
+      "frequency": "8~10회/상품",
+      "figmaRef": "NA_MO_1~2, KU_MO1~2 programItem 인스턴스",
+      "props": {
+        "image": {
+          "type": "image",
+          "output": "image",
+          "required": true,
+          "size": [342, 254],
+          "radius": 24
+        },
+        "title": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "maxLength": 30,
+          "style": { "fontSize": 19, "fontWeight": 700, "color": "#141719", "letterSpacing": -0.19, "lineHeight": 1.38 }
+        },
+        "duration": {
+          "type": "string",
+          "output": "html",
+          "required": false,
+          "default": "30분",
+          "style": { "fontSize": 15, "fontWeight": 600, "color": "#848C94", "letterSpacing": -0.15 }
+        },
+        "description": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "maxLength": 80,
+          "style": { "fontSize": 16, "fontWeight": 500, "color": "#343A40", "letterSpacing": -0.16, "lineHeight": 1.38 }
+        }
+      },
+      "layout": {
+        "containerWidth": 342,
+        "containerPaddingH": 24,
+        "imageSize": [342, 254],
+        "imageRadius": 24,
+        "imageTitleGap": 16,
+        "titleDurationGap": 0,
+        "durationDescGap": 10,
+        "cardGap": 32
+      },
+      "variants": {
+        "withNote": {
+          "description": "하단에 보조 안내문 추가 (예: 휴관일 대체 안내)",
+          "noteBackground": "#F5F6F7",
+          "noteRadius": 6,
+          "noteStyle": { "fontSize": 13, "fontWeight": 500, "color": "#595959", "letterSpacing": -0.13 }
+        }
+      }
+    },
+
+    "visualTimeline": {
+      "id": "visualTimeline",
+      "name": "Visual Timeline",
+      "tier": "exclusive",
+      "renderMode": "hybrid",
+      "renderNote": "사진은 이미지, 시간배지(CSS)·제목·설명은 HTML. 배지 색상 분기는 CSS class.",
+      "description": "이미지 + 시간 배지(오전 파랑/오후 노랑) + 제목 + 설명. 상세 일정 표현.",
+      "required": true,
+      "frequency": "6~7회/상품",
+      "figmaRef": "NA_MO_3, KU_MO3 전체",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "description": "나오시마 상세 일정, 구마모토 상세 일정 등"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 8,
+          "items": {
+            "image": { "type": "image", "output": "image", "required": true },
+            "timeBadge": {
+              "type": "string",
+              "output": "html",
+              "required": true,
+              "description": "오전 코스 | 9:00 - 10:00",
+              "badgeColor": "auto (오전=blue, 오후=yellow)"
+            },
+            "title": { "type": "string", "output": "html", "required": true },
+            "description": { "type": "string", "output": "html", "required": true }
+          }
+        }
+      },
+      "layout": {
+        "imageSize": [350, 170],
+        "imageRadius": 10,
+        "badgeRadius": 5,
+        "badgePadding": [2.5, 8],
+        "imageBadgeGap": 15,
+        "titleDescGap": 10,
+        "itemGap": 50
+      },
+      "style": {
+        "badge": {
+          "am": { "background": "#E7F4FD", "fontSize": 13, "fontWeight": 600, "color": "#101418" },
+          "pm": { "background": "#FFF2C6", "fontSize": 13, "fontWeight": 600, "color": "#101418" }
+        },
+        "title": { "fontSize": 19, "fontWeight": 700, "color": "#141719", "letterSpacing": -0.19, "lineHeight": 1.38 },
+        "description": { "fontSize": 16, "fontWeight": 500, "color": "#343A40", "letterSpacing": -0.16, "lineHeight": 1.38 }
+      },
+      "variants": {
+        "splitImage": {
+          "description": "2열 이미지 (171×170 each). 마지막 항목 등에서 사용.",
+          "imageSize": [171, 170]
+        }
+      }
+    },
+
+    "highlightCallout": {
+      "id": "highlightCallout",
+      "name": "Highlight Callout",
+      "tier": "exclusive",
+      "renderMode": "structured",
+      "renderNote": "그래디언트 배경은 CSS linear-gradient, 텍스트는 HTML. 이미지 불필요.",
+      "description": "그래디언트 배경 팁 박스. 프로그램 카드 사이 또는 하단에 배치.",
+      "required": false,
+      "frequency": "1~2회/상품",
+      "figmaRef": "NA_MO_2 하단, KU_MO2 하단 (Frame 1618873670)",
+      "props": {
+        "title": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "maxLength": 40,
+          "style": { "fontSize": 13, "fontWeight": 600, "color": "#101418", "letterSpacing": -0.13 }
+        },
+        "subtitle": {
+          "type": "string",
+          "output": "html",
+          "required": false,
+          "style": { "fontSize": 12, "fontWeight": 500, "color": "#212529" }
+        }
+      },
+      "layout": {
+        "width": 342,
+        "height": 76,
+        "radius": 8,
+        "padding": [19, 15],
+        "background": {
+          "type": "gradient",
+          "output": "css",
+          "stops": ["#FDF1B5", "#FBFFE7", "#FFE390"]
+        }
+      }
+    },
+
+    "trustPoints": {
+      "id": "trustPoints",
+      "name": "Trust Points",
+      "tier": "exclusive",
+      "renderMode": "hybrid",
+      "renderNote": "배경 그래디언트는 이미지/CSS, 아이콘은 SVG, 텍스트는 HTML.",
+      "description": "어두운 배경 + Exclusive 로고 + 아이콘 리스트. 보장/혜택 어필.",
+      "required": true,
+      "frequency": "1회/상품 (3항목)",
+      "figmaRef": "NA_MO_4, KU_MO4",
+      "props": {
+        "backgroundGraphic": {
+          "type": "image",
+          "output": "image",
+          "description": "어두운 배경 + 그래디언트 오버레이"
+        },
+        "logo": {
+          "type": "image",
+          "output": "svg",
+          "description": "My Exclusive 로고"
+        },
+        "headline": {
+          "type": "string",
+          "output": "html",
+          "default": "실패 없는 여행의 기준, 마이 익스클루시브",
+          "style": { "fontSize": 26, "fontWeight": 700, "color": "#FFFFFF", "letterSpacing": -0.52, "lineHeight": 1.24, "textAlign": "center" }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "icon": { "type": "image", "output": "svg", "size": [40, 40] },
+            "title": { "type": "string", "output": "html", "required": true },
+            "description": { "type": "string", "output": "html", "required": true }
+          },
+          "defaults": [
+            {
+              "title": "혼자라도 괜찮아요, 무조건 출발",
+              "description": "취소될까 봐 마음 졸이지 마세요.  예약 즉시 출발이 확정됩니다"
+            },
+            {
+              "title": "번거로운 예약 걱정은 NO!",
+              "description": "교통, 입장권까지 준비해드려요.  오직 여행에만 집중하세요"
+            },
+            {
+              "title": "만족하지 못하셨다면 투어비는 0원",
+              "description": "퀄리티 보장 상품으로 결제 금액 그대로 돌려드려요. 마이리얼트립이 검증된 노하우로 만든 투어입니다."
+            }
+          ]
+        }
+      },
+      "layout": {
+        "width": 390,
+        "height": 496,
+        "background": "#101418",
+        "backgroundOverlay": "gradient",
+        "padding": [63, 20, 43, 20],
+        "hasExclusiveLogo": true,
+        "iconTitleGap": 55,
+        "titleDescGap": 5,
+        "itemGap": 27
+      },
+      "style": {
+        "title": { "fontSize": 18, "fontWeight": 700, "color": "#FFFFFF", "lineHeight": 1.35 },
+        "description": { "fontSize": 14, "fontWeight": 500, "color": "#ADB5BD", "letterSpacing": -0.28, "lineHeight": 1.34 }
+      }
+    },
+
+
+    "numberedList": {
+      "id": "numberedList",
+      "name": "Numbered List",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "순수 텍스트 + CSS 원형 번호. 이미지 없음, 완전 HTML/CSS.",
+      "description": "번호형 어필 포인트, 이용 팁, 추천 이유.",
+      "required": false,
+      "category": ["TICKET", "TOUR", "GOLF", "CONVENIENCE"],
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true },
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "items": {
+            "title": { "type": "string", "output": "html", "required": true },
+            "description": { "type": "string", "output": "html", "required": false }
+          }
+        }
+      },
+      "style": {
+        "circle": { "size": 24, "background": "#101418", "color": "#FFFFFF", "fontSize": 13, "fontWeight": 600 },
+        "itemTitle": { "fontSize": 15, "fontWeight": 500, "color": "#101418", "lineHeight": 1.38 },
+        "itemDesc": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.65 },
+        "itemGap": 18,
+        "circleTextGap": 12
+      }
+    },
+
+    "notice": {
+      "id": "notice",
+      "name": "Notice / Caution",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "텍스트 리스트 + CSS 도트. 이미지 없음, 완전 HTML/CSS.",
+      "description": "주의사항, 유효기간, 취소 정책 등 경고성 안내.",
+      "required": false,
+      "category": ["TICKET", "TOUR", "GOLF", "CONVENIENCE"],
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "text": { "type": "string", "output": "html", "required": true },
+            "bold": { "type": "array", "items": { "type": "string" }, "required": false }
+          }
+        }
+      },
+      "style": {
+        "dot": { "size": 5, "color": "#EC4937", "marginTop": 7 },
+        "text": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.65 },
+        "textBold": { "fontWeight": 600, "color": "#101418" },
+        "itemGap": 10,
+        "dotTextGap": 8
+      }
+    },
+
+    "includeExclude": {
+      "id": "includeExclude",
+      "name": "Include / Exclude",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "텍스트 리스트 + CSS 마크. 이미지 없음, 완전 HTML/CSS.",
+      "description": "포함 사항 / 불포함 사항. 모든 카테고리에서 동일한 마크업으로 통일.",
+      "required": false,
+      "category": ["TICKET", "TOUR", "ACTIVITY", "CONVENIENCE", "SEMI_PACKAGE"],
+      "_v3_note": "v3 추가. 기존에는 notice 블록 안에 혼재하거나 카테고리마다 다른 마크업을 사용. 프롬프트 생성 일관성을 위해 전용 블록으로 분리.",
+      "props": {
+        "included": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": {
+            "text": { "type": "string", "output": "html", "required": true }
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 10,
+          "items": {
+            "text": { "type": "string", "output": "html", "required": true }
+          }
+        }
+      },
+      "style": {
+        "includedMark": { "type": "text", "content": "✓", "color": "#1583DB", "fontSize": 15, "fontWeight": 700 },
+        "excludedMark": { "type": "text", "content": "✗", "color": "#EC4937", "fontSize": 15, "fontWeight": 700 },
+        "text": { "fontSize": 14, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.55 },
+        "sectionTitle": { "fontSize": 15, "fontWeight": 700, "color": "#141619" },
+        "itemGap": 10,
+        "markTextGap": 10,
+        "sectionGap": 24,
+        "_colorRule": "포함=accent(blue), 불포함=caution(red). 본문 색상은 text-secondary."
+      }
+    },
+
+    "priceTable": {
+      "id": "priceTable",
+      "name": "Price Table",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "HTML table 태그로 완전 구현. 가격 데이터 구조화(schema.org) 가능. SEO 핵심.",
+      "description": "옵션 x 가격 비교표.",
+      "required": false,
+      "category": ["TICKET", "CONVENIENCE"],
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true },
+        "columns": {
+          "type": "array",
+          "items": { "label": { "type": "string", "output": "html" }, "align": { "type": "enum", "values": ["left", "right"] } }
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": {
+            "cells": { "type": "array", "items": { "text": { "type": "string", "output": "html" }, "isPrice": { "type": "boolean" } } }
+          }
+        }
+      },
+      "style": {
+        "header": { "background": "#F1F3F5", "fontSize": 12, "fontWeight": 600, "color": "#343A40" },
+        "cell": { "fontSize": 13, "fontWeight": 500, "color": "#101418", "padding": [10, 12] },
+        "price": { "fontWeight": 600, "color": "#141619", "align": "right" },
+        "border": { "width": 1, "color": "#DEE2E6" }
+      }
+    },
+
+    "imageGrid": {
+      "id": "imageGrid",
+      "name": "Image Grid",
+      "tier": "generic",
+      "renderMode": "hybrid",
+      "renderNote": "사진은 이미지, 제목·설명은 HTML. CSS grid로 레이아웃.",
+      "description": "2열 이미지 그리드. 장소, 시설, 분위기 전달.",
+      "required": false,
+      "category": ["TICKET", "TOUR", "GOLF", "CONVENIENCE"],
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true },
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "image": { "type": "image", "output": "image", "aspectRatio": "4:3", "size": [175, 130] },
+            "name": { "type": "string", "output": "html", "required": true },
+            "description": { "type": "string", "output": "html", "required": false }
+          }
+        }
+      },
+      "style": {
+        "columns": 2,
+        "gap": 12,
+        "thumbRadius": 6,
+        "name": { "fontSize": 13, "fontWeight": 600, "color": "#141619" },
+        "desc": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.55 }
+      }
+    },
+
+    "customerReview": {
+      "id": "customerReview",
+      "name": "Customer Review",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "전체 텍스트 + CSS 카드. 별점은 CSS/유니코드, 리뷰 본문은 HTML. SEO 핵심(AggregateRating).",
+      "description": "평점 요약 + 고객 리뷰 카드 목록. 후기 기반 신뢰 구축.",
+      "required": false,
+      "category": ["TICKET", "TOUR", "CONVENIENCE"],
+      "figmaRef": "pilot-tour-suyang.html BLOCK 4",
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true },
+        "rating": {
+          "type": "number",
+          "output": "html",
+          "required": true,
+          "min": 1,
+          "max": 5,
+          "description": "평균 별점 (소수점 1자리)"
+        },
+        "reviewCount": {
+          "type": "number",
+          "output": "html",
+          "required": true,
+          "description": "총 리뷰 수"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": {
+            "author": { "type": "string", "output": "html", "required": true, "description": "작성자 (마스킹)" },
+            "date": { "type": "string", "output": "html", "required": true, "description": "작성일 YYYY.MM.DD" },
+            "text": { "type": "string", "output": "html", "required": true, "maxLength": 200, "description": "리뷰 본문 (3줄 말줄임)" }
+          }
+        }
+      },
+      "style": {
+        "stars": { "color": "#F5A623", "fontSize": 16 },
+        "score": { "fontSize": 17, "fontWeight": 700, "color": "#101418" },
+        "count": { "fontSize": 13, "fontWeight": 500, "color": "#848C94" },
+        "card": { "background": "#F5F6F7", "radius": 10, "padding": [14, 16] },
+        "author": { "fontSize": 13, "fontWeight": 600, "color": "#101418" },
+        "date": { "fontSize": 12, "fontWeight": 400, "color": "#848C94" },
+        "text": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.65, "lineClamp": 3 },
+        "cardGap": 12
+      },
+      "schema": {
+        "type": "AggregateRating",
+        "note": "schema.org AggregateRating + Review 구조화 데이터로 리치 스니펫 별점 노출 가능"
+      }
+    },
+
+    "guideIntro": {
+      "id": "guideIntro",
+      "name": "Guide Intro",
+      "tier": "generic",
+      "renderMode": "hybrid",
+      "renderNote": "사진/아바타는 이미지, 이름·소개는 HTML. guideProfile의 경량 버전.",
+      "description": "2열 그리드 가이드 카드. 일반 투어 가이드 소개용 (PB guideProfile의 경량 대안).",
+      "required": false,
+      "category": ["TOUR"],
+      "figmaRef": "pilot-tour-suyang.html BLOCK 7",
+      "props": {
+        "title": { "type": "string", "output": "html", "required": true, "default": "투어를 책임지실 가이드를 소개합니다!" },
+        "guides": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "avatar": { "type": "image", "output": "image", "size": [48, 48], "radius": "full" },
+            "name": { "type": "string", "output": "html", "required": true },
+            "description": { "type": "string", "output": "html", "required": false }
+          }
+        }
+      },
+      "style": {
+        "columns": 2,
+        "gap": 10,
+        "card": { "background": "#F5F6F7", "radius": 10, "padding": [14, 12], "textAlign": "center" },
+        "avatarSize": 48,
+        "name": { "fontSize": 14, "fontWeight": 600, "color": "#101418" },
+        "desc": { "fontSize": 12, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.55 }
+      },
+      "note": "PB Exclusive 상품에는 guideProfile(상세 프로필 + 스탯)을 사용. 일반 투어에는 이 경량 버전 사용."
+    },
+
+    "dayItinerary": {
+      "id": "dayItinerary",
+      "name": "Day Itinerary",
+      "tier": "semi-package",
+      "renderMode": "structured",
+      "renderNote": "텍스트 + CSS 타임라인. 이미지 없음 기본, 선택적 이미지 포함 가능.",
+      "description": "Day 1, Day 2, ... 형태의 다일정 블록. 각 Day별 시간+활동 타임라인.",
+      "required": true,
+      "frequency": "1회/상품 (내부에 Day N 반복)",
+      "figmaRef": "상하이 3박4일 281:13219 Day별 일정 섹션",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "default": "Day별 일정",
+          "style": { "fontSize": 24, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.48 }
+        },
+        "days": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 14,
+          "items": {
+            "dayLabel": { "type": "string", "output": "html", "required": true, "description": "Day 1, Day 2, ..." },
+            "title": { "type": "string", "output": "html", "required": false, "description": "일차별 부제목 (예: 인천 → 상하이)" },
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 10,
+              "items": {
+                "time": { "type": "string", "output": "html", "required": false, "description": "09:00, 오전 등" },
+                "activity": { "type": "string", "output": "html", "required": true },
+                "detail": { "type": "string", "output": "html", "required": false },
+                "image": { "type": "image", "output": "image", "required": false, "size": [350, 170] }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "dayLabelStyle": {
+          "fontSize": 18, "fontWeight": 700, "color": "#1583DB",
+          "background": "rgba(21,131,219,0.08)", "radius": 8, "padding": [6, 14]
+        },
+        "timeStyle": { "fontSize": 13, "fontWeight": 600, "color": "#848C94", "width": 50 },
+        "activityStyle": { "fontSize": 15, "fontWeight": 600, "color": "#101418", "lineHeight": 1.38 },
+        "detailStyle": { "fontSize": 13, "fontWeight": 500, "color": "#343A40", "lineHeight": 1.55 },
+        "timelineBar": { "width": 2, "color": "#DEE2E6", "dotSize": 8 },
+        "dayGap": 32,
+        "itemGap": 16
+      }
+    },
+
+    "hotelInfo": {
+      "id": "hotelInfo",
+      "name": "Hotel Info",
+      "tier": "semi-package",
+      "renderMode": "hybrid",
+      "renderNote": "호텔 사진은 이미지, 등급/위치/조식 정보는 HTML.",
+      "description": "숙소 정보 카드. 호텔 등급, 위치, 객실 타입, 체크인/아웃, 조식 포함 여부.",
+      "required": true,
+      "frequency": "1회/상품 (내부에 호텔 N개 반복)",
+      "figmaRef": "상하이 3박4일 281:13219 호텔 안내 섹션",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "default": "호텔 안내",
+          "style": { "fontSize": 24, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.48 }
+        },
+        "hotels": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "image": { "type": "image", "output": "image", "required": true, "size": [350, 200], "radius": 12 },
+            "name": { "type": "string", "output": "html", "required": true },
+            "grade": { "type": "string", "output": "html", "required": true, "description": "5성급, 4성급 등" },
+            "location": { "type": "string", "output": "html", "required": false },
+            "roomType": { "type": "string", "output": "html", "required": false, "description": "디럭스 트윈, 스탠다드 더블 등" },
+            "breakfast": { "type": "boolean", "output": "html", "required": false, "description": "조식 포함 여부" },
+            "checkIn": { "type": "string", "output": "html", "required": false },
+            "checkOut": { "type": "string", "output": "html", "required": false },
+            "note": { "type": "string", "output": "html", "required": false }
+          }
+        }
+      },
+      "layout": {
+        "cardBackground": "#FFFFFF",
+        "cardBorder": { "width": 1, "color": "#DEE2E6" },
+        "cardRadius": 16,
+        "cardPadding": [20, 20],
+        "imageSize": [350, 200],
+        "imageRadius": 12,
+        "hotelGap": 20,
+        "infoGrid": { "columns": 2, "gap": 12 }
+      },
+      "style": {
+        "name": { "fontSize": 18, "fontWeight": 700, "color": "#101418", "lineHeight": 1.38 },
+        "grade": { "fontSize": 13, "fontWeight": 600, "color": "#1583DB", "background": "rgba(21,131,219,0.08)", "radius": 4, "padding": [2, 8] },
+        "label": { "fontSize": 12, "fontWeight": 500, "color": "#848C94" },
+        "value": { "fontSize": 14, "fontWeight": 600, "color": "#101418" }
+      }
+    },
+
+    "faqAccordion": {
+      "id": "faqAccordion",
+      "name": "FAQ Accordion",
+      "tier": "semi-package",
+      "renderMode": "structured",
+      "renderNote": "순수 텍스트 + CSS 아코디언. 이미지 없음, HTML/CSS/JS로 완전 구현.",
+      "description": "자주 묻는 질문 아코디언. Q&A 쌍을 접었다 펼치는 형태.",
+      "required": false,
+      "frequency": "1회/상품 (내부 Q&A 3~10개)",
+      "figmaRef": "상하이 3박4일 281:13219 FAQ 섹션",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "default": "자주 묻는 질문",
+          "style": { "fontSize": 24, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.48 }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 10,
+          "items": {
+            "question": { "type": "string", "output": "html", "required": true, "maxLength": 80 },
+            "answer": { "type": "string", "output": "html", "required": true, "maxLength": 300 }
+          }
+        }
+      },
+      "layout": {
+        "containerPadding": [0, 20],
+        "itemBorder": { "width": 1, "color": "#DEE2E6" },
+        "itemPadding": [16, 0],
+        "chevronSize": 20
+      },
+      "style": {
+        "question": { "fontSize": 15, "fontWeight": 600, "color": "#101418", "lineHeight": 1.44 },
+        "answer": { "fontSize": 14, "fontWeight": 500, "color": "#495056", "lineHeight": 1.55 },
+        "chevron": { "color": "#848C94", "transition": "transform 0.2s" }
+      },
+      "schema": {
+        "type": "FAQPage",
+        "note": "schema.org FAQPage 구조화 데이터로 구글 FAQ 리치 스니펫 노출 가능"
+      }
+    },
+
+    "packageOverview": {
+      "id": "packageOverview",
+      "name": "Package Overview",
+      "tier": "semi-package",
+      "renderMode": "hybrid",
+      "renderNote": "아이콘은 SVG, 라벨/값은 HTML. CSS grid 레이아웃.",
+      "description": "구성 한눈에 보기. 일정/인원/호텔/차량/가이드/보험 등 핵심 구성 아이콘 그리드.",
+      "required": true,
+      "frequency": "1회/상품 (4~8개 항목)",
+      "figmaRef": "상하이 3박4일 281:13219 구성 한눈에 보기 섹션",
+      "props": {
+        "sectionTitle": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "default": "구성 한눈에 보기",
+          "style": { "fontSize": 24, "fontWeight": 700, "color": "#000000", "letterSpacing": -0.48 }
+        },
+        "items": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 8,
+          "items": {
+            "icon": { "type": "image", "output": "svg", "required": true, "size": [40, 40] },
+            "label": { "type": "string", "output": "html", "required": true, "description": "일정, 인원, 호텔 등" },
+            "value": { "type": "string", "output": "html", "required": true, "description": "3박4일, 2인 기준 등" }
+          }
+        }
+      },
+      "layout": {
+        "columns": 3,
+        "gap": 16,
+        "containerPadding": [0, 20],
+        "itemPadding": [20, 12],
+        "itemBackground": "#F5F6F7",
+        "itemRadius": 12,
+        "iconLabelGap": 10
+      },
+      "style": {
+        "icon": { "size": 40 },
+        "label": { "fontSize": 12, "fontWeight": 500, "color": "#848C94", "textAlign": "center" },
+        "value": { "fontSize": 14, "fontWeight": 700, "color": "#101418", "textAlign": "center" }
+      }
+    },
+
+    "operationTable": {
+      "id": "operationTable",
+      "name": "Operation Table",
+      "tier": "generic",
+      "renderMode": "structured",
+      "renderNote": "HTML table + CSS. 이미지 없음, 완전 HTML/CSS 구현.",
+      "description": "운영 정보 테이블. 만나는 시간, 소요시간, 진행 언어, 최소 인원 등 핵심 운영 정보를 표 형태로 정리.",
+      "required": false,
+      "category": ["ACTIVITY", "TOUR"],
+      "figmaRef": "하나우마베이 281:6332 (투어 진행 사항 섹션)",
+      "props": {
+        "title": {
+          "type": "string",
+          "output": "html",
+          "required": true,
+          "default": "투어 진행 사항"
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 8,
+          "items": {
+            "label": { "type": "string", "output": "html", "required": true, "description": "만나는 시간, 소요시간, 진행 언어 등" },
+            "value": { "type": "string", "output": "html", "required": true }
+          }
+        }
+      },
+      "layout": {
+        "containerBorder": { "width": 1, "color": "#DEE2E6", "radius": 10 },
+        "labelWidth": 110,
+        "labelBackground": "#F5F6F7",
+        "rowBorder": { "width": 1, "color": "#DEE2E6" }
+      },
+      "style": {
+        "label": { "fontSize": 13, "fontWeight": 600, "color": "#495056", "padding": [14, 16] },
+        "value": { "fontSize": 14, "fontWeight": 500, "color": "#101418", "padding": [14, 16], "lineHeight": 1.5 }
+      }
+    }
+  },
+
+  "deprecated": {
+    "hero": { "replacedBy": ["exclusiveHeader", "heroImage"], "reason": "실제 PDP에서 배지+제목+이미지가 아닌 분리된 구조로 사용" },
+    "titleParagraph": { "replacedBy": ["introSection", "sectionHeader"], "reason": "실제 PDP에서 중앙정렬 + 태그배지 구조로 사용" },
+    "step": { "replacedBy": ["visualTimeline"], "reason": "실제 PDP에서 이미지+시간배지 포함 형태로 사용" },
+    "daySchedule": { "replacedBy": ["visualTimeline"], "reason": "동일" },
+    "fullbleed": { "replacedBy": ["heroImage"], "reason": "Hero Image가 풀블리드 기능을 포함" },
+    "recommend": { "replacedBy": ["recommendBox"], "reason": "체크리스트 → 박스형으로 변경" },
+    "imageText": { "replacedBy": ["guideProfile"], "reason": "Guide Profile이 이미지+텍스트 기능을 포함" }
+  }
+}
