@@ -1,7 +1,7 @@
----
+<img width="1848" height="806" alt="image" src="https://github.com/user-attachments/assets/e02de4c0-1c08-49be-a3f4-0e2418812449" />---
 name: sg-hk-weekly
 description: 싱가포르·홍콩 주간 위클리 보고서 작성. 매주 위클리 데이터 요청 시 이 스킬을 사용하여 섹션 1~3 데이터를 수집하고 Confluence 페이지를 업데이트한다.
-argument-hint: [sg|hk] [이번주 날짜범위 예: 3/10~3/16]
+argument-hint: "[sg|hk] [이번주 날짜범위 예: 3/10~3/16]"
 ---
 
 싱가포르(`sg`) 또는 홍콩(`hk`) 주간 위클리 보고서를 작성한다.
