@@ -414,21 +414,29 @@
     text-decoration: line-through;
     color: var(--text-faint);
   }
-  .big3-tag {
-    font-family: var(--font);
-    font-size: 11px;
-    padding: 3px 6px;
+  .big3-ai-toggle {
+    width: 28px;
+    height: 28px;
     border: 1px solid var(--border-strong);
     border-radius: 6px;
     background: var(--bg);
-    color: var(--text-muted);
+    color: var(--text-faint);
     cursor: pointer;
     flex-shrink: 0;
-    width: 64px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-family: var(--font);
+    padding: 0;
   }
-  .big3-tag:focus { border-color: var(--accent); outline: none; }
-  .big3-tag option[value="AI활용"] { color: #7c3aed; }
-  .big3-tag option[value="팀기여"] { color: #059669; }
+  .big3-ai-toggle:hover { border-color: #7c3aed; color: #7c3aed; }
+  .big3-ai-toggle.active {
+    background: #7c3aed;
+    color: white;
+    border-color: #7c3aed;
+  }
 
   /* Time Box */
   .timebox-table {
@@ -1190,19 +1198,19 @@
               <input type="checkbox" id="m-big3-1-done" data-big3="1">
               <span class="big3-num">①</span>
               <input type="text" id="m-big3-1" placeholder="오늘 가장 중요한 일 1">
-              <select class="big3-tag" id="m-big3-1-tag"><option value="">태그</option><option value="업무">업무</option><option value="AI활용">AI활용</option><option value="팀기여">팀기여</option></select>
+              <button class="big3-ai-toggle" id="m-big3-1-ai" title="AI 활용 여부">⚡</button>
             </div>
             <div class="big3-item">
               <input type="checkbox" id="m-big3-2-done" data-big3="2">
               <span class="big3-num">②</span>
               <input type="text" id="m-big3-2" placeholder="오늘 가장 중요한 일 2">
-              <select class="big3-tag" id="m-big3-2-tag"><option value="">태그</option><option value="업무">업무</option><option value="AI활용">AI활용</option><option value="팀기여">팀기여</option></select>
+              <button class="big3-ai-toggle" id="m-big3-2-ai" title="AI 활용 여부">⚡</button>
             </div>
             <div class="big3-item">
               <input type="checkbox" id="m-big3-3-done" data-big3="3">
               <span class="big3-num">③</span>
               <input type="text" id="m-big3-3" placeholder="오늘 가장 중요한 일 3">
-              <select class="big3-tag" id="m-big3-3-tag"><option value="">태그</option><option value="업무">업무</option><option value="AI활용">AI활용</option><option value="팀기여">팀기여</option></select>
+              <button class="big3-ai-toggle" id="m-big3-3-ai" title="AI 활용 여부">⚡</button>
             </div>
           </div>
         </div>
@@ -1465,14 +1473,12 @@
         </p>
 
         <div style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin-bottom:14px; font-size:13px; line-height:1.8; color:var(--text);">
-          <div style="font-weight:600; margin-bottom:8px;">Big 3 태그 활용법</div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
-            <span style="background:#eff6ff; color:#2563eb; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:600;">업무</span> 일반 업무 항목
-            <span style="background:#f3e8ff; color:#7c3aed; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:600;">AI활용</span> Claude Code 등 AI 도구를 활용한 업무
-            <span style="background:#ecfdf5; color:#059669; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:600;">팀기여</span> 팀/조직에 기여한 업무
+          <div style="font-weight:600; margin-bottom:8px;">Big 3 ⚡ AI 토글</div>
+          <div style="margin-bottom:10px;">
+            각 Big 3 항목 옆의 <span style="background:#7c3aed; color:white; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:600;">⚡</span> 버튼을 클릭하면 "이 일에 AI를 활용했다"고 표시돼요.
           </div>
           <div style="color:var(--text-muted);">
-            마크다운에 <code>#AI활용</code> 형태로 저장되어, <code>/ai-review</code> 실행 시 자동으로 수집됩니다.
+            마크다운에 <code>#AI</code> 태그로 저장되어, <code>/ai-review</code> 실행 시 자동으로 수집됩니다.
           </div>
         </div>
 
@@ -1991,17 +1997,17 @@
       if (el) el.value = data[key] || '';
     });
 
-    // Big 3 + tag
+    // Big 3 + AI toggle
     [1,2,3].forEach(i => {
       const inp = document.getElementById(`m-big3-${i}`);
       const cb = document.getElementById(`m-big3-${i}-done`);
-      const tag = document.getElementById(`m-big3-${i}-tag`);
+      const aiBtn = document.getElementById(`m-big3-${i}-ai`);
       if (inp) {
         inp.value = data[`big3-${i}`] || '';
         inp.classList.toggle('done', !!data[`big3-${i}-done`]);
       }
       if (cb) cb.checked = !!data[`big3-${i}-done`];
-      if (tag) tag.value = data[`big3-${i}-tag`] || '';
+      if (aiBtn) aiBtn.classList.toggle('active', !!data[`big3-${i}-ai`]);
     });
 
     // Brain Dump
@@ -2092,11 +2098,11 @@
     getField('e-tomorrow-first', 'tomorrow-first');
     getField('e-summary', 'summary');
 
-    // Big 3 text + checkbox + tag
+    // Big 3 text + checkbox + AI toggle
     [1,2,3].forEach(i => {
       const inp = document.getElementById(`m-big3-${i}`);
       const cb = document.getElementById(`m-big3-${i}-done`);
-      const tag = document.getElementById(`m-big3-${i}-tag`);
+      const aiBtn = document.getElementById(`m-big3-${i}-ai`);
       if (inp) {
         inp.addEventListener('input', debounce(() => {
           const data = loadData();
@@ -2115,10 +2121,11 @@
           refreshDayBig3();
         });
       }
-      if (tag) {
-        tag.addEventListener('change', () => {
+      if (aiBtn) {
+        aiBtn.addEventListener('click', () => {
+          aiBtn.classList.toggle('active');
           const data = loadData();
-          data[`big3-${i}-tag`] = tag.value;
+          data[`big3-${i}-ai`] = aiBtn.classList.contains('active');
           saveData(data);
         });
       }
@@ -2226,8 +2233,8 @@
 
     md += `- **Big 3**:\n`;
     [1,2,3].forEach(i => {
-      const tagVal = data[`big3-${i}-tag`] ? ` #${data[`big3-${i}-tag`]}` : '';
-      md += `  ${i}. [${data[`big3-${i}-done`] ? 'x' : ' '}] ${data[`big3-${i}`] || ''}${tagVal}\n`;
+      const aiTag = data[`big3-${i}-ai`] ? ' #AI' : '';
+      md += `  ${i}. [${data[`big3-${i}-done`] ? 'x' : ' '}] ${data[`big3-${i}`] || ''}${aiTag}\n`;
     });
 
     // Time Box: only non-empty
@@ -2306,10 +2313,9 @@
       const big3Matches = big3Section[0].matchAll(/\d+\.\s*\[([ x])\]\s*(.+)/g);
       for (const m of big3Matches) {
         const rawText = m[2].trim();
-        const tagMatch = rawText.match(/#(업무|AI활용|팀기여)\s*$/);
-        const tag = tagMatch ? tagMatch[1] : '';
-        const text = tag ? rawText.replace(/#(업무|AI활용|팀기여)\s*$/, '').trim() : rawText;
-        result.big3.push({ done: m[1] === 'x', text, tag });
+        const isAI = rawText.endsWith('#AI');
+        const text = isAI ? rawText.replace(/\s*#AI$/, '').trim() : rawText;
+        result.big3.push({ done: m[1] === 'x', text, ai: isAI });
       }
     }
 
@@ -2704,15 +2710,9 @@
           <div class="stats-streak">${streak}</div>
           <div class="stats-streak-label">연속 기록 일수</div>
         </div>
-        <div style="display:flex;gap:16px;text-align:center;">
-          <div>
-            <div style="font-size:24px;font-weight:700;color:#7c3aed;">${allEntries.filter(e => e.big3.some(b => b.tag === 'AI활용')).length}</div>
-            <div style="font-size:11px;color:var(--text-muted);">AI활용 일</div>
-          </div>
-          <div>
-            <div style="font-size:24px;font-weight:700;color:#059669;">${allEntries.filter(e => e.big3.some(b => b.tag === '팀기여')).length}</div>
-            <div style="font-size:11px;color:var(--text-muted);">팀기여 일</div>
-          </div>
+        <div style="text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#7c3aed;">⚡ ${allEntries.filter(e => e.big3.some(b => b.ai)).length}</div>
+          <div style="font-size:11px;color:var(--text-muted);">AI 활용한 날</div>
         </div>
       </div>
       <div class="stats-card stats-full-width">
