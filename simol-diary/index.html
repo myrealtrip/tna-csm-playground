@@ -1521,6 +1521,13 @@
         </a>
       </div>
 
+      <div class="guide-section">
+        <div class="guide-section-title">팀원에게 공유하기</div>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:12px; line-height:1.6;">아래 명령어 한 줄이면 누구든 바로 설치할 수 있어요.</p>
+        <div class="guide-code-block" id="guide-install-code">bash &lt;(curl -sS https://raw.githubusercontent.com/myrealtrip/tna-csm-playground/main/simol-diary/install.sh)<button class="guide-code-copy" id="guide-install-copy">복사</button></div>
+        <p style="margin-top:10px; font-size:12px; color:var(--text-faint); line-height:1.6;">~/simol-diary/ 폴더에 설치되고 브라우저에서 자동 실행됩니다.</p>
+      </div>
+
     </div>
   </div>
 
@@ -2775,6 +2782,14 @@
         btn.classList.remove('copied');
       }, 1500);
     });
+  });
+
+  // Install script copy
+  document.getElementById('guide-install-copy').addEventListener('click', async function() {
+    await navigator.clipboard.writeText('bash <(curl -sS https://raw.githubusercontent.com/myrealtrip/tna-csm-playground/main/simol-diary/install.sh)');
+    this.textContent = '복사됨!';
+    this.classList.add('copied');
+    setTimeout(() => { this.textContent = '복사'; this.classList.remove('copied'); }, 1500);
   });
 
 
