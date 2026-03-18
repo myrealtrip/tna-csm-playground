@@ -2316,13 +2316,15 @@
     result.hasMorning = /^## 모닝/m.test(md);
     result.hasEvening = /^## 이브닝/m.test(md);
 
-    // Big 3: 멀티라인 모드로 각 줄 개별 매칭 (greedy 크로스라인 방지)
+    // Big 3: 줄 단위로 개별 파싱 (regex 크로스라인 문제 방지)
     const big3Section = md.match(/\*\*Big 3\*\*:[\s\S]*?(?=\n## |\n- \*\*|$)/);
     if (big3Section) {
-      const big3Matches = big3Section[0].matchAll(/^\s*\d+\.\s*\[([ x])\]\s*(.*)$/gm);
-      for (const m of big3Matches) {
+      const big3Lines = big3Section[0].split('\n');
+      for (const line of big3Lines) {
+        const m = line.match(/^\s*\d+\.\s*\[([ x])\]\s*(.*)/);
+        if (!m) continue;
         const rawText = m[2].trim();
-        if (!rawText) continue; // 빈 항목 무시
+        if (!rawText) continue;
         const isAI = rawText.endsWith('#AI');
         const text = isAI ? rawText.replace(/\s*#AI$/, '').trim() : rawText;
         if (text) result.big3.push({ done: m[1] === 'x', text, ai: isAI });
