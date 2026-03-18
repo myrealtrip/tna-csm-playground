@@ -2240,8 +2240,10 @@
 
     md += `- **Big 3**:\n`;
     [1,2,3].forEach(i => {
+      const text = data[`big3-${i}`] || '';
+      if (!text.trim()) return; // 빈 항목은 저장하지 않음
       const aiTag = data[`big3-${i}-ai`] ? ' #AI' : '';
-      md += `  ${i}. [${data[`big3-${i}-done`] ? 'x' : ' '}] ${data[`big3-${i}`] || ''}${aiTag}\n`;
+      md += `  ${i}. [${data[`big3-${i}-done`] ? 'x' : ' '}] ${text}${aiTag}\n`;
     });
 
     // Time Box: only non-empty
@@ -2314,15 +2316,15 @@
     result.hasMorning = /^## 모닝/m.test(md);
     result.hasEvening = /^## 이브닝/m.test(md);
 
-    // Big 3: 섹션 헤더(##) 또는 다음 bold 항목(- **)에서 끊기
+    // Big 3: 멀티라인 모드로 각 줄 개별 매칭 (greedy 크로스라인 방지)
     const big3Section = md.match(/\*\*Big 3\*\*:[\s\S]*?(?=\n## |\n- \*\*|$)/);
     if (big3Section) {
-      const big3Matches = big3Section[0].matchAll(/\d+\.\s*\[([ x])\]\s*(.+)/g);
+      const big3Matches = big3Section[0].matchAll(/^\s*\d+\.\s*\[([ x])\]\s*(.*)$/gm);
       for (const m of big3Matches) {
         const rawText = m[2].trim();
+        if (!rawText) continue; // 빈 항목 무시
         const isAI = rawText.endsWith('#AI');
         const text = isAI ? rawText.replace(/\s*#AI$/, '').trim() : rawText;
-        // 빈 항목 필터링 (텍스트 없는 Big 3 무시)
         if (text) result.big3.push({ done: m[1] === 'x', text, ai: isAI });
       }
     }
@@ -2507,20 +2509,21 @@
       const dayName = DAYS_KR[d.getDay()];
 
       const card = document.createElement('div');
-      card.className = 'history-day-card' + (entry ? '' : ' empty');
+      const hasRealContent = entry && entry.big3.length > 0;
+      card.className = 'history-day-card' + (hasRealContent ? '' : ' empty');
       card.dataset.date = dateStr;
 
       let dateLabel = `<div class="history-day-date">`;
       dateLabel += `${d.getMonth()+1}/${d.getDate()}(${dayName})`;
       if (isToday) dateLabel += ` <span class="today-badge">오늘</span>`;
-      if (entry) {
+      if (hasRealContent) {
         const dotClass = entry.fillStatus === 'full' ? 'full' : entry.fillStatus === 'partial' ? 'partial' : 'empty-dot';
         dateLabel += ` <span class="fill-dot ${dotClass}"></span>`;
       }
       dateLabel += `</div>`;
 
       let content = dateLabel;
-      if (entry) {
+      if (hasRealContent) {
         if (entry.big3.length > 0) {
           content += '<div class="history-big3-mini big3-only">';
           entry.big3.forEach(b => {
@@ -2534,7 +2537,7 @@
 
       card.innerHTML = content;
 
-      if (entry) {
+      if (hasRealContent) {
         card.addEventListener('click', () => {
           const detail = document.getElementById('history-week-detail');
           if (detail.dataset.active === dateStr) {
