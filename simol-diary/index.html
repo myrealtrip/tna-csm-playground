@@ -1622,6 +1622,7 @@
     const d = new Date(+parts[0], +parts[1]-1, +parts[2]);
     d.setDate(d.getDate() + offset);
     currentDate = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    monthViewInitialized = false; // 월간 뷰 재초기화
     updateHeaderDate();
     restoreAll();
     restoreTomorrowFirst();
@@ -1635,6 +1636,7 @@
     flushPendingSaves();
     currentDate = getTodayKey();
     weekOffset = 0;
+    monthViewInitialized = false;
     updateHeaderDate();
     restoreAll();
     restoreTomorrowFirst();
@@ -2400,8 +2402,11 @@
 
     const entries = new Map();
     const dates = [];
-    const d = new Date(startDate);
-    const end = new Date(endDate);
+    // 시간대 안전한 날짜 파싱
+    const sp = startDate.split('-');
+    const ep = endDate.split('-');
+    const d = new Date(+sp[0], +sp[1]-1, +sp[2]);
+    const end = new Date(+ep[0], +ep[1]-1, +ep[2]);
     while (d <= end) {
       dates.push(toDateKey(d));
       d.setDate(d.getDate() + 1);
@@ -2562,11 +2567,16 @@
     }
   }
 
+  let monthViewInitialized = false;
+
   async function renderMonthView() {
-    // Always sync to currentDate when entering month view
-    const parts = currentDate.split('-');
-    historyYear = +parts[0];
-    historyMonth = +parts[1];
+    // 첫 진입 시에만 currentDate 기준 초기화 (이후 prev/next 버튼으로 이동)
+    if (!monthViewInitialized) {
+      const parts = currentDate.split('-');
+      historyYear = +parts[0];
+      historyMonth = +parts[1];
+      monthViewInitialized = true;
+    }
 
     document.getElementById('month-label').textContent = `${historyYear}년 ${historyMonth}월`;
 
