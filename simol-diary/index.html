@@ -1501,6 +1501,14 @@
           </div>
           <button class="guide-copy-btn" data-cmd="/ai-review">복사</button>
         </div>
+
+        <details style="margin-top:12px; font-size:13px; color:var(--text-muted); line-height:1.8;">
+          <summary style="cursor:pointer; color:var(--accent); font-weight:500;">/ai-review 스킬 설치 방법 (Claude Code 사용자)</summary>
+          <div style="margin-top:8px;">
+            <p style="margin-bottom:8px;">아래 명령어를 터미널에 붙여넣으세요. 어떤 Git 레포에서든 동작합니다.</p>
+            <div class="guide-code-block" id="guide-aireview-code">mkdir -p .claude/skills/ai-review &amp;&amp; curl -sL https://gist.githubusercontent.com/nowik-oes/9547c5822e18f9bb80e5d0bc24ff0c07/raw/SKILL.md -o .claude/skills/ai-review/SKILL.md<button class="guide-code-copy" id="guide-aireview-copy">복사</button></div>
+          </div>
+        </details>
       </div>
 
       <div class="guide-section">
@@ -1933,16 +1941,8 @@
     }
   }
 
-  function cleanOldEntries() {
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - 7);
-    Object.keys(localStorage).forEach(k => {
-      if (!k.startsWith('simol-')) return;
-      const dateStr = k.replace('simol-', '');
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return;
-      if (new Date(dateStr) < cutoff) localStorage.removeItem(k);
-    });
-  }
+  // localStorage 자동 삭제 제거 — 자동 파일 저장이 되므로 불필요
+  function cleanOldEntries() { /* no-op */ }
 
   const pendingDebounceTimers = [];
 
@@ -2315,15 +2315,19 @@
         const rawText = m[2].trim();
         const isAI = rawText.endsWith('#AI');
         const text = isAI ? rawText.replace(/\s*#AI$/, '').trim() : rawText;
-        result.big3.push({ done: m[1] === 'x', text, ai: isAI });
+        // 빈 항목 필터링 (텍스트 없는 Big 3 무시)
+        if (text) result.big3.push({ done: m[1] === 'x', text, ai: isAI });
       }
     }
 
     const summaryMatch = md.match(/\*\*한 줄 요약\*\*:\s*(.+)/);
     if (summaryMatch) result.summary = summaryMatch[1].trim();
 
-    if (result.hasMorning && result.hasEvening) result.fillStatus = 'full';
-    else if (result.hasMorning || result.hasEvening) result.fillStatus = 'partial';
+    // 실질적 내용이 있는지 판단 (Big 3가 비어있으면 empty)
+    const hasContent = result.big3.length > 0 || result.summary;
+    if (hasContent && result.hasMorning && result.hasEvening) result.fillStatus = 'full';
+    else if (hasContent && (result.hasMorning || result.hasEvening)) result.fillStatus = 'partial';
+    else if (hasContent) result.fillStatus = 'partial';
 
     return result;
   }
@@ -2792,6 +2796,13 @@
     setTimeout(() => { this.textContent = '복사'; this.classList.remove('copied'); }, 1500);
   });
 
+  // ai-review install copy
+  document.getElementById('guide-aireview-copy').addEventListener('click', async function() {
+    await navigator.clipboard.writeText('mkdir -p .claude/skills/ai-review && curl -sL https://gist.githubusercontent.com/nowik-oes/9547c5822e18f9bb80e5d0bc24ff0c07/raw/SKILL.md -o .claude/skills/ai-review/SKILL.md');
+    this.textContent = '복사됨!';
+    this.classList.add('copied');
+    setTimeout(() => { this.textContent = '복사'; this.classList.remove('copied'); }, 1500);
+  });
 
   // ─────────────────────────────────────────────────────────
   //  File System Access API — 직접 파일 저장
