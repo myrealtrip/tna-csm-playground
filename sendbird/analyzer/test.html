@@ -286,6 +286,16 @@
     const evts3 = detectEvents(mockChWithDelay, 'P151883');
     assert('detectEvents: 일정 지연 감지', evts3[0]?.type, 'delay');
 
+    // ── Task 4 테스트 ───────────────────────────────────────────
+    const mockStats = aggregateStats(mockChannels, 'P151883');
+    const mockEvents = detectEvents(mockChannels, 'P151883');
+    const html = renderReport(mockStats, mockEvents, { userId: 'P151883', label: '최근 6개월' });
+    assert('renderReport: HTML 생성됨', html.startsWith('<!DOCTYPE html>'), true);
+    assert('renderReport: 파트너명 포함', html.includes('하루하루투어'), true);
+    assert('renderReport: Claude 버튼 포함', html.includes('copyForClaude'), true);
+    assert('renderReport: 4개 섹션 모두 포함',
+      ['신뢰도 체크', '고객 응대 품질', '최근 운영 동향', '주요 이벤트'].every(s => html.includes(s)), true);
+
     // ── 출력 ────────────────────────────────────────────────────────
     document.getElementById('out').textContent = lines.join('\n');
 
