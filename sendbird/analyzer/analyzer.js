@@ -85,8 +85,9 @@ function classifyChannel(admmEvents) {
 //            postConfirmCancel, avgResponseMinutes, unanswered, preNotice, waitlistCount }
 function aggregateStats(channels, userId) {
   let confirm = 0, cancel = 0, waitConfirm = 0, partnerCancel = 0, customerCancel = 0;
-  let otherCancel = 0, postConfirmCancel = 0;
-  let responseTimes = [], unanswered = 0, preNotice = 0, waitlistCount = 0;
+  let weatherCancel = 0, minPartyCancel = 0, platformCancel = 0, otherCancel = 0, postConfirmCancel = 0;
+  let responseTimes = [], customerQuestions = 0, ignoredQuestions = 0;
+  let unanswered = 0, preNotice = 0, waitlistCount = 0;
   let partnerName = '';
   const productNameSet = new Set();
 
@@ -107,10 +108,13 @@ function aggregateStats(channels, userId) {
         cancel++;
         if (res.isPostConfirmCancel) postConfirmCancel++;
         const reason = res.cancelReason || '';
-        // 여행자/고객 사유를 먼저 매칭 (더 흔함) — "여행자가 파트너에게" 같은 문구 오분류 방지
-        if (/여행자\s*(개인|사정|요청|취소)|고객\s*(사정|요청|취소)/.test(reason)) customerCancel++;
+        // 구체적 패턴 → 일반 패턴 순으로 분류
+        if (/기상|날씨|태풍|우천|폭우|폭설|지진|천재/.test(reason)) weatherCancel++;
+        else if (/최소\s*인원|인원\s*미달|모객/.test(reason)) minPartyCancel++;
+        else if (/MRT|마이리얼트립|운영팀|플랫폼/.test(reason)) platformCancel++;
+        else if (/여행자\s*(개인|사정|요청|취소)|고객\s*(사정|요청|취소)/.test(reason)) customerCancel++;
         else if (/파트너\s*(사정|요청|취소)|운영사\s*(사정|요청|취소)|운영\s*불가/.test(reason)) partnerCancel++;
-        else if (/여행자|고객/.test(reason)) customerCancel++;
+        else if (/여행자|고객|중복\s*예약|일정\s*변경/.test(reason)) customerCancel++;
         else if (/파트너|운영사/.test(reason)) partnerCancel++;
         else otherCancel++;
       }
@@ -129,23 +133,22 @@ function aggregateStats(channels, userId) {
           lastCustomerTs = msgs[j].created_at;
           j++;
         }
+        customerQuestions++;
         if (j < msgs.length) {
           responseTimes.push((msgs[j].created_at - lastCustomerTs) / 60000);
+        } else {
+          ignoredQuestions++; // 파트너가 끝내 답하지 않은 고객 질문
         }
-        // 파트너 답장 없으면 responseTimes에 추가하지 않지만 unanswered로 별도 추적됨
         i = j + 1;
       } else {
         i++;
       }
     }
 
-    // 미답변: 마지막 메시지가 고객 발신 AND 채널 상태가 WAIT_CONFIRM 또는 단순 문의(NO_RESERVATION)
-    // CONFIRM된 채널은 미답변으로 보지 않음
+    // 미답변: 마지막 메시지가 고객 발신 (예약 상태 무관 — 확정 후 질문 무시도 포함)
     if (msgs.length > 0) {
       const lastMsg = msgs[msgs.length - 1];
-      const isWaitOrNoReservation = !classified.reservations?.length ||
-        classified.reservations.every(r => r.finalStatus === 'WAIT_CONFIRM');
-      if (lastMsg.user?.user_id !== userId && isWaitOrNoReservation) unanswered++;
+      if (lastMsg.user?.user_id !== userId) unanswered++;
     }
 
     // 사전 안내 발송: 파트너 메시지에 '[안내]' 포함
@@ -171,8 +174,11 @@ function aggregateStats(channels, userId) {
     confirm, cancel, waitConfirm, total,
     confirmRate: total ? Math.round(confirm / total * 100) : null,
     cancelRate: total ? Math.round(cancel / total * 100) : null,
-    partnerCancel, customerCancel, otherCancel, postConfirmCancel,
+    partnerCancel, customerCancel, weatherCancel, minPartyCancel, platformCancel, otherCancel, postConfirmCancel,
     avgResponseMinutes,
+    customerQuestions,
+    ignoredQuestions,
+    responseRate: customerQuestions ? Math.round((customerQuestions - ignoredQuestions) / customerQuestions * 100) : null,
     unanswered,
     preNotice,
     waitlistCount,
@@ -282,9 +288,9 @@ function renderReport(stats, period) {
     <div class="section">
       <div class="section-title">💬 고객 응대 품질</div>
       <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${stats.avgResponseMinutes == null ? '–' : statusIcon(stats.avgResponseMinutes <= 60, stats.avgResponseMinutes > 60)}</span></div>
+      <div class="row"><span class="row-label">응답률</span><span class="row-value">${pct(stats.responseRate)}</span><span class="row-status">${stats.responseRate == null ? '–' : statusIcon(stats.responseRate >= 90, stats.responseRate < 90)}</span></div>
       <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}채널</span><span class="row-status">📨</span></div>
-      <div class="row"><span class="row-label">총 예약</span><span class="row-value">${stats.total}건</span><span class="row-status">–</span></div>
-      <div class="row"><span class="row-label">고객 취소</span><span class="row-value">${stats.customerCancel}건</span><span class="row-status">–</span></div>
+      <div class="row"><span class="row-label">무시된 질문</span><span class="row-value">${stats.ignoredQuestions}건 / ${stats.customerQuestions}건</span><span class="row-status">${statusIcon(stats.ignoredQuestions === 0, stats.ignoredQuestions > 0)}</span></div>
     </div>
   </div>
 
@@ -304,6 +310,12 @@ function renderReport(stats, period) {
         <div style="font-size:9px;color:#888;margin-top:3px;">미분류</div>
       </div>
     </div>
+    ${(stats.weatherCancel || stats.minPartyCancel || stats.platformCancel) ? `
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+      ${stats.weatherCancel ? `<span style="background:#e3f2fd;color:#1565c0;font-size:9px;padding:3px 8px;border-radius:4px;">🌧 기상 ${stats.weatherCancel}건</span>` : ''}
+      ${stats.minPartyCancel ? `<span style="background:#fff3e0;color:#e65100;font-size:9px;padding:3px 8px;border-radius:4px;">👥 최소인원 미달 ${stats.minPartyCancel}건</span>` : ''}
+      ${stats.platformCancel ? `<span style="background:#f3e5f5;color:#7b1fa2;font-size:9px;padding:3px 8px;border-radius:4px;">🏢 플랫폼 ${stats.platformCancel}건</span>` : ''}
+    </div>` : ''}
     ${stats.postConfirmCancel > 0 ? `<div style="margin-top:8px;padding:8px 12px;background:#fff8e6;border-radius:6px;font-size:10px;color:#7a5200;">⚠️ 이 중 <strong>${stats.postConfirmCancel}건</strong>은 확정 후 취소 (사유 무관 별도 집계)</div>` : ''}
     <div style="margin-top:8px;font-size:9px;color:#bbb;">취소사유 키워드 매칭 기반 — 정확도 중간. 실제 대화 확인 권장.</div>
   </div>
