@@ -313,7 +313,7 @@ function renderReport(stats, events, period) {
     </div>
     <div class="section">
       <div class="section-title">📅 주요 이벤트</div>
-      ${eventRows || '<div style="font-size:10px;color:#999;">감지된 이벤트 없음</div>'}
+      ${events.length ? eventRows : '<div style="font-size:10px;color:#999;">감지된 이벤트 없음</div>'}
     </div>
   </div>
 
