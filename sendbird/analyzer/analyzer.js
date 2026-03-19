@@ -603,11 +603,34 @@ async function runAnalyzer(appId, userId, monthsBack) {
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     };
 
-    dl(html, `sendbird-report-${userId}-${today}.html`, 'text/html');
+    const reportFile = `sendbird-report-${userId}-${today}.html`;
+    const mdFile = `sendbird-${userId}.md`;
+    dl(html, reportFile, 'text/html');
     await new Promise(r => setTimeout(r, 500));
-    dl(generateMd(channels, userId), `sendbird-${userId}.md`, 'text/markdown');
+    dl(generateMd(channels, userId), mdFile, 'text/markdown');
 
-    panel.done(`✅ 완료! 리포트 + 대화이력 MD 저장됨`);
+    panel.done(`✅ 완료!`);
+
+    // 완료 오버레이
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <div style="font-size:40px;margin-bottom:8px;">✅</div>
+      <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:16px;">${esc(stats.partnerName)} 분석 완료</div>
+      <div style="text-align:left;background:#f5f5f7;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;"><span>확정률</span><strong>${pct(stats.confirmRate)}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${pct(stats.cancelRate)}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${pct(stats.responseRate)}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>채널</span><strong>${stats.channelCount}개</strong></div>
+      </div>
+      <div style="font-size:11px;color:#888;margin-bottom:16px;line-height:1.5;">
+        📄 <strong>${reportFile}</strong><br>
+        📝 <strong>${mdFile}</strong><br>
+        다운로드 폴더를 확인하세요
+      </div>
+      <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#0071e3;color:white;border:none;border-radius:8px;padding:10px 32px;font-size:13px;font-weight:600;cursor:pointer;">확인</button>
+    </div>`;
+    document.body.appendChild(overlay);
   } catch (err) {
     console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
