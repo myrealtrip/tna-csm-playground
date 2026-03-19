@@ -576,6 +576,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     }
 
     panel.update('분석 중...', 92);
+    const periodTag = monthsBack ? `${monthsBack}m` : 'all';
     const period = {
       userId,
       label: monthsBack ? `최근 ${monthsBack}개월` : '전체',
@@ -601,7 +602,6 @@ async function runAnalyzer(appId, userId, monthsBack) {
       setTimeout(() => URL.revokeObjectURL(a.href), 1000);
     };
 
-    const periodTag = monthsBack ? `${monthsBack}m` : 'all';
     const reportFile = `sendbird-report-${userId}-${periodTag}-${today}.html`;
     const mdFile = `sendbird-${userId}-${periodTag}-${today}.md`;
 
