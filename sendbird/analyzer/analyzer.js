@@ -17,7 +17,7 @@ function parseAdmm(msg) {
       || targets[0];
     const infoList = target?.content?.[0]?.reservationInfoList || [];
 
-    const get = name => infoList.find(i => i.name === name)?.value || null;
+    const get = name => infoList.find(i => i.name === name)?.value ?? null;
 
     return {
       status: d.reservation_status,           // WAIT_CONFIRM | CONFIRM | CANCEL
@@ -56,7 +56,7 @@ function classifyChannel(admmEvents) {
       cancelReason: events.find(e => e.status === 'CANCEL')?.cancelReason || null,
       isPostConfirmCancel: hadConfirm && last === 'CANCEL',
       reservationNo: events[0].reservationNo,
-      travelDate: events[0].travelDate,
+      travelDate: events[events.length - 1].travelDate,
     };
   });
 
