@@ -438,6 +438,45 @@ function createProgressPanel() {
   };
 }
 
+// MD 대화이력 생성
+function generateMd(channels, userId) {
+  const dt = ts => new Date(ts).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  const statusLabels = { WAIT_CONFIRM: '예약 대기', CONFIRM: '예약 확정', CANCEL: '예약 취소' };
+  let md = `# Sendbird 대화이력 — ${userId}\n> 추출: ${dt(Date.now())}\n> 채널: ${channels.length}개\n\n---\n\n`;
+  for (let i = 0; i < channels.length; i++) {
+    const ch = channels[i];
+    const mb = (ch.members || []).map(m => (m.nickname || m.user_id) + '(' + m.user_id + ')').join(', ');
+    md += `## ${i + 1}. ${ch.name || '(이름없음)'}\n- **채널**: \`${ch.channel_url}\`\n- **참여자**: ${mb}\n\n### 대화\n\n`;
+    if (!ch.messages.length) {
+      md += '_메시지 없음_\n';
+    } else {
+      for (const m of ch.messages) {
+        if (m.type === 'ADMM') {
+          try {
+            const ad = JSON.parse(m.data || '{}');
+            if (ad.message_event_type === 'RESERVATION_STATUS_CHANGE') {
+              const st = ad.reservation_status;
+              const info = (ad.message?.targetContents?.[0]?.content?.[0]?.reservationInfoList || []);
+              const getInfo = n => (info.find(x => x.name === n) || {}).value || '';
+              const label = statusLabels[st] || ('예약 상태: ' + st);
+              let line = `**[${label}]** \`${dt(m.created_at)}\``;
+              const rn = getInfo('예약번호'); if (rn) line += ' · 예약번호: ' + rn;
+              const td = getInfo('여행 출발일'); if (td) line += ' · 출발일: ' + td;
+              const cr = getInfo('취소사유'); if (cr) line += ' · 취소사유: ' + cr;
+              md += line + '\n\n';
+            }
+          } catch (e) {}
+          continue;
+        }
+        const s = m.user?.nickname || m.user?.user_id || '시스템';
+        md += `**${s}** \`${dt(m.created_at)}\`\n${m.message || '[파일]'}\n\n`;
+      }
+    }
+    md += '---\n\n';
+  }
+  return md;
+}
+
 // 북마클릿에서 호출되는 진입점
 async function runAnalyzer(appId, userId, monthsBack) {
   if (window._analyzerRunning) {
@@ -475,17 +514,22 @@ async function runAnalyzer(appId, userId, monthsBack) {
     const html = renderReport(stats, period);
 
     panel.update('리포트 다운로드 중...', 98);
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `sendbird-report-${userId}-${new Date().toISOString().slice(0, 10)}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    const today = new Date().toISOString().slice(0, 10);
 
-    panel.done(`✅ 완료! sendbird-report-${userId}-${new Date().toISOString().slice(0, 10)}.html 저장됨`);
+    const dl = (content, filename, type) => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([content], { type }));
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    };
+
+    dl(html, `sendbird-report-${userId}-${today}.html`, 'text/html');
+    dl(generateMd(channels, userId), `sendbird-${userId}.md`, 'text/markdown');
+
+    panel.done(`✅ 완료! 리포트 + 대화이력 MD 저장됨`);
   } catch (err) {
     panel.error(err.message || '알 수 없는 오류');
     throw err;
