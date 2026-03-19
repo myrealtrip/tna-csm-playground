@@ -338,3 +338,145 @@ function copyForClaude() {
 </body>
 </html>`;
 }
+
+// 채널 목록 조회 (기간 필터 포함)
+// appId: Sendbird app ID (from window.location.pathname.split('/')[1])
+// userId: partner user ID (e.g. 'P151883')
+// sinceMs: Unix ms cutoff (0 = no filter, fetch all)
+// returns: channel objects array
+async function fetchChannels(appId, userId, sinceMs) {
+  const BASE = 'https://gate.sendbird.com/platform/v3';
+  const H = { 'app-id': appId, 'accept': 'application/json' };
+
+  const channels = [];
+  let token = '';
+  do {
+    const qs = new URLSearchParams({
+      members_include_in: userId,
+      limit: 100,
+      show_member: true,
+      token,
+    });
+    if (token === '') qs.delete('token'); // empty token causes API error
+    const res = await fetch(`${BASE}/group_channels?${qs}`, { headers: H, credentials: 'include' });
+    if (!res.ok) throw new Error(`채널 조회 실패: HTTP ${res.status}`);
+    const data = await res.json();
+    const batch = data.channels || [];
+    // 기간 필터: last_message.created_at 기준
+    const filtered = sinceMs
+      ? batch.filter(ch => (ch.last_message?.created_at || 0) >= sinceMs)
+      : batch;
+    channels.push(...filtered);
+    token = data.next || '';
+    // 오래된 채널 나오기 시작하면 페이지 순회 중단 (API는 최신순 반환)
+    if (sinceMs && batch.length > 0) {
+      const lastTs = batch[batch.length - 1]?.last_message?.created_at || 0;
+      if (lastTs < sinceMs) break;
+    }
+  } while (token);
+
+  return channels;
+}
+
+// 채널 내 전체 메시지 수집 (ADMM 포함)
+// returns: message objects array (oldest first)
+async function fetchMessages(appId, channelUrl) {
+  const BASE = 'https://gate.sendbird.com/platform/v3';
+  const H = { 'app-id': appId, 'accept': 'application/json' };
+  const messages = [];
+  let messageTs = Date.now();
+
+  while (true) {
+    const qs = new URLSearchParams({
+      message_ts: messageTs,
+      prev_limit: 200,
+      next_limit: 0,
+      include: true,
+    });
+    const res = await fetch(
+      `${BASE}/group_channels/${encodeURIComponent(channelUrl)}/messages?${qs}`,
+      { headers: H, credentials: 'include' }
+    );
+    if (!res.ok) break; // 오류 시 지금까지 수집한 것만 반환
+    const data = await res.json();
+    const batch = data.messages || [];
+    if (!batch.length) break;
+    messages.unshift(...batch);
+    messageTs = batch[0].created_at - 1;
+    if (batch.length < 200) break; // 마지막 페이지
+  }
+  return messages;
+}
+
+// 진행 상황 패널 생성 (Sendbird 대시보드에 고정 표시)
+function createProgressPanel() {
+  const panel = document.createElement('div');
+  panel.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;background:white;border-radius:14px;padding:18px 22px;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-family:-apple-system,sans-serif;width:300px;border:1.5px solid #e0e0e0;';
+  panel.innerHTML = '<div style="font-weight:700;font-size:14px;margin-bottom:10px;">📊 파트너 분석 중...</div><div id="_ap_status" style="font-size:12px;color:#555;line-height:1.6;margin-bottom:8px;"></div><div style="background:#f0f0f5;border-radius:99px;height:6px;"><div id="_ap_bar" style="height:6px;border-radius:99px;background:#0071e3;width:0%;transition:width 0.3s;"></div></div>';
+  document.body.appendChild(panel);
+  return {
+    update(msg, pct) {
+      panel.querySelector('#_ap_status').textContent = msg;
+      panel.querySelector('#_ap_bar').style.width = pct + '%';
+    },
+    done(msg) {
+      panel.querySelector('#_ap_bar').style.background = '#34c759';
+      panel.querySelector('#_ap_bar').style.width = '100%';
+      panel.querySelector('#_ap_status').textContent = msg;
+      setTimeout(() => panel.remove(), 5000);
+    },
+    error(msg) {
+      panel.querySelector('#_ap_bar').style.background = '#ff3b30';
+      panel.querySelector('#_ap_status').textContent = '❌ ' + msg;
+    }
+  };
+}
+
+// 북마클릿에서 호출되는 진입점
+async function runAnalyzer(appId, userId, monthsBack) {
+  const sinceMs = monthsBack ? Date.now() - monthsBack * 30 * 24 * 3600 * 1000 : 0;
+  window._analyzerUserId = userId;
+
+  const panel = createProgressPanel();
+
+  try {
+    panel.update('채널 목록 조회 중...', 5);
+    const rawChannels = await fetchChannels(appId, userId, sinceMs);
+    panel.update(`채널 ${rawChannels.length}개 발견 — 메시지 수집 중...`, 10);
+
+    const channels = [];
+    for (let i = 0; i < rawChannels.length; i++) {
+      const ch = rawChannels[i];
+      const shortUrl = ch.channel_url ? ch.channel_url.slice(-12) : String(i);
+      panel.update(`[${i + 1}/${rawChannels.length}] ${ch.name || shortUrl}`, 10 + (i / rawChannels.length) * 80);
+      const messages = await fetchMessages(appId, ch.channel_url);
+      const admmEvents = messages.filter(m => m.type === 'ADMM').map(parseAdmm).filter(Boolean);
+      channels.push({ ...ch, messages, admmEvents });
+    }
+
+    panel.update('분석 중...', 92);
+    const period = {
+      userId,
+      label: monthsBack ? `최근 ${monthsBack}개월` : '전체',
+    };
+    const stats = aggregateStats(channels, userId);
+    const events = detectEvents(channels, userId);
+    const html = renderReport(stats, events, period);
+
+    panel.update('리포트 다운로드 중...', 98);
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sendbird-report-${userId}-${new Date().toISOString().slice(0, 10)}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    panel.done(`✅ 완료! sendbird-report-${userId}-${new Date().toISOString().slice(0, 10)}.html 저장됨`);
+  } catch (err) {
+    panel.error(err.message || '알 수 없는 오류');
+    throw err;
+  }
+}
