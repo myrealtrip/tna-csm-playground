@@ -193,50 +193,28 @@ function detectEvents(channels, userId) {
 }
 
 // stats: return value of aggregateStats()
-// events: return value of detectEvents()
 // period: { userId, label } — e.g. { userId: 'P151883', label: '최근 6개월' }
 // returns: complete HTML string (self-contained, no external deps)
-function renderReport(stats, events, period) {
+function renderReport(stats, period) {
   const pct = n => n != null ? n + '%' : 'N/A';
   const min = m => m != null ? m + '분' : 'N/A';
   const statusIcon = (good, warn) => good ? '✅' : (warn ? '⚠️' : '❌');
 
-  const noShowEvents = events.filter(e => e.type === 'noshow');
-  const guideEvents = events.filter(e => e.type === 'guide');
-  const delayEvents = events.filter(e => e.type === 'delay');
-
-  const eventRows = events.map(e => `
-    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;">
-      <div style="width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;background:${e.type === 'noshow' ? '#ff3b30' : '#ff9500'};"></div>
-      <div>
-        <div style="font-size:9px;color:#888;">${e.date}</div>
-        <div style="font-size:10px;font-weight:600;color:#111;">${e.label}: ${e.snippet}</div>
-      </div>
-    </div>`).join('');
-
   const productLine = stats.productNames.slice(0, 2).join(' · ') || '–';
 
-  // Claude 분석 프롬프트 (JS 내부에서 문자열 이스케이프 주의)
-  const claudePrompt = [
-    `다음은 마이리얼트립 파트너 "${stats.partnerName}" (${period.userId})의 Sendbird 대화 분석 결과입니다.`,
+  const cancelPrompt = [
+    `sendbird-${period.userId}.md 파일을 분석해줘.`,
     '',
-    '## 집계 데이터',
-    `- 분석 채널 수: ${stats.channelCount}개`,
-    `- 총 예약: ${stats.total}건 (확정 ${stats.confirm}건 / 취소 ${stats.cancel}건)`,
-    `- 확정률: ${pct(stats.confirmRate)} / 취소율: ${pct(stats.cancelRate)}`,
-    `- 파트너 임의취소: ${stats.partnerCancel}건 / 고객 취소: ${stats.customerCancel}건`,
-    `- 평균 응답시간: ${min(stats.avgResponseMinutes)}`,
-    `- 미답변 채널: ${stats.unanswered}건`,
-    `- 노쇼 이력: ${noShowEvents.length}건`,
-    `- 가이드 교체: ${guideEvents.length}건 / 일정 지연: ${delayEvents.length}건`,
+    `이 파일은 마이리얼트립 파트너 ${stats.partnerName}(${period.userId})의 고객 대화 이력이야.`,
+    '수치 집계보다 실제 대화 뉘앙스와 맥락을 중심으로 아래를 분석해줘:',
     '',
-    '## 주요 이벤트',
-    events.length ? events.map(e => `- ${e.date} [${e.label}] ${e.snippet}`).join('\n') : '없음',
+    '1. 파트너 응대 태도와 신뢰도 (말투, 문제 처리 방식, 사과/보상 대응)',
+    '2. 고객 불만 또는 위험 신호가 있었는지',
+    '3. 예약 취소/변경 패턴 — 어떤 상황에서 취소가 발생했는지',
+    '4. 운영 상 반복되는 문제나 개선이 필요한 부분',
+    '5. MRT 운영팀이 취해야 할 액션',
     '',
-    '위 데이터를 바탕으로 다음을 분석해주세요:',
-    '1. 파트너 신뢰도 종합 평가',
-    '2. 주요 리스크 및 개선 포인트',
-    '3. MRT 운영팀이 취해야 할 액션',
+    `참고 수치: 확정률 ${pct(stats.confirmRate)} · 취소율 ${pct(stats.cancelRate)} · 평균 응답 ${min(stats.avgResponseMinutes)} · 채널 ${stats.channelCount}개`,
   ].join('\n');
 
   return `<!DOCTYPE html>
@@ -248,13 +226,14 @@ function renderReport(stats, events, period) {
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f7; padding: 32px 16px; }
   .wrap { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 2px; }
+  .meta-products { font-size: 11px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
   .meta { font-size: 11px; color: #888; margin-bottom: 24px; }
   .cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
   .card { border-radius: 10px; padding: 14px; text-align: center; }
   .card .val { font-size: 22px; font-weight: 700; color: white; }
   .card .lbl { font-size: 9px; color: rgba(255,255,255,0.85); margin-top: 3px; }
-  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .section { background: white; border-radius: 10px; padding: 14px; }
   .section-title { font-size: 11px; font-weight: 700; color: #111; margin-bottom: 10px; }
   .row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; }
@@ -262,18 +241,27 @@ function renderReport(stats, events, period) {
   .row-label { color: #555; }
   .row-value { font-weight: 600; color: #111; }
   .row-status { margin-left: 6px; font-size: 10px; }
-  .data-note { background: #f0f6ff; border-left: 3px solid #0071e3; border-radius: 0 10px 10px 0; padding: 14px; margin-bottom: 16px; }
-  .data-note-title { font-size: 10px; font-weight: 700; color: #0071e3; margin-bottom: 4px; }
-  .data-note-body { font-size: 10px; color: #333; line-height: 1.6; }
-  .claude-btn { display: block; width: 100%; background: #6e40c9; color: white; border: none; border-radius: 10px; padding: 12px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
-  .claude-btn:hover { background: #5a32a3; }
-  .hint { font-size: 10px; color: #999; text-align: center; }
+  .cancel-section { background: white; border-radius: 10px; padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .cancel-item { text-align: center; padding: 10px 8px; background: #f9f9fb; border-radius: 8px; }
+  .cancel-item .c-val { font-size: 18px; font-weight: 700; color: #111; }
+  .cancel-item .c-lbl { font-size: 9px; color: #888; margin-top: 3px; }
+  .data-note { background: #f9f9fb; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .data-note-body { font-size: 10px; color: #777; line-height: 1.6; }
+  .cc-card { background: white; border-radius: 10px; padding: 18px; margin-bottom: 16px; border: 1.5px solid #e8e0f8; }
+  .cc-title { font-size: 13px; font-weight: 700; color: #6e40c9; margin-bottom: 12px; }
+  .cc-step { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; font-size: 12px; color: #444; line-height: 1.5; }
+  .cc-num { background: #6e40c9; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .cc-code { background: #f0f0f5; border-radius: 4px; padding: 1px 6px; font-family: monospace; font-size: 11px; }
+  .cc-btn { display: block; width: 100%; background: #6e40c9; color: white; border: none; border-radius: 8px; padding: 11px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 14px; }
+  .cc-btn:hover { background: #5a32a3; }
+  .cc-hint { font-size: 10px; color: #999; text-align: center; margin-top: 6px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>${stats.partnerName} <span style="font-size:13px;font-weight:400;color:#888;">${period.userId}</span></h1>
-  <div class="meta">${productLine} &nbsp;|&nbsp; 분석 기간: ${period.label} &nbsp;|&nbsp; 채널 ${stats.channelCount}개</div>
+  <div class="meta-products">${productLine}</div>
+  <div class="meta">분석 기간: ${period.label} &nbsp;|&nbsp; 채널 ${stats.channelCount}개</div>
 
   <div class="cards">
     <div class="card" style="background:#0071e3;">
@@ -285,8 +273,8 @@ function renderReport(stats, events, period) {
     <div class="card" style="background:${(stats.avgResponseMinutes ?? 0) > 120 ? '#ff9500' : '#34c759'};">
       <div class="val">${min(stats.avgResponseMinutes)}</div><div class="lbl">평균 응답</div>
     </div>
-    <div class="card" style="background:${noShowEvents.length > 0 ? '#ff3b30' : '#34c759'};">
-      <div class="val">${noShowEvents.length}건</div><div class="lbl">노쇼 이력</div>
+    <div class="card" style="background:${stats.unanswered > 0 ? '#ff9500' : '#34c759'};">
+      <div class="val">${stats.unanswered}건</div><div class="lbl">미답변</div>
     </div>
   </div>
 
@@ -295,43 +283,61 @@ function renderReport(stats, events, period) {
       <div class="section-title">📋 신뢰도 체크</div>
       <div class="row"><span class="row-label">확정률</span><span class="row-value">${pct(stats.confirmRate)}</span><span class="row-status">${statusIcon(stats.confirmRate >= 90, stats.confirmRate < 90)}</span></div>
       <div class="row"><span class="row-label">파트너 임의취소</span><span class="row-value">${stats.partnerCancel}건</span><span class="row-status">${statusIcon(stats.partnerCancel === 0, stats.partnerCancel > 0)}</span></div>
-      <div class="row"><span class="row-label">노쇼 이력</span><span class="row-value">${noShowEvents.length}건</span><span class="row-status">${statusIcon(noShowEvents.length === 0, noShowEvents.length > 0)}</span></div>
       <div class="row"><span class="row-label">확정 후 취소</span><span class="row-value">${stats.postConfirmCancel}건</span><span class="row-status">${statusIcon(stats.postConfirmCancel === 0, stats.postConfirmCancel > 0)}</span></div>
+      <div class="row"><span class="row-label">미답변 채널</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
     </div>
     <div class="section">
       <div class="section-title">💬 고객 응대 품질</div>
       <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${statusIcon((stats.avgResponseMinutes ?? 999) <= 60, (stats.avgResponseMinutes ?? 999) > 60)}</span></div>
-      <div class="row"><span class="row-label">미답변 채널</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
       <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}채널</span><span class="row-status">📨</span></div>
-    </div>
-    <div class="section">
-      <div class="section-title">📊 최근 운영 동향</div>
-      <div class="row"><span class="row-label">대기 명단 언급</span><span class="row-value">${stats.waitlistCount}채널</span><span class="row-status">–</span></div>
-      <div class="row"><span class="row-label">일정 오픈 지연</span><span class="row-value">${delayEvents.length}건</span><span class="row-status">${statusIcon(delayEvents.length === 0, delayEvents.length > 0)}</span></div>
-      <div class="row"><span class="row-label">가이드 교체</span><span class="row-value">${guideEvents.length}건</span><span class="row-status">${statusIcon(guideEvents.length === 0, guideEvents.length > 0)}</span></div>
+      <div class="row"><span class="row-label">총 예약</span><span class="row-value">${stats.total}건</span><span class="row-status">–</span></div>
       <div class="row"><span class="row-label">고객 취소</span><span class="row-value">${stats.customerCancel}건</span><span class="row-status">–</span></div>
     </div>
-    <div class="section">
-      <div class="section-title">📅 주요 이벤트</div>
-      ${events.length ? eventRows : '<div style="font-size:10px;color:#999;">감지된 이벤트 없음</div>'}
+  </div>
+
+  <div class="section" style="margin-bottom:12px;">
+    <div class="section-title">📊 취소 분석</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;">
+      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
+        <div style="font-size:18px;font-weight:700;color:#111;">${stats.customerCancel}건</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">고객 취소</div>
+      </div>
+      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
+        <div style="font-size:18px;font-weight:700;color:${stats.partnerCancel > 0 ? '#ff3b30' : '#111'};">${stats.partnerCancel}건</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">파트너 임의취소</div>
+      </div>
+      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
+        <div style="font-size:18px;font-weight:700;color:${stats.postConfirmCancel > 0 ? '#ff9500' : '#111'};">${stats.postConfirmCancel}건</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">확정 후 취소</div>
+      </div>
+      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
+        <div style="font-size:18px;font-weight:700;color:#111;">${stats.otherCancel}건</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">미분류</div>
+      </div>
     </div>
+    <div style="margin-top:10px;font-size:9px;color:#bbb;">파트너 임의취소는 취소사유 키워드 매칭 기반 — 정확도 중간. 실제 대화 확인 권장.</div>
   </div>
 
   <div class="data-note">
-    <div class="data-note-title">데이터 기준</div>
-    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 총 예약 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel}) · 파트너 임의취소 신뢰도: 중간 (키워드 매칭)</div>
+    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 총 예약 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel})</div>
   </div>
 
-  <button class="claude-btn" onclick="copyForClaude()">🤖 Claude로 더 분석하기 — 프롬프트 복사</button>
-  <div class="hint">복사된 텍스트를 Claude.ai 또는 Claude Code에 붙여넣기하세요</div>
+  <div class="cc-card">
+    <div class="cc-title">🤖 Claude Code로 대화 뉘앙스 분석하기</div>
+    <div class="cc-step"><div class="cc-num">1</div><div>MD 추출 도구에서 <span class="cc-code">sendbird-${period.userId}.md</span> 다운로드</div></div>
+    <div class="cc-step"><div class="cc-num">2</div><div>터미널에서 <span class="cc-code">cd ~/Downloads && claude</span></div></div>
+    <div class="cc-step"><div class="cc-num">3</div><div>아래 프롬프트를 붙여넣기 → Claude가 실제 대화를 읽고 뉘앙스 분석</div></div>
+    <button class="cc-btn" onclick="copyPrompt()">📋 분석 프롬프트 복사</button>
+    <div class="cc-hint">수치 집계가 아닌 실제 대화 원문 기반 분석</div>
+  </div>
 </div>
 <script>
-function copyForClaude() {
-  const prompt = ${JSON.stringify(claudePrompt)};
+function copyPrompt() {
+  const prompt = ${JSON.stringify(cancelPrompt)};
   navigator.clipboard.writeText(prompt).then(() => {
-    const btn = document.querySelector('.claude-btn');
-    btn.textContent = '✅ 클립보드에 복사됐어요!';
-    setTimeout(() => { btn.textContent = '🤖 Claude로 더 분석하기 — 프롬프트 복사'; }, 3000);
+    const btn = document.querySelector('.cc-btn');
+    btn.textContent = '✅ 복사됐어요!';
+    setTimeout(() => { btn.textContent = '📋 분석 프롬프트 복사'; }, 3000);
   });
 }
 </script>
@@ -434,6 +440,12 @@ function createProgressPanel() {
 
 // 북마클릿에서 호출되는 진입점
 async function runAnalyzer(appId, userId, monthsBack) {
+  if (window._analyzerRunning) {
+    alert('현재 분석이 진행 중이에요. 완료 후 다시 시도해주세요.');
+    return;
+  }
+  window._analyzerRunning = true;
+
   const sinceMs = monthsBack ? Date.now() - monthsBack * 30 * 24 * 3600 * 1000 : 0;
   window._analyzerUserId = userId;
 
@@ -460,8 +472,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
       label: monthsBack ? `최근 ${monthsBack}개월` : '전체',
     };
     const stats = aggregateStats(channels, userId);
-    const events = detectEvents(channels, userId);
-    const html = renderReport(stats, events, period);
+    const html = renderReport(stats, period);
 
     panel.update('리포트 다운로드 중...', 98);
     const blob = new Blob([html], { type: 'text/html' });
@@ -478,5 +489,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
   } catch (err) {
     panel.error(err.message || '알 수 없는 오류');
     throw err;
+  } finally {
+    window._analyzerRunning = false;
   }
 }
