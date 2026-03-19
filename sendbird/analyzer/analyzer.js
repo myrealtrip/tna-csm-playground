@@ -605,9 +605,15 @@ async function runAnalyzer(appId, userId, monthsBack) {
 
     const reportFile = `sendbird-report-${userId}-${today}.html`;
     const mdFile = `sendbird-${userId}.md`;
+
+    // Blob URL을 유지해서 오버레이 버튼에서 열 수 있도록
+    const reportBlobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    const mdContent = generateMd(channels, userId);
+    const mdBlobUrl = URL.createObjectURL(new Blob([mdContent], { type: 'text/markdown' }));
+
     dl(html, reportFile, 'text/html');
     await new Promise(r => setTimeout(r, 500));
-    dl(generateMd(channels, userId), mdFile, 'text/markdown');
+    dl(mdContent, mdFile, 'text/markdown');
 
     panel.done(`✅ 완료!`);
 
@@ -623,12 +629,12 @@ async function runAnalyzer(appId, userId, monthsBack) {
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${pct(stats.responseRate)}</strong></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>채널</span><strong>${stats.channelCount}개</strong></div>
       </div>
-      <div style="font-size:11px;color:#888;margin-bottom:16px;line-height:1.5;">
-        📄 <strong>${reportFile}</strong><br>
-        📝 <strong>${mdFile}</strong><br>
-        다운로드 폴더를 확인하세요
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
+        <a id="_sb_md_dl" href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>
       </div>
-      <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#0071e3;color:white;border:none;border-radius:8px;padding:10px 32px;font-size:13px;font-weight:600;cursor:pointer;">확인</button>
+      <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요 · MD는 Claude Code 분석용</div>
+      <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
     </div>`;
     document.body.appendChild(overlay);
   } catch (err) {
