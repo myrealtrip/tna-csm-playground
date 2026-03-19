@@ -39,10 +39,11 @@ function parseAdmm(msg) {
 function classifyChannel(admmEvents) {
   if (!admmEvents.length) return { reservations: [], finalStatus: 'NO_RESERVATION' };
 
-  // 예약번호별로 그룹핑
+  // 예약번호별로 그룹핑 (번호 없으면 타임스탬프 기반 고유 키)
   const byReservation = {};
+  let unknownIdx = 0;
   for (const e of admmEvents) {
-    const key = e.reservationNo || 'unknown';
+    const key = e.reservationNo || `_unknown_${unknownIdx++}`;
     if (!byReservation[key]) byReservation[key] = [];
     byReservation[key].push(e);
   }
@@ -162,6 +163,11 @@ function aggregateStats(channels, userId) {
   };
 }
 
+// HTML 이스케이프 — XSS 방지
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // stats: return value of aggregateStats()
 // period: { userId, label } — e.g. { userId: 'P151883', label: '최근 6개월' }
 // returns: complete HTML string (self-contained, no external deps)
@@ -170,7 +176,8 @@ function renderReport(stats, period) {
   const min = m => m != null ? m + '분' : 'N/A';
   const statusIcon = (good, warn) => good ? '✅' : (warn ? '⚠️' : '❌');
 
-  const productLine = stats.productNames.slice(0, 2).join(' · ') || '–';
+  const productLine = esc(stats.productNames.slice(0, 2).join(' · ') || '–');
+  const partnerNameSafe = esc(stats.partnerName);
 
   const cancelPrompt = [
     `sendbird-${period.userId}.md 파일을 분석해줘.`,
@@ -191,7 +198,7 @@ function renderReport(stats, period) {
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>${stats.partnerName} 파트너 분석 리포트</title>
+<title>${partnerNameSafe} 파트너 분석 리포트</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f7; padding: 32px 16px; }
@@ -229,9 +236,9 @@ function renderReport(stats, period) {
 </head>
 <body>
 <div class="wrap">
-  <h1>${stats.partnerName} <span style="font-size:13px;font-weight:400;color:#888;">${period.userId}</span></h1>
+  <h1>${partnerNameSafe} <span style="font-size:13px;font-weight:400;color:#888;">${period.userId}</span></h1>
   <div class="meta-products">${productLine}</div>
-  <div class="meta">분석 기간: ${period.label} &nbsp;|&nbsp; 채널 ${stats.channelCount}개</div>
+  <div class="meta">분석 기간: ${period.label} &nbsp;|&nbsp; 채널 ${stats.channelCount}개 &nbsp;|&nbsp; ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} 생성</div>
 
   <div class="cards">
     <div class="card" style="background:#0071e3;">
@@ -266,36 +273,33 @@ function renderReport(stats, period) {
   </div>
 
   <div class="section" style="margin-bottom:12px;">
-    <div class="section-title">📊 취소 분석</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;">
+    <div class="section-title">📊 취소 분석 <span style="font-size:9px;font-weight:400;color:#999;">(총 ${stats.cancel}건)</span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
       <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
         <div style="font-size:18px;font-weight:700;color:#111;">${stats.customerCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">고객 취소</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">고객 사유</div>
       </div>
       <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
         <div style="font-size:18px;font-weight:700;color:${stats.partnerCancel > 0 ? '#ff3b30' : '#111'};">${stats.partnerCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">파트너 임의취소</div>
-      </div>
-      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
-        <div style="font-size:18px;font-weight:700;color:${stats.postConfirmCancel > 0 ? '#ff9500' : '#111'};">${stats.postConfirmCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">확정 후 취소</div>
+        <div style="font-size:9px;color:#888;margin-top:3px;">파트너 사유</div>
       </div>
       <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
         <div style="font-size:18px;font-weight:700;color:#111;">${stats.otherCancel}건</div>
         <div style="font-size:9px;color:#888;margin-top:3px;">미분류</div>
       </div>
     </div>
-    <div style="margin-top:10px;font-size:9px;color:#bbb;">파트너 임의취소는 취소사유 키워드 매칭 기반 — 정확도 중간. 실제 대화 확인 권장.</div>
+    ${stats.postConfirmCancel > 0 ? `<div style="margin-top:8px;padding:8px 12px;background:#fff8e6;border-radius:6px;font-size:10px;color:#7a5200;">⚠️ 이 중 <strong>${stats.postConfirmCancel}건</strong>은 확정 후 취소 (사유 무관 별도 집계)</div>` : ''}
+    <div style="margin-top:8px;font-size:9px;color:#bbb;">취소사유 키워드 매칭 기반 — 정확도 중간. 실제 대화 확인 권장.</div>
   </div>
 
   <div class="data-note">
-    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 총 예약 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})</div>
+    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 예약 발생 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})${stats.channelCount - stats.total > 0 ? ` · 단순 문의 ${stats.channelCount - stats.total}건` : ''}</div>
     ${(stats._warnings || []).map(w => `<div style="color:#e65100;font-size:10px;margin-top:6px;">⚠️ ${w}</div>`).join('')}
   </div>
 
   <div class="cc-card">
     <div class="cc-title">🤖 Claude Code로 대화 뉘앙스 분석하기</div>
-    <div class="cc-step"><div class="cc-num">1</div><div>MD 추출 도구에서 <span class="cc-code">sendbird-${period.userId}.md</span> 다운로드</div></div>
+    <div class="cc-step"><div class="cc-num">1</div><div>이 리포트와 함께 다운로드된 <span class="cc-code">sendbird-${period.userId}.md</span> 확인</div></div>
     <div class="cc-step"><div class="cc-num">2</div><div>터미널에서 <span class="cc-code">cd ~/Downloads && claude</span></div></div>
     <div class="cc-step"><div class="cc-num">3</div><div>아래 프롬프트를 붙여넣기 → Claude가 실제 대화를 읽고 뉘앙스 분석</div></div>
     <button class="cc-btn" onclick="copyPrompt()">📋 분석 프롬프트 복사</button>
@@ -339,20 +343,14 @@ async function fetchChannels(appId, userId, sinceMs) {
     if (!res.ok) throw new Error(`채널 조회 실패: HTTP ${res.status}`);
     const data = await res.json();
     const batch = data.channels || [];
-    // 기간 필터: last_message.created_at 기준
-    const filtered = sinceMs
-      ? batch.filter(ch => (ch.last_message?.created_at || 0) >= sinceMs)
-      : batch;
-    channels.push(...filtered);
+    channels.push(...batch);
     token = data.next || '';
-    // 오래된 채널 나오기 시작하면 페이지 순회 중단 (API는 최신순 반환)
-    if (sinceMs && batch.length > 0) {
-      const lastTs = batch[batch.length - 1]?.last_message?.created_at || 0;
-      if (lastTs < sinceMs) break;
-    }
   } while (token);
 
-  return channels;
+  // 기간 필터: last_message.created_at 기준 (정렬 순서에 의존하지 않고 전체 순회 후 필터)
+  return sinceMs
+    ? channels.filter(ch => (ch.last_message?.created_at || 0) >= sinceMs)
+    : channels;
 }
 
 // 채널 내 전체 메시지 수집 (ADMM 포함)
@@ -448,6 +446,14 @@ function createProgressPanel() {
       funEl.style.fontStyle = 'normal';
       panel.querySelector('#_ap_bar').style.background = '#ff3b30';
       panel.querySelector('#_ap_status').textContent = '❌ ' + msg;
+      // 닫기 버튼 + 15초 후 자동 제거
+      const closeBtn = document.createElement('div');
+      closeBtn.textContent = '✕';
+      closeBtn.style.cssText = 'position:absolute;top:8px;right:12px;cursor:pointer;font-size:14px;color:#999;';
+      closeBtn.onclick = () => panel.remove();
+      panel.style.position = 'relative';
+      panel.appendChild(closeBtn);
+      setTimeout(() => { if (panel.parentNode) panel.remove(); }, 15000);
     }
   };
 }
@@ -475,20 +481,16 @@ function generateMd(channels, userId) {
     } else {
       for (const m of ch.messages) {
         if (m.type === 'ADMM') {
-          try {
-            const ad = JSON.parse(m.data || '{}');
-            if (ad.message_event_type === 'RESERVATION_STATUS_CHANGE') {
-              const st = ad.reservation_status;
-              const info = (ad.message?.targetContents?.[0]?.content?.[0]?.reservationInfoList || []);
-              const getInfo = n => (info.find(x => x.name === n) || {}).value || '';
-              const label = statusLabels[st] || ('예약 상태: ' + st);
-              let line = `**[${label}]** \`${dt(m.created_at)}\``;
-              const rn = getInfo('예약번호'); if (rn) line += ' · 예약번호: ' + rn;
-              const td = getInfo('여행 출발일'); if (td) line += ' · 출발일: ' + td;
-              const cr = getInfo('취소사유'); if (cr) line += ' · 취소사유: ' + cr;
-              md += line + '\n\n';
-            }
-          } catch (e) {}
+          // parseAdmm 재활용 — 파싱 로직 중복 방지
+          const parsed = parseAdmm(m);
+          if (parsed) {
+            const label = statusLabels[parsed.status] || ('예약 상태: ' + parsed.status);
+            let line = `**[${label}]** \`${dt(m.created_at)}\``;
+            if (parsed.reservationNo) line += ' · 예약번호: ' + parsed.reservationNo;
+            if (parsed.travelDate) line += ' · 출발일: ' + parsed.travelDate;
+            if (parsed.cancelReason) line += ' · 취소사유: ' + parsed.cancelReason;
+            md += line + '\n\n';
+          }
           continue;
         }
         const s = m.user?.nickname || m.user?.user_id || '시스템';
@@ -574,8 +576,8 @@ async function runAnalyzer(appId, userId, monthsBack) {
 
     panel.done(`✅ 완료! 리포트 + 대화이력 MD 저장됨`);
   } catch (err) {
+    console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
-    throw err;
   } finally {
     window._analyzerRunning = false;
   }
