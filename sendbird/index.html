@@ -122,7 +122,7 @@ const bm = `javascript:(function(){
 const s=document.createElement('script');
 s.src='${ANALYZER_URL}?v='+Date.now();
 s.onload=function(){
-  const uid=prompt('파트너 User ID (예: P151883)');if(!uid)return;
+  const raw=prompt('파트너 User ID (예: P151883)');if(!raw)return;const uid=raw.trim().toUpperCase();
   const months=prompt('분석 기간 (개월, 전체는 0 입력)', '6');
   const appId=window.location.pathname.split('/')[1];
   runAnalyzer(appId,uid,parseInt(months)||0).catch(function(e){alert('오류: '+e.message);});
