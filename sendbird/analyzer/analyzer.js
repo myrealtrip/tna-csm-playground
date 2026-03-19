@@ -200,9 +200,10 @@ function renderReport(stats, period) {
 
   const productLine = esc(stats.productNames.slice(0, 2).join(' · ') || '–');
   const partnerNameSafe = esc(stats.partnerName);
+  const reportDate = new Date().toISOString().slice(0, 10);
 
   const cancelPrompt = [
-    `sendbird-${period.userId}.md 파일을 분석해줘.`,
+    `sendbird-${period.userId}-${reportDate}.md 파일을 분석해줘.`,
     '',
     `이 파일은 마이리얼트립 파트너 ${stats.partnerName}(${period.userId})의 고객 대화 이력이야.`,
     '수치 집계보다 실제 대화 뉘앙스와 맥락을 중심으로 아래를 분석해줘:',
@@ -232,10 +233,10 @@ function renderReport(stats, period) {
   .card { border-radius: 10px; padding: 14px; text-align: center; }
   .card .val { font-size: 22px; font-weight: 700; color: white; }
   .card .lbl { font-size: 9px; color: rgba(255,255,255,0.85); margin-top: 3px; }
-  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: start; }
   .section { background: white; border-radius: 10px; padding: 14px; }
   .section-title { font-size: 11px; font-weight: 700; color: #111; margin-bottom: 10px; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; min-height: 28px; }
   .row:last-child { border-bottom: none; }
   .row-label { color: #555; }
   .row-value { font-weight: 600; color: #111; }
@@ -327,7 +328,7 @@ function renderReport(stats, period) {
 
   <div class="cc-card">
     <div class="cc-title">🤖 Claude Code로 대화 뉘앙스 분석하기</div>
-    <div class="cc-step"><div class="cc-num">1</div><div>이 리포트와 함께 다운로드된 <span class="cc-code">sendbird-${period.userId}.md</span> 확인</div></div>
+    <div class="cc-step"><div class="cc-num">1</div><div>이 리포트와 함께 다운로드된 <span class="cc-code">sendbird-${period.userId}-${reportDate}.md</span> 확인</div></div>
     <div class="cc-step"><div class="cc-num">2</div><div>터미널에서 <span class="cc-code">cd ~/Downloads && claude</span></div></div>
     <div class="cc-step"><div class="cc-num">3</div><div>아래 프롬프트를 붙여넣기 → Claude가 실제 대화를 읽고 뉘앙스 분석</div></div>
     <button class="cc-btn" onclick="copyPrompt()">📋 분석 프롬프트 복사</button>
@@ -465,7 +466,7 @@ function createProgressPanel() {
       panel.querySelector('#_ap_status').textContent = msg;
       panel.querySelector('#_ap_bar').style.width = pct + '%';
     },
-    done(msg) {
+    done() {
       clearInterval(funTimer);
       panel.remove(); // 진행 패널만 제거, backdrop은 유지 (완료 오버레이가 사용)
     },
@@ -600,7 +601,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     };
 
     const reportFile = `sendbird-report-${userId}-${today}.html`;
-    const mdFile = `sendbird-${userId}.md`;
+    const mdFile = `sendbird-${userId}-${today}.md`;
 
     // Blob URL을 유지해서 오버레이 버튼에서 열 수 있도록
     const reportBlobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
