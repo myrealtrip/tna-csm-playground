@@ -1,6 +1,6 @@
 // Sendbird Partner Analyzer — Pure Functions
-// Task 2: ADMM Parser & Channel Classifier
 // No imports, no exports, no side effects — browser/bookmarklet safe
+const ANALYZER_VERSION = 2;
 
 // ADMM 메시지에서 예약 상태 정보 추출
 // msg: Sendbird 메시지 객체 (type === 'ADMM')
@@ -442,7 +442,11 @@ const FUN_MESSAGES = [
 // 진행 상황 패널 생성 (Sendbird 대시보드에 고정 표시)
 function createProgressPanel() {
   const panel = document.createElement('div');
-  panel.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;background:white;border-radius:14px;padding:18px 22px;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-family:-apple-system,sans-serif;width:300px;border:1.5px solid #e0e0e0;';
+  // 반투명 배경 + 중앙 카드
+  const backdrop = document.createElement('div');
+  backdrop.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.4);';
+  document.body.appendChild(backdrop);
+  panel.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;background:white;border-radius:16px;padding:28px 32px;box-shadow:0 20px 60px rgba(0,0,0,0.3);font-family:-apple-system,sans-serif;width:340px;';
   panel.innerHTML = '<div id="_ap_title" style="font-weight:700;font-size:14px;margin-bottom:4px;">📊 파트너 분석 중...</div><div id="_ap_fun" style="font-size:11px;color:#999;margin-bottom:8px;font-style:italic;"></div><div id="_ap_status" style="font-size:12px;color:#555;line-height:1.6;margin-bottom:8px;"></div><div style="background:#f0f0f5;border-radius:99px;height:6px;"><div id="_ap_bar" style="height:6px;border-radius:99px;background:#0071e3;width:0%;transition:width 0.3s;"></div></div>';
   document.body.appendChild(panel);
 
@@ -463,17 +467,9 @@ function createProgressPanel() {
     },
     done(msg) {
       clearInterval(funTimer);
-      const bar = panel.querySelector('#_ap_bar');
-      bar.style.background = '#34c759';
-      bar.style.width = '100%';
-      panel.querySelector('#_ap_status').textContent = msg;
-      // 🎉 완료 폭죽
-      funEl.style.fontSize = '20px';
-      funEl.style.fontStyle = 'normal';
-      funEl.textContent = '🎉🎊✨';
-      panel.querySelector('#_ap_title').textContent = '분석 완료!';
-      setTimeout(() => panel.remove(), 5000);
+      panel.remove(); // 진행 패널만 제거, backdrop은 유지 (완료 오버레이가 사용)
     },
+    backdrop,
     error(msg) {
       clearInterval(funTimer);
       funEl.textContent = '😢 이런...';
@@ -484,9 +480,9 @@ function createProgressPanel() {
       const closeBtn = document.createElement('div');
       closeBtn.textContent = '✕';
       closeBtn.style.cssText = 'position:absolute;top:8px;right:12px;cursor:pointer;font-size:14px;color:#999;';
-      closeBtn.onclick = () => panel.remove();
+      closeBtn.onclick = () => { panel.remove(); backdrop.remove(); };
       panel.appendChild(closeBtn);
-      setTimeout(() => { if (panel.parentNode) panel.remove(); }, 15000);
+      setTimeout(() => { if (panel.parentNode) panel.remove(); if (backdrop.parentNode) backdrop.remove(); }, 15000);
     }
   };
 }
@@ -617,10 +613,10 @@ async function runAnalyzer(appId, userId, monthsBack) {
 
     panel.done(`✅ 완료!`);
 
-    // 완료 오버레이
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
-    overlay.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    // 완료 오버레이 — 진행 패널 backdrop 재사용
+    const bd = panel.backdrop;
+    bd.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
+    bd.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
       <div style="font-size:40px;margin-bottom:8px;">✅</div>
       <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:16px;">${esc(stats.partnerName)} 분석 완료</div>
       <div style="text-align:left;background:#f5f5f7;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
@@ -631,13 +627,12 @@ async function runAnalyzer(appId, userId, monthsBack) {
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
         <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
-        <a id="_sb_md_dl" href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>
+        <a href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>
       </div>
       <div style="font-size:10px;color:#34c759;line-height:1.5;margin-bottom:6px;">✓ 두 파일 모두 다운로드 폴더에 저장됨</div>
       <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요 · MD는 Claude Code 분석용</div>
       <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
     </div>`;
-    document.body.appendChild(overlay);
   } catch (err) {
     console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
