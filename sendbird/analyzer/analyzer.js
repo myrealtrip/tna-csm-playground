@@ -414,29 +414,70 @@ async function fetchMessages(appId, channelUrl) {
   return messages;
 }
 
+// 분석 중 재미있는 로딩 메시지
+const FUN_MESSAGES = [
+  '파트너의 진심을 읽는 중... 🔍',
+  '대화 뉘앙스 감지 중... 🎯',
+  '취소 사유 속 숨은 뜻 해독 중... 🕵️',
+  '응대 속도 측정 중... ⏱️',
+  '고객 만족도 감 잡는 중... 📊',
+  '확정률의 비밀을 파헤치는 중... 🔓',
+  '메시지 하나하나 정성껏 읽는 중... 📖',
+  '파트너 성적표 작성 중... ✍️',
+  '숫자 뒤에 숨은 이야기를 찾는 중... 📚',
+  '거의 다 왔어요, 조금만... 🏃',
+];
+
 // 진행 상황 패널 생성 (Sendbird 대시보드에 고정 표시)
 function createProgressPanel() {
   const panel = document.createElement('div');
   panel.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;background:white;border-radius:14px;padding:18px 22px;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-family:-apple-system,sans-serif;width:300px;border:1.5px solid #e0e0e0;';
-  panel.innerHTML = '<div style="font-weight:700;font-size:14px;margin-bottom:10px;">📊 파트너 분석 중...</div><div id="_ap_status" style="font-size:12px;color:#555;line-height:1.6;margin-bottom:8px;"></div><div style="background:#f0f0f5;border-radius:99px;height:6px;"><div id="_ap_bar" style="height:6px;border-radius:99px;background:#0071e3;width:0%;transition:width 0.3s;"></div></div>';
+  panel.innerHTML = '<div id="_ap_title" style="font-weight:700;font-size:14px;margin-bottom:4px;">📊 파트너 분석 중...</div><div id="_ap_fun" style="font-size:11px;color:#999;margin-bottom:8px;font-style:italic;"></div><div id="_ap_status" style="font-size:12px;color:#555;line-height:1.6;margin-bottom:8px;"></div><div style="background:#f0f0f5;border-radius:99px;height:6px;"><div id="_ap_bar" style="height:6px;border-radius:99px;background:#0071e3;width:0%;transition:width 0.3s;"></div></div>';
   document.body.appendChild(panel);
+
+  let funIdx = 0;
+  const funEl = panel.querySelector('#_ap_fun');
+  funEl.textContent = FUN_MESSAGES[0];
+  const funTimer = setInterval(() => {
+    funIdx = (funIdx + 1) % FUN_MESSAGES.length;
+    funEl.style.opacity = '0';
+    setTimeout(() => { funEl.textContent = FUN_MESSAGES[funIdx]; funEl.style.opacity = '1'; }, 200);
+  }, 3000);
+  funEl.style.transition = 'opacity 0.2s';
+
   return {
     update(msg, pct) {
       panel.querySelector('#_ap_status').textContent = msg;
       panel.querySelector('#_ap_bar').style.width = pct + '%';
     },
     done(msg) {
-      panel.querySelector('#_ap_bar').style.background = '#34c759';
-      panel.querySelector('#_ap_bar').style.width = '100%';
+      clearInterval(funTimer);
+      const bar = panel.querySelector('#_ap_bar');
+      bar.style.background = '#34c759';
+      bar.style.width = '100%';
       panel.querySelector('#_ap_status').textContent = msg;
+      // 🎉 완료 폭죽
+      funEl.style.fontSize = '20px';
+      funEl.style.fontStyle = 'normal';
+      funEl.textContent = '🎉🎊✨';
+      panel.querySelector('#_ap_title').textContent = '분석 완료!';
       setTimeout(() => panel.remove(), 5000);
     },
     error(msg) {
+      clearInterval(funTimer);
+      funEl.textContent = '😢 이런...';
+      funEl.style.fontStyle = 'normal';
       panel.querySelector('#_ap_bar').style.background = '#ff3b30';
       panel.querySelector('#_ap_status').textContent = '❌ ' + msg;
     }
   };
 }
+
+// 콘솔 이스터에그
+console.log('%c📊 Sendbird Partner Analyzer', 'font-size:18px;font-weight:bold;color:#0071e3;');
+console.log('%c파트너의 진짜 실력, 숫자가 말해줍니다.', 'font-size:12px;color:#888;');
+console.log('%c─────────────────────────────', 'color:#e0e0e0;');
+console.log('%cby TNA CSM Playground 🛠️', 'font-size:10px;color:#aaa;');
 
 // MD 대화이력 생성
 function generateMd(channels, userId) {
