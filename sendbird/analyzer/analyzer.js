@@ -633,6 +633,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
         <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
         <a id="_sb_md_dl" href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>
       </div>
+      <div style="font-size:10px;color:#34c759;line-height:1.5;margin-bottom:6px;">✓ 두 파일 모두 다운로드 폴더에 저장됨</div>
       <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요 · MD는 Claude Code 분석용</div>
       <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
     </div>`;
