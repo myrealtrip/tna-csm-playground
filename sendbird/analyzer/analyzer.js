@@ -466,9 +466,19 @@ function createProgressPanel() {
       panel.querySelector('#_ap_status').textContent = msg;
       panel.querySelector('#_ap_bar').style.width = pct + '%';
     },
-    done() {
+    done(msg) {
       clearInterval(funTimer);
-      panel.remove(); // 진행 패널만 제거, backdrop은 유지 (완료 오버레이가 사용)
+      if (msg) {
+        // 메시지가 있으면 패널에 표시하고 5초 후 자동 제거
+        funEl.textContent = '';
+        panel.querySelector('#_ap_status').textContent = msg;
+        panel.querySelector('#_ap_bar').style.width = '100%';
+        panel.querySelector('#_ap_bar').style.background = '#34c759';
+        setTimeout(() => { panel.remove(); backdrop.remove(); }, 5000);
+      } else {
+        // 메시지 없으면 패널만 제거, backdrop 유지 (완료 오버레이가 사용)
+        panel.remove();
+      }
     },
     backdrop,
     error(msg) {
@@ -614,7 +624,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     await new Promise(r => setTimeout(r, 500));
     dl(mdContent, mdFile, 'text/markdown');
 
-    panel.done(`✅ 완료!`);
+    panel.done(); // 패널 제거, backdrop 유지
 
     // 완료 오버레이 — 진행 패널 backdrop 재사용
     const bd = panel.backdrop;
