@@ -492,7 +492,19 @@ async function runAnalyzer(appId, userId, monthsBack) {
 
   try {
     panel.update('채널 목록 조회 중...', 5);
-    const rawChannels = await fetchChannels(appId, userId, sinceMs);
+    let rawChannels;
+    try {
+      rawChannels = await fetchChannels(appId, userId, sinceMs);
+    } catch (e) {
+      if (String(e.message).includes('401') || String(e.message).includes('403')) {
+        throw new Error('Sendbird 로그인이 필요해요. dashboard.sendbird.com에 먼저 로그인해주세요.');
+      }
+      throw e;
+    }
+    if (!rawChannels.length) {
+      panel.done(`⚠️ "${userId}"의 채널이 없어요. User ID를 다시 확인해주세요.`);
+      return;
+    }
     panel.update(`채널 ${rawChannels.length}개 발견 — 메시지 수집 중...`, 10);
 
     const channels = [];
@@ -527,6 +539,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     };
 
     dl(html, `sendbird-report-${userId}-${today}.html`, 'text/html');
+    await new Promise(r => setTimeout(r, 500));
     dl(generateMd(channels, userId), `sendbird-${userId}.md`, 'text/markdown');
 
     panel.done(`✅ 완료! 리포트 + 대화이력 MD 저장됨`);

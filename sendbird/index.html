@@ -119,6 +119,7 @@
 const ANALYZER_URL = 'https://myrealtrip.github.io/tna-csm-playground/sendbird/analyzer/analyzer.js';
 
 const bm = `javascript:(function(){
+if(!location.hostname.endsWith('sendbird.com')){alert('⚠️ Sendbird 대시보드(dashboard.sendbird.com)에서 실행해주세요.');return;}
 const s=document.createElement('script');
 s.src='${ANALYZER_URL}?v='+Date.now();
 s.onload=function(){
