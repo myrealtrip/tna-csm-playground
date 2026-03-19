@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sendbird Analyzer — Unit Tests</title>
+  <style>
+    body { font-family: monospace; background: #1a1a1a; color: #d4d4d4; padding: 24px; margin: 0; }
+    h1 { color: #a8d8ea; font-size: 1.1rem; margin-bottom: 4px; }
+    h2 { color: #888; font-size: 0.85rem; font-weight: normal; margin-top: 0; margin-bottom: 20px; }
+    pre { background: #2d2d2d; padding: 16px; border-radius: 6px; white-space: pre-wrap; line-height: 1.7; font-size: 0.88rem; }
+    .summary { margin-top: 16px; padding: 10px 16px; border-radius: 6px; font-weight: bold; }
+    .all-pass { background: #1a3a1a; color: #6fcf7a; }
+    .has-fail  { background: #3a1a1a; color: #f07070; }
+  </style>
+</head>
+<body>
+  <h1>Sendbird Analyzer — Unit Tests</h1>
+  <h2>analyzer.js: parseAdmm / classifyChannel</h2>
+  <pre id="out"></pre>
+  <div id="summary" class="summary"></div>
+
+  <script src="analyzer.js"></script>
+  <script>
+    // ── 테스트 유틸 ──────────────────────────────────────────────────
+    window._analyzerUserId = 'P151883';
+
+    let pass = 0, fail = 0;
+    const lines = [];
+
+    function out(line) { lines.push(line); }
+
+    function assert(label, actual, expected) {
+      const ok = JSON.stringify(actual) === JSON.stringify(expected);
+      out((ok ? '✅' : '❌') + ' ' + label + (ok ? '' : '\n   got: ' + JSON.stringify(actual) + '\n   exp: ' + JSON.stringify(expected)));
+      ok ? pass++ : fail++;
+    }
+
+    // ── 픽스처 헬퍼 ─────────────────────────────────────────────────
+    function makeAdmmMsg(overrides = {}) {
+      const base = {
+        message_event_type: 'RESERVATION_STATUS_CHANGE',
+        reservation_status: 'CONFIRM',
+        message: {
+          targetContents: [
+            {
+              sendbirdUserId: 'P151883',
+              content: [
+                {
+                  reservationInfoList: [
+                    { name: '예약번호', value: 'RES-001' },
+                    { name: '여행 출발일', value: '2026-05-10' },
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      };
+
+      // 깊은 병합 없이 reservation_status 등 최상위 필드만 오버라이드
+      const merged = Object.assign({}, base, overrides);
+      return {
+        data: JSON.stringify(merged),
+        created_at: 1700000000000,
+      };
+    }
+
+    function makeAdmmMsgCancel() {
+      const d = {
+        message_event_type: 'RESERVATION_STATUS_CHANGE',
+        reservation_status: 'CANCEL',
+        message: {
+          targetContents: [
+            {
+              sendbirdUserId: 'P151883',
+              content: [
+                {
+                  reservationInfoList: [
+                    { name: '예약번호',    value: 'RES-001' },
+                    { name: '여행 출발일', value: '2026-05-10' },
+                    { name: '취소사유',    value: '고객 변심' },
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      };
+      return { data: JSON.stringify(d), created_at: 1700001000000 };
+    }
+
+    // ── 1. parseAdmm — CONFIRM 상태 ─────────────────────────────────
+    out('\n─── parseAdmm ───────────────────────────────────────');
+
+    const confirmMsg = makeAdmmMsg({ reservation_status: 'CONFIRM' });
+    const confirmResult = parseAdmm(confirmMsg);
+
+    assert(
+      'CONFIRM: status === "CONFIRM"',
+      confirmResult?.status,
+      'CONFIRM'
+    );
+    assert(
+      'CONFIRM: reservationNo 추출',
+      confirmResult?.reservationNo,
+      'RES-001'
+    );
+    assert(
+      'CONFIRM: travelDate 추출',
+      confirmResult?.travelDate,
+      '2026-05-10'
+    );
+    assert(
+      'CONFIRM: cancelReason === null',
+      confirmResult?.cancelReason,
+      null
+    );
+
+    // ── 2. parseAdmm — CANCEL + 취소사유 ────────────────────────────
+    const cancelMsg = makeAdmmMsgCancel();
+    const cancelResult = parseAdmm(cancelMsg);
+
+    assert(
+      'CANCEL: status === "CANCEL"',
+      cancelResult?.status,
+      'CANCEL'
+    );
+    assert(
+      'CANCEL: cancelReason 추출',
+      cancelResult?.cancelReason,
+      '고객 변심'
+    );
+
+    // ── 3. parseAdmm — MEMBER_LEFT (비예약 이벤트) → null ───────────
+    const memberLeftMsg = {
+      data: JSON.stringify({ message_event_type: 'MEMBER_LEFT' }),
+      created_at: 1700002000000,
+    };
+    assert(
+      'MEMBER_LEFT → null',
+      parseAdmm(memberLeftMsg),
+      null
+    );
+
+    // ── 4. parseAdmm — 잘못된 JSON → null ───────────────────────────
+    const badJsonMsg = { data: '{ not valid json', created_at: 1700003000000 };
+    assert(
+      '잘못된 JSON → null',
+      parseAdmm(badJsonMsg),
+      null
+    );
+
+    // ── 5. classifyChannel — CONFIRM → CANCEL (isPostConfirmCancel) ──
+    out('\n─── classifyChannel ─────────────────────────────────');
+
+    const events = [
+      {
+        status: 'CONFIRM',
+        cancelReason: null,
+        reservationNo: 'RES-001',
+        travelDate: '2026-05-10',
+        createdAt: 1700000000000,
+      },
+      {
+        status: 'CANCEL',
+        cancelReason: '고객 변심',
+        reservationNo: 'RES-001',
+        travelDate: '2026-05-10',
+        createdAt: 1700001000000,
+      },
+    ];
+
+    const channelResult = classifyChannel(events);
+
+    assert(
+      'CONFIRM→CANCEL: reservations.length === 1',
+      channelResult.reservations.length,
+      1
+    );
+    assert(
+      'CONFIRM→CANCEL: finalStatus === "CANCEL"',
+      channelResult.reservations[0]?.finalStatus,
+      'CANCEL'
+    );
+    assert(
+      'CONFIRM→CANCEL: isPostConfirmCancel === true',
+      channelResult.reservations[0]?.isPostConfirmCancel,
+      true
+    );
+    assert(
+      'CONFIRM→CANCEL: cancelReason 일치',
+      channelResult.reservations[0]?.cancelReason,
+      '고객 변심'
+    );
+
+    // ── 6. classifyChannel — 빈 배열 ────────────────────────────────
+    const emptyResult = classifyChannel([]);
+
+    assert(
+      '빈 배열: finalStatus === "NO_RESERVATION"',
+      emptyResult.finalStatus,
+      'NO_RESERVATION'
+    );
+    assert(
+      '빈 배열: reservations.length === 0',
+      emptyResult.reservations.length,
+      0
+    );
+
+    // ── 출력 ────────────────────────────────────────────────────────
+    document.getElementById('out').textContent = lines.join('\n');
+
+    const total = pass + fail;
+    const summaryEl = document.getElementById('summary');
+    summaryEl.textContent = `${pass} / ${total} passed` + (fail ? ` — ${fail} FAILED` : ' — all green!');
+    summaryEl.className = 'summary ' + (fail ? 'has-fail' : 'all-pass');
+  </script>
+</body>
+</html>
