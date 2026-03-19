@@ -39,11 +39,26 @@ function parseAdmm(msg) {
 function classifyChannel(admmEvents) {
   if (!admmEvents.length) return { reservations: [], finalStatus: 'NO_RESERVATION' };
 
-  // 예약번호별로 그룹핑 (번호 없으면 타임스탬프 기반 고유 키)
+  // 예약번호별로 그룹핑
+  // 번호 없으면 5분 이내 이벤트를 같은 예약으로 간주
   const byReservation = {};
-  let unknownIdx = 0;
+  let unknownGroup = 0;
+  let lastUnknownTs = 0;
+  let currentUnknownKey = '';
   for (const e of admmEvents) {
-    const key = e.reservationNo || `_unknown_${unknownIdx++}`;
+    let key;
+    if (e.reservationNo) {
+      key = e.reservationNo;
+    } else {
+      // 이전 unknown 이벤트와 5분 이내면 같은 그룹
+      if (currentUnknownKey && Math.abs(e.createdAt - lastUnknownTs) < 300000) {
+        key = currentUnknownKey;
+      } else {
+        key = `_unknown_${unknownGroup++}`;
+        currentUnknownKey = key;
+      }
+      lastUnknownTs = e.createdAt;
+    }
     if (!byReservation[key]) byReservation[key] = [];
     byReservation[key].push(e);
   }
@@ -54,7 +69,7 @@ function classifyChannel(admmEvents) {
     const hadConfirm = statuses.includes('CONFIRM');
     return {
       finalStatus: last,
-      cancelReason: events.find(e => e.status === 'CANCEL')?.cancelReason || null,
+      cancelReason: [...events].reverse().find(e => e.status === 'CANCEL')?.cancelReason || null,
       isPostConfirmCancel: hadConfirm && last === 'CANCEL',
       reservationNo: events[0].reservationNo,
       travelDate: events[events.length - 1].travelDate,
@@ -102,7 +117,8 @@ function aggregateStats(channels, userId) {
     }
 
     // 응답시간: 고객 연속 메시지의 마지막 → 파트너 첫 답장 시간 차
-    const msgs = (ch.messages || []).filter(m => m.type !== 'ADMM');
+    // user가 없는 시스템 메시지는 제외 (응답시간 왜곡 방지)
+    const msgs = (ch.messages || []).filter(m => m.type !== 'ADMM' && m.user?.user_id);
     let i = 0;
     while (i < msgs.length) {
       if (msgs[i].user?.user_id !== userId) {
@@ -258,14 +274,14 @@ function renderReport(stats, period) {
   <div class="sections">
     <div class="section">
       <div class="section-title">📋 신뢰도 체크</div>
-      <div class="row"><span class="row-label">확정률</span><span class="row-value">${pct(stats.confirmRate)}</span><span class="row-status">${statusIcon(stats.confirmRate >= 90, stats.confirmRate < 90)}</span></div>
+      <div class="row"><span class="row-label">확정률</span><span class="row-value">${pct(stats.confirmRate)}</span><span class="row-status">${stats.confirmRate == null ? '–' : statusIcon(stats.confirmRate >= 90, stats.confirmRate < 90)}</span></div>
       <div class="row"><span class="row-label">파트너 임의취소</span><span class="row-value">${stats.partnerCancel}건</span><span class="row-status">${statusIcon(stats.partnerCancel === 0, stats.partnerCancel > 0)}</span></div>
       <div class="row"><span class="row-label">확정 후 취소</span><span class="row-value">${stats.postConfirmCancel}건</span><span class="row-status">${statusIcon(stats.postConfirmCancel === 0, stats.postConfirmCancel > 0)}</span></div>
       <div class="row"><span class="row-label">미답변 채널</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
     </div>
     <div class="section">
       <div class="section-title">💬 고객 응대 품질</div>
-      <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${statusIcon((stats.avgResponseMinutes ?? 999) <= 60, (stats.avgResponseMinutes ?? 999) > 60)}</span></div>
+      <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${stats.avgResponseMinutes == null ? '–' : statusIcon(stats.avgResponseMinutes <= 60, stats.avgResponseMinutes > 60)}</span></div>
       <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}채널</span><span class="row-status">📨</span></div>
       <div class="row"><span class="row-label">총 예약</span><span class="row-value">${stats.total}건</span><span class="row-status">–</span></div>
       <div class="row"><span class="row-label">고객 취소</span><span class="row-value">${stats.customerCancel}건</span><span class="row-status">–</span></div>
@@ -313,6 +329,10 @@ function copyPrompt() {
     const btn = document.querySelector('.cc-btn');
     btn.textContent = '✅ 복사됐어요!';
     setTimeout(() => { btn.textContent = '📋 분석 프롬프트 복사'; }, 3000);
+  }).catch(() => {
+    const btn = document.querySelector('.cc-btn');
+    btn.textContent = '⚠️ 복사 실패 — 직접 선택해서 복사해주세요';
+    setTimeout(() => { btn.textContent = '📋 분석 프롬프트 복사'; }, 4000);
   });
 }
 </script>
@@ -382,7 +402,9 @@ async function fetchMessages(appId, channelUrl) {
     const batch = data.messages || [];
     if (!batch.length) break;
     messages.unshift(...batch);
-    messageTs = batch[0].created_at - 1;
+    const nextTs = batch[0].created_at;
+    if (!Number.isFinite(nextTs)) break; // created_at 없거나 NaN이면 중단
+    messageTs = nextTs - 1;
     // 타임스탬프가 전진하지 않으면 무한루프 방지
     if (prevTs !== null && messageTs >= prevTs) break;
     prevTs = messageTs;
@@ -451,7 +473,6 @@ function createProgressPanel() {
       closeBtn.textContent = '✕';
       closeBtn.style.cssText = 'position:absolute;top:8px;right:12px;cursor:pointer;font-size:14px;color:#999;';
       closeBtn.onclick = () => panel.remove();
-      panel.style.position = 'relative';
       panel.appendChild(closeBtn);
       setTimeout(() => { if (panel.parentNode) panel.remove(); }, 15000);
     }
