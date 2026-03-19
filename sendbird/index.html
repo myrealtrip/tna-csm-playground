@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Sendbird 대화이력 추출기</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, sans-serif; background: #f5f5f7; display: flex; justify-content: center; padding: 48px 16px; min-height: 100vh; }
+  .wrap { width: 520px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 36px; line-height: 1.6; }
+
+  .section { background: white; border-radius: 16px; padding: 28px 32px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-badge { display: inline-block; background: #0071e3; color: white; font-size: 11px; font-weight: 700; border-radius: 20px; padding: 3px 10px; margin-bottom: 12px; letter-spacing: 0.3px; }
+  .section-badge.done { background: #34c759; }
+  .section h2 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .section p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+
+  .step { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+  .step-num { background: #f0f0f5; color: #333; font-size: 12px; font-weight: 700; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 13px; color: #333; line-height: 1.6; }
+  .step-text code { background: #f0f0f5; padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+
+  .bookmarklet-box { background: #f0f6ff; border: 1.5px dashed #0071e3; border-radius: 10px; padding: 16px; text-align: center; margin: 16px 0; }
+  .bookmarklet-box p { font-size: 12px; color: #555; margin-bottom: 10px; }
+  .bookmarklet-link { display: inline-block; background: white; border: 1.5px solid #0071e3; border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; color: #0071e3; text-decoration: none; cursor: grab; }
+  .bookmarklet-link:active { cursor: grabbing; }
+
+  .warning { background: #fff8e6; border-left: 3px solid #f5a623; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 12px; color: #7a5200; line-height: 1.5; margin-top: 8px; }
+  .user-id-guide { margin-top: 20px; background: #f0f6ff; border-radius: 10px; padding: 16px; }
+  .guide-title { font-size: 13px; font-weight: 700; color: #0071e3; margin-bottom: 10px; }
+  .guide-steps { margin-bottom: 12px; }
+  .guide-step { font-size: 12px; color: #333; line-height: 1.8; display: flex; align-items: center; gap: 8px; }
+  .g-num { background: #0071e3; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .mock-panel { background: white; border-radius: 8px; padding: 12px 16px; border: 1px solid #dde8f8; }
+  .mock-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f0f4fb; font-size: 12px; }
+  .mock-row:last-child { border-bottom: none; }
+  .mock-label { color: #888; }
+  .mock-value { font-weight: 600; color: #333; font-family: monospace; }
+
+  label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; }
+  input { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 10px 14px; font-size: 14px; outline: none; transition: border-color 0.2s; margin-bottom: 4px; }
+  input:focus { border-color: #0071e3; }
+  .hint { font-size: 12px; color: #999; margin-bottom: 16px; }
+  button { width: 100%; background: #0071e3; color: white; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  button:hover { background: #005bbf; }
+  .log { margin-top: 16px; background: #f5f5f7; border-radius: 10px; padding: 14px; font-size: 12px; font-family: monospace; color: #333; max-height: 160px; overflow-y: auto; display: none; white-space: pre-wrap; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📨 Sendbird 대화이력 추출기</h1>
+  <p class="subtitle">Sendbird 대시보드 로그인 세션을 활용해 특정 User ID의 모든 채널 대화를 MD 파일로 저장합니다.</p>
+
+  <!-- Step 1: 북마클릿 설치 -->
+  <div class="section">
+    <div class="section-badge">STEP 1</div>
+    <h2>북마클릿 설치</h2>
+    <p>아래 버튼을 드래그해서 브라우저 즐겨찾기 바에 올려놓으세요. 한 번만 하면 돼요.</p>
+    <div class="bookmarklet-box">
+      <p>⬇️ 이 버튼을 즐겨찾기 바로 드래그</p>
+      <a class="bookmarklet-link" id="bookmarklet" href="#">📨 Sendbird 추출</a>
+    </div>
+    <div class="warning">⚠️ 링크를 클릭하면 작동 안 해요. 반드시 즐겨찾기 바로 <strong>드래그</strong>해서 저장하세요.</div>
+
+    <div style="margin-top: 16px;">
+      <div class="step"><div class="step-num">1</div><div class="step-text">브라우저 상단 즐겨찾기 바가 보이지 않으면 <code>Cmd+Shift+B</code> 로 표시</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">위 📨 버튼을 마우스로 잡고 즐겨찾기 바에 드래그</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">완료! 이제 STEP 2로</div></div>
+    </div>
+  </div>
+
+  <!-- Step 2: 사용법 -->
+  <div class="section">
+    <div class="section-badge done">STEP 2</div>
+    <h2>사용 방법</h2>
+    <p>설치 후 매번 이렇게 사용하면 돼요.</p>
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Sendbird 대시보드</strong>(<code>dashboard.sendbird.com</code>)에 로그인</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">즐겨찾기에서 <strong>📨 Sendbird 추출</strong> 클릭</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">팝업에 <strong>User ID</strong> 입력 후 확인</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">자동으로 <code>sendbird-{UserID}.md</code> 다운로드</div></div>
+
+    <div class="user-id-guide">
+      <div class="guide-title">💡 User ID 찾는 방법</div>
+      <div class="guide-steps">
+        <div class="guide-step"><span class="g-num">1</span> Group Channels에서 대화 하나 클릭</div>
+        <div class="guide-step"><span class="g-num">2</span> 우측 상단 파트너 프로필 아이콘 클릭</div>
+        <div class="guide-step"><span class="g-num">3</span> 우측 패널에서 <strong>User ID</strong> 확인 (예: <code>P151883</code>)</div>
+      </div>
+      <div class="guide-img">
+        <div class="mock-panel">
+          <div class="mock-row"><span class="mock-label">User ID</span><span class="mock-value">P151883 📋</span></div>
+          <div class="mock-row"><span class="mock-label">Created on</span><span class="mock-value">Dec 15, 2025</span></div>
+          <div class="mock-row"><span class="mock-label">Status</span><span class="mock-value">🟢 Online</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 고급: 여러 User ID 한번에 -->
+  <div class="section">
+    <div class="section-badge" style="background:#8e44ad;">고급</div>
+    <h2>여러 User ID 한번에 추출</h2>
+    <p>이 페이지에서 직접 실행할 수 없지만, <strong>Sendbird 대시보드 콘솔(F12)</strong>에서 아래 스크립트를 붙여넣어 사용할 수 있어요.</p>
+
+    <label>App ID</label>
+    <input id="appId" value="85D30E6C-3FE3-42B9-97FD-967AD829FA3E" />
+    <p class="hint">대시보드 URL에서 확인</p>
+
+    <label>User IDs (쉼표로 구분)</label>
+    <input id="userId" placeholder="P151883, P123456, ..." />
+    <p class="hint">여러 명 입력 시 각각 별도 MD 파일로 저장</p>
+
+    <button onclick="copyScript()">📋 대시보드 콘솔용 스크립트 복사</button>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script>
+// 북마클릿 생성
+const bm = `javascript:(function(){
+const A=window.location.pathname.split('/')[1]||prompt('App ID를 찾을 수 없어요. 직접 입력해주세요:');if(!A)return;
+const U=prompt('User ID (예: P151883)');if(!U)return;
+const B='https://gate.sendbird.com';
+const H={'app-id':A,'accept':'application/json'};
+async function g(p){const r=await fetch(B+p,{headers:H,credentials:'include'});if(!r.ok)throw new Error(r.status);return r.json();}
+function dt(ts){return new Date(ts).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});}
+const panel=document.createElement('div');
+panel.style.cssText='position:fixed;bottom:24px;right:24px;z-index:99999;background:white;border-radius:14px;padding:18px 22px;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-family:-apple-system,sans-serif;width:280px;border:1.5px solid #e0e0e0;';
+panel.innerHTML='<div style="font-weight:700;font-size:14px;margin-bottom:10px;">📨 Sendbird 추출 중...</div><div id="sb-status" style="font-size:13px;color:#555;line-height:1.6;"></div><div id="sb-bar-wrap" style="margin-top:12px;background:#f0f0f5;border-radius:99px;height:6px;"><div id="sb-bar" style="height:6px;border-radius:99px;background:#0071e3;width:0%;transition:width 0.3s;"></div></div>';
+document.body.appendChild(panel);
+const status=panel.querySelector('#sb-status');
+const bar=panel.querySelector('#sb-bar');
+function upd(msg,pct){status.textContent=msg;if(pct!=null)bar.style.width=pct+'%';}
+(async()=>{
+upd('채널 목록 조회 중...',2);
+const chs=[];let t='';
+do{const d=await g('/platform/v3/group_channels?members_include_in='+U+'&limit=100&show_member=true&token='+t);chs.push(...(d.channels||[]));t=d.next||'';upd('채널 '+chs.length+'개 발견...',5);}while(t);
+chs.sort((a,b)=>(b.last_message?.created_at||0)-(a.last_message?.created_at||0));
+upd('채널 '+chs.length+'개 — 메시지 수집 시작',8);
+let md='# Sendbird 대화이력 — '+U+'\\n> 추출: '+dt(Date.now())+'\\n> 채널: '+chs.length+'개\\n\\n---\\n\\n';
+for(let i=0;i<chs.length;i++){
+const ch=chs[i];const mb=(ch.members||[]).map(m=>(m.nickname||m.user_id)+'('+m.user_id+')').join(', ');
+const pct=Math.round(8+(i/chs.length)*90);
+upd('['+( i+1)+'/'+chs.length+'] '+(ch.name||ch.channel_url.slice(-12)),pct);
+md+='## '+(i+1)+'. '+(ch.name||'(이름없음)')+'\\n- **채널**: \`'+ch.channel_url+'\`\\n- **참여자**: '+mb+'\\n\\n### 대화\\n\\n';
+try{const ms=[];let ts=Date.now();for(;;){const d=await g('/platform/v3/group_channels/'+encodeURIComponent(ch.channel_url)+'/messages?message_ts='+ts+'&prev_limit=200&next_limit=0&include=true');const b=d.messages||[];if(!b.length)break;ms.unshift(...b);ts=b[0].created_at-1;if(b.length<200)break;}
+if(!ms.length){md+='_메시지 없음_\\n';}else{for(const m of ms){if(m.type==='ADMM')continue;const s=m.user?.nickname||m.user?.user_id||'시스템';md+='**'+s+'** \`'+dt(m.created_at)+'\`\\n'+(m.message||'[파일]')+'\\n\\n';}}}catch(e){md+='_오류: '+e.message+'_\\n';}
+md+='---\\n\\n';}
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));a.download='sendbird-'+U+'.md';a.click();
+bar.style.width='100%';bar.style.background='#34c759';
+panel.querySelector('div').textContent='✅ 추출 완료!';
+upd('sendbird-'+U+'.md 다운로드됨',100);
+setTimeout(()=>panel.remove(),4000);
+})().catch(e=>{bar.style.background='#ff3b30';panel.querySelector('div').textContent='❌ 오류';upd(e.message,100);setTimeout(()=>panel.remove(),5000);});
+})();`;
+
+document.getElementById('bookmarklet').href = bm;
+
+function copyScript() {
+  const APP_ID = document.getElementById('appId').value.trim();
+  const userIds = document.getElementById('userId').value.split(',').map(s => s.trim()).filter(Boolean);
+  if (!APP_ID || !userIds.length) { alert('App ID와 User ID를 입력해주세요.'); return; }
+
+  const script = `// Sendbird 대화이력 추출 — 대시보드 콘솔에서 실행
+const APP_ID = '${APP_ID}';
+const USER_IDS = ${JSON.stringify(userIds)};
+const BASE = 'https://gate.sendbird.com';
+const H = {'app-id': APP_ID, 'accept': 'application/json'};
+async function g(p){const r=await fetch(BASE+p,{headers:H,credentials:'include'});if(!r.ok)throw new Error(r.status+' '+p);return r.json();}
+function dt(ts){return new Date(ts).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});}
+async function extract(U){
+  const chs=[];let t='';
+  do{const d=await g('/platform/v3/group_channels?members_include_in='+U+'&limit=100&show_member=true&token='+t);chs.push(...(d.channels||[]));t=d.next||'';console.log(U+': '+chs.length+'개...');}while(t);
+  chs.sort((a,b)=>(b.last_message?.created_at||0)-(a.last_message?.created_at||0));
+  let md='# Sendbird 대화이력 — '+U+'\\n> 추출: '+dt(Date.now())+'\\n> 채널: '+chs.length+'개\\n\\n---\\n\\n';
+  for(let i=0;i<chs.length;i++){
+    const ch=chs[i];const mb=(ch.members||[]).map(m=>(m.nickname||m.user_id)+'('+m.user_id+')').join(', ');
+    md+='## '+(i+1)+'. '+(ch.name||'(이름없음)')+'\\n- **채널**: \`'+ch.channel_url+'\`\\n- **참여자**: '+mb+'\\n\\n### 대화\\n\\n';
+    try{const ms=[];let ts=Date.now();for(;;){const d=await g('/platform/v3/group_channels/'+encodeURIComponent(ch.channel_url)+'/messages?message_ts='+ts+'&prev_limit=200&next_limit=0&include=true');const b=d.messages||[];if(!b.length)break;ms.unshift(...b);ts=b[0].created_at-1;if(b.length<200)break;}
+    if(!ms.length){md+='_메시지 없음_\\n';}else{for(const m of ms){if(m.type==='ADMM')continue;const s=m.user?.nickname||m.user?.user_id||'시스템';md+='**'+s+'** \`'+dt(m.created_at)+'\`\\n'+(m.message||'[파일]')+'\\n\\n';}}}catch(e){md+='_오류: '+e.message+'_\\n';}
+    md+='---\\n\\n';}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));a.download='sendbird-'+U+'.md';a.click();
+  console.log('✅ sendbird-'+U+'.md 저장됨');
+}
+for(const uid of USER_IDS){await extract(uid);}
+console.log('🎉 전체 완료');`;
+
+  navigator.clipboard.writeText(script).then(() => {
+    const log = document.getElementById('log');
+    log.style.display = 'block';
+    log.textContent = '✅ 스크립트가 클립보드에 복사됐어요!\n\n사용법:\n1. Sendbird 대시보드(dashboard.sendbird.com) 열기\n2. F12 → Console 탭\n3. 붙여넣기 (Cmd+V) 후 Enter';
+  });
+}
+</script>
+</body>
+</html>
