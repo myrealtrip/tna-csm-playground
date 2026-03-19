@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <title>redash-connect — Claude Code 스킬</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="https://nowikoes.github.io/naoshima-lunch/pbrain-design.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard Variable', -apple-system, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .pb-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding-bottom: calc(40px + env(safe-area-inset-bottom));
+    }
+
+    /* Header */
+    .pb-header {
+      background: var(--color-slate-900);
+      padding: calc(20px + env(safe-area-inset-top)) 20px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pb-header-badge {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--color-accent);
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.3);
+      border-radius: 6px;
+      padding: 3px 8px;
+      letter-spacing: 0.03em;
+    }
+    .pb-header-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--color-slate-900);
+      padding: 0 20px 36px;
+      text-align: center;
+      animation: fadeUp 0.5s ease both;
+    }
+    .hero-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+    }
+
+    /* Install box */
+    .pb-section { padding: 24px 20px 0; }
+    .pb-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 12px;
+    }
+
+    .install-box {
+      background: var(--color-slate-900);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .install-cmd {
+      flex: 1;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      background: var(--color-accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      min-height: 36px;
+      transition: opacity 0.2s ease;
+    }
+    .copy-btn:active { opacity: 0.7; }
+    .copy-btn.copied { background: #16a34a; }
+
+    .pb-note {
+      font-size: 11.5px;
+      color: var(--color-text-sub);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+    .step-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .step-card:first-child { border-radius: 14px 14px 4px 4px; }
+    .step-card:last-child  { border-radius: 4px 4px 14px 14px; }
+    .step-card:only-child  { border-radius: 14px; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(37,99,235,0.1);
+      color: var(--color-accent);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body { flex: 1; }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      line-height: 1.55;
+    }
+    .step-code {
+      display: inline-block;
+      background: var(--color-slate-900);
+      color: rgba(255,255,255,0.8);
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
+
+    /* Requirements */
+    .req-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .req-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 14px;
+    }
+    .req-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .req-row:first-child { padding-top: 0; }
+    .req-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      flex-shrink: 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="pb-wrap">
+
+    <div class="pb-header">
+      <span class="pb-header-badge">Claude Code Skill</span>
+      <span class="pb-header-title">redash-connect</span>
+    </div>
+
+    <div class="hero">
+      <div style="height:32px"></div>
+      <div class="hero-title">Redash를<br>Claude Code에 연결하세요</div>
+      <div style="height:12px"></div>
+      <div class="hero-sub">대화 한 번으로<br>MCP 서버에 Redash 연동을 자동 설치합니다</div>
+    </div>
+
+    <div class="pb-section">
+      <div class="pb-section-title">설치</div>
+      <div class="install-box">
+        <span class="install-cmd" id="installCmd">curl -fsSL https://raw.githubusercontent.com/myrealtrip/tna-csm-playground/main/redash-connect/install.sh | bash</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyCmd()">복사</button>
+      </div>
+      <div class="pb-note">터미널에 붙여넣고 실행 → Claude Code 재시작</div>
+    </div>
+
+    <div class="pb-section">
+      <div class="pb-section-title">사용 방법</div>
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">스킬 설치</div>
+            <div class="step-desc">위 명령어를 터미널에 실행한 뒤 Claude Code를 재시작합니다</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Claude에게 말하기</div>
+            <div class="step-desc">대화창에 아래와 같이 입력합니다</div>
+            <span class="step-code">Redash 연결해줘</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Claude가 자동으로 처리</div>
+            <div class="step-desc">MCP 서버 탐색 → 연동 코드 작성 → 자격증명 설정 → 빌드까지 대화로 완료합니다</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-section">
+      <div class="pb-section-title">필요 조건</div>
+      <div class="req-card">
+        <div class="req-row">
+          <div class="req-dot"></div>
+          <span>Claude Code 설치됨</span>
+        </div>
+        <div class="req-row">
+          <div class="req-dot"></div>
+          <span>MCP 서버가 Claude Code에 등록됨</span>
+        </div>
+        <div class="req-row">
+          <div class="req-dot"></div>
+          <span>Redash 계정 및 API 키</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:32px"></div>
+
+  </div>
+
+  <script>
+    function copyCmd() {
+      const cmd = document.getElementById('installCmd').textContent;
+      navigator.clipboard.writeText(cmd).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = '복사됨';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '복사';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
