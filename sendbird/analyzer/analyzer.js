@@ -477,6 +477,9 @@ function createProgressPanel() {
 console.log('%c📊 Sendbird Partner Analyzer', 'font-size:18px;font-weight:bold;color:#0071e3;');
 console.log('%c파트너의 진짜 실력, 숫자가 말해줍니다.', 'font-size:12px;color:#888;');
 console.log('%c─────────────────────────────', 'color:#e0e0e0;');
+console.log('%c🙏 Thanks to', 'font-size:11px;font-weight:bold;color:#333;');
+console.log('%c   동훈, 수진님 — 새로운 업무 방식을 제안해주신 AI Lab\n   단우님 — 이 놀이터를 마련해주신 분', 'font-size:11px;color:#666;line-height:1.6;');
+console.log('%c─────────────────────────────', 'color:#e0e0e0;');
 console.log('%cby TNA CSM Playground 🛠️', 'font-size:10px;color:#aaa;');
 
 // MD 대화이력 생성
