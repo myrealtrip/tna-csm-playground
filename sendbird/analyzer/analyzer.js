@@ -68,7 +68,7 @@ function classifyChannel(admmEvents) {
 //            confirmRate, cancelRate, partnerCancel, customerCancel, otherCancel,
 //            postConfirmCancel, avgResponseMinutes, unanswered, preNotice, waitlistCount }
 function aggregateStats(channels, userId) {
-  let confirm = 0, cancel = 0, partnerCancel = 0, customerCancel = 0;
+  let confirm = 0, cancel = 0, waitConfirm = 0, partnerCancel = 0, customerCancel = 0;
   let otherCancel = 0, postConfirmCancel = 0;
   let responseTimes = [], unanswered = 0, preNotice = 0, waitlistCount = 0;
   let partnerName = '';
@@ -85,29 +85,37 @@ function aggregateStats(channels, userId) {
     // 예약 상태 집계
     const classified = classifyChannel(ch.admmEvents);
     for (const res of classified.reservations || []) {
+      if (res.finalStatus === 'WAIT_CONFIRM') waitConfirm++;
       if (res.finalStatus === 'CONFIRM') confirm++;
       if (res.finalStatus === 'CANCEL') {
         cancel++;
         if (res.isPostConfirmCancel) postConfirmCancel++;
         const reason = res.cancelReason || '';
-        if (/파트너|운영사/.test(reason)) partnerCancel++;
+        // 여행자/고객 사유를 먼저 매칭 (더 흔함) — "여행자가 파트너에게" 같은 문구 오분류 방지
+        if (/여행자\s*(개인|사정|요청|취소)|고객\s*(사정|요청|취소)/.test(reason)) customerCancel++;
+        else if (/파트너\s*(사정|요청|취소)|운영사\s*(사정|요청|취소)|운영\s*불가/.test(reason)) partnerCancel++;
         else if (/여행자|고객/.test(reason)) customerCancel++;
+        else if (/파트너|운영사/.test(reason)) partnerCancel++;
         else otherCancel++;
       }
     }
 
-    // 응답시간: 고객 메시지 → 파트너 첫 답장 시간 차 평균
+    // 응답시간: 고객 연속 메시지의 마지막 → 파트너 첫 답장 시간 차
     const msgs = (ch.messages || []).filter(m => m.type !== 'ADMM');
     let i = 0;
     while (i < msgs.length) {
       if (msgs[i].user?.user_id !== userId) {
-        // 고객 메시지 발견 — 이후 파트너 답장 찾기
-        const customerTs = msgs[i].created_at;
+        // 고객 연속 메시지 그룹의 마지막 타임스탬프
+        let lastCustomerTs = msgs[i].created_at;
         let j = i + 1;
-        while (j < msgs.length && msgs[j].user?.user_id !== userId) j++;
-        if (j < msgs.length) {
-          responseTimes.push((msgs[j].created_at - customerTs) / 60000); // 분 단위
+        while (j < msgs.length && msgs[j].user?.user_id !== userId) {
+          lastCustomerTs = msgs[j].created_at;
+          j++;
         }
+        if (j < msgs.length) {
+          responseTimes.push((msgs[j].created_at - lastCustomerTs) / 60000);
+        }
+        // 파트너 답장 없으면 responseTimes에 추가하지 않지만 unanswered로 별도 추적됨
         i = j + 1;
       } else {
         i++;
@@ -134,7 +142,7 @@ function aggregateStats(channels, userId) {
     }
   }
 
-  const total = confirm + cancel;
+  const total = confirm + cancel + waitConfirm;
   const avgResponseMinutes = responseTimes.length
     ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
     : null;
@@ -143,7 +151,7 @@ function aggregateStats(channels, userId) {
     partnerName,
     productNames: [...productNameSet],
     channelCount: channels.length,
-    confirm, cancel, total,
+    confirm, cancel, waitConfirm, total,
     confirmRate: total ? Math.round(confirm / total * 100) : null,
     cancelRate: total ? Math.round(cancel / total * 100) : null,
     partnerCancel, customerCancel, otherCancel, postConfirmCancel,
@@ -152,44 +160,6 @@ function aggregateStats(channels, userId) {
     preNotice,
     waitlistCount,
   };
-}
-
-// 채널 전체에서 주요 이벤트(노쇼, 가이드교체, 일정지연) 감지
-// returns: [{ type, label, date, snippet, createdAt }] 날짜 역순
-function detectEvents(channels, userId) {
-  const PATTERNS = {
-    noshow:   /노쇼|진행\s*불가|독감|B형|보상|사죄|면목/,
-    guide:    /가이드\s*(변경|교체|대체)/,
-    delay:    /스케[쥬줄]?[울를]\s*조율|오픈\s*(지연|전)|미오픈/,
-  };
-  const TYPE_LABEL = { noshow: '노쇼', guide: '가이드 교체', delay: '일정 지연' };
-
-  const events = [];
-  for (const ch of channels) {
-    const msgs = (ch.messages || []).filter(m => m.type !== 'ADMM' && m.user?.user_id === userId);
-    for (const msg of msgs) {
-      const text = msg.message || '';
-      for (const [type, re] of Object.entries(PATTERNS)) {
-        if (re.test(text)) {
-          const date = new Date(msg.created_at).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' });
-          const snippet = text.slice(0, 60).replace(/\n/g, ' ');
-          events.push({ type, label: TYPE_LABEL[type], date, snippet, createdAt: msg.created_at });
-          break; // 메시지당 하나의 이벤트 유형만
-        }
-      }
-    }
-  }
-
-  // 날짜 역순, 유형+날짜 중복 제거
-  const seen = new Set();
-  return events
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .filter(e => {
-      const key = `${e.type}-${e.date}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
 }
 
 // stats: return value of aggregateStats()
@@ -319,7 +289,8 @@ function renderReport(stats, period) {
   </div>
 
   <div class="data-note">
-    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 총 예약 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel})</div>
+    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 총 예약 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})</div>
+    ${(stats._warnings || []).map(w => `<div style="color:#e65100;font-size:10px;margin-top:6px;">⚠️ ${w}</div>`).join('')}
   </div>
 
   <div class="cc-card">
@@ -391,8 +362,10 @@ async function fetchMessages(appId, channelUrl) {
   const H = { 'app-id': appId, 'accept': 'application/json' };
   const messages = [];
   let messageTs = Date.now();
+  let prevTs = null;
+  const MAX_PAGES = 50; // 최대 10,000 메시지 (200 × 50)
 
-  while (true) {
+  for (let page = 0; page < MAX_PAGES; page++) {
     const qs = new URLSearchParams({
       message_ts: messageTs,
       prev_limit: 200,
@@ -403,13 +376,19 @@ async function fetchMessages(appId, channelUrl) {
       `${BASE}/group_channels/${encodeURIComponent(channelUrl)}/messages?${qs}`,
       { headers: H, credentials: 'include' }
     );
-    if (!res.ok) break; // 오류 시 지금까지 수집한 것만 반환
+    if (!res.ok) {
+      console.warn(`[analyzer] 메시지 수집 중단 (HTTP ${res.status}) — ${messages.length}개 수집됨`);
+      break;
+    }
     const data = await res.json();
     const batch = data.messages || [];
     if (!batch.length) break;
     messages.unshift(...batch);
     messageTs = batch[0].created_at - 1;
-    if (batch.length < 200) break; // 마지막 페이지
+    // 타임스탬프가 전진하지 않으면 무한루프 방지
+    if (prevTs !== null && messageTs >= prevTs) break;
+    prevTs = messageTs;
+    if (batch.length < 200) break;
   }
   return messages;
 }
@@ -552,11 +531,14 @@ async function runAnalyzer(appId, userId, monthsBack) {
     panel.update(`채널 ${rawChannels.length}개 발견 — 메시지 수집 중...`, 10);
 
     const channels = [];
+    let truncatedChannels = 0;
     for (let i = 0; i < rawChannels.length; i++) {
       const ch = rawChannels[i];
       const shortUrl = ch.channel_url ? ch.channel_url.slice(-12) : String(i);
       panel.update(`[${i + 1}/${rawChannels.length}] ${ch.name || shortUrl}`, 10 + (i / rawChannels.length) * 80);
       const messages = await fetchMessages(appId, ch.channel_url);
+      // 메시지 수가 10,000개(MAX_PAGES × 200) 한도에 도달했으면 잘린 것
+      if (messages.length >= 10000) truncatedChannels++;
       const admmEvents = messages.filter(m => m.type === 'ADMM').map(parseAdmm).filter(Boolean);
       channels.push({ ...ch, messages, admmEvents });
     }
@@ -567,6 +549,10 @@ async function runAnalyzer(appId, userId, monthsBack) {
       label: monthsBack ? `최근 ${monthsBack}개월` : '전체',
     };
     const stats = aggregateStats(channels, userId);
+    if (truncatedChannels > 0) {
+      stats._warnings = stats._warnings || [];
+      stats._warnings.push(`${truncatedChannels}개 채널에서 메시지가 10,000개 한도로 잘렸어요. 오래된 메시지가 누락될 수 있습니다.`);
+    }
     const html = renderReport(stats, period);
 
     panel.update('리포트 다운로드 중...', 98);
