@@ -212,9 +212,9 @@ function renderReport(stats, period) {
     '2. 고객 불만 또는 위험 신호가 있었는지',
     '3. 예약 취소/변경 패턴 — 어떤 상황에서 취소가 발생했는지',
     '4. 운영 상 반복되는 문제나 개선이 필요한 부분',
-    '5. MRT 운영팀이 취해야 할 액션',
+    '5. MRT 사업개발팀에서 취해야 할 액션',
     '',
-    `참고 수치: 확정률 ${pct(stats.confirmRate)} · 취소율 ${pct(stats.cancelRate)} · 평균 응답 ${min(stats.avgResponseMinutes)} · 채널 ${stats.channelCount}개`,
+    `참고 수치: 확정률 ${pct(stats.confirmRate)} · 취소율 ${pct(stats.cancelRate)} · 평균 응답 ${min(stats.avgResponseMinutes)} · 대화방 ${stats.channelCount}개`,
   ].join('\n');
 
   return `<!DOCTYPE html>
@@ -224,44 +224,44 @@ function renderReport(stats, period) {
 <title>${partnerNameSafe} 파트너 분석 리포트</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f7; padding: 32px 16px; }
-  .wrap { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 2px; }
-  .meta-products { font-size: 11px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-  .meta { font-size: 11px; color: #888; margin-bottom: 24px; }
-  .cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
-  .card { border-radius: 10px; padding: 14px; text-align: center; }
-  .card .val { font-size: 22px; font-weight: 700; color: white; }
-  .card .lbl { font-size: 9px; color: rgba(255,255,255,0.85); margin-top: 3px; }
-  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: start; }
-  .section { background: white; border-radius: 10px; padding: 14px; }
-  .section-title { font-size: 11px; font-weight: 700; color: #111; margin-bottom: 10px; }
-  .row { display: grid; grid-template-columns: 1fr auto 24px; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; min-height: 28px; gap: 8px; }
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f7; padding: 40px 20px; }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .meta-products { font-size: 13px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+  .meta { font-size: 13px; color: #888; margin-bottom: 28px; }
+  .cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+  .card { border-radius: 12px; padding: 20px 14px; text-align: center; }
+  .card .val { font-size: 28px; font-weight: 700; color: white; }
+  .card .lbl { font-size: 12px; color: rgba(255,255,255,0.85); margin-top: 4px; }
+  .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; align-items: start; }
+  .section { background: white; border-radius: 12px; padding: 20px; }
+  .section-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 14px; }
+  .row { display: grid; grid-template-columns: 1fr auto 28px; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; min-height: 36px; gap: 10px; }
   .row:last-child { border-bottom: none; }
   .row-label { color: #555; }
   .row-value { font-weight: 600; color: #111; text-align: right; }
-  .row-status { font-size: 10px; text-align: center; }
-  .cancel-section { background: white; border-radius: 10px; padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
-  .cancel-item { text-align: center; padding: 10px 8px; background: #f9f9fb; border-radius: 8px; }
-  .cancel-item .c-val { font-size: 18px; font-weight: 700; color: #111; }
-  .cancel-item .c-lbl { font-size: 9px; color: #888; margin-top: 3px; }
-  .data-note { background: #f9f9fb; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-  .data-note-body { font-size: 10px; color: #777; line-height: 1.6; }
-  .cc-card { background: white; border-radius: 10px; padding: 18px; margin-bottom: 16px; border: 1.5px solid #e8e0f8; }
-  .cc-title { font-size: 13px; font-weight: 700; color: #6e40c9; margin-bottom: 12px; }
-  .cc-step { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; font-size: 12px; color: #444; line-height: 1.5; }
-  .cc-num { background: #6e40c9; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-  .cc-code { background: #f0f0f5; border-radius: 4px; padding: 1px 6px; font-family: monospace; font-size: 11px; }
-  .cc-btn { display: block; width: 100%; background: #6e40c9; color: white; border: none; border-radius: 8px; padding: 11px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 14px; }
+  .row-status { font-size: 13px; text-align: center; }
+  .cancel-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 14px; display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .cancel-item { text-align: center; padding: 14px 8px; background: #f9f9fb; border-radius: 10px; }
+  .cancel-item .c-val { font-size: 24px; font-weight: 700; color: #111; }
+  .cancel-item .c-lbl { font-size: 12px; color: #888; margin-top: 4px; }
+  .data-note { background: #f9f9fb; border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+  .data-note-body { font-size: 13px; color: #777; line-height: 1.7; }
+  .cc-card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1.5px solid #e8e0f8; }
+  .cc-title { font-size: 16px; font-weight: 700; color: #6e40c9; margin-bottom: 14px; }
+  .cc-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; color: #444; line-height: 1.5; }
+  .cc-num { background: #6e40c9; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .cc-code { background: #f0f0f5; border-radius: 4px; padding: 2px 8px; font-family: monospace; font-size: 13px; }
+  .cc-btn { display: block; width: 100%; background: #6e40c9; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 16px; }
   .cc-btn:hover { background: #5a32a3; }
-  .cc-hint { font-size: 10px; color: #999; text-align: center; margin-top: 6px; }
+  .cc-hint { font-size: 12px; color: #999; text-align: center; margin-top: 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>${partnerNameSafe} <span style="font-size:13px;font-weight:400;color:#888;">${period.userId}</span></h1>
   <div class="meta-products">${productLine}</div>
-  <div class="meta">분석 기간: ${period.label} &nbsp;|&nbsp; 채널 ${stats.channelCount}개 &nbsp;|&nbsp; ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} 생성</div>
+  <div class="meta">분석 기간: ${period.label} &nbsp;|&nbsp; 대화방 ${stats.channelCount}개 &nbsp;|&nbsp; ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })} 생성</div>
 
   <div class="cards">
     <div class="card" style="background:#0071e3;">
@@ -284,13 +284,13 @@ function renderReport(stats, period) {
       <div class="row"><span class="row-label">확정률</span><span class="row-value">${pct(stats.confirmRate)}</span><span class="row-status">${stats.confirmRate == null ? '–' : statusIcon(stats.confirmRate >= 90, stats.confirmRate < 90)}</span></div>
       <div class="row"><span class="row-label">파트너 임의취소</span><span class="row-value">${stats.partnerCancel}건</span><span class="row-status">${statusIcon(stats.partnerCancel === 0, stats.partnerCancel > 0)}</span></div>
       <div class="row"><span class="row-label">확정 후 취소</span><span class="row-value">${stats.postConfirmCancel}건</span><span class="row-status">${statusIcon(stats.postConfirmCancel === 0, stats.postConfirmCancel > 0)}</span></div>
-      <div class="row"><span class="row-label">미답변 채널</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
+      <div class="row"><span class="row-label">미답변 대화방</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
     </div>
     <div class="section">
       <div class="section-title">💬 고객 응대 품질</div>
       <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${stats.avgResponseMinutes == null ? '–' : statusIcon(stats.avgResponseMinutes <= 60, stats.avgResponseMinutes > 60)}</span></div>
       <div class="row"><span class="row-label">응답률</span><span class="row-value">${pct(stats.responseRate)}</span><span class="row-status">${stats.responseRate == null ? '–' : statusIcon(stats.responseRate >= 90, stats.responseRate < 90)}</span></div>
-      <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}채널</span><span class="row-status">📨</span></div>
+      <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}건</span><span class="row-status">📨</span></div>
       <div class="row"><span class="row-label">무시된 질문</span><span class="row-value">${stats.ignoredQuestions}건 / ${stats.customerQuestions}건</span><span class="row-status">${statusIcon(stats.ignoredQuestions === 0, stats.ignoredQuestions > 0)}</span></div>
     </div>
   </div>
@@ -322,7 +322,7 @@ function renderReport(stats, period) {
   </div>
 
   <div class="data-note">
-    <div class="data-note-body">채널 ${stats.channelCount}개 분석 · 예약 발생 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})${stats.channelCount - stats.total > 0 ? ` · 단순 문의 ${stats.channelCount - stats.total}건` : ''}</div>
+    <div class="data-note-body">대화방 ${stats.channelCount}개 분석 · 예약 발생 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})${stats.channelCount - stats.total > 0 ? ` · 단순 문의 ${stats.channelCount - stats.total}건` : ''}</div>
     ${(stats._warnings || []).map(w => `<div style="color:#e65100;font-size:10px;margin-top:6px;">⚠️ ${w}</div>`).join('')}
   </div>
 
@@ -511,7 +511,7 @@ console.log('%cby TNA CSM Playground 🛠️', 'font-size:10px;color:#aaa;');
 function generateMd(channels, userId) {
   const dt = ts => new Date(ts).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
   const statusLabels = { WAIT_CONFIRM: '예약 대기', CONFIRM: '예약 확정', CANCEL: '예약 취소' };
-  let md = `# Sendbird 대화이력 — ${userId}\n> 추출: ${dt(Date.now())}\n> 채널: ${channels.length}개\n\n---\n\n`;
+  let md = `# Sendbird 대화이력 — ${userId}\n> 추출: ${dt(Date.now())}\n> 대화방: ${channels.length}개\n\n---\n\n`;
   for (let i = 0; i < channels.length; i++) {
     const ch = channels[i];
     const mb = (ch.members || []).map(m => (m.nickname || m.user_id) + '(' + m.user_id + ')').join(', ');
@@ -556,7 +556,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
   const panel = createProgressPanel();
 
   try {
-    panel.update('채널 목록 조회 중...', 5);
+    panel.update('대화방 목록 조회 중...', 5);
     let rawChannels;
     try {
       rawChannels = await fetchChannels(appId, userId, sinceMs);
@@ -567,10 +567,10 @@ async function runAnalyzer(appId, userId, monthsBack) {
       throw e;
     }
     if (!rawChannels.length) {
-      panel.done(`⚠️ "${userId}"의 채널이 없어요. User ID를 다시 확인해주세요.`);
+      panel.done(`⚠️ "${userId}"의 대화방이 없어요. User ID를 다시 확인해주세요.`);
       return;
     }
-    panel.update(`채널 ${rawChannels.length}개 발견 — 메시지 수집 중...`, 10);
+    panel.update(`대화방 ${rawChannels.length}개 발견 — 메시지 수집 중...`, 10);
 
     const channels = [];
     let truncatedChannels = 0;
@@ -595,7 +595,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     const stats = aggregateStats(channels, userId);
     if (truncatedChannels > 0) {
       stats._warnings = stats._warnings || [];
-      stats._warnings.push(`${truncatedChannels}개 채널에서 메시지가 10,000개 한도로 잘렸어요. 오래된 메시지가 누락될 수 있습니다.`);
+      stats._warnings.push(`${truncatedChannels}개 대화방에서 메시지가 10,000개 한도로 잘렸어요. 오래된 메시지가 누락될 수 있습니다.`);
     }
     const html = renderReport(stats, period);
 
@@ -631,7 +631,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
     const mdButtons = mdContent
-      ? `<a href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>`
+      ? `<a href="${mdBlobUrl}" target="_blank" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 대화 원문 보기</a>`
       : '';
     overlay.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
       <div style="font-size:40px;margin-bottom:8px;">✅</div>
@@ -640,7 +640,7 @@ async function runAnalyzer(appId, userId, monthsBack) {
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;"><span>확정률</span><strong>${stats.confirmRate != null ? stats.confirmRate + '%' : 'N/A'}</strong></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${stats.cancelRate != null ? stats.cancelRate + '%' : 'N/A'}</strong></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${stats.responseRate != null ? stats.responseRate + '%' : 'N/A'}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>채널</span><strong>${stats.channelCount}개</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>대화방</span><strong>${stats.channelCount}개</strong></div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
         <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
