@@ -654,11 +654,11 @@ async function runAnalyzer(appId, userId, monthsBack) {
     panel.done();
     panel.backdrop.remove();
     document.body.appendChild(overlay);
-    overlay.querySelector('#_analyzer_close').onclick = () => overlay.remove();
-    // SPA 라우팅/포커스 이동으로 오버레이가 사라지지 않도록 이벤트 전파 완전 차단
-    ['click', 'mousedown', 'mouseup', 'pointerdown'].forEach(evt => {
-      overlay.addEventListener(evt, (e) => e.stopPropagation(), true);
-    });
+    overlay.querySelector('#_analyzer_close').addEventListener('click', () => overlay.remove());
+    // 배경(overlay 자체) 클릭 시만 전파 차단 — 내부 버튼은 정상 동작
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) e.stopPropagation();
+    }, true);
   } catch (err) {
     console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
