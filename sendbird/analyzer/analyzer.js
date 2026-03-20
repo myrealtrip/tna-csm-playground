@@ -630,24 +630,24 @@ async function runAnalyzer(appId, userId, monthsBack) {
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
     const mdButtons = mdContent
-      ? `<a href="${mdBlobUrl}" target="_blank" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 대화 원문 보기</a>`
+      ? `<a href="${mdBlobUrl}" target="_blank" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;text-align:center;">📝 대화 원문 보기</a>`
       : '';
-    overlay.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-      <div style="font-size:40px;margin-bottom:8px;">✅</div>
-      <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:16px;">${esc(stats.partnerName)} 분석 완료</div>
-      <div style="text-align:left;background:#f5f5f7;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;"><span>확정률</span><strong>${stats.confirmRate != null ? stats.confirmRate + '%' : 'N/A'}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${stats.cancelRate != null ? stats.cancelRate + '%' : 'N/A'}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${stats.responseRate != null ? stats.responseRate + '%' : 'N/A'}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>대화방</span><strong>${stats.channelCount}개</strong></div>
+    overlay.innerHTML = `<div style="background:white;border-radius:20px;padding:40px 48px;max-width:500px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+      <div style="font-size:48px;margin-bottom:12px;">✅</div>
+      <div style="font-size:20px;font-weight:700;color:#111;margin-bottom:20px;">${esc(stats.partnerName)} 분석 완료</div>
+      <div style="text-align:left;background:#f5f5f7;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;"><span>확정률</span><strong>${stats.confirmRate != null ? stats.confirmRate + '%' : 'N/A'}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${stats.cancelRate != null ? stats.cancelRate + '%' : 'N/A'}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${stats.responseRate != null ? stats.responseRate + '%' : 'N/A'}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;border-top:1px solid #e8e8e8;"><span>대화방</span><strong>${stats.channelCount}개</strong></div>
       </div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;text-align:center;">📄 리포트 열기</a>
         ${mdButtons}
       </div>
-      <div style="font-size:10px;color:#34c759;line-height:1.5;margin-bottom:6px;">✓ ${mdContent ? '두 파일 모두' : '리포트가'} 브라우저 다운로드 폴더에 저장됨</div>
-      <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요${mdContent ? ' · MD는 Claude Code 분석용' : ''}</div>
-      <button id="_analyzer_close" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
+      <div style="font-size:13px;color:#34c759;line-height:1.6;margin-bottom:8px;">✓ ${mdContent ? '두 파일 모두' : '리포트가'} 브라우저 다운로드 폴더에 저장됨</div>
+      <div style="font-size:13px;color:#999;line-height:1.6;margin-bottom:18px;">리포트는 새 탭에서 열려요${mdContent ? ' · MD는 Claude Code 분석용' : ''}</div>
+      <button id="_analyzer_close" style="background:#f0f0f5;color:#333;border:none;border-radius:10px;padding:12px 36px;font-size:15px;font-weight:600;cursor:pointer;">닫기</button>
     </div>`;
 
     // 진행 패널 + backdrop 제거 후 오버레이 표시
