@@ -236,11 +236,11 @@ function renderReport(stats, period) {
   .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: start; }
   .section { background: white; border-radius: 10px; padding: 14px; }
   .section-title { font-size: 11px; font-weight: 700; color: #111; margin-bottom: 10px; }
-  .row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; min-height: 28px; }
+  .row { display: grid; grid-template-columns: 1fr auto 24px; align-items: center; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 10px; min-height: 28px; gap: 8px; }
   .row:last-child { border-bottom: none; }
   .row-label { color: #555; }
-  .row-value { font-weight: 600; color: #111; }
-  .row-status { margin-left: 6px; font-size: 10px; }
+  .row-value { font-weight: 600; color: #111; text-align: right; }
+  .row-status { font-size: 10px; text-align: center; }
   .cancel-section { background: white; border-radius: 10px; padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
   .cancel-item { text-align: center; padding: 10px 8px; background: #f9f9fb; border-radius: 8px; }
   .cancel-item .c-val { font-size: 18px; font-weight: 700; color: #111; }
