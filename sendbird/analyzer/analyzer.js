@@ -108,14 +108,13 @@ function aggregateStats(channels, userId) {
         cancel++;
         if (res.isPostConfirmCancel) postConfirmCancel++;
         const reason = res.cancelReason || '';
-        // 구체적 패턴 → 일반 패턴 순으로 분류
+        // 세부 태그 (메인 카테고리와 별도 — 중복 집계)
         if (/기상|날씨|태풍|우천|폭우|폭설|지진|천재/.test(reason)) weatherCancel++;
-        else if (/최소\s*인원|인원\s*미달|모객/.test(reason)) minPartyCancel++;
-        else if (/MRT|마이리얼트립|운영팀|플랫폼/.test(reason)) platformCancel++;
-        else if (/여행자\s*(개인|사정|요청|취소)|고객\s*(사정|요청|취소)/.test(reason)) customerCancel++;
-        else if (/파트너\s*(사정|요청|취소)|운영사\s*(사정|요청|취소)|운영\s*불가/.test(reason)) partnerCancel++;
-        else if (/여행자|고객|중복\s*예약|일정\s*변경/.test(reason)) customerCancel++;
-        else if (/파트너|운영사/.test(reason)) partnerCancel++;
+        if (/최소\s*인원|인원\s*미달|모객/.test(reason)) minPartyCancel++;
+        if (/MRT|마이리얼트립|운영팀|플랫폼/.test(reason)) platformCancel++;
+        // 메인 카테고리 (고객 / 파트너 / 미분류 — 합계 = cancel)
+        if (/여행자|고객|중복\s*예약|일정\s*변경/.test(reason)) customerCancel++;
+        else if (/파트너|운영사|운영\s*불가/.test(reason)) partnerCancel++;
         else otherCancel++;
       }
     }
