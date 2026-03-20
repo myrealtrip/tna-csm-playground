@@ -9,7 +9,7 @@
 
 ### 해결하려는 문제
 
-PB(Private Brand) 사업팀은 현지 파트너의 운영 품질을 모니터링해야 한다. 기존에는:
+중화권팀은 현지 파트너의 운영 품질을 모니터링해야 한다. 기존에는:
 
 - Sendbird 대시보드에서 대화를 **하나하나 눈으로 읽으며** 확인
 - 확정률, 취소 패턴, 응답 속도 등을 **수작업으로 집계**
@@ -319,4 +319,4 @@ git push origin main
 - **설치 페이지**: https://myrealtrip.github.io/tna-csm-playground/sendbird/
 - **GitHub 레포**: https://github.com/myrealtrip/tna-csm-playground
 - **Sendbird 대시보드**: https://dashboard.sendbird.com
-- **PB 사업 Confluence**: https://myrealtrip.atlassian.net/wiki/spaces/TA/pages/5218861057
+- **중화권팀 Confluence**: https://myrealtrip.atlassian.net/wiki/spaces/TA
