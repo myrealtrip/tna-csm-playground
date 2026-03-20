@@ -637,9 +637,9 @@ async function runAnalyzer(appId, userId, monthsBack) {
       <div style="font-size:40px;margin-bottom:8px;">✅</div>
       <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:16px;">${esc(stats.partnerName)} 분석 완료</div>
       <div style="text-align:left;background:#f5f5f7;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;"><span>확정률</span><strong>${pct(stats.confirmRate)}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${pct(stats.cancelRate)}</strong></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${pct(stats.responseRate)}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;"><span>확정률</span><strong>${stats.confirmRate != null ? stats.confirmRate + '%' : 'N/A'}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>취소율</span><strong>${stats.cancelRate != null ? stats.cancelRate + '%' : 'N/A'}</strong></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${stats.responseRate != null ? stats.responseRate + '%' : 'N/A'}</strong></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;padding:4px 0;border-top:1px solid #e8e8e8;"><span>채널</span><strong>${stats.channelCount}개</strong></div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
