@@ -656,6 +656,10 @@ async function runAnalyzer(appId, userId, monthsBack) {
     panel.backdrop.remove();
     document.body.appendChild(overlay);
     overlay.querySelector('#_analyzer_close').onclick = () => overlay.remove();
+    // SPA 라우팅/포커스 이동으로 오버레이가 사라지지 않도록 이벤트 전파 완전 차단
+    ['click', 'mousedown', 'mouseup', 'pointerdown'].forEach(evt => {
+      overlay.addEventListener(evt, (e) => e.stopPropagation(), true);
+    });
   } catch (err) {
     console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
