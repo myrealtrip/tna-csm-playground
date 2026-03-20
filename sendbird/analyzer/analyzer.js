@@ -599,37 +599,41 @@ async function runAnalyzer(appId, userId, monthsBack) {
     }
     const html = renderReport(stats, period);
 
-    panel.update('리포트 다운로드 중...', 98);
+    panel.update('리포트 생성 중...', 95);
     const today = new Date().toISOString().slice(0, 10);
-
-    const dl = (content, filename, type) => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([content], { type }));
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    };
-
     const reportFile = `sendbird-report-${userId}-${periodTag}-${today}.html`;
     const mdFile = `sendbird-${userId}-${periodTag}-${today}.md`;
 
-    // Blob URL을 유지해서 오버레이 버튼에서 열 수 있도록
-    const reportBlobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
-    const mdContent = generateMd(channels, userId);
-    const mdBlobUrl = URL.createObjectURL(new Blob([mdContent], { type: 'text/markdown' }));
+    let mdContent;
+    try { mdContent = generateMd(channels, userId); } catch (e) {
+      console.warn('[analyzer] MD 생성 실패, 리포트만 다운로드:', e);
+      mdContent = null;
+    }
 
-    dl(html, reportFile, 'text/html');
-    await new Promise(r => setTimeout(r, 500));
-    dl(mdContent, mdFile, 'text/markdown');
+    const reportBlob = new Blob([html], { type: 'text/html' });
+    const reportBlobUrl = URL.createObjectURL(reportBlob);
+    const mdBlobUrl = mdContent ? URL.createObjectURL(new Blob([mdContent], { type: 'text/markdown' })) : null;
 
-    panel.done(); // 패널 제거, backdrop 유지
+    // 다운로드
+    panel.update('다운로드 중...', 98);
+    const dlFile = (url, filename) => {
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    };
+    dlFile(reportBlobUrl, reportFile);
+    if (mdContent) {
+      await new Promise(r => setTimeout(r, 500));
+      dlFile(mdBlobUrl, mdFile);
+    }
 
-    // 완료 오버레이 — 진행 패널 backdrop 재사용
-    const bd = panel.backdrop;
-    bd.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
-    bd.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    // 완료 오버레이 — 새 엘리먼트로 생성
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
+    const mdButtons = mdContent
+      ? `<a href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>`
+      : '';
+    overlay.innerHTML = `<div style="background:white;border-radius:16px;padding:32px 40px;max-width:420px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
       <div style="font-size:40px;margin-bottom:8px;">✅</div>
       <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:16px;">${esc(stats.partnerName)} 분석 완료</div>
       <div style="text-align:left;background:#f5f5f7;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
@@ -640,12 +644,18 @@ async function runAnalyzer(appId, userId, monthsBack) {
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
         <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📄 리포트 열기</a>
-        <a href="${mdBlobUrl}" download="${mdFile}" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:8px;padding:10px;font-size:12px;font-weight:600;text-align:center;">📝 MD 저장</a>
+        ${mdButtons}
       </div>
-      <div style="font-size:10px;color:#34c759;line-height:1.5;margin-bottom:6px;">✓ 두 파일 모두 브라우저 다운로드 폴더에 저장됨</div>
-      <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요 · MD는 Claude Code 분석용</div>
-      <button onclick="this.closest('div[style*=fixed]').remove()" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
+      <div style="font-size:10px;color:#34c759;line-height:1.5;margin-bottom:6px;">✓ ${mdContent ? '두 파일 모두' : '리포트가'} 브라우저 다운로드 폴더에 저장됨</div>
+      <div style="font-size:10px;color:#999;line-height:1.5;margin-bottom:14px;">리포트는 새 탭에서 열려요${mdContent ? ' · MD는 Claude Code 분석용' : ''}</div>
+      <button id="_analyzer_close" style="background:#f0f0f5;color:#333;border:none;border-radius:8px;padding:9px 28px;font-size:12px;font-weight:600;cursor:pointer;">닫기</button>
     </div>`;
+
+    // 진행 패널 + backdrop 제거 후 오버레이 표시
+    panel.done();
+    panel.backdrop.remove();
+    document.body.appendChild(overlay);
+    overlay.querySelector('#_analyzer_close').onclick = () => overlay.remove();
   } catch (err) {
     console.error('[analyzer]', err);
     panel.error(err.message || '알 수 없는 오류');
