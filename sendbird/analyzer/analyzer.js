@@ -290,7 +290,7 @@ function renderReport(stats, period) {
       <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${stats.avgResponseMinutes == null ? '–' : statusIcon(stats.avgResponseMinutes <= 60, stats.avgResponseMinutes > 60)}</span></div>
       <div class="row"><span class="row-label">응답률</span><span class="row-value">${pct(stats.responseRate)}</span><span class="row-status">${stats.responseRate == null ? '–' : statusIcon(stats.responseRate >= 90, stats.responseRate < 90)}</span></div>
       <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}건</span><span class="row-status">📨</span></div>
-      <div class="row"><span class="row-label">무시된 질문</span><span class="row-value">${stats.ignoredQuestions}건 / ${stats.customerQuestions}건</span><span class="row-status">${statusIcon(stats.ignoredQuestions === 0, stats.ignoredQuestions > 0)}</span></div>
+      <div class="row"><span class="row-label">무시된 질문</span><span class="row-value">${stats.ignoredQuestions}건 (${stats.customerQuestions ? Math.round(stats.ignoredQuestions / stats.customerQuestions * 100) : 0}%)</span><span class="row-status">${statusIcon(stats.ignoredQuestions === 0, stats.ignoredQuestions > 0)}</span></div>
     </div>
   </div>
 
