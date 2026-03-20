@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <title>파리·남프랑스 PB 협업 제안 v2</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" as="style" crossorigin
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://nowikoes.github.io/naoshima-lunch/pbrain-design.css">
+  <style>
+    body {
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: var(--color-bg);
+      color: var(--color-text);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── 히어로 애니메이션 ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .pb-header .anim-1 { animation: fadeUp 0.6s ease both; animation-delay: 0.1s; }
+    .pb-header .anim-2 { animation: fadeUp 0.6s ease both; animation-delay: 0.25s; }
+    .pb-header .anim-3 { animation: fadeUp 0.6s ease both; animation-delay: 0.4s; }
+
+    /* ── 트렌드 카드 ── */
+    .trend-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .trend-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .trend-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .trend-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .trend-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--color-text-sub);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .trend-desc {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      line-height: 1.55;
+    }
+
+    /* ── 상품 카드 (확장) ── */
+    .product-list { display: flex; flex-direction: column; gap: 12px; }
+    .product-card {
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      background: var(--color-surface);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover { transform: translateY(-2px); }
+    .product-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .product-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--color-accent); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .product-name { font-size: 15px; font-weight: 600; color: var(--color-text); }
+    .product-sub { font-size: 12px; color: var(--color-text-sub); margin-top: 2px; }
+    .product-price {
+      margin-left: auto;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+    .product-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .product-desc {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      line-height: 1.6;
+    }
+    .product-includes {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--color-border);
+      font-size: 12px;
+      color: var(--color-text-sub);
+      line-height: 1.6;
+    }
+
+    /* ── 가격 계층 ── */
+    .tier-section {
+      margin-bottom: 20px;
+    }
+    .tier-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--color-accent);
+      display: inline-block;
+    }
+
+    /* ── 수수료 모델 ── */
+    .commission-bar {
+      display: flex;
+      height: 36px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .commission-bar .zone-loss {
+      flex: 3;
+      background: var(--color-bg-sub);
+      color: var(--color-text-sub);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .commission-bar .zone-mid {
+      flex: 4;
+      background: #DBEAFE;
+      color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .commission-bar .zone-full {
+      flex: 3;
+      background: var(--color-accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── 차량 전략 ── */
+    .vehicle-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .vehicle-card {
+      flex: 1;
+      background: var(--color-bg-sub);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .vehicle-icon { font-size: 20px; margin-bottom: 6px; }
+    .vehicle-pax { font-size: 12px; font-weight: 700; color: var(--color-text); margin-bottom: 2px; }
+    .vehicle-type { font-size: 11px; color: var(--color-text-sub); }
+
+    /* ── 논의 과제 ── */
+    .discussion-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .discussion-item:last-child { border-bottom: none; }
+    .discussion-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--color-accent); color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .discussion-title {
+      font-size: 14px; font-weight: 600; color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    .discussion-desc {
+      font-size: 13px; color: var(--color-text-sub); line-height: 1.55;
+    }
+
+    /* ── 타임라인 ── */
+    .timeline {
+      position: relative;
+      padding: 0 0 8px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .tl-item {
+      position: relative;
+      padding: 0 0 24px 52px;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: 12px; top: 3px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      border: 3px solid var(--color-bg);
+      box-sizing: border-box;
+    }
+    .tl-dot--gray { background: var(--color-text-sub); }
+    .tl-date {
+      font-size: 11.5px; font-weight: 600;
+      color: var(--color-accent);
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+    .tl-title {
+      font-size: 15px; font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    .tl-desc {
+      font-size: 13.5px;
+      color: var(--color-text-sub);
+      line-height: 1.55;
+    }
+
+    /* ── R&R ── */
+    .role-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .role-box {
+      background: var(--color-bg-sub);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .role-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-accent);
+      margin-bottom: 10px;
+    }
+    .role-item {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      line-height: 1.65;
+    }
+
+    /* ── 비교표 ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .compare-table th {
+      background: var(--color-bg-sub);
+      font-weight: 600;
+      color: var(--color-text);
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .compare-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-sub);
+    }
+    .compare-table tr:hover td {
+      background: var(--color-bg-sub);
+    }
+    .compare-table .price-cell {
+      font-weight: 700;
+      color: var(--color-accent);
+      white-space: nowrap;
+    }
+
+    /* ── PDP 링크 ── */
+    .pdp-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .pdp-link:hover { opacity: 0.7; }
+    .pdp-link::after {
+      content: '\2192';
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="pb-wrap">
+
+  <!-- ═══ 헤더 ═══ -->
+  <header class="pb-header" style="padding-top: calc(env(safe-area-inset-top) + 20px);">
+    <div class="anim-1" style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+      <span class="pb-header-badge">마이리얼트립 PB</span>
+      <span class="pb-header-badge">v2</span>
+    </div>
+    <h1 class="anim-2" style="font-size:24px; font-weight:800; color:#fff; margin:0 0 6px; line-height:1.3;">
+      파리·남프랑스<br>PB 상품 협업 제안
+    </h1>
+    <p class="anim-3" style="font-size:14px; color:rgba(255,255,255,0.6); margin:0;">
+      정희태 가이드님께 · 2026년 3월 · 2차 제안
+    </p>
+  </header>
+
+  <!-- ═══ 개요 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">협업 개요</p>
+    <div class="pb-card">
+      <p style="font-size:14px; color:var(--color-text); line-height:1.7; margin:0 0 12px;">
+        1차 제안(3월 초) 이후 <strong>5개 코스 초안을 기반으로 상품 기획을 구체화</strong>했습니다.
+        시장 트렌드 분석, 가격 전략, 수수료 모델, 운영 구조까지 정리했으며,
+        <strong>8개 상품 포트폴리오</strong>로 확장 제안드립니다.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="pb-tag--accent">8개 상품</span>
+        <span class="pb-tag--neutral">파리 5종</span>
+        <span class="pb-tag--neutral">니스 3종</span>
+        <span class="pb-tag--ok">전 상품 최소 2인 출발</span>
+        <span class="pb-tag--ok">입장료 전액 포함</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 시장 데이터 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">프랑스 시장 데이터</p>
+    <p class="pb-subtitle">마이리얼트립 내부 실적 기반 · 2025년</p>
+    <div class="trend-grid" style="margin-top: 12px;">
+      <div class="trend-card">
+        <div class="trend-num">347.6억</div>
+        <div class="trend-label">파리 연간 거래액 (2025)</div>
+        <div class="trend-desc">유럽 도시 중 로마에 이은 2위. 월평균 29억, 피크월(9월) 41.2억. 전환율 13.5%로 유럽 상위.</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-num">7.5억</div>
+        <div class="trend-label">니스 연간 거래액 (2025)</div>
+        <div class="trend-desc">파리 대비 2.1%에 불과하지만, 객단가 37만원(파리 16만원의 2.3배). 고단가 프리미엄 체험 상품에 적합한 시장.</div>
+      </div>
+      <div class="trend-card" style="background: var(--color-bg-sub);">
+        <div style="font-size: 13px; font-weight: 600; color: var(--color-text); margin-bottom: 10px;">파리 카테고리별 비중 (2025 Q4-2026 Q1)</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:120px; height:8px; border-radius:4px; background:var(--color-accent);"></div>
+            <span style="font-size:12px; color:var(--color-text-sub);">티켓류 34.6%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:70px; height:8px; border-radius:4px; background:var(--color-accent); opacity:0.7;"></div>
+            <span style="font-size:12px; color:var(--color-text-sub);"><strong>박물관/미술관 투어 19.2%</strong></span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:50px; height:8px; border-radius:4px; background:var(--color-accent); opacity:0.5;"></div>
+            <span style="font-size:12px; color:var(--color-text-sub);"><strong>근교 투어 14.2%</strong></span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="width:30px; height:8px; border-radius:4px; background:var(--color-accent); opacity:0.3;"></div>
+            <span style="font-size:12px; color:var(--color-text-sub);">기타 32.0%</span>
+          </div>
+        </div>
+        <div style="font-size:11.5px; color:var(--color-accent); font-weight:600; margin-top:10px;">PB 타겟: 미술관 투어(19.2%) + 근교 투어(14.2%) = 전체의 33.4%</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-num">2.3배</div>
+        <div class="trend-label">니스 객단가 vs 파리</div>
+        <div class="trend-desc">니스 평균 37만원, 파리 평균 16만원. 니스 여행자는 프리미엄 체험에 더 많은 비용을 지출. PB 고단가 상품 적합.</div>
+      </div>
+      <div class="trend-card">
+        <div class="trend-num">공급 공백</div>
+        <div class="trend-label">니스 한국어 현지 체험</div>
+        <div class="trend-desc">MRT 내 니스 상품 수 자체가 적고, 한국어 워킹투어/미술관 도슨트 투어는 거의 없음. 파트너(아트앤트립) 보유 시 선점 효과 극대화.</div>
+      </div>
+    </div>
+    <div class="pb-note" style="margin-top: 12px;">
+      마이리얼트립 내부 실적 데이터 · 2026.03.20 기준
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 상품 포트폴리오 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">상품 포트폴리오</p>
+    <p class="pb-subtitle">3개 가격 계층 · 입장료/시음비 전액 포함</p>
+
+    <!-- 프리미엄 -->
+    <div class="tier-section" style="margin-top: 16px;">
+      <div class="tier-label">PREMIUM · 프라이빗 2-4인</div>
+      <div class="product-list">
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">1</div>
+            <div>
+              <div class="product-name">부르고뉴 와인 투어</div>
+              <div class="product-sub">파리 출발 · 종일 07:30-19:00</div>
+            </div>
+            <div class="product-price">450,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">프라이빗</span>
+            <span class="pb-tag--neutral">가이드 차량</span>
+            <span class="pb-tag--ok">시음 2회 포함</span>
+          </div>
+          <div class="product-desc">
+            로마네콩티 포도밭을 직접 걸으며, Domaine Patriache 등 2곳 와이너리에서 6종 이상 시음.
+            가이드 전용 차량으로 이동하는 소규모 프리미엄 투어.
+          </div>
+          <div class="product-includes">
+            포함: 가이드비 + 전용 차량 + 시음 2회(약 50유로) · 불포함: 점심 식사비
+          </div>
+          <a class="pdp-link" href="paris-burgundy-wine-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">2</div>
+            <div>
+              <div class="product-name">샴페인 프라이빗 와인 투어</div>
+              <div class="product-sub">파리 출발 · 종일 07:30-18:30</div>
+            </div>
+            <div class="product-price">430,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">프라이빗</span>
+            <span class="pb-tag--neutral">가이드 차량</span>
+            <span class="pb-tag--ok">시음 포함</span>
+          </div>
+          <div class="product-desc">
+            에페르네 샴페인 하우스 시음 + 동페리뇽 탄생지 오빌리에 수도원 + 랭스 대성당.
+            다른 그룹과 합류하지 않는 프라이빗 전용.
+          </div>
+          <div class="product-includes">
+            포함: 가이드비 + 전용 차량 + 시음 1회(30유로) · 불포함: 점심, 추가 시음
+          </div>
+          <a class="pdp-link" href="paris-champagne-private-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 미들 -->
+    <div class="tier-section">
+      <div class="tier-label">MIDDLE · 인원별 차량 유동</div>
+      <div class="product-list">
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">3</div>
+            <div>
+              <div class="product-name">샴페인 투어</div>
+              <div class="product-sub">파리 출발 · 종일 07:30-18:30</div>
+            </div>
+            <div class="product-price" style="text-align:right; line-height:1.3;">
+              <div>250,000원</div>
+              <div style="font-size:11px; font-weight:500; color:var(--color-text-sub);">프라이빗 2-4인</div>
+              <div style="margin-top:2px;">190,000원</div>
+              <div style="font-size:11px; font-weight:500; color:var(--color-text-sub);">그룹 5-20인</div>
+            </div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">인원별 가격</span>
+            <span class="pb-tag--neutral">차량 유동</span>
+            <span class="pb-tag--ok">시음 포함</span>
+          </div>
+          <div class="product-desc">
+            모에에샹동/메르시에 샴페인 하우스 + 오빌리에 수도원 + 랭스 대성당.
+            인원에 따라 가이드 차량/승합차/버스로 차량이 유동 배정됩니다.
+          </div>
+          <a class="pdp-link" href="paris-champagne-group-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">4</div>
+            <div>
+              <div class="product-name">니스 근교 투어</div>
+              <div class="product-sub">에즈+생폴드방스+앙티브 · 09:00-18:30</div>
+            </div>
+            <div class="product-price" style="text-align:right; line-height:1.3;">
+              <div>280,000원</div>
+              <div style="font-size:11px; font-weight:500; color:var(--color-text-sub);">프라이빗 2-4인</div>
+              <div style="margin-top:2px;">170,000원</div>
+              <div style="font-size:11px; font-weight:500; color:var(--color-text-sub);">그룹 5-20인</div>
+            </div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">인원별 가격</span>
+            <span class="pb-tag--neutral">차량 유동</span>
+            <span class="pb-tag--ok">피카소 입장 포함</span>
+          </div>
+          <div class="product-desc">
+            코트다쥐르 하이라이트 3곳을 하루에. 절벽마을 에즈, 예술가 마을 생폴드방스,
+            피카소의 앙티브. 피카소 미술관 입장료(12유로) 포함.
+          </div>
+          <a class="pdp-link" href="nice-riviera-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 엔트리 -->
+    <div class="tier-section">
+      <div class="tier-label">ENTRY · 도보 투어</div>
+      <div class="product-list">
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">5</div>
+            <div>
+              <div class="product-name">외방전교회 투어</div>
+              <div class="product-sub">파리 · 도보 3시간 · 입장료 없음</div>
+            </div>
+            <div class="product-price">85,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--ok">MRT 등록</span>
+            <span class="pb-tag--neutral">최대 15인</span>
+          </div>
+          <div class="product-desc">
+            5곳 성당을 따라 걸으며 1,500년 역사를 읽는 투어.
+            종교 유무 관계없이 유럽을 가장 깊이 이해할 수 있는 시간. 후기 5.0점.
+          </div>
+          <a class="pdp-link" href="paris-cathedral-walking-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">6</div>
+            <div>
+              <div class="product-name">로댕 미술관 투어</div>
+              <div class="product-sub">파리 · 도보 2시간 30분</div>
+            </div>
+            <div class="product-price">110,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--ok">MRT 등록</span>
+            <span class="pb-tag--ok">입장 포함</span>
+            <span class="pb-tag--neutral">최대 9인</span>
+          </div>
+          <div class="product-desc">
+            파리에서 가장 아름다운 정원형 미술관. 소규모 프리미엄(최대 9인),
+            입장료 15유로 포함. 정원 포토스팟 코스 포함.
+          </div>
+          <a class="pdp-link" href="paris-rodin-museum-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">7</div>
+            <div>
+              <div class="product-name">니스 구시가지 워킹 투어</div>
+              <div class="product-sub">니스 · 도보 3시간 · 09:00-12:00</div>
+            </div>
+            <div class="product-price">75,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">신규</span>
+            <span class="pb-tag--ok">시식 포함</span>
+            <span class="pb-tag--neutral">최대 15인</span>
+          </div>
+          <div class="product-desc">
+            젤라토 + 소카 시식 포함. 남프랑스 한국어 워킹투어는 공급이 거의 없어 차별화 명확.
+            오후 샤갈·마티스와 세트 가능.
+          </div>
+          <a class="pdp-link" href="nice-old-town-walking-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+        <div class="product-card">
+          <div class="product-header">
+            <div class="product-num">8</div>
+            <div>
+              <div class="product-name">샤갈·마티스 미술관 투어</div>
+              <div class="product-sub">니스 · 4시간 30분 · 13:00-17:30</div>
+            </div>
+            <div class="product-price">100,000원</div>
+          </div>
+          <div class="product-meta">
+            <span class="pb-tag--accent">신규</span>
+            <span class="pb-tag--ok">입장 포함</span>
+            <span class="pb-tag--neutral">최대 15인</span>
+          </div>
+          <div class="product-desc">
+            해설 30분 + 자유관람 1시간 구조. 파리보다 여유로운 감상 경험.
+            입장료 20유로(샤갈+마티스) 전액 포함.
+          </div>
+          <a class="pdp-link" href="nice-chagall-matisse-tour.html">상세페이지 시안 보기</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 가격 비교표 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">가격 체계 요약</p>
+    <p class="pb-subtitle">입장료·시음비 전액 포함 기준</p>
+    <div class="pb-card" style="padding:0; overflow:hidden; margin-top:12px;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>상품</th>
+            <th>가격</th>
+            <th>최소</th>
+            <th>최대</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>부르고뉴 와인</td><td class="price-cell">450,000</td><td>2인</td><td>4인</td></tr>
+          <tr><td>샴페인 프라이빗</td><td class="price-cell">430,000</td><td>2인</td><td>4인</td></tr>
+          <tr><td>니스 근교 프라이빗</td><td class="price-cell">280,000</td><td>2인</td><td>4인</td></tr>
+          <tr><td>샴페인 프라이빗</td><td class="price-cell">250,000</td><td>2인</td><td>4인</td></tr>
+          <tr><td>샴페인 그룹</td><td class="price-cell">190,000</td><td>5인</td><td>20인</td></tr>
+          <tr><td>니스 근교 그룹</td><td class="price-cell">170,000</td><td>5인</td><td>20인</td></tr>
+          <tr><td>로댕 미술관</td><td class="price-cell">110,000</td><td>2인</td><td>9인</td></tr>
+          <tr><td>샤갈·마티스</td><td class="price-cell">100,000</td><td>2인</td><td>15인</td></tr>
+          <tr><td>외방전교회</td><td class="price-cell">85,000</td><td>2인</td><td>15인</td></tr>
+          <tr><td>니스 워킹</td><td class="price-cell">75,000</td><td>2인</td><td>15인</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 1차 대비 변경사항 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">1차 제안 대비 변경사항</p>
+    <p class="pb-subtitle">왜 이렇게 바뀌었는지, 논의 포인트와 함께</p>
+
+    <div class="pb-card" style="margin-top:12px;">
+
+      <!-- 변경 1: 5개 → 8개 -->
+      <div class="discussion-item">
+        <div class="discussion-num">1</div>
+        <div>
+          <div class="discussion-title">5개 → 8개 상품으로 확장</div>
+          <div class="discussion-desc">
+            1차에서는 부르고뉴, 니스 워킹, 샤갈·마티스, 외방전교회, 로댕 5종이었습니다.<br><br>
+            <strong style="color:var(--color-text);">추가된 3종과 이유:</strong><br>
+            · <strong>샴페인 프라이빗 투어</strong> — 부르고뉴와 동일한 프라이빗 와인 투어 수요가 샴페인 지역에도 존재. 동페리뇽 + 랭스 대성당이라는 차별화된 킬러 컨텐츠 확보.<br>
+            · <strong>샴페인 그룹 투어</strong> — 프라이빗(43만원)은 진입 장벽이 높아, 19만원대 가성비 옵션이 필요. 같은 동선을 인원별 차량 유동으로 운영하면 두 가격대를 모두 커버 가능.<br>
+            · <strong>니스 근교 투어(에즈+생폴드방스+앙티브)</strong> — 코트다쥐르 하이라이트 3곳을 하루에 돌 수 있는 상품. 니스 여행자의 객단가가 파리의 2.3배로, 종일 차량 투어에 대한 지불 의향이 높음.
+          </div>
+        </div>
+      </div>
+
+      <!-- 변경 2: 입장료 전액 포함 -->
+      <div class="discussion-item">
+        <div class="discussion-num">2</div>
+        <div>
+          <div class="discussion-title">입장료·시음비 전액 포함으로 전환</div>
+          <div class="discussion-desc">
+            1차에서는 입장료/시음비 별도였습니다.<br><br>
+            <strong style="color:var(--color-text);">변경 이유:</strong><br>
+            · 고객이 상품 페이지에서 보는 가격이 곧 최종 가격이어야 예약 전환이 높아집니다. "85,000원 + 입장료 15유로 별도"보다 "110,000원 올인클루시브"가 결제 허들을 낮춥니다.<br>
+            · 나오시마 투어에서도 입장료 포함 구조가 고객 만족도와 후기 점수에 긍정적 영향을 준 것을 확인했습니다.<br>
+            · 시음비 포함은 와인 투어의 핵심 가치인 "걱정 없이 와인에만 집중"하는 경험을 보장합니다.<br><br>
+            <strong style="color:var(--color-accent);">논의 포인트:</strong> 입장료/시음비 포함에 따른 가이드님 측 비용 부담 구조를 함께 정리해야 합니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- 변경 3: 전 상품 최소 2인 -->
+      <div class="discussion-item">
+        <div class="discussion-num">3</div>
+        <div>
+          <div class="discussion-title">전 상품 최소 2인 출발</div>
+          <div class="discussion-desc">
+            1차에서는 최소 출발인원이 상품별로 달랐고, 버스 투어는 16-20인이 필요했습니다.<br><br>
+            <strong style="color:var(--color-text);">변경 이유:</strong><br>
+            · "2명이어도 출발합니다"는 고객 입장에서 가장 강력한 예약 유인입니다. 최소 인원이 높으면 "모객 미달로 취소될 수 있다"는 불안감이 예약을 막습니다.<br>
+            · 이를 가능하게 하는 것이 아래의 차량 유동 전략입니다. 소인원일 때 차량 비용을 줄여 가이드님 측 리스크를 최소화합니다.<br><br>
+            <strong style="color:var(--color-accent);">논의 포인트:</strong> 실제 2인 예약 시 가이드님 수익성이 괜찮은지, 소인원 프라이빗 할증 가격이 적절한지 확인 필요.
+          </div>
+        </div>
+      </div>
+
+      <!-- 변경 4: 인원별 가격 -->
+      <div class="discussion-item">
+        <div class="discussion-num">4</div>
+        <div>
+          <div class="discussion-title">차량 투어에 인원별 가격 도입</div>
+          <div class="discussion-desc">
+            1차에서는 버스 투어가 단일 가격이었습니다.<br><br>
+            <strong style="color:var(--color-text);">변경 이유:</strong><br>
+            · 2-4인은 가이드 차량으로 프라이빗 프리미엄, 5인 이상은 승합차/버스로 가성비 그룹. 같은 루트에서 두 가지 경험과 가격대를 제공합니다.<br>
+            · 소인원은 높은 가격(프라이빗 프리미엄)으로 차량 비용을 커버하고, 대인원은 규모의 경제로 가격을 낮춥니다.<br>
+            · 이 구조 덕분에 최소 2인 출발이 가능해집니다.<br><br>
+            <strong style="color:var(--color-accent);">논의 포인트:</strong> 프라이빗과 그룹 간 가격 차이가 적절한지, 5인 경계에서 고객이 혼란스럽지 않은지 확인.
+          </div>
+        </div>
+      </div>
+
+      <!-- 변경 5: 가격 조정 -->
+      <div class="discussion-item">
+        <div class="discussion-num">5</div>
+        <div>
+          <div class="discussion-title">가격 재설정</div>
+          <div class="discussion-desc">
+            <strong style="color:var(--color-text);">주요 가격 변동:</strong><br>
+            · 로댕 85,000원 → <strong>110,000원</strong> (입장료 15유로 포함 반영)<br>
+            · 부르고뉴 400,000원 → <strong>450,000원</strong> (시음 2회 포함 + 차량유지비 반영)<br>
+            · 샴페인 버스 140,000원/40인 → <strong>190,000원/20인</strong> (인원 축소 + 시음 포함)<br>
+            · 니스 워킹 65,000원 → <strong>75,000원</strong> (젤라토+소카 시식비 포함)<br>
+            · 샤갈·마티스 65,000원 → <strong>100,000원</strong> (입장료 20유로 포함)<br><br>
+            <strong style="color:var(--color-text);">원칙:</strong> 가격 인상분 = 입장료/시음비 포함분. 고객이 현장에서 추가로 내는 돈을 없애는 대신 투어 가격에 반영한 것이므로, 실질 부담은 동일하거나 오히려 줄어듭니다.<br><br>
+            <strong style="color:var(--color-accent);">논의 포인트:</strong> 각 가격이 가이드님 측 원가 대비 적절한지 확인. 특히 부르고뉴 차량유지비(회당 20유로 추정)의 실제 비용 확인 필요.
+          </div>
+        </div>
+      </div>
+
+      <!-- 변경 6: 카피 전략 -->
+      <div class="discussion-item">
+        <div class="discussion-num">6</div>
+        <div>
+          <div class="discussion-title">상품 페이지 카피 전략</div>
+          <div class="discussion-desc">
+            8개 상품 모두 <strong>PB Exclusive 상세페이지 시안</strong>을 제작했습니다. 각 상품 카드의 "상세페이지 시안 보기"에서 확인 가능합니다.<br><br>
+            <strong style="color:var(--color-text);">카피 핵심 전략:</strong><br>
+            · <strong>외방전교회</strong> — "종교 없어도 괜찮아요"를 별도 섹션으로 강조. 실제 후기에서 가장 많이 언급되는 포인트를 메인 카피로 전환.<br>
+            · <strong>로댕</strong> — "소규모 프리미엄(최대 9인)" 강조. 파리 대형 미술관과의 차별화.<br>
+            · <strong>부르고뉴</strong> — "로마네콩티 한 병 3천만원, 그 포도밭을 걷다" 킬러 카피. 버킷리스트 소구.<br>
+            · <strong>니스 워킹</strong> — "현지인처럼 니스를 걷다" + 시식 체험형. 남프랑스 한국어 투어 희소성 강조.<br>
+            · <strong>니스 근교</strong> — "절벽 위의 마을, 예술가의 골목, 피카소의 바다를 걷다" 코트다쥐르 감성 극대화.<br><br>
+            <strong style="color:var(--color-accent);">논의 포인트:</strong> 카피의 방향성, 강조하고 싶은 포인트, 수정할 표현이 있는지 가이드님 의견 확인.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 차량 유동 전략 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">차량 유동 전략</p>
+    <p class="pb-subtitle">샴페인 투어 · 니스 근교 투어 적용</p>
+
+    <div class="pb-card" style="margin-top:12px;">
+      <p style="font-size:13px; color:var(--color-text-sub); line-height:1.65; margin-bottom:16px;">
+        상품은 <strong style="color:var(--color-text);">루트(동선)</strong>에 묶이고,
+        차량은 인원에 따라 유동 배정됩니다. 2인부터 출발 가능하면서도 파트너 적자를 방지합니다.
+      </p>
+
+      <div class="vehicle-row">
+        <div class="vehicle-card">
+          <div class="vehicle-icon">&#x1F697;</div>
+          <div class="vehicle-pax">2-4인</div>
+          <div class="vehicle-type">가이드 차량</div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-icon">&#x1F690;</div>
+          <div class="vehicle-pax">5-8인</div>
+          <div class="vehicle-type">승합차</div>
+        </div>
+        <div class="vehicle-card">
+          <div class="vehicle-icon">&#x1F68C;</div>
+          <div class="vehicle-pax">9-20인</div>
+          <div class="vehicle-type">미니버스</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px; color:var(--color-text-sub); line-height:1.6; margin-top:8px;">
+        소인원은 프라이빗 프리미엄(가이드 차량), 대인원은 가성비 그룹 투어로 자연스럽게 포지셔닝됩니다.
+        고객 입장에서도 "2명이어도 출발"이 강력한 셀링포인트입니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 논의 과제 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">논의 과제</p>
+    <p class="pb-subtitle">다음 미팅에서 함께 결정할 사항</p>
+
+    <div class="pb-card" style="margin-top:12px;">
+      <div class="discussion-item">
+        <div class="discussion-num">1</div>
+        <div>
+          <div class="discussion-title">부르고뉴 차량유지비 확정</div>
+          <div class="discussion-desc">현재 회당 20유로로 추정 반영. 실제 비용 확인 후 가격 확정 필요. BEP에 직접 영향.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">2</div>
+        <div>
+          <div class="discussion-title">샴페인 프라이빗 예약 확보 방안</div>
+          <div class="discussion-desc">현지 그룹 합류 시 통역이 어려울 수 있어, 프라이빗 전용 예약이 가능한지 확인이 필요합니다. 추가 비용은 얼마인지도 함께 협의.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">3</div>
+        <div>
+          <div class="discussion-title">2번째 와이너리 로테이션 확정</div>
+          <div class="discussion-desc">부르고뉴 투어 시 2번째 와이너리가 매회 달라지면 경험 일관성 리스크. 2-3곳 사전 확정 후 로테이션 제안.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">4</div>
+        <div>
+          <div class="discussion-title">니스 체류 패턴 구체화</div>
+          <div class="discussion-desc">니스 3종 운영을 위한 현지 체류 일정. 윤상인 지점장과 교대 패턴, 주 몇 회 운영 가능한지.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">5</div>
+        <div>
+          <div class="discussion-title">버스비 시즌별 변동</div>
+          <div class="discussion-desc">샴페인/니스 근교 그룹 투어의 버스비(800-1,000유로 추정). 성수기 할증 폭, 미니버스 옵션 가격 확인.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">6</div>
+        <div>
+          <div class="discussion-title">마티스 미술관 우천 대응</div>
+          <div class="discussion-desc">야외 공원만 있어 비 올 경우 사전 설명 장소가 없습니다. 인근 카페/실내 공간 사전 답사 및 우천 시 대안 코스 확정 필요.</div>
+        </div>
+      </div>
+      <div class="discussion-item">
+        <div class="discussion-num">7</div>
+        <div>
+          <div class="discussion-title">세트 상품 할인 구조</div>
+          <div class="discussion-desc">니스 워킹(오전) + 샤갈·마티스(오후) = "니스 하루 완성" 세트 시 할인 폭. 파리 도보 세트(외방전교회+로댕)도 검토.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ 타임라인 ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">업데이트된 타임라인</p>
+    <div class="pb-card" style="margin-top:12px;">
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">3월 4주 · 지금</div>
+          <div class="tl-title">2차 제안서 공유 및 논의</div>
+          <div class="tl-desc">8개 상품 기획안 + 가격 + 수수료 모델 공유<br>7개 논의 과제 협의</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">4월 1-2주</div>
+          <div class="tl-title">가격·운영 조건 최종 확정</div>
+          <div class="tl-desc">차량유지비, 버스비, 세트 할인 등 확정<br>MRT 상품 등록 착수 (파리 도보 2종 우선)</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">4월 말</div>
+          <div class="tl-title">파리 도보 2종 첫 판매 오픈</div>
+          <div class="tl-desc">외방전교회 + 로댕 (MRT 등록 완료, 준비 기간 최단)<br>PB Exclusive PDP 적용</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">5-6월</div>
+          <div class="tl-title">파리 근교 3종 순차 오픈</div>
+          <div class="tl-desc">부르고뉴 → 샴페인 프라이빗 → 샴페인 그룹 순차<br>차량 유동 모델 실전 검증</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot--gray tl-dot"></div>
+          <div class="tl-date">6-7월 (체류 일정 맞춰)</div>
+          <div class="tl-title">니스 3종 오픈</div>
+          <div class="tl-desc">워킹 + 샤갈·마티스 + 근교 차량<br>세트 상품 동시 런칭</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot--gray tl-dot"></div>
+          <div class="tl-date">9-11월</div>
+          <div class="tl-title">부르고뉴 수확철 시즌 집중</div>
+          <div class="tl-desc">포도 수확기 시즌 한정 프리미엄 버전 검토<br>성수기 마케팅 집중</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-divider"></div>
+
+  <!-- ═══ R&R ═══ -->
+  <div class="pb-section">
+    <p class="pb-section-title">역할 분담</p>
+    <p class="pb-subtitle">8개 상품 공통</p>
+    <div class="role-row" style="margin-top:12px;">
+      <div class="role-box">
+        <div class="role-label">정희태 가이드님</div>
+        <div class="role-item">
+          투어 코스 운영<br>
+          현지 비용 산출<br>
+          와이너리·시설 예약<br>
+          예약 관리 및 상담<br>
+          현지 차량 운영<br>
+          우천 등 플랜B 운영
+        </div>
+      </div>
+      <div class="role-box">
+        <div class="role-label">마이리얼트립 PB</div>
+        <div class="role-item">
+          상품 기획 주도<br>
+          PDP 상세페이지 제작<br>
+          가격 전략 설계<br>
+          노출·마케팅 집행<br>
+          수수료 모델 운영<br>
+          고객 리뷰 관리
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 푸터 ═══ -->
+  <div class="pb-footer" style="padding: 32px 20px calc(env(safe-area-inset-bottom) + 32px); text-align:center;">
+    <p style="font-size:12px; color:var(--color-text-sub); line-height:1.6;">
+      마이리얼트립 PB · 서기원<br>
+      2026년 3월 · 2차 제안<br>
+      가격·운영 조건은 논의를 통해 조정 가능합니다
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
