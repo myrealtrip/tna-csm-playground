@@ -204,6 +204,8 @@ function renderReport(stats, period) {
   const cancelPrompt = [
     `sendbird-${period.userId}-${period.periodTag}-${reportDate}.md 파일을 분석해줘.`,
     '',
+    '파일이 크면 "## N." 구분자 기준으로 나눠 읽고, 전체를 종합해서 분석해.',
+    '',
     `이 파일은 마이리얼트립 파트너 ${stats.partnerName}(${period.userId})의 고객 대화 이력이야.`,
     '수치 집계보다 실제 대화 뉘앙스와 맥락을 중심으로 아래를 분석해줘:',
     '',
