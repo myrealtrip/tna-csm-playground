@@ -629,8 +629,8 @@ async function runAnalyzer(appId, userId, monthsBack) {
     // 완료 오버레이 — 새 엘리먼트로 생성
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;';
-    const mdButtons = mdContent
-      ? `<a href="${mdBlobUrl}" target="_blank" style="flex:1;display:block;background:#6e40c9;color:white;text-decoration:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;text-align:center;">📝 대화 원문 보기</a>`
+    const mdNote = mdContent
+      ? `<div style="font-size:13px;color:#6e40c9;line-height:1.6;margin-bottom:8px;">📝 대화 원문: 다운로드 폴더의 <strong>${esc(mdFile)}</strong></div>`
       : '';
     overlay.innerHTML = `<div style="background:white;border-radius:20px;padding:40px 48px;max-width:500px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
       <div style="font-size:48px;margin-bottom:12px;">✅</div>
@@ -641,10 +641,10 @@ async function runAnalyzer(appId, userId, monthsBack) {
         <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;border-top:1px solid #e8e8e8;"><span>응답률</span><strong>${stats.responseRate != null ? stats.responseRate + '%' : 'N/A'}</strong></div>
         <div style="display:flex;justify-content:space-between;font-size:15px;color:#333;padding:6px 0;border-top:1px solid #e8e8e8;"><span>대화방</span><strong>${stats.channelCount}개</strong></div>
       </div>
-      <div style="display:flex;gap:10px;margin-bottom:16px;">
-        <a href="${reportBlobUrl}" target="_blank" style="flex:1;display:block;background:#0071e3;color:white;text-decoration:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;text-align:center;">📄 리포트 열기</a>
-        ${mdButtons}
+      <div style="margin-bottom:16px;">
+        <a href="${reportBlobUrl}" target="_blank" style="display:block;background:#0071e3;color:white;text-decoration:none;border-radius:10px;padding:14px;font-size:15px;font-weight:600;text-align:center;">📄 리포트 열기</a>
       </div>
+      ${mdNote}
       <div style="font-size:13px;color:#34c759;line-height:1.6;margin-bottom:8px;">✓ ${mdContent ? '두 파일 모두' : '리포트가'} 브라우저 다운로드 폴더에 저장됨</div>
       <div style="font-size:13px;color:#999;line-height:1.6;margin-bottom:18px;">리포트는 새 탭에서 열려요${mdContent ? ' · MD는 Claude Code 분석용' : ''}</div>
       <button id="_analyzer_close" style="background:#f0f0f5;color:#333;border:none;border-radius:10px;padding:12px 36px;font-size:15px;font-weight:600;cursor:pointer;">닫기</button>
