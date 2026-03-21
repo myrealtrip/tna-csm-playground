@@ -261,14 +261,37 @@
     const statsWl = aggregateStats(mockWaitlistCh, 'P151883');
     assert('aggregateStats: 대기 언급 채널 1건', statsWl.waitlistCount, 1);
 
+    // ── businessMinutes 테스트 ──────────────────────────────────
+    // KST 기준: 2026-03-20 23:00 → 2026-03-21 09:30 = 업무시간 내 30분
+    const nightMsg = Date.UTC(2026, 2, 20, 14, 0); // 23:00 KST (UTC 14:00)
+    const morningReply = Date.UTC(2026, 2, 21, 0, 30); // 09:30 KST (UTC 00:30)
+    assert('businessMinutes: 밤 메시지→아침 답변 = 30분', businessMinutes(nightMsg, morningReply, 9, 21, 9), 30);
+
+    // 업무시간 내 단순 차이: 10:00 → 10:45 = 45분
+    const biz1 = Date.UTC(2026, 2, 20, 1, 0); // 10:00 KST
+    const biz2 = Date.UTC(2026, 2, 20, 1, 45); // 10:45 KST
+    assert('businessMinutes: 업무시간 내 45분', businessMinutes(biz1, biz2, 9, 21, 9), 45);
+
+    // 다른 시간대 (파리 UTC+2): 22:00 → 다음날 10:30 = 업무시간 내 90분 (09:00-10:30)
+    const parisNight = Date.UTC(2026, 2, 20, 20, 0); // 22:00 UTC+2
+    const parisReply = Date.UTC(2026, 2, 21, 8, 30); // 10:30 UTC+2
+    assert('businessMinutes: 파리 시간대', businessMinutes(parisNight, parisReply, 9, 21, 2), 90);
+
+    // v3 새 필드 테스트
+    assert('aggregateStats: netCancelRate 존재', stats.netCancelRate != null || stats.netCancelRate === 0, true);
+    assert('aggregateStats: avgBusinessResponseMinutes 존재', stats.avgBusinessResponseMinutes != null, true);
+    assert('aggregateStats: medianBusinessResponseMinutes 존재', stats.medianBusinessResponseMinutes != null, true);
+
     // ── Task 4 테스트 ───────────────────────────────────────────
     const mockStats = aggregateStats(mockChannels, 'P151883');
-    const html = renderReport(mockStats, { userId: 'P151883', label: '최근 6개월' });
+    const html = renderReport(mockStats, { userId: 'P151883', label: '최근 6개월', periodTag: '6m' });
     assert('renderReport: HTML 생성됨', html.startsWith('<!DOCTYPE html>'), true);
     assert('renderReport: 파트너명 포함', html.includes('하루하루투어'), true);
     assert('renderReport: Claude Code 안내 포함', html.includes('copyPrompt'), true);
     assert('renderReport: 핵심 섹션 포함',
       ['신뢰도 체크', '고객 응대 품질', '취소 분석'].every(s => html.includes(s)), true);
+    assert('renderReport: 파트너 귀책 취소율 표시', html.includes('파트너 귀책'), true);
+    assert('renderReport: 업무시간 응답 표시', html.includes('업무시간'), true);
 
     // ── 출력 ────────────────────────────────────────────────────────
     document.getElementById('out').textContent = lines.join('\n');

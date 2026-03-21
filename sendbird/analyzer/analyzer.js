@@ -1,6 +1,6 @@
 // Sendbird Partner Analyzer — Pure Functions
 // No imports, no exports, no side effects — browser/bookmarklet safe
-const ANALYZER_VERSION = 2;
+const ANALYZER_VERSION = 3;
 
 // ADMM 메시지에서 예약 상태 정보 추출
 // msg: Sendbird 메시지 객체 (type === 'ADMM')
@@ -29,6 +29,84 @@ function parseAdmm(msg) {
   } catch {
     return null;                               // 파싱 실패 시 무시
   }
+}
+
+// 업무시간 내 경과시간 계산 (분 단위)
+// startMs, endMs: Unix ms timestamps
+// businessStart, businessEnd: 시 (파트너 현지 기준, 기본 9:00–21:00)
+// utcOffsetHours: 파트너 시간대 (기본 9 = KST, 예: 파리 동절기 1, 하절기 2)
+// 비업무 시간에 보낸 메시지는 다음 업무 시작 시점부터 카운트
+function businessMinutes(startMs, endMs, businessStart = 9, businessEnd = 21, utcOffsetHours = 9) {
+  if (endMs <= startMs) return 0;
+  const TZ_OFFSET = utcOffsetHours * 60; // in minutes
+
+  // ms → 파트너 현지시간 Date 헬퍼
+  const toLocal = ms => {
+    const d = new Date(ms);
+    return new Date(d.getTime() + TZ_OFFSET * 60000);
+  };
+
+  // 현지시간 날짜에서 해당 날짜의 업무시작/종료 ms (가상 UTC 기준)
+  const dayStart = kst => {
+    const d = new Date(kst);
+    d.setUTCHours(businessStart, 0, 0, 0);
+    return d.getTime();
+  };
+  const dayEnd = kst => {
+    const d = new Date(kst);
+    d.setUTCHours(businessEnd, 0, 0, 0);
+    return d.getTime();
+  };
+
+  // 시작/종료를 KST로 변환
+  let s = toLocal(startMs).getTime();
+  let e = toLocal(endMs).getTime();
+
+  // 시작 시점이 업무시간 전이면 업무 시작으로 조정
+  let sCur = toLocal(startMs);
+  if (sCur.getUTCHours() < businessStart) {
+    s = dayStart(sCur);
+  }
+  // 시작 시점이 업무시간 후면 다음 날 업무 시작으로 조정
+  if (sCur.getUTCHours() >= businessEnd) {
+    sCur.setUTCDate(sCur.getUTCDate() + 1);
+    s = dayStart(sCur);
+  }
+
+  // 종료 시점이 업무시간 전이면 전날 업무 종료로 조정
+  let eCur = toLocal(endMs);
+  if (eCur.getUTCHours() < businessStart) {
+    eCur.setUTCDate(eCur.getUTCDate() - 1);
+    e = dayEnd(eCur);
+  }
+  // 종료 시점이 업무시간 후면 당일 업무 종료로 조정
+  if (eCur.getUTCHours() >= businessEnd) {
+    e = dayEnd(eCur);
+  }
+
+  if (e <= s) return 0;
+
+  const businessPerDay = (businessEnd - businessStart) * 60; // 분
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const sDate = new Date(s);
+  const eDate = new Date(e);
+
+  // 같은 날이면 단순 차이
+  const sDayNum = Math.floor(s / msPerDay);
+  const eDayNum = Math.floor(e / msPerDay);
+
+  if (sDayNum === eDayNum) {
+    return Math.round((e - s) / 60000);
+  }
+
+  // 다른 날: 첫날 잔여 + 중간 날 전체 + 마지막 날
+  const firstDayEnd = dayEnd(sDate);
+  const lastDayStart = dayStart(eDate);
+  const firstDayMin = Math.max(0, Math.round((firstDayEnd - s) / 60000));
+  const lastDayMin = Math.max(0, Math.round((e - lastDayStart) / 60000));
+  const fullDays = Math.max(0, eDayNum - sDayNum - 1);
+
+  return firstDayMin + fullDays * businessPerDay + lastDayMin;
 }
 
 // 채널의 ADMM 이벤트 배열 → 최종 예약 상태 분류
@@ -83,10 +161,15 @@ function classifyChannel(admmEvents) {
 // returns: { partnerName, productNames[], channelCount, confirm, cancel, total,
 //            confirmRate, cancelRate, partnerCancel, customerCancel, otherCancel,
 //            postConfirmCancel, avgResponseMinutes, unanswered, preNotice, waitlistCount }
-function aggregateStats(channels, userId) {
+// opts.utcOffset: 파트너 시간대 (기본 9 = KST)
+// opts.businessStart/End: 업무시간 (기본 9–21)
+function aggregateStats(channels, userId, opts = {}) {
+  const utcOffset = opts.utcOffset ?? 9;
+  const bizStart = opts.businessStart ?? 9;
+  const bizEnd = opts.businessEnd ?? 21;
   let confirm = 0, cancel = 0, waitConfirm = 0, partnerCancel = 0, customerCancel = 0;
   let weatherCancel = 0, minPartyCancel = 0, platformCancel = 0, otherCancel = 0, postConfirmCancel = 0;
-  let responseTimes = [], customerQuestions = 0, ignoredQuestions = 0;
+  let responseTimes = [], businessResponseTimes = [], customerQuestions = 0, ignoredQuestions = 0;
   let unanswered = 0, preNotice = 0, waitlistCount = 0;
   let partnerName = '';
   const productNameSet = new Set();
@@ -135,6 +218,7 @@ function aggregateStats(channels, userId) {
         customerQuestions++;
         if (j < msgs.length) {
           responseTimes.push((msgs[j].created_at - lastCustomerTs) / 60000);
+          businessResponseTimes.push(businessMinutes(lastCustomerTs, msgs[j].created_at, bizStart, bizEnd, utcOffset));
         } else {
           ignoredQuestions++; // 파트너가 끝내 답하지 않은 고객 질문
         }
@@ -165,6 +249,20 @@ function aggregateStats(channels, userId) {
   const avgResponseMinutes = responseTimes.length
     ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
     : null;
+  const avgBusinessResponseMinutes = businessResponseTimes.length
+    ? Math.round(businessResponseTimes.reduce((a, b) => a + b, 0) / businessResponseTimes.length)
+    : null;
+  const medianBusinessResponseMinutes = businessResponseTimes.length
+    ? (() => { const s = [...businessResponseTimes].sort((a,b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : Math.round((s[m-1] + s[m]) / 2); })()
+    : null;
+
+  // 취소율 분리: 전체 vs 파트너 귀책
+  // 시스템 라벨 "파트너 요청으로 취소"도 실제로는 고객 동의 하 정리가 대부분이므로
+  // partnerCancelRate는 참고용, 실질 지표는 전체 취소율에서 고객 사유를 뺀 netCancelRate
+  const netCancel = cancel - customerCancel; // 고객 자발 취소 제외
+  const cancelRate = total ? Math.round(cancel / total * 100) : null;
+  const customerCancelRate = total ? Math.round(customerCancel / total * 100) : null;
+  const netCancelRate = total ? Math.round(netCancel / total * 100) : null;
 
   return {
     partnerName,
@@ -172,9 +270,14 @@ function aggregateStats(channels, userId) {
     channelCount: channels.length,
     confirm, cancel, waitConfirm, total,
     confirmRate: total ? Math.round(confirm / total * 100) : null,
-    cancelRate: total ? Math.round(cancel / total * 100) : null,
+    cancelRate,
+    customerCancelRate,
+    netCancelRate,
+    netCancel,
     partnerCancel, customerCancel, weatherCancel, minPartyCancel, platformCancel, otherCancel, postConfirmCancel,
     avgResponseMinutes,
+    avgBusinessResponseMinutes,
+    medianBusinessResponseMinutes,
     customerQuestions,
     ignoredQuestions,
     responseRate: customerQuestions ? Math.round((customerQuestions - ignoredQuestions) / customerQuestions * 100) : null,
@@ -215,7 +318,7 @@ function renderReport(stats, period) {
     '4. 운영 상 반복되는 문제나 개선이 필요한 부분',
     '5. MRT 사업개발팀에서 취해야 할 액션',
     '',
-    `참고 수치: 확정률 ${pct(stats.confirmRate)} · 취소율 ${pct(stats.cancelRate)} · 평균 응답 ${min(stats.avgResponseMinutes)} · 대화방 ${stats.channelCount}개`,
+    `참고 수치: 확정률 ${pct(stats.confirmRate)} · 전체 취소율 ${pct(stats.cancelRate)} · 파트너 귀책 취소율 ${pct(stats.netCancelRate)} · 평균 응답(업무시간) ${min(stats.avgBusinessResponseMinutes)} · 중앙값 ${min(stats.medianBusinessResponseMinutes)} · 대화방 ${stats.channelCount}개`,
   ].join('\n');
 
   return `<!DOCTYPE html>
@@ -268,11 +371,13 @@ function renderReport(stats, period) {
     <div class="card" style="background:#0071e3;">
       <div class="val">${pct(stats.confirmRate)}</div><div class="lbl">확정률</div>
     </div>
-    <div class="card" style="background:${(stats.cancelRate ?? 0) > 10 ? '#ff3b30' : '#34c759'};">
-      <div class="val">${pct(stats.cancelRate)}</div><div class="lbl">취소율</div>
+    <div class="card" style="background:${(stats.netCancelRate ?? 0) > 5 ? '#ff3b30' : '#34c759'};">
+      <div class="val">${pct(stats.netCancelRate)}</div><div class="lbl">취소율 (파트너)</div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">전체 ${pct(stats.cancelRate)}</div>
     </div>
-    <div class="card" style="background:${(stats.avgResponseMinutes ?? 0) > 120 ? '#ff9500' : '#34c759'};">
-      <div class="val">${min(stats.avgResponseMinutes)}</div><div class="lbl">평균 응답</div>
+    <div class="card" style="background:${(stats.avgBusinessResponseMinutes ?? 0) > 120 ? '#ff9500' : '#34c759'};">
+      <div class="val">${min(stats.avgBusinessResponseMinutes)}</div><div class="lbl">평균 응답 (업무)</div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">중앙값 ${min(stats.medianBusinessResponseMinutes)}</div>
     </div>
     <div class="card" style="background:${stats.unanswered > 0 ? '#ff9500' : '#34c759'};">
       <div class="val">${stats.unanswered}건</div><div class="lbl">미답변</div>
@@ -283,13 +388,15 @@ function renderReport(stats, period) {
     <div class="section">
       <div class="section-title">📋 신뢰도 체크</div>
       <div class="row"><span class="row-label">확정률</span><span class="row-value">${pct(stats.confirmRate)}</span><span class="row-status">${stats.confirmRate == null ? '–' : statusIcon(stats.confirmRate >= 90, stats.confirmRate < 90)}</span></div>
-      <div class="row"><span class="row-label">파트너 임의취소</span><span class="row-value">${stats.partnerCancel}건</span><span class="row-status">${statusIcon(stats.partnerCancel === 0, stats.partnerCancel > 0)}</span></div>
+      <div class="row"><span class="row-label">파트너 귀책 취소율</span><span class="row-value">${pct(stats.netCancelRate)} <span style="font-size:10px;color:#999;">(${stats.netCancel}건)</span></span><span class="row-status">${statusIcon(stats.netCancelRate === 0, (stats.netCancelRate ?? 0) > 5)}</span></div>
+      <div class="row"><span class="row-label">파트너 경유 취소</span><span class="row-value">${stats.partnerCancel}건</span><span class="row-status">${statusIcon(stats.partnerCancel === 0, stats.partnerCancel > 0)}</span></div>
       <div class="row"><span class="row-label">확정 후 취소</span><span class="row-value">${stats.postConfirmCancel}건</span><span class="row-status">${statusIcon(stats.postConfirmCancel === 0, stats.postConfirmCancel > 0)}</span></div>
       <div class="row"><span class="row-label">미답변 대화방</span><span class="row-value">${stats.unanswered}건</span><span class="row-status">${statusIcon(stats.unanswered === 0, stats.unanswered > 0)}</span></div>
     </div>
     <div class="section">
       <div class="section-title">💬 고객 응대 품질</div>
-      <div class="row"><span class="row-label">평균 응답시간</span><span class="row-value">${min(stats.avgResponseMinutes)}</span><span class="row-status">${stats.avgResponseMinutes == null ? '–' : statusIcon(stats.avgResponseMinutes <= 60, stats.avgResponseMinutes > 60)}</span></div>
+      <div class="row"><span class="row-label">평균 응답 (업무시간)</span><span class="row-value">${min(stats.avgBusinessResponseMinutes)}</span><span class="row-status">${stats.avgBusinessResponseMinutes == null ? '–' : statusIcon(stats.avgBusinessResponseMinutes <= 60, stats.avgBusinessResponseMinutes > 60)}</span></div>
+      <div class="row"><span class="row-label">응답 중앙값</span><span class="row-value">${min(stats.medianBusinessResponseMinutes)}</span><span class="row-status">${stats.medianBusinessResponseMinutes == null ? '–' : statusIcon(stats.medianBusinessResponseMinutes <= 30, stats.medianBusinessResponseMinutes > 30)}</span></div>
       <div class="row"><span class="row-label">응답률</span><span class="row-value">${pct(stats.responseRate)}</span><span class="row-status">${stats.responseRate == null ? '–' : statusIcon(stats.responseRate >= 90, stats.responseRate < 90)}</span></div>
       <div class="row"><span class="row-label">사전 안내 발송</span><span class="row-value">${stats.preNotice}건</span><span class="row-status">📨</span></div>
       <div class="row"><span class="row-label">무시된 질문</span><span class="row-value">${stats.ignoredQuestions}건 (${stats.customerQuestions ? Math.round(stats.ignoredQuestions / stats.customerQuestions * 100) : 0}%)</span><span class="row-status">${statusIcon(stats.ignoredQuestions === 0, stats.ignoredQuestions > 0)}</span></div>
@@ -297,20 +404,22 @@ function renderReport(stats, period) {
   </div>
 
   <div class="section" style="margin-bottom:12px;">
-    <div class="section-title">📊 취소 분석 <span style="font-size:9px;font-weight:400;color:#999;">(총 ${stats.cancel}건)</span></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
-      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
-        <div style="font-size:18px;font-weight:700;color:#111;">${stats.customerCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">고객 사유</div>
+    <div class="section-title">📊 취소 분석 <span style="font-size:9px;font-weight:400;color:#999;">(총 ${stats.cancel}건 · 전체 취소율 ${pct(stats.cancelRate)})</span></div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;">
+      <div style="text-align:center;padding:12px 8px;background:#f0faf0;border-radius:8px;border:1px solid #c8e6c9;">
+        <div style="font-size:18px;font-weight:700;color:#2e7d32;">${stats.customerCancel}건</div>
+        <div style="font-size:9px;color:#666;margin-top:3px;">고객 사유 취소</div>
+        <div style="font-size:8px;color:#999;margin-top:2px;">파트너 귀책 아님</div>
       </div>
-      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
-        <div style="font-size:18px;font-weight:700;color:${stats.partnerCancel > 0 ? '#ff3b30' : '#111'};">${stats.partnerCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">파트너 사유</div>
+      <div style="text-align:center;padding:12px 8px;background:${stats.netCancel > 0 ? '#fff5f5' : '#f9f9fb'};border-radius:8px;border:1px solid ${stats.netCancel > 0 ? '#ffcdd2' : '#eee'};">
+        <div style="font-size:18px;font-weight:700;color:${stats.netCancel > 0 ? '#ff3b30' : '#111'};">${stats.netCancel}건</div>
+        <div style="font-size:9px;color:#666;margin-top:3px;">파트너 귀책 취소</div>
+        <div style="font-size:8px;color:#999;margin-top:2px;">파트너 ${stats.partnerCancel} · 미분류 ${stats.otherCancel}</div>
       </div>
-      <div style="text-align:center;padding:10px 8px;background:#f9f9fb;border-radius:8px;">
-        <div style="font-size:18px;font-weight:700;color:#111;">${stats.otherCancel}건</div>
-        <div style="font-size:9px;color:#888;margin-top:3px;">미분류</div>
-      </div>
+    </div>
+    <div style="margin-top:8px;padding:8px 12px;background:#f5f5fa;border-radius:6px;font-size:10px;color:#666;line-height:1.5;">
+      💡 <strong>파트너 귀책 취소율 ${pct(stats.netCancelRate)}</strong> — 고객 자발 취소(${stats.customerCancel}건)를 제외한 취소율입니다.<br>
+      "파트너 경유 취소"(${stats.partnerCancel}건)는 시스템 라벨이며, 실제로는 고객 동의 하 정리 취소일 수 있어 대화 확인이 필요합니다.
     </div>
     ${(stats.weatherCancel || stats.minPartyCancel || stats.platformCancel) ? `
     <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
@@ -323,7 +432,7 @@ function renderReport(stats, period) {
   </div>
 
   <div class="data-note">
-    <div class="data-note-body">대화방 ${stats.channelCount}개 분석 · 예약 발생 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})${stats.channelCount - stats.total > 0 ? ` · 단순 문의 ${stats.channelCount - stats.total}건` : ''}</div>
+    <div class="data-note-body">대화방 ${stats.channelCount}개 분석 · 예약 발생 ${stats.total}건 (확정 ${stats.confirm} / 취소 ${stats.cancel} / 대기 ${stats.waitConfirm})${stats.channelCount - stats.total > 0 ? ` · 단순 문의 ${stats.channelCount - stats.total}건` : ''}<br>응답시간: 업무시간(UTC+${period.utcOffset ?? 9} ${String(period.businessStart ?? 9).padStart(2,'0')}:00–${String(period.businessEnd ?? 21).padStart(2,'0')}:00) 기준 · 비업무 시간 메시지는 다음 업무 시작부터 카운트</div>
     ${(stats._warnings || []).map(w => `<div style="color:#e65100;font-size:10px;margin-top:6px;">⚠️ ${w}</div>`).join('')}
   </div>
 
@@ -544,7 +653,8 @@ function generateMd(channels, userId) {
 }
 
 // 북마클릿에서 호출되는 진입점
-async function runAnalyzer(appId, userId, monthsBack) {
+// opts: { utcOffset, businessStart, businessEnd } — 파트너 시간대/업무시간 설정
+async function runAnalyzer(appId, userId, monthsBack, opts = {}) {
   if (window._analyzerRunning) {
     alert('현재 분석이 진행 중이에요. 완료 후 다시 시도해주세요.');
     return;
@@ -592,8 +702,11 @@ async function runAnalyzer(appId, userId, monthsBack) {
       userId,
       label: monthsBack ? `최근 ${monthsBack}개월` : '전체',
       periodTag,
+      utcOffset: opts.utcOffset ?? 9,
+      businessStart: opts.businessStart ?? 9,
+      businessEnd: opts.businessEnd ?? 21,
     };
-    const stats = aggregateStats(channels, userId);
+    const stats = aggregateStats(channels, userId, opts);
     if (truncatedChannels > 0) {
       stats._warnings = stats._warnings || [];
       stats._warnings.push(`${truncatedChannels}개 대화방에서 메시지가 10,000개 한도로 잘렸어요. 오래된 메시지가 누락될 수 있습니다.`);

@@ -120,15 +120,16 @@ const ANALYZER_URL = 'https://myrealtrip.github.io/tna-csm-playground/sendbird/a
 
 const bm = `javascript:(function(){
 if(!location.hostname.endsWith('sendbird.com')){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;';o.innerHTML='<div style="background:white;border-radius:16px;padding:32px 40px;max-width:400px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);"><div style="font-size:40px;margin-bottom:12px;">🚫</div><div style="font-size:16px;font-weight:700;color:#111;margin-bottom:8px;">잘못된 페이지예요</div><div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:16px;">이 북마클릿은 <strong>dashboard.sendbird.com</strong>에서만 실행할 수 있어요.<br>Sendbird 대시보드에 로그인한 뒤 다시 시도해주세요.</div><button onclick="this.parentElement.parentElement.remove()" style="background:#0071e3;color:white;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;">확인</button></div>';document.body.appendChild(o);return;}
-var BM_VER=2;
+var BM_VER=3;
 const s=document.createElement('script');
 s.src='${ANALYZER_URL}?v='+Date.now();
 s.onload=function(){
   if(typeof ANALYZER_VERSION!=='undefined'&&ANALYZER_VERSION>BM_VER){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;';o.innerHTML='<div style="background:white;border-radius:16px;padding:32px 40px;max-width:400px;text-align:center;font-family:-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,0.3);"><div style="font-size:40px;margin-bottom:12px;">🔄</div><div style="font-size:16px;font-weight:700;color:#111;margin-bottom:8px;">업데이트가 있어요!</div><div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:16px;">북마클릿을 다시 설치해야 새 기능을 쓸 수 있어요.<br><a href="https://myrealtrip.github.io/tna-csm-playground/sendbird/" target="_blank" style="color:#0071e3;font-weight:600;">설치 페이지 열기 →</a></div><button onclick="this.parentElement.parentElement.remove()" style="background:#0071e3;color:white;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;">확인</button></div>';document.body.appendChild(o);return;}
   const raw=prompt('파트너 User ID (예: P151883)');if(!raw)return;const uid=raw.trim().toUpperCase();
   const months=prompt('분석 기간 (개월, 전체는 0 입력)', '6');
+  const tz=prompt('파트너 시간대 UTC 오프셋 (한국=9, 일본=9, 파리 하절기=2, 뉴욕=-5)', '9');
   const appId=window.location.pathname.split('/')[1];
-  runAnalyzer(appId,uid,parseInt(months)||0).catch(function(e){alert('오류: '+e.message);});
+  runAnalyzer(appId,uid,parseInt(months)||0,{utcOffset:parseFloat(tz)||9}).catch(function(e){alert('오류: '+e.message);});
 };
 s.onerror=function(){alert('스크립트 로드 실패. CSP 문제일 수 있어요.');};
 document.head.appendChild(s);
