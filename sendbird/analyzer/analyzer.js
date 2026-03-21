@@ -202,7 +202,7 @@ function renderReport(stats, period) {
   const reportDate = new Date().toISOString().slice(0, 10);
 
   const cancelPrompt = [
-    `sendbird-${period.userId}-${period.periodTag}-${reportDate}.md 파일을 분석해줘.`,
+    `~/Downloads/sendbird-${period.userId}-${period.periodTag}-${reportDate}.md 파일을 분석해줘. 파일이 없으면 저장 경로를 물어봐.`,
     '',
     '파일이 크면 "## N." 구분자 기준으로 나눠 읽고, 전체를 종합해서 분석해.',
     '',
@@ -330,7 +330,7 @@ function renderReport(stats, period) {
   <div class="cc-card">
     <div class="cc-title">🤖 Claude Code로 대화 뉘앙스 분석하기</div>
     <div class="cc-step"><div class="cc-num">1</div><div>이 리포트와 함께 다운로드된 <span class="cc-code">sendbird-${period.userId}-${period.periodTag}-${reportDate}.md</span> 확인</div></div>
-    <div class="cc-step"><div class="cc-num">2</div><div>터미널에서 MD 파일이 저장된 폴더로 이동 후 <span class="cc-code">claude</span> 실행</div></div>
+    <div class="cc-step"><div class="cc-num">2</div><div>터미널에서 <span class="cc-code">claude</span> 실행</div></div>
     <div class="cc-step"><div class="cc-num">3</div><div>아래 프롬프트를 붙여넣기 → Claude가 실제 대화를 읽고 뉘앙스 분석</div></div>
     <button class="cc-btn" onclick="copyPrompt()">📋 분석 프롬프트 복사</button>
     <div class="cc-hint">수치 집계가 아닌 실제 대화 원문 기반 분석</div>

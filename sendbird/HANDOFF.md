@@ -364,5 +364,5 @@ git push origin main
 
 - **설치 페이지**: https://myrealtrip.github.io/tna-csm-playground/sendbird/
 - **GitHub 레포**: https://github.com/myrealtrip/tna-csm-playground
-- **Sendbird 대시보드**: https://dashboard.sendbird.com
+- **Sendbird 대시보드**: https://dashboard.sendbird.com/85D30E6C-3FE3-42B9-97FD-967AD829FA3E/group-channels/
 - **중화권팀 Confluence**: https://myrealtrip.atlassian.net/wiki/spaces/TA
