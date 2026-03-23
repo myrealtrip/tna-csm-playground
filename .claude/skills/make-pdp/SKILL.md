@@ -314,7 +314,7 @@ mcp__chrome-devtools__new_page(url=<URL>)
 확정된 카테고리의 템플릿을 읽는다:
 
 ```
-Read: docs/pdp-tf/templates/{category}.html
+Read: PDP_TF/Kiwon/templates/{category}.html
 ```
 
 **3-2. 데이터 매핑**
@@ -416,7 +416,7 @@ ls {images_folder}/*.{jpg,jpeg,png,webp}
 **5-2. CSS 처리 (비용 최적화)**
 
 pb-exclusive 템플릿 사용 시, 인라인 `<style>` 블록 대신 외부 CSS 파일을 참조한다.
-공유 CSS 파일이 이미 존재: `docs/pdp-tf/output/pb-exclusive.css`
+공유 CSS 파일이 이미 존재: `PDP_TF/Kiwon/output/pb-exclusive.css`
 
 ```html
 <link rel="stylesheet" href="pb-exclusive.css">
@@ -439,7 +439,7 @@ pb-exclusive 템플릿 사용 시, 인라인 `<style>` 블록 대신 외부 CSS 
 **5-4. 파일 저장**
 
 ```
-Write: docs/pdp-tf/output/{slug}.html
+Write: PDP_TF/Kiwon/output/{slug}.html
 ```
 
 **5-5. 메타데이터 저장**
@@ -466,7 +466,7 @@ Write: docs/pdp-tf/output/{slug}.html
 ```
 
 ```
-Write: docs/pdp-tf/output/{slug}.meta.json
+Write: PDP_TF/Kiwon/output/{slug}.meta.json
 ```
 
 ### Step 6: Lighthouse 자동 검증 & 수정
@@ -476,7 +476,7 @@ HTML 생성 직후, Lighthouse로 품질을 자동 검증하고 미달 항목을
 **6-1. Lighthouse 실행**
 
 ```bash
-npx lighthouse "file:///Users/kiwon-seo/Documents/PBrain/docs/pdp-tf/output/{slug}.html" \
+npx lighthouse "file://$(pwd)/PDP_TF/Kiwon/output/{slug}.html" \
   --output=json --output-path=/tmp/lh-{slug}.json \
   --chrome-flags="--headless --no-sandbox" \
   --only-categories=accessibility,best-practices,seo --quiet
@@ -507,14 +507,14 @@ npx lighthouse "file:///Users/kiwon-seo/Documents/PBrain/docs/pdp-tf/output/{slu
 여전히 미달이면 경고와 함께 사용자에게 안내 (autoresearch 루프 제안):
 
 > ⚠️ Accessibility `82`점 — 자동 수정 범위를 초과합니다.
-> `/autoresearch pdp-lighthouse target=docs/pdp-tf/output/{slug}.html`로 심층 최적화할 수 있어요.
+> `/autoresearch pdp-lighthouse target=PDP_TF/Kiwon/output/{slug}.html`로 심층 최적화할 수 있어요.
 
 ### Step 7: 프리뷰
 
 Chrome DevTools로 생성된 HTML을 연다:
 
 ```
-mcp__chrome-devtools__new_page(url=file:///Users/kiwon-seo/Documents/PBrain/docs/pdp-tf/output/{slug}.html)
+mcp__chrome-devtools__new_page(url=file://$(pwd)/PDP_TF/Kiwon/output/{slug}.html)
 ```
 
 사용자에게 결과 안내:
@@ -522,7 +522,7 @@ mcp__chrome-devtools__new_page(url=file:///Users/kiwon-seo/Documents/PBrain/docs
 ```
 ## PDP 생성 완료
 
-- **파일**: docs/pdp-tf/output/{slug}.html
+- **파일**: PDP_TF/Kiwon/output/{slug}.html
 - **카테고리**: TOUR (가이드 투어)
 - **블록**: 11개 중 8개 채움
 - **이미지**: 24개 중 6개 매핑
@@ -543,8 +543,8 @@ mcp__chrome-devtools__new_page(url=file:///Users/kiwon-seo/Documents/PBrain/docs
 
 | 파일 | 용도 |
 |------|------|
-| `docs/pdp-tf/pdp-assembly.json` | 카테고리별 블록 조합 규칙 |
-| `docs/pdp-tf/pdp-blocks.json` | 21개 블록 스키마 (props, style, layout) |
-| `docs/pdp-tf/pdp-tokens.json` | 디자인 토큰 |
-| `docs/pdp-tf/templates/*.html` | 6개 카테고리 HTML 템플릿 |
-| `docs/pdp-tf/specs/make-pdp-spec.md` | 설계 스펙 문서 |
+| `PDP_TF/Kiwon/tokens/pdp-assembly.json` | 카테고리별 블록 조합 규칙 |
+| `PDP_TF/Kiwon/tokens/pdp-blocks.json` | 21개 블록 스키마 (props, style, layout) |
+| `PDP_TF/Kiwon/tokens/pdp-tokens.json` | 디자인 토큰 |
+| `PDP_TF/Kiwon/templates/*.html` | 6개 카테고리 HTML 템플릿 |
+| `PDP_TF/Kiwon/specs/make-pdp-spec.md` | 설계 스펙 문서 |
