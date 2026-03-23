@@ -168,7 +168,7 @@ options:
 2. 수정할 항목 선택
 ```
 
-확인 후 → **Step 3 (콘텐츠 매핑)**으로 합류. 이후 Step 5 (HTML 생성) → Step 6 (Lighthouse) → Step 7 (프리뷰)은 크롤링 모드와 동일.
+확인 후 → **Step 3 (콘텐츠 매핑)**으로 합류. 이미지는 Step 3N-이미지에서 처리했으므로 Step 4는 건너뛰고, Step 5 (HTML 생성) → Step 6 (Lighthouse) → Step 7 (프리뷰)은 크롤링 모드와 동일.
 
 ### 신규 모드 메타데이터
 
@@ -416,7 +416,7 @@ ls {images_folder}/*.{jpg,jpeg,png,webp}
 **5-2. CSS 처리 (비용 최적화)**
 
 pb-exclusive 템플릿 사용 시, 인라인 `<style>` 블록 대신 외부 CSS 파일을 참조한다.
-공유 CSS 파일이 이미 존재: `PDP_TF/Kiwon/output/pb-exclusive.css`
+공유 CSS 파일이 필요: `PDP_TF/Kiwon/output/pb-exclusive.css` (첫 pb-exclusive PDP 생성 시 자동으로 만들어짐)
 
 ```html
 <link rel="stylesheet" href="pb-exclusive.css">
@@ -547,4 +547,3 @@ mcp__chrome-devtools__new_page(url=file://$(pwd)/PDP_TF/Kiwon/output/{slug}.html
 | `PDP_TF/Kiwon/tokens/pdp-blocks.json` | 21개 블록 스키마 (props, style, layout) |
 | `PDP_TF/Kiwon/tokens/pdp-tokens.json` | 디자인 토큰 |
 | `PDP_TF/Kiwon/templates/*.html` | 6개 카테고리 HTML 템플릿 |
-| `PDP_TF/Kiwon/specs/make-pdp-spec.md` | 설계 스펙 문서 |
